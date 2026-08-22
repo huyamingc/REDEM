@@ -33,11 +33,12 @@ latexmk -pdf PAPER_A.tex
 - [ ] Keywords present: chaos; reservoir computing; memory capacity;
       forgetting kernel; homeostasis; relaxation substrate.
 - [ ] Figures 1–4 + Supplementary Fig. S1 (all generated, 10 seeds, paired
-      draws): `../figures/paperA_fig1_substrate.png`,
-      `../figures/substrate_phase_diagram_v2.png`,
-      `../figures/forgetting_curve_theory.png`,
-      `../figures/paperA_fig4_robustness.png`,
-      `../figures/paperA_figS1_cv_sweep.png`.
+      draws; vector `.pdf` in `../figures/`, `.png` preview twins):
+      `../figures/paperA_fig1_substrate.pdf`,
+      `../figures/substrate_phase_diagram_v2.pdf`,
+      `../figures/forgetting_curve_theory.pdf`,
+      `../figures/paperA_fig4_robustness.pdf`,
+      `../figures/paperA_figS1_cv_sweep.pdf`.
 - [ ] Tables: Table 1 (per-topology phase-diagram summary), Table 2
       (λ-homeostat gains); Supplementary Table S1 =
       `../data/substrate_phase_diagram_v2.csv`; Supplementary Note 1 (task-level

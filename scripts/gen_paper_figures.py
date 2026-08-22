@@ -68,6 +68,7 @@ def main():
     fig.suptitle('S6: lambda-homeostat (M5)', fontsize=12)
     fig.tight_layout(rect=[0, 0, 1, 0.92])
     fig.savefig(os.path.join(FIG_DIR, 'paperA_fig4_robustness.png'), dpi=150)
+    fig.savefig(os.path.join(FIG_DIR, 'paperA_fig4_robustness.pdf'))
     print('saved figures/paperA_fig4_robustness.png')
 
     # ============ Paper B Fig 3: dual-timescale metadata (S5) ============
@@ -94,6 +95,7 @@ def main():
     fig.suptitle('S5: dual-timescale metadata (M3), p<0.0001', fontsize=12)
     fig.tight_layout(rect=[0, 0, 1, 0.92])
     fig.savefig(os.path.join(FIG_DIR, 'paperB_fig3_metadata.png'), dpi=150)
+    fig.savefig(os.path.join(FIG_DIR, 'paperB_fig3_metadata.pdf'))
     print('saved figures/paperB_fig3_metadata.png')
 
     # ============ Paper B Fig 5: integrated ablation (S8) ============
@@ -116,6 +118,7 @@ def main():
     ax.grid(True, alpha=0.3)
     fig.tight_layout()
     fig.savefig(os.path.join(FIG_DIR, 'paperB_fig5_ablation.png'), dpi=150)
+    fig.savefig(os.path.join(FIG_DIR, 'paperB_fig5_ablation.pdf'))
     print('saved figures/paperB_fig5_ablation.png')
 
     # ============ Paper B Fig 6: showdown (S9) ============
@@ -150,6 +153,7 @@ def main():
     ax.grid(True, axis='y', alpha=0.3)
     fig.tight_layout()
     fig.savefig(os.path.join(FIG_DIR, 'paperB_fig6_showdown.png'), dpi=150)
+    fig.savefig(os.path.join(FIG_DIR, 'paperB_fig6_showdown.pdf'))
     print('saved figures/paperB_fig6_showdown.png')
 
 

@@ -42,12 +42,13 @@ latexmk -pdf PAPER_B.tex
       differentiation is the mechanism set around it (self-regulation,
       disturbance robustness, local sparse coupling).
 - [ ] §2 cross-references the companion Paper A for the substrate model (T3).
-- [ ] Figures 1–6: `../figures/paperB_fig1_redem.png`,
-      `../figures/s2_online_readout_v1.png`,
-      `../figures/paperB_fig3_metadata.png`,
-      `../figures/paperA_fig4_robustness.png` (shared with Paper A),
-      `../figures/paperB_fig5_ablation.png`,
-      `../figures/paperB_fig6_showdown.png`.
+- [ ] Figures 1–6 (vector `.pdf` in `../figures/`, `.png` preview twins):
+      `../figures/paperB_fig1_redem.pdf`,
+      `../figures/s2_online_readout_v1.pdf`,
+      `../figures/paperB_fig3_metadata.pdf`,
+      `../figures/paperA_fig4_robustness.pdf` (shared with Paper A),
+      `../figures/paperB_fig5_ablation.pdf`,
+      `../figures/paperB_fig6_showdown.pdf`.
 - [ ] Tables: Table 1 (reward-only learners fail at the inversion; RLS
       selected), Table 2 (standard-task benchmarks vs ESN / GRU / transformer).
 - [ ] Code availability statement:

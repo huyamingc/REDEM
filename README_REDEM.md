@@ -46,10 +46,12 @@ the structure level (M4).
 | S10-CV | Task-level CV sweep: uncoupled MC rises with CV (+33%, kernel theory); coupled near-critical MC falls (narrow CV best) — operating-regime-dependent knob |
 | S10-ESN | Metadata transfer: ESN+meta 0.998 ≈ ESN 0.996 ≈ REDEM-full 0.994 on regime task — the mechanism equalizes the systems |
 
-## Scripts (all new, CLAUDE.md-compliant)
+## Scripts (22 committed; 2 legacy dependencies kept for compatibility)
 
 | Script | Type | Purpose |
 |---|---|---|
+| `shallow_trap_array_simulator.py` | CORE (legacy) | Si₃N₄ shallow-trap device simulator from the prior paper; exports γ, τ₀, gen_tau_vec, preprogram_vec — imported by 12 scripts; never modified |
+| `fair_esn_comparison.py` | ML (legacy) | matched ESN reservoir class from the prior paper; imported by `baseline_showdown.py`, `esn_metadata_comparison.py` |
 | `recurrent_substrate.py` | CORE | per-pulse contrast-coupled relaxation substrate (numba core) |
 | `substrate_recurrence_characterization.py` | PAPER | S1: FTLE / held-out MC / separation vs κ sweep (610 runs) |
 | `gen_substrate_phase_diagram.py` | FIG | S1 phase diagram figure |
@@ -86,6 +88,9 @@ the structure level (M4).
   `figures/paperA_figS1_cv_sweep.png` (Supplementary Fig. S1),
   `figures/paperB_fig1_redem.png`, `figures/paperB_fig3_metadata.png`,
   `figures/paperB_fig5_ablation.png`, `figures/paperB_fig6_showdown.png`.
+  Every figure also has a vector `figures/*.pdf` twin (same generator script;
+  the papers include the extension-less basename so `pdflatex` picks the
+  vector version).
 
 ## Reproduction
 

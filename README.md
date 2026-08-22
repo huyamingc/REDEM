@@ -45,13 +45,50 @@ Data and figures live in `data/` and `figures/`.
 ├── paper_b/     Paper B: REDEM online learning architecture (PDF, LaTeX, drafts, submission README)
 ├── scripts/     Shared simulation code (CORE substrate, tasks, readouts, figure scripts)
 ├── data/        All experiment results (CSV + JSON, 10-seed means)
-├── figures/     All publication figures (PNG)
+├── figures/     All publication figures (PDF vector for submission + PNG preview)
 └── *.md         Overview, technical README, research plan, coding standards (CLAUDE.md)
 ```
 
 Each paper folder contains its own `README.md` with the submission checklist
 (author placeholder, journal template swap, figures/tables inventory, cover
 letter points).
+
+## Scripts
+
+All 22 committed scripts in `scripts/`, typed per `CLAUDE.md`
+(ML > CORE > PAPER > FIG > EXPLORE). Two legacy scripts from the prior
+Si₃N₄-pulse-encoding project are kept as shared dependencies (imported by the
+new code) and are never modified.
+
+| Script | Type | Purpose |
+|---|---|---|
+| `recurrent_substrate.py` | CORE | per-pulse contrast-coupled relaxation substrate (numba core); self-test 4/4 |
+| `shallow_trap_array_simulator.py` | CORE (legacy) | Si₃N₄ shallow-trap device simulator; constants γ/τ₀/gen_tau_vec/preprogram_vec imported by 12 scripts |
+| `fair_esn_comparison.py` | ML (legacy) | matched ESN reservoir class; imported by `baseline_showdown.py` and `esn_metadata_comparison.py` |
+| `streaming_tasks.py` | CORE | task generators: drift_binary, narma10, mackey_glass, context_switch, regime_switch |
+| `online_readout.py` | CORE | OnlineRLS, ThreeFactorReadout, ridge_fit, MC/accuracy metrics |
+| `substrate_recurrence_characterization.py` | PAPER | S1: FTLE / held-out MC / separation vs κ sweep (610 runs) |
+| `online_readout_streaming.py` | PAPER | S2: online RLS vs offline ridge on streaming tasks |
+| `three_factor_online_readout.py` | PAPER | S3: reward-modulated Hebbian vs error-gated vs RLS (negative result) |
+| `intrinsic_reward_experiment.py` | PAPER | S4: novelty intrinsic reward ablation (negative result) |
+| `dual_timescale_metadata.py` | PAPER | S5: fast/dual/slow metadata on regime-switch |
+| `chaos_regulator.py` | PAPER | S6: λ-homeostat under disturbances |
+| `structure_plasticity.py` | PAPER | S7: correlation-guided rewiring |
+| `integrated_benchmark.py` | PAPER | S8: full system vs ablations; N=1024 confirmation |
+| `baseline_showdown.py` | ML | S9: vs matched ESN / GRU / tiny transformer (torch CPU) |
+| `forgetting_curve_theory.py` | EXPLORE | S10: forgetting-kernel theory M(t), Gauss–Hermite, r=0.97 validation |
+| `esn_metadata_comparison.py` | PAPER | S10: metadata transfer to a matched ESN |
+| `cv_sweep.py` | PAPER | S10: task-level CV sweep |
+| `gen_architecture_schematic.py` | FIG | Paper Fig. 1 schematics (substrate / REDEM, M4↔M5 loop) |
+| `gen_substrate_phase_diagram.py` | FIG | S1 phase-diagram figure |
+| `gen_s2_curves.py` | FIG | S2 learning curves |
+| `gen_paper_figures.py` | FIG | batch: robustness / metadata / ablation / showdown |
+| `gen_paperA_supp_figures.py` | FIG | Paper A Supplementary Fig. S1 (CV sweep) |
+
+Each FIG script emits both `.png` (GitHub preview) and vector `.pdf`
+(journal submission); the papers include the extension-less basename so
+`pdflatex` picks the vector file automatically. Reproduction commands are in
+`README_REDEM.md`.
 
 ## Code availability
 

@@ -194,6 +194,7 @@ def main():
                  fontsize=13)
     fig.tight_layout(rect=[0, 0, 1, 0.96])
     fig.savefig(PNG_PATH, dpi=150)
+    fig.savefig(PNG_PATH[:-4] + '.pdf')  # vector PDF for journal submission
     print(f'\nsaved: {PNG_PATH}')
     print(f'saved: {CSV_PATH}')
 

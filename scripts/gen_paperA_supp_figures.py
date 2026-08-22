@@ -62,6 +62,7 @@ def main():
 
     os.makedirs(os.path.dirname(OUT_PATH), exist_ok=True)
     fig.savefig(OUT_PATH, dpi=150)
+    fig.savefig(OUT_PATH[:-4] + '.pdf')  # vector PDF for journal submission
     print('saved figures/paperA_figS1_cv_sweep.png')
 
 

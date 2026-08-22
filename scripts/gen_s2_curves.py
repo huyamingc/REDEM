@@ -98,6 +98,7 @@ def main():
     fig.tight_layout(rect=[0, 0, 1, 0.92])
     os.makedirs(os.path.dirname(out), exist_ok=True)
     fig.savefig(out, dpi=150)
+    fig.savefig(out[:-4] + '.pdf')  # vector PDF for journal submission
     print(f"saved: {out}")
 
 

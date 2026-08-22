@@ -94,6 +94,7 @@ def main():
             fontsize=11, fontweight='bold', color='#333')
     fig.tight_layout()
     fig.savefig(os.path.join(FIG_DIR, 'paperA_fig1_substrate.png'), dpi=150)
+    fig.savefig(os.path.join(FIG_DIR, 'paperA_fig1_substrate.pdf'))
     print('saved figures/paperA_fig1_substrate.png')
 
     # ================= Paper B Fig 1: REDEM =================
@@ -176,6 +177,7 @@ def main():
             fontsize=7.5, color='#666', style='italic')
     fig.tight_layout()
     fig.savefig(os.path.join(FIG_DIR, 'paperB_fig1_redem.png'), dpi=150)
+    fig.savefig(os.path.join(FIG_DIR, 'paperB_fig1_redem.pdf'))
     print('saved figures/paperB_fig1_redem.png')
 
 
