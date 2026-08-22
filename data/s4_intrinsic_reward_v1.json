@@ -1,0 +1,219 @@
+{
+  "params": {
+    "n_units": 256,
+    "cv_tau": 0.2,
+    "alpha0": 0.02,
+    "gamma": 4.605170185988092,
+    "tau0": 0.00017361743662152847,
+    "kappa_random": 25.0,
+    "rmhl_eta": 0.05,
+    "rmhl_elig_decay": 0.9,
+    "kappa_int_grid": [
+      0.0,
+      0.1,
+      0.5,
+      2.0
+    ],
+    "reward_every_grid": [
+      1,
+      5
+    ],
+    "intrinsic": "novelty",
+    "n_seeds": 10,
+    "quick": false
+  },
+  "aggregates": [
+    {
+      "substrate": "parallel",
+      "kappa_int": 0.0,
+      "reward_every": 1,
+      "n_runs": 10,
+      "pre_steady_acc_mean": 0.8930000000000001,
+      "pre_steady_acc_std": 0.015198684153570678,
+      "post_swap_acc_mean": 0.10250000000000001,
+      "post_swap_acc_std": 0.011884864324004712,
+      "mean_acc_all_mean": 0.5086186779226654,
+      "mean_acc_all_std": 0.011141308371998513
+    },
+    {
+      "substrate": "parallel",
+      "kappa_int": 0.0,
+      "reward_every": 5,
+      "n_runs": 10,
+      "pre_steady_acc_mean": 0.8925000000000001,
+      "pre_steady_acc_std": 0.015041608956491337,
+      "post_swap_acc_mean": 0.10250000000000001,
+      "post_swap_acc_std": 0.011884864324004712,
+      "mean_acc_all_mean": 0.5138365744579282,
+      "mean_acc_all_std": 0.017455477330441817
+    },
+    {
+      "substrate": "parallel",
+      "kappa_int": 0.1,
+      "reward_every": 1,
+      "n_runs": 10,
+      "pre_steady_acc_mean": 0.5755,
+      "pre_steady_acc_std": 0.3834608845762498,
+      "post_swap_acc_mean": 0.42299999999999993,
+      "post_swap_acc_std": 0.39066097834311536,
+      "mean_acc_all_mean": 0.5001989522876309,
+      "mean_acc_all_std": 0.002531966735478139
+    },
+    {
+      "substrate": "parallel",
+      "kappa_int": 0.1,
+      "reward_every": 5,
+      "n_runs": 10,
+      "pre_steady_acc_mean": 0.48949999999999994,
+      "pre_steady_acc_std": 0.39465459581765927,
+      "post_swap_acc_mean": 0.49449999999999994,
+      "post_swap_acc_std": 0.3976207363807879,
+      "mean_acc_all_mean": 0.5001491168563603,
+      "mean_acc_all_std": 0.0022413109886484837
+    },
+    {
+      "substrate": "parallel",
+      "kappa_int": 0.5,
+      "reward_every": 1,
+      "n_runs": 10,
+      "pre_steady_acc_mean": 0.572,
+      "pre_steady_acc_std": 0.3876931776547016,
+      "post_swap_acc_mean": 0.42299999999999993,
+      "post_swap_acc_std": 0.39066097834311536,
+      "mean_acc_all_mean": 0.4998472023315997,
+      "mean_acc_all_std": 0.002303254786137261
+    },
+    {
+      "substrate": "parallel",
+      "kappa_int": 0.5,
+      "reward_every": 5,
+      "n_runs": 10,
+      "pre_steady_acc_mean": 0.48950000000000016,
+      "pre_steady_acc_std": 0.39465459581765927,
+      "post_swap_acc_mean": 0.49450000000000005,
+      "post_swap_acc_std": 0.3976207363807879,
+      "mean_acc_all_mean": 0.5001195698600538,
+      "mean_acc_all_std": 0.0022315529144666733
+    },
+    {
+      "substrate": "parallel",
+      "kappa_int": 2.0,
+      "reward_every": 1,
+      "n_runs": 10,
+      "pre_steady_acc_mean": 0.572,
+      "pre_steady_acc_std": 0.38769317765470157,
+      "post_swap_acc_mean": 0.42300000000000004,
+      "post_swap_acc_std": 0.39066097834311536,
+      "mean_acc_all_mean": 0.4998472023315997,
+      "mean_acc_all_std": 0.0023032547861372606
+    },
+    {
+      "substrate": "parallel",
+      "kappa_int": 2.0,
+      "reward_every": 5,
+      "n_runs": 10,
+      "pre_steady_acc_mean": 0.48950000000000005,
+      "pre_steady_acc_std": 0.39465459581765927,
+      "post_swap_acc_mean": 0.49450000000000005,
+      "post_swap_acc_std": 0.3976207363807879,
+      "mean_acc_all_mean": 0.5001145448606819,
+      "mean_acc_all_std": 0.0022348101265018553
+    },
+    {
+      "substrate": "random_graph_k25",
+      "kappa_int": 0.0,
+      "reward_every": 1,
+      "n_runs": 10,
+      "pre_steady_acc_mean": 0.9365,
+      "pre_steady_acc_std": 0.00807774721070171,
+      "post_swap_acc_mean": 0.061250000000000006,
+      "post_swap_acc_std": 0.010322911411031291,
+      "mean_acc_all_mean": 0.5089366347579206,
+      "mean_acc_all_std": 0.012403382711085244
+    },
+    {
+      "substrate": "random_graph_k25",
+      "kappa_int": 0.0,
+      "reward_every": 5,
+      "n_runs": 10,
+      "pre_steady_acc_mean": 0.9365,
+      "pre_steady_acc_std": 0.00807774721070171,
+      "post_swap_acc_mean": 0.061250000000000006,
+      "post_swap_acc_std": 0.01032291141103129,
+      "mean_acc_all_mean": 0.5141717670410292,
+      "mean_acc_all_std": 0.019253308792105926
+    },
+    {
+      "substrate": "random_graph_k25",
+      "kappa_int": 0.1,
+      "reward_every": 1,
+      "n_runs": 10,
+      "pre_steady_acc_mean": 0.6755000000000001,
+      "pre_steady_acc_std": 0.39974648216088154,
+      "post_swap_acc_mean": 0.3242499999999999,
+      "post_swap_acc_std": 0.4021443304337387,
+      "mean_acc_all_mean": 0.5000942313007211,
+      "mean_acc_all_std": 0.0021802855869958782
+    },
+    {
+      "substrate": "random_graph_k25",
+      "kappa_int": 0.1,
+      "reward_every": 5,
+      "n_runs": 10,
+      "pre_steady_acc_mean": 0.4965,
+      "pre_steady_acc_std": 0.43656070597340757,
+      "post_swap_acc_mean": 0.4932499999999999,
+      "post_swap_acc_std": 0.43881951016334725,
+      "mean_acc_all_mean": 0.49950105524986804,
+      "mean_acc_all_std": 0.002083704180457608
+    },
+    {
+      "substrate": "random_graph_k25",
+      "kappa_int": 0.5,
+      "reward_every": 1,
+      "n_runs": 10,
+      "pre_steady_acc_mean": 0.4964999999999999,
+      "pre_steady_acc_std": 0.43656070597340757,
+      "post_swap_acc_mean": 0.50225,
+      "post_swap_acc_std": 0.4388656542724664,
+      "mean_acc_all_mean": 0.5010081907489762,
+      "mean_acc_all_std": 0.0019012258387892092
+    },
+    {
+      "substrate": "random_graph_k25",
+      "kappa_int": 0.5,
+      "reward_every": 5,
+      "n_runs": 10,
+      "pre_steady_acc_mean": 0.4965,
+      "pre_steady_acc_std": 0.43656070597340757,
+      "post_swap_acc_mean": 0.49325,
+      "post_swap_acc_std": 0.43881951016334725,
+      "mean_acc_all_mean": 0.499489447501319,
+      "mean_acc_all_std": 0.002069721342180056
+    },
+    {
+      "substrate": "random_graph_k25",
+      "kappa_int": 2.0,
+      "reward_every": 1,
+      "n_runs": 10,
+      "pre_steady_acc_mean": 0.4105,
+      "pre_steady_acc_std": 0.4273022934644747,
+      "post_swap_acc_mean": 0.59125,
+      "post_swap_acc_std": 0.42928028431317455,
+      "mean_acc_all_mean": 0.5006272581090927,
+      "mean_acc_all_std": 0.0020602878160239785
+    },
+    {
+      "substrate": "random_graph_k25",
+      "kappa_int": 2.0,
+      "reward_every": 5,
+      "n_runs": 10,
+      "pre_steady_acc_mean": 0.4105,
+      "pre_steady_acc_std": 0.4273022934644747,
+      "post_swap_acc_mean": 0.5822499999999999,
+      "post_swap_acc_std": 0.43109518960433785,
+      "mean_acc_all_mean": 0.49910851486143565,
+      "mean_acc_all_std": 0.0019382453094958063
+    }
+  ]
+}

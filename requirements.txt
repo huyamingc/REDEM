@@ -1,0 +1,26 @@
+# Si3N4 Shallow-Trap Relaxation for Temporal Encoding — Python Dependencies
+# ==============================================================================
+# Install:  pip install -r requirements.txt
+# Python:   >=3.10 (CPython recommended; Microsoft Store version not recommended)
+#
+# PyTorch is listed separately because it requires a CPU-only index URL:
+#   pip install torch --index-url https://download.pytorch.org/whl/cpu
+# ==============================================================================
+
+# Core scientific computing
+numpy>=1.24
+scipy>=1.10
+
+# Machine learning (Ridge, MLP, PCA, k-NN, datasets)
+scikit-learn>=1.0
+
+# Plotting
+matplotlib>=3.7
+
+# JIT acceleration (optional but recommended: 5-10x speedup on core loops)
+# Scripts auto-degrade gracefully if numba is absent.
+numba>=0.57
+
+# PyTorch (CPU-only, for benchmark tasks: T2 prediction, T3 inversion, Pareto)
+# Install separately: pip install torch --index-url https://download.pytorch.org/whl/cpu
+torch>=2.0

@@ -1,0 +1,155 @@
+{
+  "params": {
+    "n_units": 256,
+    "cv_tau": 0.2,
+    "alpha0": 0.02,
+    "gamma": 4.605170185988092,
+    "tau0": 0.00017361743662152847,
+    "kappa_random": 25.0,
+    "rls_forgetting": 0.999,
+    "rls_init_cov": 1.0,
+    "rls_reg": 0.0001,
+    "tau_slow_grid": [
+      200,
+      1000
+    ],
+    "regime_ranges": [
+      0.12,
+      0.2,
+      0.28
+    ],
+    "regime_base_range": [
+      2e-06,
+      8e-06
+    ],
+    "regime_event_range": [
+      1.5e-05,
+      1.8e-05
+    ],
+    "regime_len": 1500,
+    "n_seeds": 10,
+    "quick": false
+  },
+  "aggregates": [
+    {
+      "substrate": "parallel",
+      "arm": "dual",
+      "tau_slow": 200.0,
+      "n_runs": 10,
+      "overall_acc_mean": 0.9961666666666666,
+      "overall_acc_std": 0.0006329433497167133,
+      "steady_acc_mean": 1.0,
+      "steady_acc_std": 0.0,
+      "adapt_time_mean": 7.9,
+      "adapt_time_std": 9.422207809213296
+    },
+    {
+      "substrate": "parallel",
+      "arm": "dual",
+      "tau_slow": 1000.0,
+      "n_runs": 10,
+      "overall_acc_mean": 0.9964000000000002,
+      "overall_acc_std": 0.0007187094057242858,
+      "steady_acc_mean": 1.0,
+      "steady_acc_std": 0.0,
+      "adapt_time_mean": 3.34,
+      "adapt_time_std": 1.7018813119603846
+    },
+    {
+      "substrate": "parallel",
+      "arm": "fast",
+      "tau_slow": 0.0,
+      "n_runs": 10,
+      "overall_acc_mean": 0.9833777777777778,
+      "overall_acc_std": 0.0021339119585666163,
+      "steady_acc_mean": 1.0,
+      "steady_acc_std": 0.0,
+      "adapt_time_mean": 65.84,
+      "adapt_time_std": 16.61729219818921
+    },
+    {
+      "substrate": "parallel",
+      "arm": "slow",
+      "tau_slow": 200.0,
+      "n_runs": 10,
+      "overall_acc_mean": 0.9939222222222222,
+      "overall_acc_std": 0.0009699815449434435,
+      "steady_acc_mean": 1.0,
+      "steady_acc_std": 0.0,
+      "adapt_time_mean": 11.779999999999998,
+      "adapt_time_std": 8.90188744031287
+    },
+    {
+      "substrate": "parallel",
+      "arm": "slow",
+      "tau_slow": 1000.0,
+      "n_runs": 10,
+      "overall_acc_mean": 0.9933888888888888,
+      "overall_acc_std": 0.0012325322723844329,
+      "steady_acc_mean": 1.0,
+      "steady_acc_std": 0.0,
+      "adapt_time_mean": 7.94,
+      "adapt_time_std": 2.3410254163507065
+    },
+    {
+      "substrate": "random_graph_k25",
+      "arm": "dual",
+      "tau_slow": 200.0,
+      "n_runs": 10,
+      "overall_acc_mean": 0.9945555555555556,
+      "overall_acc_std": 0.0006206328908341904,
+      "steady_acc_mean": 1.0,
+      "steady_acc_std": 0.0,
+      "adapt_time_mean": 12.2,
+      "adapt_time_std": 8.24669630821943
+    },
+    {
+      "substrate": "random_graph_k25",
+      "arm": "dual",
+      "tau_slow": 1000.0,
+      "n_runs": 10,
+      "overall_acc_mean": 0.9941666666666666,
+      "overall_acc_std": 0.0006464528092350542,
+      "steady_acc_mean": 1.0,
+      "steady_acc_std": 0.0,
+      "adapt_time_mean": 11.680000000000001,
+      "adapt_time_std": 3.142228508558854
+    },
+    {
+      "substrate": "random_graph_k25",
+      "arm": "fast",
+      "tau_slow": 0.0,
+      "n_runs": 10,
+      "overall_acc_mean": 0.973411111111111,
+      "overall_acc_std": 0.0034932209481498082,
+      "steady_acc_mean": 1.0,
+      "steady_acc_std": 0.0,
+      "adapt_time_mean": 104.93999999999998,
+      "adapt_time_std": 15.1552103251654
+    },
+    {
+      "substrate": "random_graph_k25",
+      "arm": "slow",
+      "tau_slow": 200.0,
+      "n_runs": 10,
+      "overall_acc_mean": 0.9943555555555555,
+      "overall_acc_std": 0.0007726817178095102,
+      "steady_acc_mean": 1.0,
+      "steady_acc_std": 0.0,
+      "adapt_time_mean": 7.340000000000001,
+      "adapt_time_std": 4.439864862808327
+    },
+    {
+      "substrate": "random_graph_k25",
+      "arm": "slow",
+      "tau_slow": 1000.0,
+      "n_runs": 10,
+      "overall_acc_mean": 0.9930333333333333,
+      "overall_acc_std": 0.0009863888497762582,
+      "steady_acc_mean": 1.0,
+      "steady_acc_std": 0.0,
+      "adapt_time_mean": 8.52,
+      "adapt_time_std": 1.889338508579127
+    }
+  ]
+}

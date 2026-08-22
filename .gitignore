@@ -1,0 +1,43 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+.venv/
+
+# LaTeX compiled output
+*.aux
+*.bbl
+*.blg
+*.log
+*.out
+*.spl
+*.synctex.gz
+*.fdb_latexmk
+*.fls
+*.nav
+*.snm
+*.toc
+*.lof
+*.lot
+
+# Process / agent working files (not part of the deliverables)
+review_workspace/
+.zcode/
+.uploads/
+.trae-html-share-packages/
+.trae-cn/
+_zip_temp/
+README.zip
+*.bak.py
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE / Editor
+.vscode/
+.idea/
+*.swp
+*~

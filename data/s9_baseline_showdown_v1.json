@@ -1,0 +1,94 @@
+{
+  "params": {
+    "n_units": 256,
+    "cv_tau": 0.2,
+    "kappa_random": 25.0,
+    "rls_forgetting": 0.999,
+    "gru_hidden": 64,
+    "trans_d_model": 64,
+    "trans_layers": 2,
+    "trans_heads": 2,
+    "trans_context": 256,
+    "train_epochs": 20,
+    "batch": 128,
+    "lr": 0.001,
+    "train_frac": 0.3,
+    "n_seeds": 10,
+    "n_seeds_transformer": 5,
+    "quick": false
+  },
+  "aggregates": [
+    {
+      "task": "drift_binary",
+      "system": "esn",
+      "n_runs": 10,
+      "pre_swap_acc_mean": 1.0,
+      "pre_swap_acc_std": 0.0,
+      "post_swap_acc_mean": 0.9960000000000001,
+      "post_swap_acc_std": 0.008000000000000007,
+      "mean_acc_mean": 0.9977499560312555,
+      "mean_acc_std": 0.0009936821269858139
+    },
+    {
+      "task": "drift_binary",
+      "system": "gru",
+      "n_runs": 10,
+      "pre_swap_acc_mean": 0.9235,
+      "pre_swap_acc_std": 0.0404382244911915,
+      "post_swap_acc_mean": 0.07,
+      "post_swap_acc_std": 0.03721558813185679,
+      "mean_acc_mean": 0.3708847642019045,
+      "mean_acc_std": 0.006091893333048145
+    },
+    {
+      "task": "drift_binary",
+      "system": "redem",
+      "n_runs": 10,
+      "pre_swap_acc_mean": 1.0,
+      "pre_swap_acc_std": 0.0,
+      "post_swap_acc_mean": 1.0,
+      "post_swap_acc_std": 0.0,
+      "mean_acc_mean": 0.9910571844928521,
+      "mean_acc_std": 0.006796118183652549
+    },
+    {
+      "task": "drift_binary",
+      "system": "trans",
+      "n_runs": 5,
+      "pre_swap_acc_mean": 1.0,
+      "pre_swap_acc_std": 0.0,
+      "post_swap_acc_mean": 0.0,
+      "post_swap_acc_std": 0.0,
+      "mean_acc_mean": 0.3511017311122836,
+      "mean_acc_std": 0.005479397427100282
+    },
+    {
+      "task": "mackey_glass",
+      "system": "esn",
+      "n_runs": 10,
+      "nmse_final30_mean": 0.00022176273826426902,
+      "nmse_final30_std": 1.995846863828016e-05
+    },
+    {
+      "task": "mackey_glass",
+      "system": "gru",
+      "n_runs": 10,
+      "nmse_final30_mean": 1.3015047213590718,
+      "nmse_final30_std": 1.3963973375388308
+    },
+    {
+      "task": "mackey_glass",
+      "system": "redem",
+      "n_runs": 10,
+      "nmse_final30_mean": 0.0018125919850108761,
+      "nmse_final30_std": 0.0003489101170757643
+    },
+    {
+      "task": "mackey_glass",
+      "system": "trans",
+      "n_runs": 5,
+      "nmse_final30_mean": 1.0660415029287658,
+      "nmse_final30_std": 0.05138130255354412
+    }
+  ]
+}

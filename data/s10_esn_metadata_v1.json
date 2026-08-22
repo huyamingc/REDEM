@@ -1,0 +1,44 @@
+{
+  "params": {
+    "n_units": 256,
+    "cv_tau": 0.2,
+    "tau_slow": 500.0,
+    "kappa_random": 25.0,
+    "rls_forgetting": 0.999,
+    "esn": "hetero-lr matched to tau spectrum",
+    "n_seeds": 10,
+    "quick": false
+  },
+  "aggregates": [
+    {
+      "arm": "esn_dual",
+      "n_runs": 10,
+      "overall_acc_mean": 0.9979111111111111,
+      "overall_acc_std": 0.00013877773329772157,
+      "steady_acc_mean": 1.0,
+      "steady_acc_std": 0.0,
+      "adapt_time_mean": 0.24,
+      "adapt_time_std": 0.17435595774162693
+    },
+    {
+      "arm": "esn_fast",
+      "n_runs": 10,
+      "overall_acc_mean": 0.995511111111111,
+      "overall_acc_std": 0.0014999588471721044,
+      "steady_acc_mean": 1.0,
+      "steady_acc_std": 0.0,
+      "adapt_time_mean": 11.22,
+      "adapt_time_std": 10.667877014664166
+    },
+    {
+      "arm": "redem",
+      "n_runs": 10,
+      "overall_acc_mean": 0.9942333333333334,
+      "overall_acc_std": 0.0010662614971229563,
+      "steady_acc_mean": 1.0,
+      "steady_acc_std": 0.0,
+      "adapt_time_mean": 11.260000000000002,
+      "adapt_time_std": 5.913408492570085
+    }
+  ]
+}
