@@ -41,16 +41,26 @@ Data and figures live in `data/` and `figures/`.
 ## Repository layout
 
 ```
-├── paper_a/     Paper A: substrate characterization (PDF, LaTeX, drafts)
-├── paper_b/     Paper B: REDEM online learning architecture (PDF, LaTeX, drafts)
+├── paper_a/     Paper A: substrate characterization (PDF, LaTeX, drafts, submission README)
+├── paper_b/     Paper B: REDEM online learning architecture (PDF, LaTeX, drafts, submission README)
 ├── scripts/     Shared simulation code (CORE substrate, tasks, readouts, figure scripts)
 ├── data/        All experiment results (CSV + JSON, 10-seed means)
 ├── figures/     All publication figures (PNG)
 └── *.md         Overview, technical README, research plan, coding standards (CLAUDE.md)
 ```
 
+Each paper folder contains its own `README.md` with the submission checklist
+(author placeholder, journal template swap, figures/tables inventory, cover
+letter points).
+
 ## Code availability
 
 All simulation code and data required to reproduce the results are available
 at <https://github.com/huyamingc/REDEM> (private during review; made public on
 acceptance).
+
+## License
+
+Code: MIT (see [`LICENSE`](LICENSE)). The manuscripts in `paper_a/` and
+`paper_b/` are the author's preprints: copyright is retained by the author
+until journal publication, after which the journals' copyright terms apply.
