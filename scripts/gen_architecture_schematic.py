@@ -93,9 +93,8 @@ def main():
     ax.text(0.2, 5.1, 'Fig 1 (Paper A): physics-constrained relaxation substrate',
             fontsize=11, fontweight='bold', color='#333')
     fig.tight_layout()
-    fig.savefig(os.path.join(FIG_DIR, 'paperA_fig1_substrate.png'), dpi=150)
     fig.savefig(os.path.join(FIG_DIR, 'paperA_fig1_substrate.pdf'))
-    print('saved figures/paperA_fig1_substrate.png')
+    print('saved figures/paperA_fig1_substrate.pdf')
 
     # ================= Paper B Fig 1: REDEM =================
     fig, ax = plt.subplots(figsize=(12, 6.4))
@@ -176,9 +175,8 @@ def main():
     ax.text(0.3, 5.55, 'dashed loops: M5 regulates kappa; M4 rewires edges (slow); dotted loop: M4 <-> M5 coupling',
             fontsize=7.5, color='#666', style='italic')
     fig.tight_layout()
-    fig.savefig(os.path.join(FIG_DIR, 'paperB_fig1_redem.png'), dpi=150)
     fig.savefig(os.path.join(FIG_DIR, 'paperB_fig1_redem.pdf'))
-    print('saved figures/paperB_fig1_redem.png')
+    print('saved figures/paperB_fig1_redem.pdf')
 
 
 if __name__ == '__main__':

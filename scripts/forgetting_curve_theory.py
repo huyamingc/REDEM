@@ -20,7 +20,7 @@ is much slower than a single exponential but faster than a power law.
 
 Outputs:
   data/forgetting_curve_theory.csv   (M(t) per CV on the pulse grid)
-  figures/forgetting_curve_theory.png
+  figures/forgetting_curve_theory.pdf (vector PDF for journal submission)
   (a) M(t) vs t in pulses, log-log, for CV in {0.02, 0.2, 0.5, 1.0}
       with single-exp, power-law and stretched-exp references
   (b) local log-log slope (decay regime characterization)
@@ -42,7 +42,7 @@ SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.path.join(SCRIPT_DIR, '..', 'data')
 FIG_DIR = os.path.join(SCRIPT_DIR, '..', 'figures')
 CSV_PATH = os.path.join(DATA_DIR, 'forgetting_curve_theory.csv')
-PNG_PATH = os.path.join(FIG_DIR, 'forgetting_curve_theory.png')
+FIG_PATH = os.path.join(FIG_DIR, 'forgetting_curve_theory.pdf')
 
 TAU0 = 174e-6          # median trap time constant [s] (paper anchor)
 DT_BAR = 11e-6         # mean pulse interval of the U[2,20]us drive [s]
@@ -193,9 +193,8 @@ def main():
     fig.suptitle('Log-normal tau forgetting kernel: physics-designed decay curve',
                  fontsize=13)
     fig.tight_layout(rect=[0, 0, 1, 0.96])
-    fig.savefig(PNG_PATH, dpi=150)
-    fig.savefig(PNG_PATH[:-4] + '.pdf')  # vector PDF for journal submission
-    print(f'\nsaved: {PNG_PATH}')
+    fig.savefig(FIG_PATH)  # vector PDF for journal submission
+    print(f'\nsaved: {FIG_PATH}')
     print(f'saved: {CSV_PATH}')
 
 

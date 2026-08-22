@@ -82,15 +82,14 @@ the structure level (M4).
   `data/s9_baseline_showdown_v1.*`, `data/forgetting_curve_theory.csv`,
   `data/s10_esn_metadata_v1.*`, `data/s10_cv_sweep_v1.*`
   (CSV per run + JSON with params and per-cell aggregates).
-- Figures: `figures/substrate_phase_diagram_v2.png`,
-  `figures/s2_online_readout_v1.png`, `figures/forgetting_curve_theory.png`,
-  `figures/paperA_fig1_substrate.png`, `figures/paperA_fig4_robustness.png`,
-  `figures/paperA_figS1_cv_sweep.png` (Supplementary Fig. S1),
-  `figures/paperB_fig1_redem.png`, `figures/paperB_fig3_metadata.png`,
-  `figures/paperB_fig5_ablation.png`, `figures/paperB_fig6_showdown.png`.
-  Every figure also has a vector `figures/*.pdf` twin (same generator script;
-  the papers include the extension-less basename so `pdflatex` picks the
-  vector version).
+- Figures: `figures/substrate_phase_diagram_v2.pdf`,
+  `figures/s2_online_readout_v1.pdf`, `figures/forgetting_curve_theory.pdf`,
+  `figures/paperA_fig1_substrate.pdf`, `figures/paperA_fig4_robustness.pdf`,
+  `figures/paperA_figS1_cv_sweep.pdf` (Supplementary Fig. S1),
+  `figures/paperB_fig1_redem.pdf`, `figures/paperB_fig3_metadata.pdf`,
+  `figures/paperB_fig5_ablation.pdf`, `figures/paperB_fig6_showdown.pdf`
+  (vector PDF only; the papers include the extension-less basename so
+  `pdflatex` picks the vector version).
 
 ## Reproduction
 

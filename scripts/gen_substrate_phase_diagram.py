@@ -7,7 +7,7 @@ Paper Section:  New-algorithm project Step S1 (see NEW_ALGORITHM_PLAN.md)
 Experiment:     Visualize substrate_recurrence_characterization v2 output.
 
 Reads data/substrate_phase_diagram_v2.json (aggregates) and produces:
-  figures/substrate_phase_diagram_v2.png
+  figures/substrate_phase_diagram_v2.pdf (vector PDF for journal submission)
     2x2 panels:
       (a) FTLE vs kappa per topology          (log-x)
       (b) held-out MC_total vs kappa          (log-x, zero-capped)
@@ -31,7 +31,7 @@ DATA_DIR = os.path.join(SCRIPT_DIR, '..', 'data')
 FIG_DIR = os.path.join(SCRIPT_DIR, '..', 'figures')
 
 JSON_PATH = os.path.join(DATA_DIR, 'substrate_phase_diagram_v2.json')
-OUT_PATH = os.path.join(FIG_DIR, 'substrate_phase_diagram_v2.png')
+OUT_PATH = os.path.join(FIG_DIR, 'substrate_phase_diagram_v2.pdf')
 
 # Panel order and styling
 TOPO_STYLE = {
@@ -122,8 +122,7 @@ def main():
     fig.tight_layout(rect=[0, 0, 1, 0.93])
 
     os.makedirs(os.path.dirname(out), exist_ok=True)
-    fig.savefig(out, dpi=150)
-    fig.savefig(out[:-4] + '.pdf')  # vector PDF for journal submission
+    fig.savefig(out)  # vector PDF for journal submission
     print(f"saved: {out}")
 
 

@@ -25,7 +25,7 @@ simulation code and data but ask different questions:
 |---|---|---|
 | **Question** | What can this physical substrate compute? | How do you learn on top of it? |
 | **Content** | Dynamics theory: memory–chaos phase diagram, forgetting kernel, λ-homeostat robustness (full derivations in Appendix A) | Learning algorithm + benchmarks: online RLS readout, dual-timescale metadata, chaos homeostat, structure plasticity, ablations |
-| **Key results** | Order–chaos transition at κ*∈(25,30); held-out memory +24–53% just before it; forgetting kernel M(t)=∫p(τ)e^{−t/τ}dτ matches the measured memory curve (r=0.97); λ-homeostat restores 8–18% after disturbances | Tracks drift where frozen batch learners (GRU, transformer) fail permanently; integrated system beats every ablation (0.996 vs 0.973; N=1024: 0.998 vs 0.976); metadata is substrate-agnostic and transfers to a matched ESN |
+| **Key results** | Order–chaos transition at κ*∈(25,30); held-out memory +24–53% just before it; forgetting kernel M(t)=∫p(τ)e^{−t/τ}dτ matches the measured memory curve (r=0.97); λ-homeostat restores 8–18% after disturbances | Tracks drift where frozen batch learners (GRU, transformer) fail permanently; integrated system matches or beats every ablation and the bare baseline (0.996 vs 0.988/0.994/0.973; N=1024: 0.998 vs 0.976); metadata is substrate-agnostic and transfers to a matched ESN |
 | **Target journal** | IJBC / Chaos | Neural Networks |
 | **Relationship** | Substrate theory; cites the prior Si₃N₄ pulse-encoding paper for device calibration | Builds on Paper A's substrate theory (cited as the companion in §2) |
 
@@ -45,7 +45,7 @@ Data and figures live in `data/` and `figures/`.
 ├── paper_b/     Paper B: REDEM online learning architecture (PDF, LaTeX, drafts, submission README)
 ├── scripts/     Shared simulation code (CORE substrate, tasks, readouts, figure scripts)
 ├── data/        All experiment results (CSV + JSON, 10-seed means)
-├── figures/     All publication figures (PDF vector for submission + PNG preview)
+├── figures/     All publication figures (vector PDF; no raster twins)
 └── *.md         Overview, technical README, research plan, coding standards (CLAUDE.md)
 ```
 
@@ -85,10 +85,9 @@ new code) and are never modified.
 | `gen_paper_figures.py` | FIG | batch: robustness / metadata / ablation / showdown |
 | `gen_paperA_supp_figures.py` | FIG | Paper A Supplementary Fig. S1 (CV sweep) |
 
-Each FIG script emits both `.png` (GitHub preview) and vector `.pdf`
-(journal submission); the papers include the extension-less basename so
-`pdflatex` picks the vector file automatically. Reproduction commands are in
-`README_REDEM.md`.
+Each FIG script emits a single vector `.pdf` (journal submission); the papers
+include the extension-less basename so `pdflatex` picks the vector file
+automatically. Reproduction commands are in `README_REDEM.md`.
 
 ## Code availability
 

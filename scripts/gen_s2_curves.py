@@ -26,7 +26,7 @@ SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.path.join(SCRIPT_DIR, '..', 'data')
 FIG_DIR = os.path.join(SCRIPT_DIR, '..', 'figures')
 NPZ_PATH = os.path.join(DATA_DIR, 's2_online_readout_v1_curves.npz')
-OUT_PATH = os.path.join(FIG_DIR, 's2_online_readout_v1.png')
+OUT_PATH = os.path.join(FIG_DIR, 's2_online_readout_v1.pdf')
 
 STYLE = {
     ('drift_binary', 'parallel', 'rls'): dict(color='tab:blue', ls='-', label='parallel + RLS'),
@@ -97,8 +97,7 @@ def main():
                  fontsize=12)
     fig.tight_layout(rect=[0, 0, 1, 0.92])
     os.makedirs(os.path.dirname(out), exist_ok=True)
-    fig.savefig(out, dpi=150)
-    fig.savefig(out[:-4] + '.pdf')  # vector PDF for journal submission
+    fig.savefig(out)  # vector PDF for journal submission
     print(f"saved: {out}")
 
 

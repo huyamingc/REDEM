@@ -7,7 +7,7 @@ Paper Section:  Paper A, Supplementary Note 1
 Experiment:     Plot held-out MC vs spectrum width CV for the S10 CV sweep arms.
 
 Reads:  data/s10_cv_sweep_v1.json (aggregates with mc_mean/mc_std per config)
-Output: figures/paperA_figS1_cv_sweep.png
+Output: figures/paperA_figS1_cv_sweep.pdf (vector PDF for journal submission)
 
 Usage: python gen_paperA_supp_figures.py
 =============================================================================
@@ -28,7 +28,7 @@ import matplotlib.pyplot as plt
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.join(SCRIPT_DIR, '..')
 DATA_PATH = os.path.join(ROOT, 'data', 's10_cv_sweep_v1.json')
-OUT_PATH = os.path.join(ROOT, 'figures', 'paperA_figS1_cv_sweep.png')
+OUT_PATH = os.path.join(ROOT, 'figures', 'paperA_figS1_cv_sweep.pdf')
 
 LABELS = {
     'parallel': 'uncoupled (parallel)',
@@ -61,9 +61,8 @@ def main():
     fig.tight_layout()
 
     os.makedirs(os.path.dirname(OUT_PATH), exist_ok=True)
-    fig.savefig(OUT_PATH, dpi=150)
-    fig.savefig(OUT_PATH[:-4] + '.pdf')  # vector PDF for journal submission
-    print('saved figures/paperA_figS1_cv_sweep.png')
+    fig.savefig(OUT_PATH)  # vector PDF for journal submission
+    print('saved figures/paperA_figS1_cv_sweep.pdf')
 
 
 if __name__ == '__main__':

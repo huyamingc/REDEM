@@ -42,7 +42,7 @@ latexmk -pdf PAPER_B.tex
       differentiation is the mechanism set around it (self-regulation,
       disturbance robustness, local sparse coupling).
 - [ ] §2 cross-references the companion Paper A for the substrate model (T3).
-- [ ] Figures 1–6 (vector `.pdf` in `../figures/`, `.png` preview twins):
+- [ ] Figures 1–6 (vector `.pdf` in `../figures/`):
       `../figures/paperB_fig1_redem.pdf`,
       `../figures/s2_online_readout_v1.pdf`,
       `../figures/paperB_fig3_metadata.pdf`,

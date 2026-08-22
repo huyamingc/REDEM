@@ -10,7 +10,7 @@ paper: [`../paper_b/`](../paper_b/) (REDEM, target: *Neural Networks*).
 | File | Purpose |
 |---|---|
 | `PAPER_A.tex` | Submission-ready LaTeX (compiles standalone with `article`) |
-| `PAPER_A.pdf` | Compiled PDF (12 pages, MiKTeX / pdflatex ×2, zero warnings) |
+| `PAPER_A.pdf` | Compiled PDF (13 pages, MiKTeX / pdflatex ×2, zero warnings) |
 | `PAPER_A_draft.md` | Markdown draft (source prose; revision history in `../NEW_ALGORITHM_PLAN.md`) |
 | `PAPER_A_sketch.md` | Outline, figure/table inventory, key numbers |
 | `README.md` | This file |
@@ -33,7 +33,7 @@ latexmk -pdf PAPER_A.tex
 - [ ] Keywords present: chaos; reservoir computing; memory capacity;
       forgetting kernel; homeostasis; relaxation substrate.
 - [ ] Figures 1–4 + Supplementary Fig. S1 (all generated, 10 seeds, paired
-      draws; vector `.pdf` in `../figures/`, `.png` preview twins):
+      draws; vector `.pdf` in `../figures/`):
       `../figures/paperA_fig1_substrate.pdf`,
       `../figures/substrate_phase_diagram_v2.pdf`,
       `../figures/forgetting_curve_theory.pdf`,

@@ -43,9 +43,8 @@ Structural Plasticity for Non-Stationary Environments}
 Classical deep learning separates training from inference and freezes after
 batch backpropagation; continuous adaptation under distribution drift remains
 an open problem, and the backpropagation-through-time gradient is unavailable
-to low-power neuromorphic substrates. We present REDEM, a
-training-inference-unified online learning architecture in which every learning
-signal is local and derived from live inference: an error-driven
+to low-power neuromorphic substrates. we present REDEM, a training-inference-unified online
+learning architecture in which every learning signal is local and derived from live inference: an error-driven
 recursive-least-squares readout updates at every pulse; a slow metadata trace
 extends the readout's memory to long-horizon statistics; a chaos homeostat
 estimates the finite-time Lyapunov exponent online and self-regulates the
@@ -57,8 +56,10 @@ within a few hundred pulses, while frozen batch learners (GRU, tiny
 transformer) --- perfect before the drift --- become systematically wrong after
 it and never recover. The dual-timescale memory speeds regime adaptation
 9--20$\times$; the chaos homeostat restores 8--18\% of post-disturbance
-substrate memory; and the integrated system beats every single-mechanism
-ablation (0.996 vs.\ 0.973, $p<0.0001$), persisting at $N=1024$. The substrate
+substrate memory; and the integrated system matches or beats every
+single-mechanism ablation and the bare baseline (0.996 vs.\ 0.988/0.994/0.973,
+$p<0.0001$; the homeostat-removal ties at 0.996 --- its value is in disturbed
+scenarios), persisting at $N=1024$. The substrate
 is a physically motivated relaxation memory whose log-normal time-constant
 spectrum is set by shallow-trap device physics (companion theory paper), and
 the slow metadata trace is shown to be a substrate-agnostic mechanism that
@@ -99,7 +100,9 @@ the biological signals we associate with learning (rewards, intrinsic
 motivation, structural plasticity) map onto a working system.
 
 \textbf{This paper.} We assemble and validate a complete online architecture ---
-REDEM --- in which every learning signal is local and derived from live
+REDEM\footnote{REDEM is a working name for the integrated system, not an
+acronym of the mechanism set.} --- in which every learning signal is local and
+derived from live
 inference: (i) an error-driven recursive-least-squares readout as the online
 learner (training == inference); (ii) a \emph{dual-timescale metadata} state
 (M3) that extends the readout's memory to long-horizon statistics; (iii) a
@@ -136,7 +139,8 @@ $\lambda$-homeostat regulator described therein; only the readout and metadata
 layers are new here. Concretely, the substrate is a per-pulse contrast-coupled
 relaxation array: $N=256$ units, log-normal $\tau$ (median 174~$\mu$s,
 CV 0.20), injection $\alpha_{\mathrm{eff},i}(t)=\mathrm{clip}(\alpha_0(1+\kappa
-g_i(t)),0.001,0.10)$, current ratios $i_i=e^{\gamma x_i}$, random-graph
+g_i(t)),0.001,0.10)$ with $\alpha_0=0.02$, current ratios $i_i=e^{\gamma x_i}$,
+random-graph
 coupling, $\kappa=25$ (the subcritical memory optimum). Features per pulse are
 the standardized current ratios plus a bias.
 
@@ -163,14 +167,14 @@ m_i(t) = \big(1-\tfrac{1}{\tau_m}\big)m_i(t-1) + \tfrac{1}{\tau_m} f_i(t),
 \end{equation}
 with the readout features $[f, m]$ concatenated. The metadata is the slow end
 of the same log-normal forgetting spectrum (companion paper): a physical
-``synaptic consolidation'' trace.
+``synaptic consolidation'' trace \cite{benna2016}.
 
 \textbf{Chaos homeostat (M5).} Every 1000 pulses, a 400-pulse Benettin pair
 estimates $\lambda$ at the current $\kappa$; the homeostat steps
 \begin{equation}
 \kappa \leftarrow \mathrm{clip}\big(\kappa + \eta\,\mathrm{clip}
 (\lambda_{\mathrm{target}}-\hat\lambda,\pm1),\, [1,60]\big), \qquad
-\lambda_{\mathrm{target}}=-0.02 \ \text{(slightly ordered)}.
+\lambda_{\mathrm{target}}=-0.02, \quad \eta=3 \ \text{(slightly ordered)}.
 \label{eq:homeostat}
 \end{equation}
 
@@ -194,7 +198,9 @@ RLS and re-purposes reward/intrinsic signals to structure-level exploration
 \label{sec:tasks}
 
 All experiments use 10 seeds with paired draws (identical $\tau$, tasks, and
-substrates across compared configs). \textbf{drift\_binary}: two-class interval
+substrates across compared configs); the tiny transformer, the most expensive
+model, uses 5 seeds ($\times2$ training cost, Table~\ref{tab:bench}).
+\textbf{drift\_binary}: two-class interval
 blocks (20 pulses at 10 vs.\ 60~$\mu$s), a continuous random walk of the class
 intervals plus an abrupt swap of the class--interval mapping every 1000 blocks
 (40k pulses); metrics are pre/post-swap steady accuracy, adaptation time
@@ -232,7 +238,8 @@ substrate (NMSE 0.0018 vs.\ 0.090) and NARMA-10 by 21\% (0.431 vs.\ 0.549).
 We tested two reward-based readout learners as alternatives to error-driven RLS
 --- a reward-modulated Hebbian rule (eligibility $e_j \mathrel{+}= \lambda_e
 e_j + x_j o$ with sigmoid output $o$, consolidated at block end as
-$W \mathrel{+}= \eta R e$ with $R=\pm1$ correctness only, no class label) and
+$W \mathrel{+}= \eta R e$ with $R=\pm1$ correctness only, no class label)
+\cite{hoerzel2014} and
 the same rule augmented with a feature-novelty intrinsic reward. Both learn the
 initial mapping but fail to track the class-interval inversion
 (Table~\ref{tab:neg}): the $\pm1$ reward carries no directional information, so
@@ -263,13 +270,15 @@ Learner & Signal & Pre & Post & Stream \\
 RMHL          & $\pm1$ correctness reward only      & 0.89--0.94 & 0.06--0.10 & 0.509 \\
 RMHL + novelty & reward + intrinsic novelty        & 0.57$^*$   & 0.42--0.59 & $\le$0.514 \\
 LMS           & prediction error                    & ---        & ---        & 0.908--0.927 \\
-RLS (dense)   & prediction error                    & 0.99--1.00 & 0.93--0.95$^\dagger$ & 0.983--0.991 \\
+RLS (dense)   & prediction error                    & 0.99--1.00 & 0.98--1.00 & 0.983--0.991 \\
+RLS (sparse block-end) & prediction error   & 0.97--0.99 & 0.93--0.95 & 0.958--0.961 \\
 \bottomrule
 \end{tabular}
 
 \medskip
-\footnotesize{$^*$initial learning destroyed. $^\dagger$post-swap recovery range
-includes the sparse block-end-label condition.}
+\footnotesize{$^*$initial learning destroyed. Dense = per-pulse class labels
+(the selected configuration); sparse block-end = label only at block ends, the
+harder condition.}
 \end{table}
 
 \subsection{Dual-timescale metadata (M3)}
@@ -309,12 +318,14 @@ vs.\ 11.54) --- de-homogenization increases linear decodability.
 \label{sec:baselines}
 
 \textbf{Ablation matrix.} On regime\_switch, the full system (0.996,
-adaptation 3 pulses) beats every single-mechanism ablation: removing the
-metadata drops to 0.988 (adaptation 36), removing plasticity to 0.994 (10),
-removing the homeostat to 0.996 (3, its value is in disturbed scenarios per
-Section~\ref{sec:homeo}); the full system beats the bare baseline (RLS on fast
-features, fixed substrate) by +2.28~pp (paired $t=19.4$, $p<0.0001$). At
-$N=1024$ the full system still beats the baseline (0.998 vs.\ 0.976).
+adaptation 3 pulses) matches or beats every single-mechanism ablation:
+removing the metadata drops to 0.988 (adaptation 36), removing plasticity to
+0.994 (10), removing the homeostat ties at 0.996 (3, its value is in disturbed
+scenarios per Section~\ref{sec:homeo}); the full system beats the bare
+baseline (RLS on fast features, fixed substrate) by +2.28~pp (paired $t=19.4$,
+$p<0.0001$). At
+$N=1024$ (3 seeds, computational cost) the full system still beats the
+baseline (0.998 vs.\ 0.976).
 
 \textbf{Batch baselines.} On drift\_binary: REDEM 0.991 and a matched online
 ESN 0.998 track the drift; the frozen GRU (0.371; pre 0.923 $\rightarrow$ post
@@ -349,7 +360,8 @@ Mackey--Glass NMSE     & 0.0018 & 0.0002 & 1.30 & 1.07 \\
 is substrate-specific, we gave the ESN the same slow EMA state
 ($\tau_m = 500$) on the regime task. The result equalizes the systems:
 ESN-with-metadata 0.998, ESN-fast 0.996, REDEM-full 0.994 (means over 10 seeds;
-steady accuracy 1.000 for all). Two conclusions follow. (i) The metadata is a
+steady accuracy 1.000 for all; the REDEM-full 0.994 here is one independent
+seed draw of the 0.996 of Section~\ref{sec:baselines}). Two conclusions follow. (i) The metadata is a
 \emph{general, transferable} mechanism: it improves the ESN (0.996
 $\rightarrow$ 0.998, adaptation 11 $\rightarrow$ 0 pulses) and REDEM (baseline
 0.973 $\rightarrow$ full 0.994) alike --- the long-horizon statistical memory is
@@ -384,7 +396,8 @@ the mechanism alone.
 \textbf{Biological correspondence.} The three substrate-level mechanisms map
 one-to-one onto established neural ideas: fast/slow memory (complementary
 learning systems, hippocampus--cortex \cite{mcclelland1995}), homeostatic
-regulation of excitability, and slow structural plasticity of connectivity. The
+regulation of excitability, and slow structural plasticity of connectivity
+\cite{pfister2006}. The
 negative results sharpen the correspondence: reward signals without an error
 channel fail exactly where predictive-coding theory says they should --- credit
 assignment needs prediction error, and rewards only modulate.
@@ -468,6 +481,12 @@ frozen GRU / tiny transformer on drift\_binary and Mackey--Glass.}
 \label{fig:showdown}
 \end{figure}
 
+\section*{Code and data availability}
+
+All simulation scripts and generated data are available at
+\url{https://github.com/huyamingc/REDEM} (private during review; released on
+acceptance).
+
 \begin{thebibliography}{11}
 
 \bibitem{parisi2019} Parisi, G. I., Kemker, R., Part, J. L., Kanan, C.,
@@ -512,8 +531,9 @@ memory consolidation. \emph{Nature Neuroscience} \textbf{19}(12), 1697--1706
 (2016).
 
 \bibitem{companionA} Author's companion Paper A: Memory and chaos in a
-relaxation substrate (substrate theory; target: \emph{International Journal of
-Bifurcation and Chaos} / \emph{Chaos}).
+physics-constrained relaxation substrate: phase diagram, multi-timescale
+forgetting, and disturbance robustness (substrate theory; target:
+\emph{International Journal of Bifurcation and Chaos} / \emph{Chaos}).
 
 \end{thebibliography}
 
