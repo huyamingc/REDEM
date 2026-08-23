@@ -4,19 +4,20 @@
 Architecture with Native Online Learning, Meta-Adaptation, and Structural
 Plasticity
 
-**Status**: P1 + P3a + P2 + P3 DONE 2026-02-18. P1/P3a falsified with
-mechanisms isolated (linear state mixing; fixed gates don't fix it; M1
-works on the additive input path, 10/10). P2 partially replicated: M3
-fast-channel state EMA transfers (routing improves forgetting 10/10 at
-tau_m<=1000); gating-only improves stream ppl 10/10 (opposite of s18 -
-readout-dynamics-dependent, qualifies Paper C Sec 6.4). P3 both supported:
-M4 "gentle wins" as soft routing beats abrupt on stream (-1.82, 10/10;
-bonus: dormant-covariance refresh alone flips routing stream to -1.72 vs
-A1); M5 state-norm homeostat bounds the state (11.3 vs 50.2 bare), restores
-the full-state EMA detector (5/5 vs 0.6/5), recovers from spikes in ~10
-tokens. Soft-routing REDEM-SSM stream 8.22 vs bare 11.75 vs s18 A1 15.01.
-Data: `data/s19_ssm_rls_readout_v1.csv`, `data/s20_ssm_m3_routing_v1.csv`,
-`data/s21_ssm_m4_m5_v1.csv`. Next: P4 benchmarks (user gate).
+**Status**: P1–P4 DONE 2026-02-18. P1/P3a falsified with mechanisms
+isolated (linear state mixing; fixed gates don't fix it; M1 works on the
+additive input path, 10/10). P2 partially replicated (M3 routing transfers,
+forgetting −2.05 at τ_m≤1000, 10/10; gating-only inverts on RLS readouts —
+readout-dynamics-dependent, qualifies Paper C §6.4). P3 both supported (soft
+routing beats abrupt −1.82, 10/10; dormant covariance refresh flips routing
+to −1.72; M5 homeostat bounds the state 11.3 vs 50.2 and restores the
+full-state EMA detector 5/5). P4 benchmark (4-domain irregular switches)
+both hypotheses 10/10: SSM-REDEM beats bare (stream −2.25, forget −4.47)
+and beats the s18 Transformer A1 (stream −9.28, forget −10.08; even bare
+SSM beats TF-A1). Data: `data/s19_ssm_rls_readout_v1.csv`,
+`data/s20_ssm_m3_routing_v1.csv`, `data/s21_ssm_m4_m5_v1.csv`,
+`data/s22_ssm_p4_benchmark_v1.csv`. Next: P5 paper, or the deferred
+real-text corpus benchmark (user decision).
 
 ## Origin and motivation
 

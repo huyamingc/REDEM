@@ -281,12 +281,36 @@ effect. (3) M5 as a state-norm homeostat works mechanically and fixes the
 metadata non-stationarity at the source (an alternative to P2's fast-
 channel mask). Data: `data/s21_ssm_m4_m5_v1.csv` / `.json` (70 rows).
 
-### P4 - Benchmarks (1-2 w)
-- Synthetic multi-domain streams (s16 protocol generalized to several
-  domains/switch schedules) + small char-level corpora (s18 style, ~1MB
-  text). Arms: bare SSM vs REDEM-SSM vs Transformer+LoRA reference (reuse
-  s18 baseline data where possible). 10 seeds, paired diffs, n_pos/10.
-- Honest scope: no WikiText-103, no scaling claims.
+### P4 - Benchmarks (DONE 2026-02-18, both hypotheses supported 10/10)
+
+**Build**: `scripts/s22_ssm_p4_benchmark.py` (ML, torch CPU). Task:
+FOUR biased-bigram domains (shifts 1/3/7/11, disjoint bias sets of 4
+symbols) in a cycling schedule with IRREGULAR switch intervals
+(Uniform 2500-3500), 8 segments, ~24k tokens (the s16 protocol
+generalized). Arms (10 seeds, paired): SSM-bare (M1 only), SSM-REDEM
+(M1 + M3 fast-channel EMA, 4 references + M4 soft routing over 4
+specialists, dormant-P refresh; M5 excluded - state dynamics, P3), TF-A1
+(the s18 TinyCharLM + LoRA bare online reference, retrained on this
+task).
+
+**Result (10 seeds, 30 runs)**: SSM-REDEM stream 13.18 / forget 8.93 vs
+SSM-bare 15.43/13.41 (REDEM better 10/10, -2.25 stream, -4.47 forget) vs
+TF-A1 22.46/19.01 (REDEM better 10/10, -9.28/-10.08; even SSM-bare beats
+TF-A1 10/10, -7.03). H1 (mechanism stack beats the bare host) and H2
+(matches or beats the transformer reference) both SUPPORTED on the harder
+multi-domain protocol. Interpretation: (1) the M3+M4 stack transfers to
+4-domain irregular switching (soft routing retains 4 specialists);
+(2) the RLS readout's second-order convergence dominates the online
+Adam-LoRA on multi-domain streams (TF-A1 ~22 ~ near-uniform: the LoRA
+cannot keep up with 4 domains).
+
+**Honest scope (recorded)**: 1st-order task (the input-path readout's
+natural capacity); the transformer baseline is the bare online LoRA with
+the s18 hyperparameters (not re-tuned for 4 domains); TF-A3 (transformer
+routing) not run (the s18 model has 2 adapters); the real-text corpus
+benchmark is DEFERRED (no external text in the repo - user decision
+needed); no WikiText-103, no scaling claims. Data:
+`data/s22_ssm_p4_benchmark_v1.csv` / `.json` (30 rows).
 
 ### P5 - Paper (2-3 w)
 - arXiv + workshop first; NeurIPS/ICML stretch; mechanism-oriented journal
@@ -370,3 +394,13 @@ channel mask). Data: `data/s21_ssm_m4_m5_v1.csv` / `.json` (70 rows).
   the mechanism-level evidence is what it is. Next: P4 benchmarks (now
   possible: soft-routing REDEM-SSM stream 8.22 vs bare 11.75 vs s18 A1
   15.01) - user gate.
+- 2026-02-18: **P4 (S22) DONE - both hypotheses supported 10/10.** On a
+  4-domain irregular-switch benchmark, SSM-REDEM beats SSM-bare (stream
+  -2.25, forget -4.47, 10/10) and beats the s18 Transformer A1 reference
+  (stream -9.28, forget -10.08, 10/10; even bare SSM beats TF-A1, -7.03 -
+  the RLS readout's second-order convergence dominates online Adam-LoRA on
+  multi-domain streams, TF-A1 ~22 ~ near-uniform). Honest scope recorded:
+  1st-order task, s18 hyperparameters for TF, no TF-A3 4-domain routing
+  (2-adapter model), real-text corpus deferred (no external text in repo -
+  user decision), no scaling claims. Next: P5 (paper) or real-text
+  benchmark - user gate.

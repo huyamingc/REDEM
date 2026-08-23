@@ -1,0 +1,322 @@
+{
+  "params": {
+    "task": {
+      "desc": "4 biased-bigram domains (shifts 1/3/7/11, disjoint bias sets of 4), cycling schedule, IRREGULAR switch intervals Uniform(2500,3500), 8 segments, ~24k tokens; s16 protocol generalized",
+      "seed_rules": "s18 pattern (segment seed = seed*31+s*131+7)"
+    },
+    "arms": {
+      "SSM-bare": "single RLS readout [B e; 1] (M1 only)",
+      "SSM-REDEM": "M1 + M3 (fast-channel EMA, 4 refs) + M4 soft routing (softmax-distance weights, kappa = 0.5*median pairwise ref distance; dormant-P refresh); M5 excluded (state dynamics, P3)",
+      "TF-A1": "s18 TinyCharLM + LoRA, bare online training"
+    },
+    "metadata_m3": {
+      "tau_m": 500.0,
+      "feature": "fast-channel (tau<=8) whitened state"
+    },
+    "hypotheses": {
+      "H1": "SSM-REDEM beats SSM-bare on stream/forgetting",
+      "H2": "SSM-REDEM matches or beats TF-A1 on stream"
+    },
+    "comparisons": {
+      "SSM-REDEM_vs_SSM-bare": {
+        "stream_diff_mean": -2.246721214020686,
+        "stream_improved_n": 10,
+        "forgetting_diff_mean": -4.473469096705111,
+        "forgetting_improved_n": 10
+      },
+      "SSM-REDEM_vs_TF-A1": {
+        "stream_diff_mean": -9.278820106388663,
+        "stream_improved_n": 10,
+        "forgetting_diff_mean": -10.082173140503889,
+        "forgetting_improved_n": 10
+      },
+      "SSM-bare_vs_TF-A1": {
+        "stream_diff_mean": -7.032098892367978,
+        "stream_improved_n": 10,
+        "forgetting_diff_mean": -5.608704043798777,
+        "forgetting_improved_n": 10
+      }
+    },
+    "honest_scope": "no WikiText-103, no scaling claims; real-text corpus benchmark deferred (no external text in repo); TF-A3 4-domain routing not run (s18 model has 2 adapters)",
+    "discipline": "10 seeds, paired sign consistency",
+    "env": {
+      "torch": "2.13.0+cpu",
+      "numpy": "2.5.2",
+      "cpu": "torch CPU only, no mamba-ssm dependency"
+    },
+    "n_seeds": 10,
+    "quick": false
+  },
+  "rows": [
+    {
+      "arm": "SSM-bare",
+      "seed": 0,
+      "stream_ppl": 16.05761789093918,
+      "neg_frac": 0.012330510333933039,
+      "t_adapt_mean": 20.0,
+      "forgetting_ppl": 12.988065841549668,
+      "runtime_s": 49.722047328948975
+    },
+    {
+      "arm": "SSM-bare",
+      "seed": 5,
+      "stream_ppl": 15.928874591810892,
+      "neg_frac": 0.012999379010556821,
+      "t_adapt_mean": 20.0,
+      "forgetting_ppl": 13.429245225593135,
+      "runtime_s": 51.12965512275696
+    },
+    {
+      "arm": "SSM-bare",
+      "seed": 2,
+      "stream_ppl": 15.18079463157138,
+      "neg_frac": 0.011458642787420956,
+      "t_adapt_mean": 20.0,
+      "forgetting_ppl": 13.159118732185544,
+      "runtime_s": 52.65837621688843
+    },
+    {
+      "arm": "SSM-bare",
+      "seed": 7,
+      "stream_ppl": 16.006894436976854,
+      "neg_frac": 0.012923858757557171,
+      "t_adapt_mean": 20.0,
+      "forgetting_ppl": 12.623859929767551,
+      "runtime_s": 53.71996307373047
+    },
+    {
+      "arm": "SSM-bare",
+      "seed": 8,
+      "stream_ppl": 15.227272334717403,
+      "neg_frac": 0.010579806731089637,
+      "t_adapt_mean": 20.0,
+      "forgetting_ppl": 14.382650833004055,
+      "runtime_s": 54.4478394985199
+    },
+    {
+      "arm": "SSM-bare",
+      "seed": 4,
+      "stream_ppl": 15.267901658920005,
+      "neg_frac": 0.011090573012939002,
+      "t_adapt_mean": 20.0,
+      "forgetting_ppl": 13.2540091587382,
+      "runtime_s": 54.95687294006348
+    },
+    {
+      "arm": "SSM-bare",
+      "seed": 1,
+      "stream_ppl": 15.174207048021287,
+      "neg_frac": 0.011818752944871997,
+      "t_adapt_mean": 20.0,
+      "forgetting_ppl": 13.490369366167107,
+      "runtime_s": 57.07624053955078
+    },
+    {
+      "arm": "SSM-bare",
+      "seed": 3,
+      "stream_ppl": 15.29388213707405,
+      "neg_frac": 0.010900473933649289,
+      "t_adapt_mean": 20.0,
+      "forgetting_ppl": 14.037879227765048,
+      "runtime_s": 57.15039944648743
+    },
+    {
+      "arm": "SSM-bare",
+      "seed": 6,
+      "stream_ppl": 15.112980608035574,
+      "neg_frac": 0.011096097940465954,
+      "t_adapt_mean": 20.0,
+      "forgetting_ppl": 13.113629725992638,
+      "runtime_s": 57.57389712333679
+    },
+    {
+      "arm": "SSM-bare",
+      "seed": 9,
+      "stream_ppl": 15.012649571958397,
+      "neg_frac": 0.011055112989757762,
+      "t_adapt_mean": 20.0,
+      "forgetting_ppl": 13.567092772362482,
+      "runtime_s": 58.378374099731445
+    },
+    {
+      "arm": "TF-A1",
+      "seed": 0,
+      "stream_ppl": 23.97540699177919,
+      "neg_frac": NaN,
+      "t_adapt_mean": 20.0,
+      "forgetting_ppl": 18.515791893708204,
+      "runtime_s": 18.533494472503662
+    },
+    {
+      "arm": "TF-A1",
+      "seed": 1,
+      "stream_ppl": 21.947663769617446,
+      "neg_frac": NaN,
+      "t_adapt_mean": 20.0,
+      "forgetting_ppl": 23.65956476570832,
+      "runtime_s": 19.172800302505493
+    },
+    {
+      "arm": "TF-A1",
+      "seed": 2,
+      "stream_ppl": 22.943306292815244,
+      "neg_frac": NaN,
+      "t_adapt_mean": 20.0,
+      "forgetting_ppl": 18.8587661787487,
+      "runtime_s": 18.373046159744263
+    },
+    {
+      "arm": "TF-A1",
+      "seed": 4,
+      "stream_ppl": 21.669450102329012,
+      "neg_frac": NaN,
+      "t_adapt_mean": 20.0,
+      "forgetting_ppl": 17.538503803946632,
+      "runtime_s": 18.820735692977905
+    },
+    {
+      "arm": "TF-A1",
+      "seed": 3,
+      "stream_ppl": 21.839288237342583,
+      "neg_frac": NaN,
+      "t_adapt_mean": 20.0,
+      "forgetting_ppl": 17.30579401189515,
+      "runtime_s": 19.735991954803467
+    },
+    {
+      "arm": "TF-A1",
+      "seed": 5,
+      "stream_ppl": 22.814251202941513,
+      "neg_frac": NaN,
+      "t_adapt_mean": 20.0,
+      "forgetting_ppl": 16.665516946533256,
+      "runtime_s": 18.842854022979736
+    },
+    {
+      "arm": "TF-A1",
+      "seed": 6,
+      "stream_ppl": 22.194555404142196,
+      "neg_frac": NaN,
+      "t_adapt_mean": 20.0,
+      "forgetting_ppl": 20.858986821636417,
+      "runtime_s": 10.478723526000977
+    },
+    {
+      "arm": "TF-A1",
+      "seed": 7,
+      "stream_ppl": 23.193284172771147,
+      "neg_frac": NaN,
+      "t_adapt_mean": 20.0,
+      "forgetting_ppl": 16.848971150351257,
+      "runtime_s": 10.847574949264526
+    },
+    {
+      "arm": "TF-A1",
+      "seed": 8,
+      "stream_ppl": 22.16751458455051,
+      "neg_frac": NaN,
+      "t_adapt_mean": 20.0,
+      "forgetting_ppl": 19.76510337184634,
+      "runtime_s": 9.890948057174683
+    },
+    {
+      "arm": "TF-A1",
+      "seed": 9,
+      "stream_ppl": 21.839343075415965,
+      "neg_frac": NaN,
+      "t_adapt_mean": 20.0,
+      "forgetting_ppl": 20.115962306738925,
+      "runtime_s": 11.171936273574829
+    },
+    {
+      "arm": "SSM-REDEM",
+      "seed": 0,
+      "stream_ppl": 13.568189010086659,
+      "neg_frac": 0.0010531396726490851,
+      "t_adapt_mean": 20.0,
+      "forgetting_ppl": 8.696480368875545,
+      "runtime_s": 162.8837296962738
+    },
+    {
+      "arm": "SSM-REDEM",
+      "seed": 2,
+      "stream_ppl": 12.664277346734092,
+      "neg_frac": 0.0005941518482366422,
+      "t_adapt_mean": 20.0,
+      "forgetting_ppl": 8.774414399963229,
+      "runtime_s": 164.10126638412476
+    },
+    {
+      "arm": "SSM-REDEM",
+      "seed": 5,
+      "stream_ppl": 13.338057564175617,
+      "neg_frac": 0.0007037880356033947,
+      "t_adapt_mean": 20.0,
+      "forgetting_ppl": 9.117517071889706,
+      "runtime_s": 165.56346774101257
+    },
+    {
+      "arm": "SSM-REDEM",
+      "seed": 4,
+      "stream_ppl": 13.225325340230569,
+      "neg_frac": 0.00045183815978640376,
+      "t_adapt_mean": 20.0,
+      "forgetting_ppl": 8.878039268494721,
+      "runtime_s": 166.16535639762878
+    },
+    {
+      "arm": "SSM-REDEM",
+      "seed": 3,
+      "stream_ppl": 13.273718432641381,
+      "neg_frac": 0.0006714060031595576,
+      "t_adapt_mean": 20.0,
+      "forgetting_ppl": 9.526302966294539,
+      "runtime_s": 170.92486548423767
+    },
+    {
+      "arm": "SSM-REDEM",
+      "seed": 1,
+      "stream_ppl": 12.633408731736484,
+      "neg_frac": 0.0005889743992461128,
+      "t_adapt_mean": 20.0,
+      "forgetting_ppl": 8.741553779375577,
+      "runtime_s": 172.98785662651062
+    },
+    {
+      "arm": "SSM-REDEM",
+      "seed": 7,
+      "stream_ppl": 13.52068277431061,
+      "neg_frac": 0.0011390519582931745,
+      "t_adapt_mean": 20.0,
+      "forgetting_ppl": 9.011060816731417,
+      "runtime_s": 128.52872133255005
+    },
+    {
+      "arm": "SSM-REDEM",
+      "seed": 6,
+      "stream_ppl": 12.667864653402079,
+      "neg_frac": 0.000655120173606846,
+      "t_adapt_mean": 20.0,
+      "forgetting_ppl": 8.67735418406142,
+      "runtime_s": 133.3819978237152
+    },
+    {
+      "arm": "SSM-REDEM",
+      "seed": 8,
+      "stream_ppl": 13.880951751777971,
+      "neg_frac": 0.0005831389536821059,
+      "t_adapt_mean": 20.0,
+      "forgetting_ppl": 9.40259508858883,
+      "runtime_s": 131.24336194992065
+    },
+    {
+      "arm": "SSM-REDEM",
+      "seed": 9,
+      "stream_ppl": 13.023387164722706,
+      "neg_frac": 0.00036579417980816127,
+      "t_adapt_mean": 20.0,
+      "forgetting_ppl": 8.485911901799328,
+      "runtime_s": 131.06108164787292
+    }
+  ]
+}
