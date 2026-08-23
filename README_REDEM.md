@@ -186,13 +186,10 @@ ws-ijbc.cls / revtex4-2 for Paper A (IJBC/Chaos), elsarticle.cls for Paper B
 - `paper_c/` (in development) — Paper C "Dissecting Online Learning
   Mechanisms: Statistical Memory, Homeostatic Recovery, and Substrate
   Physics are Non-Transferable". The three-mechanism disentanglement thesis
-  is locked on s14/s16: the slow trace is a substrate-agnostic *statistical*
-  memory (S10 equalization, s14 noise attenuation) that does NOT transfer
-  disturbance robustness (s14 falsification, s16 τ_m robustness); +32%
-  sequential recovery is the homeostat's role; raw memory (MC 10.19 vs
-  6.17) is the substrate's physics. See `paper_c/DERIVATION.md` and
-  `paper_c/PAPER_C_sketch.md`; s15 (controlled adaptation) and s16+
-  follow-ups pending before drafting.
+  is locked on s14/s16/s16b/s15/s5b; `paper_c/PAPER_C.tex` is drafted in
+  elsarticle preprint format (9 pp, zero warnings) for Neurocomputing /
+  Neural Networks short paper. See `paper_c/DERIVATION.md` and
+  `paper_c/PAPER_C_sketch.md`.
 
 ## Roadmap status
 
@@ -217,7 +214,7 @@ ws-ijbc.cls / revtex4-2 for Paper A (IJBC/Chaos), elsarticle.cls for Paper B
 | s15 controlled adaptation | done (10 seeds × 5 switches; true effect ~10 pulses + variance collapse; "47×" is a metric artifact) |
 | s16b probe stress test | done (10 seeds × 2 τ_m × 3 variants; sign robust, magnitude protocol-dependent) |
 | s5b S5 controlled re-measurement | done (100 runs; T200 factor 1.28–1.44, T40 1.79–2.40; Paper B revised) |
-| Paper C derivation | in progress (thesis locked; PAPER_C.tex drafted) |
+| Paper C derivation | in progress (thesis locked; PAPER_C.tex drafted, elsarticle preprint, 9 pp) |
 
 ## Open items
 
@@ -225,11 +222,10 @@ ws-ijbc.cls / revtex4-2 for Paper A (IJBC/Chaos), elsarticle.cls for Paper B
 - Swap journal document classes at submission (ws-ijbc / revtex4-2 for A;
   elsarticle for B).
 - Final algorithm name (working name REDEM).
-- Paper C: draft `paper_c/PAPER_C.tex` (all supporting experiments done:
-  s14, s16, s15, s16b); decide venue (Neurocomputing vs Neural Networks
-  short) and title (proposed: "Dissecting Online Learning Mechanisms:
-  Statistical Memory, Homeostatic Recovery, and Substrate Physics are
-  Non-Transferable").
-- Paper B wording: soften the "9–20×"/"47×" adaptation ratios in §4.3 /
-  headline rows per the s15 controlled measurement (metric artifact;
-  true effect ~10 pulses + variance collapse).
+- Paper C: `paper_c/PAPER_C.tex` drafted (elsarticle preprint, 9 pp, zero
+  warnings). Venue decided: Neurocomputing / Neural Networks short paper.
+  Remaining before submission: author placeholders, cover letter,
+  optional s17 substrate stress.
+- Paper B wording: revised (2026-02-17) - §4.3/§4.5/§4.6 and abstract use
+  the controlled s15/s5b adaptation measurements (factor 1.3-2.4 instead
+  of the artifact "9-20x").

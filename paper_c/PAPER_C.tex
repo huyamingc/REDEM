@@ -3,29 +3,32 @@
 %   Statistical Memory, Homeostatic Recovery, and Substrate Physics
 %   are Non-Transferable
 % ============================================================================
-% Compiles standalone: pdflatex PAPER_C.tex (run twice for cross-refs).
+% Target: Neurocomputing (Elsevier) / Neural Networks (Elsevier) short paper.
+% Class: elsarticle preprint (initial-submission format); switch to
+%   \documentclass[final,3p]{elsarticle} or [final,1p] at acceptance.
+% Compile: pdflatex PAPER_C.tex (run twice for cross-refs).
 % Figures resolve via ../figures/ (extension-less basenames).
 % ============================================================================
-\documentclass[10pt,twocolumn]{article}
+\documentclass[preprint,12pt]{elsarticle}
 
-\usepackage[margin=1in]{geometry}
 \usepackage{amsmath,amssymb}
 \usepackage{booktabs}
 \usepackage{graphicx}
 \graphicspath{{../figures/}}
-\usepackage{microtype}
-\usepackage[hidelinks]{hyperref}
+\usepackage[expansion=false]{microtype}
 \usepackage{url}
-
-\title{Dissecting Online Learning Mechanisms: Statistical Memory,
-Homeostatic Recovery, and Substrate Physics are Non-Transferable}
-\author{[Author Name]\\[2pt] Independent Researcher, Guiyang, China\\
-\small\texttt{[author@example.com]}}
-\date{}
 
 \begin{document}
 
-\maketitle
+\begin{frontmatter}
+
+\title{Dissecting Online Learning Mechanisms: Statistical Memory,
+Homeostatic Recovery, and Substrate Physics are Non-Transferable}
+
+\author{[Author Name]}
+\affiliation[1]{organization={Independent Researcher},
+city={Guiyang}, country={China}}
+\ead{[author@example.com]}
 
 \begin{abstract}
 Online learning systems couple several adaptive mechanisms, but which
@@ -33,35 +36,45 @@ mechanism is responsible for which capability --- and whether any of them
 can be transplanted to another substrate --- is rarely tested. We dissect
 three mechanisms of a reservoir-based online learner: a slow-trace
 statistical memory (M3), a homeostatic chaos regulator (M5), and the raw
-physics of the substrate itself. A falsifying transfer experiment
-(ESN with and without the metadata under a sequential disturbance chain,
-10 seeds) shows that the previously reported $+32\%$ sequential-recovery
-gain is produced by the homeostat, not by the metadata, and that the
-metadata does not transfer memory-capacity robustness to an ESN at any
-metadata timescale ($\tau_m \in \{200,500,1000,2000\}$, paired differences
-$-0.68$ to $-0.70$, 0/10 seeds positive). The metadata's transferable
-value is narrower and precisely located: it denoises \emph{state}-level
-corruption (gap $-0.69 \rightarrow -0.01$ when noise enters before the slow
-trace) and accelerates boundary adaptation by a controlled-measured factor
-of 1.3--2.4 on the substrate and $\sim$10 pulses on the ESN (the published
+physics of the substrate itself. A falsifying transfer experiment (an
+echo-state network with and without the metadata under a sequential
+disturbance chain, 10 seeds) shows that the previously reported $+32\%$
+sequential-recovery gain is produced by the homeostat, not by the
+metadata, and that the metadata does not transfer memory-capacity
+robustness to an ESN at any metadata timescale
+($\tau_m \in \{200,500,1000,2000\}$; paired differences $-0.68$ to
+$-0.70$, 0/10 seeds positive). The metadata's transferable value is
+narrower and precisely located: it denoises \emph{state}-level corruption
+(gap $-0.69 \rightarrow -0.01$ when noise enters before the slow trace)
+and accelerates boundary adaptation by a controlled-measured factor of
+1.3--2.4 on the substrate and $\sim$10 pulses on the ESN (published
 ``$9$--$20\times$'' ratios were window-position metric artifacts). Raw
 memory capacity remains a substrate property (MC 10.19 vs.\ 6.17). Three
 mechanisms, three roles --- and none is transferable to another's job.
 \end{abstract}
 
+\begin{keyword}
+online learning \sep reservoir computing \sep slow features \sep
+forgetting kernel \sep disturbance robustness \sep mechanism
+disentanglement
+\end{keyword}
+
+\end{frontmatter}
+
 \section{Introduction}
 \label{sec:intro}
 
 Frozen batch models --- including large foundation models --- cannot adapt
-to post-deployment reality without expensive retraining; online reservoirs
-can, but their readouts face a timescale gap on long-horizon statistical
-tasks: fast reservoir states decorrelate far more quickly than the task
-statistics, so the readout must re-integrate after every change. Recent
-work on our side adds a slow exponential trace of the reservoir states
+to post-deployment reality without expensive retraining
+\cite{parisi2019}; online reservoirs can \cite{jaeger2001,lukosevicius2009},
+but their readouts face a timescale gap on long-horizon statistical tasks:
+fast reservoir states decorrelate far more quickly than the task
+statistics, so the readout must re-integrate after every change. Our
+companion work introduces a slow exponential trace of the reservoir states
 (metadata, M3), a homeostatic regulator that keeps the substrate near the
 edge of chaos (M5), and slow structure plasticity (M4); the integrated
-system tracks drift where frozen learners fail permanently
-(companion Paper~B).
+system tracks drift where frozen learners fail permanently (companion
+Paper~B).
 
 These mechanisms are usually validated \emph{together}. The question we
 ask here is sharper: \emph{which mechanism does which job, and can any of
@@ -94,22 +107,21 @@ m(t) = \left(1-\frac{1}{\tau_m}\right) m(t-1)
      + \frac{1}{\tau_m}\, x(t),
 \label{eq:ema}
 \end{equation}
-with algorithmic timescale $\tau_m$ (pulses), and the readout feature is
+with algorithmic timescale $\tau_m$ (pulses); the readout feature is
 $\varphi(t) = [x(t),\, m(t),\, 1]$.
-\label{eq:feat}
 
 \textbf{Readout.} OnlineRLS with forgetting $\lambda_f=0.999$ (weight
 integration time $\tau_f = 1/(1-\lambda_f)=1000$ pulses),
 predict-before-update, Tikhonov-regularized.
 
-\textbf{Tasks and metrics.} \emph{regime\_switch}: 3 regimes with
+\textbf{Tasks and metrics.} \emph{regime\_switch}: three regimes with
 overlapping pulse-interval distributions, regime changes every
 $L=1500$ pulses; single pulses are almost indistinguishable across regimes
 --- only long-run statistics discriminate. \emph{Mackey--Glass online
 prediction} under a sequential disturbance chain. Metrics: overall
-accuracy, switch-relative adaptation time $T_{\mathrm{adapt}}$ (pulses
+accuracy; switch-relative adaptation time $T_{\mathrm{adapt}}$ (pulses
 after a \emph{known} switch to reach a 200- or 40-pulse window accuracy of
-0.98/0.95), and the Jaeger held-out memory capacity (MC) probe.
+0.98/0.95); and the Jaeger held-out memory capacity (MC) probe.
 
 \textbf{Sequential disturbance chain (substrate-agnostic).} Three
 cumulative disturbances at $t=7$k/14k/21k pulses: (1)~timescale drift
@@ -136,34 +148,36 @@ h_m(\Delta t)
 The material kernel of Paper~A, $M(\Delta t)=\int p(\tau)\,e^{-\Delta
 t/\tau}\,d\tau$ (log-normal), is fixed by physics; $h_m$ is synthesized
 by the algorithm, and the augmented system's effective kernel is
-$M \circledast h_m$ with $1/e$ horizon $\sim \tau_m + \tau_0$ (Fig.~\ref{fig:kernel}).
+$M \circledast h_m$ with $1/e$ horizon $\sim \tau_m + \tau_0$
+(Fig.~\ref{fig:kernel}).
 
 \textbf{Proposition 2 (timescale coverage).} On the statistical task the
 bottleneck is missing slow modes, not substrate physics. Both fast channels
 decorrelate at $\tau_{\mathrm{eff}} \ll L$; the slow trace supplies the
 missing timescale to either substrate, so accuracy and adaptation converge
-to a common band. Measured (S10, 10 seeds): esn-fast 0.9955, esn-dual
-0.9979, REDEM 0.9942; steady accuracy 1.000 for all.
+to a common band. Measured (10 seeds): esn-fast 0.9955, esn-dual
+0.9979, REDEM 0.9942; steady accuracy 1.000 for all (Table~\ref{tab:s10}).
 
 \textbf{Proposition 3 (feature stationarity).} Post-switch adaptation is
 bounded by the slower of feature re-centering ($\sim \tau_m + \tau_{\rm
 eff}$) and weight re-integration ($\sim \tau_f$). The slow trace makes
 recovery feature-limited rather than weight-limited. Under a controlled
-switch-relative protocol (S15/S5b), the true effect is modest but real: on
-the substrate the fast readout needs $T_{200}=265$--$304$ pulses to
+switch-relative protocol, the true effect is modest but real: on the
+substrate the fast readout needs $T_{200}=265$--$304$ pulses to
 re-stabilize vs.\ $202$--$211$ for dual (factor 1.3--1.4 on $T_{200}$,
 1.6--2.4 on $T_{40}$); on the ESN, $T_{40}$ drops from 49.9 to 40.6 with
-the p90 collapsing from 76.5 to 42.0. The published ``$9$--$20\times$''
-ratios were ratios of window positions with near-zero denominators
-(metric artifacts), not pulse times.
+the p90 collapsing from 76.5 to 42.0 (Table~\ref{tab:adapt}). The
+published ``$9$--$20\times$'' ratios were ratios of window positions with
+near-zero denominators (metric artifacts), not pulse times.
 
 \textbf{Proposition 4 (noise geometry).} The EMA is a first-order low-pass
 filter, $|H(\omega)|^2 = 1/(1+(\omega\tau_m)^2)$. Short fast-channel
 transients are attenuated in the metadata channel. The transferable value
 of this is \emph{denoising of state-level corruption}: when the noise
 enters the states before the slow trace is computed, the metadata nearly
-neutralizes it (S16b variant V2). It does \emph{not} protect against
-readout-level noise that hits the metadata channel equally (variant V0).
+neutralizes it (variant V2 of Section~\ref{sec:s16b}). It does \emph{not}
+protect against readout-level noise that hits the metadata channel equally
+(variant V0).
 
 \section{Experiments}
 \label{sec:exp}
@@ -188,9 +202,9 @@ esn-dual ($\tau_m{=}500$) & $0.9979\pm0.0001$ & 1.000 & $40.6$ ($p_{90}=42.0$) \
 REDEM (substrate, dual) & $0.9942\pm0.0011$ & 1.000 & $52.7$ ($p_{90}=67.0$) \\
 \bottomrule
 \end{tabular}
-\caption{S10 equalization on regime\_switch (10 seeds). Accuracy from
-\texttt{data/s10\_esn\_metadata\_v1.*}; adaptation from the controlled
-S15 protocol (\texttt{data/s15\_controlled\_adaptation\_v1.*}).}
+\caption{Equalization on regime\_switch (10 seeds). Accuracy from the
+metadata-transfer runs; adaptation from the controlled switch-relative
+protocol.}
 \label{tab:s10}
 \end{table}
 
@@ -200,9 +214,9 @@ S15 protocol (\texttt{data/s15\_controlled\_adaptation\_v1.*}).}
 Under the sequential disturbance chain, the substrate regulated by the
 homeostat (M5) recovers: $r_3$ MC $8.47\pm0.39$ vs.\ $6.41\pm0.41$ for the
 fixed arm ($+32\%$), with $\kappa$ drifting $25.3\rightarrow28.5$
-(Table~\ref{tab:s14}; S11 protocol, features are fast-state only --- the
-recovery is purely homeostatic). The ESN with the same metadata does
-\emph{not} recover: paired per-seed differences
+(Table~\ref{tab:s14}; the features are fast-state only --- the recovery is
+purely homeostatic). The ESN with the same metadata does \emph{not}
+recover: paired per-seed differences
 $r_3\,\mathrm{MC}(\text{esn-dual}) - r_3\,\mathrm{MC}(\text{esn-fast})$ are
 $-0.78$/$-0.76$/$-0.69$ at $r_1$/$r_2$/$r_3$, with 0/10 seeds positive in
 every round ($\sim$5$\times$ the paired std). The $+32\%$ sequential
@@ -220,8 +234,9 @@ esn-dual & 6.16 & 1.04 & 1.00 & 1.05 & \textbf{0.0251} \\
 redem-reg & \textbf{10.19} & 7.17 & 7.51 & \textbf{8.47} & 0.1063 \\
 \bottomrule
 \end{tabular}
-\caption{S14 disturbance chain (10 seeds; \texttt{data/s14\_esn\_disturbance\_chain\_v1.*}).
-redem-reg reproduces the S11 anchor exactly (10.19/7.17/7.51/8.47).}
+\caption{Sequential disturbance chain (10 seeds). The homeostat-regulated
+substrate (redem-reg) reproduces the published anchor exactly
+(10.19/7.17/7.51/8.47).}
 \label{tab:s14}
 \end{table}
 
@@ -251,8 +266,8 @@ $\tau_m$ & dual $r_3$ MC & fast $r_3$ MC & paired diff & $n_{\mathrm{pos}}$ \\
 2000 & 1.06 & 1.74 & $-0.678$ & 0/10 \\
 \bottomrule
 \end{tabular}
-\caption{S16 tau\_m pressure test (10 seeds;
-\texttt{data/s16\_tau\_m\_pressure\_test\_v1.*}).}
+\caption{Metadata-timescale pressure test (10 seeds): no $\tau_m$ closes
+the memory-capacity gap.}
 \label{tab:s16}
 \end{table}
 
@@ -263,7 +278,7 @@ The falsification is robust \emph{in sign} to the probe protocol: under
 standardized slow features (V1) and state-level noise injection (V2),
 every ($\tau_m$, variant) cell keeps 0/10 seeds positive
 (Table~\ref{tab:s16b}). Its \emph{magnitude} is protocol-dependent and
-informative: under readout-noise semantics (V0, the S11/S14 definition)
+informative: under readout-noise semantics (V0, the reference definition)
 the gap is $-0.69$; under state-noise semantics (V2) the metadata's EMA
 denoising nearly closes it ($-0.01$). This locates the metadata's
 transferable value precisely: it denoises \emph{state}-level corruption,
@@ -281,37 +296,56 @@ V1 std-slow & 1.08/1.07 & $-0.66$ & 0/10 \\
 V2 state noise & 1.72/1.73 & $-0.015/-0.009$ & 0/10 \\
 \bottomrule
 \end{tabular}
-\caption{S16b probe-protocol stress test ($\tau_m=500/2000$; 10 seeds;
-\texttt{data/s16b\_falsification\_stress\_test\_v1.*}). Fast baseline
-$r_3$ MC 1.74.}
+\caption{Probe-protocol stress test ($\tau_m=500/2000$; 10 seeds). Fast
+baseline $r_3$ MC 1.74.}
 \label{tab:s16b}
 \end{table}
 
 \subsection{Controlled adaptation (S15/S5b)}
-\label{sec:s15}
+\label{sec:adapt}
 
 With known switch instants, the honest adaptation advantage of the
-metadata is a factor 1.3--2.4 on the substrate (T200: fast 264.8--303.9
-vs.\ dual/slow 202--211 pulses) and $\sim$10 pulses on the ESN
-($T_{40}$ 49.9$\rightarrow$40.6, p90 76.5$\rightarrow$42.0), with overall
-accuracy reproducing S5/S10 exactly. The published ``$9$--$20\times$''
-ratios were window-position metric artifacts.
+metadata is a factor 1.3--2.4 on the substrate ($T_{200}$: fast
+264.8--303.9 vs.\ dual/slow 202--211 pulses) and $\sim$10 pulses on the
+ESN ($T_{40}$ 49.9$\rightarrow$40.6; p90 76.5$\rightarrow$42.0), with
+overall accuracy reproducing the original runs exactly
+(Table~\ref{tab:adapt}). The published ``$9$--$20\times$'' ratios were
+window-position metric artifacts.
+
+\begin{table}[t]
+\centering
+\small
+\begin{tabular}{lccl}
+\toprule
+system & arm & $T_{200}$ (pulses) & $T_{40}$ (pulses) \\
+\midrule
+substrate & fast & 264.8--303.9 & 83.7--123.4 \\
+substrate & dual / slow & 202.3--211.2 & 45.2--54.3 \\
+ESN & fast & 210.2 & 49.9 ($p_{90}=76.5$) \\
+ESN & dual & 199.2 & 40.6 ($p_{90}=42.0$) \\
+\bottomrule
+\end{tabular}
+\caption{Controlled adaptation (switch-relative pulses, 10 seeds $\times$
+5 switches): substrate ranges over both topologies, ESN values are means.}
+\label{tab:adapt}
+\end{table}
 
 \section{Discussion}
 \label{sec:disc}
 
 \textbf{Three mechanisms, three roles.} The evidence assembles a clean
 decomposition. (i)~\emph{Metadata (M3) = statistical memory}: it supplies
-the missing timescale on statistical tasks (S10), denoises state-level
-corruption (S16b V2), and attenuates readout noise on the online task
-(S14/S16 NMSE) --- but it adds no episodic memory capacity (r0 MC
-unchanged) and cannot recover memory under readout-level disturbance at
-any $\tau_m$ (S14/S16/S16b). (ii)~\emph{Homeostat (M5) = disturbance
-recovery}: the $+32\%$ sequential recovery (S11) and $+18\%$ $r_1\!\to\!r_3$
-(S14) are produced by $\kappa$-regulation alone; the metadata is not
-involved. (iii)~\emph{Substrate physics = raw memory}: the MC probe puts
-the substrate at 10.19 vs.\ $\sim$6.17 for either ESN arm; no algorithm in
-this work closes that lead.
+the missing timescale on statistical tasks (Section~\ref{sec:s10}),
+denoises state-level corruption (Section~\ref{sec:s16b}, V2), and
+attenuates readout noise on the online task (Sections~\ref{sec:s14}--\ref{sec:s16})
+--- but it adds no episodic memory capacity (r0 MC unchanged) and cannot
+recover memory under readout-level disturbance at any $\tau_m$
+(Sections~\ref{sec:s14}--\ref{sec:s16b}). (ii)~\emph{Homeostat (M5) =
+disturbance recovery}: the $+32\%$ sequential recovery and the $+18\%$
+$r_1\!\to\!r_3$ gain are produced by $\kappa$-regulation alone; the
+metadata is not involved. (iii)~\emph{Substrate physics = raw memory}: the
+MC probe puts the substrate at 10.19 vs.\ $\sim$6.17 for either ESN arm;
+no algorithm in this work closes that lead.
 
 \textbf{Why non-transferability is informative.} Each mechanism has a
 precisely located job, and swapping them fails in a measurable way. This
@@ -321,12 +355,14 @@ state-noise denoising, and does not hold for disturbance recovery or
 episodic memory.
 
 \textbf{Related work.} The slow trace is the linear slow-feature operator
-on reservoir states (cf.\ slow feature analysis, Wiskott \& Sejnowski
-2002); the fast/slow pair is a two-timescale memory hierarchy echoing
-complementary learning systems \cite{mcclelland1995} and synaptic
-consolidation \cite{benna2016}; the readout computes a fading-memory
-functional \cite{boyd1985} whose horizon the metadata extends without
-touching the substrate.
+on reservoir states (cf.\ slow feature analysis \cite{wiskott2002}); the
+fast/slow pair is a two-timescale memory hierarchy echoing complementary
+learning systems \cite{mcclelland1995} and synaptic consolidation
+\cite{benna2016}; the readout computes a fading-memory functional
+\cite{boyd1985} whose horizon the metadata extends without touching the
+substrate. In the continual-learning setting \cite{parisi2019}, this work
+supplies causal evidence about \emph{which} component must carry each
+capability.
 
 \textbf{Limitations.} The slow trace's attenuation covers fast-channel
 (readout or state) corruption; direct corruption of the metadata memory
@@ -346,52 +382,54 @@ consolidation-vs-overwrite trade-off beyond the present scope.
 forgetting kernel with a controllable horizon (Prop.~1). (2)~On
 long-horizon statistical tasks the bottleneck is timescale coverage, not
 substrate physics; the same trace equalizes ESN and substrate accuracy and
-accelerates adaptation by a controlled-measured factor 1.3--2.4 (Props.~2--3).
-(3)~The trace is a \emph{statistical} memory, not an episodic one: it adds
-no raw memory capacity and does not transfer disturbance robustness at any
-$\tau_m$ (0/10 seeds positive; Prop.~4, S14/S16/S16b). (4)~Three
-mechanisms, three roles --- metadata (statistical memory and state-noise
-denoising), homeostat (sequential recovery), substrate physics (raw
-memory) --- and none is substitutable for another's job.
+accelerates adaptation by a controlled-measured factor 1.3--2.4
+(Props.~2--3). (3)~The trace is a \emph{statistical} memory, not an
+episodic one: it adds no raw memory capacity and does not transfer
+disturbance robustness at any $\tau_m$ (0/10 seeds positive; Prop.~4).
+(4)~Three mechanisms, three roles --- metadata (statistical memory and
+state-noise denoising), homeostat (sequential recovery), substrate physics
+(raw memory) --- and none is substitutable for another's job.
 
 \section*{Code and data availability}
 All simulation scripts and generated data are available at
 \url{https://github.com/huyamingc/REDEM} (private during review; released
-on acceptance). Paper C data: \texttt{data/s10\_esn\_metadata\_v1.*},
-\texttt{data/s11\_disturbance\_chain\_v1.*},
-\texttt{data/s14\_esn\_disturbance\_chain\_v1.*},
-\texttt{data/s16\_tau\_m\_pressure\_test\_v1.*},
-\texttt{data/s16b\_falsification\_stress\_test\_v1.*},
-\texttt{data/s15\_controlled\_adaptation\_v1.*},
-\texttt{data/s5b\_controlled\_adaptation\_v1.*}.
+on acceptance). All reported figures are means over 10 seeds with
+per-seed paired analysis; data files are listed in the repository.
 
 \begin{figure}[t]
 \centering
-\includegraphics[width=0.9\columnwidth]{paperC_fig1_kernel}
-\caption{Synthesized vs.\ material forgetting kernel (Paper C, Fig.~1):
-the slow-trace kernel $h_m$ (Eq.~\ref{eq:kernel}, $\tau_m =
-200/500/1000$ pulses) has a zero at zero lag, a finite peak lag, and an
-exponential tail with $1/e$ horizon exactly $\tau_m$; the material kernel
-$M$ (Paper~A, log-normal, CV 0.20) is fixed by physics (1/e $\sim$16
-pulses).}
+\includegraphics[width=0.85\linewidth]{paperC_fig1_kernel}
+\caption{Synthesized vs.\ material forgetting kernel: the slow-trace
+kernel $h_m$ (Eq.~\ref{eq:kernel}, $\tau_m = 200/500/1000$ pulses) has a
+zero at zero lag, a finite peak lag, and an exponential tail with $1/e$
+horizon exactly $\tau_m$; the material kernel $M$ (log-normal, CV 0.20)
+is fixed by physics (1/e $\sim$16 pulses).}
 \label{fig:kernel}
 \end{figure}
 
 \begin{figure}[t]
 \centering
-\includegraphics[width=0.9\columnwidth]{paperC_fig2_recovery}
-\caption{Post-disturbance recovery vs.\ metadata timescale (Paper C,
-Fig.~2; s16, 10 seeds). Left: $r_3$ MC --- esn-dual stays 0.68--0.70
-below esn-fast at every $\tau_m$, while the homeostat-regulated substrate
-(redem-reg, no metadata) sits at 8.47. Right: $r_3$ NMSE --- the
-readout-noise attenuation transfers at every $\tau_m$.}
+\includegraphics[width=0.85\linewidth]{paperC_fig2_recovery}
+\caption{Post-disturbance recovery vs.\ metadata timescale (10 seeds).
+Left: $r_3$ MC --- esn-dual stays 0.68--0.70 below esn-fast at every
+$\tau_m$, while the homeostat-regulated substrate (redem-reg, no metadata)
+sits at 8.47. Right: $r_3$ NMSE --- the readout-noise attenuation
+transfers at every $\tau_m$.}
 \label{fig:recovery}
 \end{figure}
 
 \begin{thebibliography}{11}
 
+\bibitem{parisi2019} Parisi, G. I., Kemker, R., Part, J. L., Kanan, C.,
+Wermter, S. Continual lifelong learning with neural networks: a review.
+\emph{Neural Networks} \textbf{113}, 54--71 (2019).
+
 \bibitem{jaeger2001} Jaeger, H. The ``echo state'' approach to analysing
 and training recurrent neural networks. GMD Report 148 (2001).
+
+\bibitem{lukosevicius2009} Lukoševičius, M., Jaeger, H. Reservoir computing
+approaches to recurrent neural network training. \emph{Computer Science
+Review} \textbf{3}(3), 127--149 (2009).
 
 \bibitem{maass2002} Maass, W., Natschläger, T., Markram, H. Real-time
 computing without stable states. \emph{Neural Computation} \textbf{14}(11),

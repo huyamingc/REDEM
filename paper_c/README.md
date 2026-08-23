@@ -1,12 +1,14 @@
 # Paper C - Three Mechanisms, Three Roles (working title)
 
-Short paper (single author, ~6 pages). Status: post-s14, post-s16,
-post-s15, post-s16b (all 10 seeds). The three-mechanism disentanglement
-thesis is adopted (user gate, 2026-02-17): metadata is a substrate-agnostic
+Short paper (single author, ~6 pages two-column equivalent; elsarticle
+preprint renders 9 pages). Status: post-s14, post-s16, post-s15, post-s16b,
+post-s5b (all 10 seeds). The three-mechanism disentanglement thesis is
+adopted (user gate, 2026-02-17): metadata is a substrate-agnostic
 *statistical* memory; disturbance recovery is the homeostat's role; raw
-memory capacity is the substrate's physics. Only s17 (optional substrate
-stress) remains before drafting. Theory in `DERIVATION.md`; outline and
-numbers in `PAPER_C_sketch.md`.
+memory capacity is the substrate's physics. **PAPER_C.tex is drafted and
+submission-ready** (elsarticle preprint, 9 pp, zero warnings) for
+Neurocomputing / Neural Networks short paper. Theory in `DERIVATION.md`;
+outline and numbers in `PAPER_C_sketch.md`.
 
 **Working title** (user proposal, adopted): Dissecting Online Learning
 Mechanisms: Statistical Memory, Homeostatic Recovery, and Substrate Physics
@@ -80,25 +82,34 @@ overall accuracy.
 - **Title (ADOPTED, 2026-02-17):** "Dissecting Online Learning Mechanisms:
   Statistical Memory, Homeostatic Recovery, and Substrate Physics are
   Non-Transferable".
-- Venue: Neurocomputing vs Neural Networks (short/communication) - open.
-- Paper B wording flag (user decision): the S10/S5 "47x"/"9-20x"
-  adaptation ratios are window-position metric artifacts per s15; Paper B
-  Section 4.3 and README headlines should be softened.
+- Venue: **Neurocomputing / Neural Networks short paper (DECIDED,
+  2026-02-17)** - both Elsevier; `PAPER_C.tex` now uses `elsarticle`
+  preprint class.
+- Paper B wording: resolved (2026-02-17) - §4.3/§4.5/§4.6 and abstract
+  revised with the controlled s15/s5b measurements.
 - Citation closure: cite Paper B Section 4.5 once B is public.
 
-## Compile (once PAPER_C.tex exists)
+## Compile
 
 ```powershell
-pdflatex PAPER_C.tex    # run twice for cross-references
+pdflatex PAPER_C.tex    # run three times for cross-references (elsarticle)
 ```
 
 ## Submission checklist (Paper C)
 
-- [ ] Replace `[Author Name]` / affiliation / email.
-- [ ] Swap the document class to the target journal template.
+- [ ] Replace `[Author Name]` / `\ead{...}` placeholder.
+- [x] Document class: `elsarticle` preprint (Elsevier initial-submission
+      format); switch to `\documentclass[final,3p]{elsarticle}` (two-col)
+      or `[final,1p]` at acceptance per journal preference.
 - [ ] Honest wording locked: equalizer is about statistical memory; +32% is
-      homeostat; esn_dual best S10 accuracy - state all three.
+      homeostat; esn_dual best S10 accuracy - state all three (done in
+      text).
 - [ ] Strong claim wording locked on s16 (0/10-seed sign consistency, ~5
-      sigma paired diffs).
-- [ ] Cite Paper A Section 5 and Paper B Section 4.5.
-- [ ] Code/data availability statement (REDEM repo, private during review).
+      sigma paired diffs) - done.
+- [ ] Cite Paper A Section 5 and Paper B Section 4.5 (companion refs in
+      bibliography).
+- [ ] Code/data availability statement (REDEM repo, private during review)
+      - done.
+- [ ] Keywords present (Elsevier format) - done.
+- [ ] Cover letter: the falsifying-experiment angle (which mechanism does
+      which job) + honest ESN position.

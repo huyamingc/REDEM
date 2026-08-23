@@ -20,8 +20,11 @@ companion papers (plus a third in development):
   Statistical Memory, Homeostatic Recovery, and Substrate Physics are
   Non-Transferable"* — three-mechanism disentanglement built on a falsifying
   experiment (s14: metadata does not transfer disturbance robustness to an
-  ESN; s16: robust across τ_m ∈ [200, 2000])
-  → See [`paper_c/DERIVATION.md`](paper_c/DERIVATION.md) and
+  ESN; s16: robust across τ_m ∈ [200, 2000]); drafted for Neurocomputing /
+  Neural Networks short paper
+  → See [`paper_c/PAPER_C.pdf`](paper_c/PAPER_C.pdf),
+  [`paper_c/PAPER_C.tex`](paper_c/PAPER_C.tex),
+  [`paper_c/DERIVATION.md`](paper_c/DERIVATION.md) and
   [`paper_c/PAPER_C_sketch.md`](paper_c/PAPER_C_sketch.md)
 
 **Two papers, one pipeline — two different stories.** Paper A is a physics /

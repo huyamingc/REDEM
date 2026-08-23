@@ -151,13 +151,15 @@ ESN: in S10 the ESN+metadata arm has the best overall accuracy.
 
 ## Submission checklist (Paper C)
 
-- [ ] Replace author placeholder; affiliation: Independent Researcher,
-      Guiyang, China.
-- [ ] Compile with target journal class (Neurocomputing: elsarticle-style;
-      Neural Networks short: elsarticle.cls).
+- [x] Document class: `elsarticle` preprint (Elsevier initial submission);
+      venue decided: Neurocomputing / Neural Networks short paper.
+- [ ] Replace author placeholder / `\ead`; affiliation: Independent
+      Researcher, Guiyang, China.
+- [ ] Compile: `pdflatex PAPER_C.tex` x3 (elsarticle), zero warnings.
 - [ ] Honest wording locked: equalizer is about statistical memory; +32% is
       homeostat; esn_dual has the best S10 accuracy - state all three.
 - [ ] Strong claim wording locked on s16 (no tau_m closes the MC gap);
       report the 0/10-seed sign consistency and ~5-sigma paired diffs.
 - [ ] Cite Paper A Section 5 and Paper B Section 4.5 (citation loop).
 - [ ] Code/data availability: REDEM repo (private during review).
+- [ ] Keywords in Elsevier format - done.
