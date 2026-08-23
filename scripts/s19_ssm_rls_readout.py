@@ -47,6 +47,13 @@ Arms (isolate the two factors + the M1 control):
   CV-skip    : whitened state + current-token projection (the fix
                direction preview: linear readout on state only is the
                failure; giving it the current token restores tracking)
+  CV-gate    : P3a - input-gated state features, y = W (h_w *
+               sigmoid(C x + b)) with x = B e_{t-1}, C fixed random
+               (Mamba-style multiplicative gating of the state pathway,
+               at the feature level so RLS stays closed-form); the test
+               of whether gating lets the state readout succeed
+  CV-gate-g5 : same gate with gamma = 5.0 (sharper sigmoid) - shows the
+               fixed-gate result is not a tuning artifact
 
 Task: IDENTICAL to s18 - two biased-bigram Markov generators (domain A:
 shift=1, bias {0..7}; domain B: shift=7, bias {24..31}), alternating every
@@ -110,6 +117,10 @@ ARMS = {
     'CV-whiten': {'spectrum': 'CV', 'whiten': True,  'feat': 'state'},
     'B-proj':    {'spectrum': 'CV', 'whiten': True,  'feat': 'proj'},
     'CV-skip':   {'spectrum': 'CV', 'whiten': True,  'feat': 'skip'},
+    'CV-gate':   {'spectrum': 'CV', 'whiten': True,  'feat': 'gate',
+                  'gamma': 1.0},
+    'CV-gate-g5': {'spectrum': 'CV', 'whiten': True, 'feat': 'gate',
+                   'gamma': 5.0},
 }
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -229,15 +240,35 @@ def run_single(args):
     stream, domains = gen_drift_stream(seed)
     T = stream.shape[0]
 
+    # P3a: fixed random input gate C (Mamba-style multiplicative gating of
+    # the state pathway, applied at the feature level so the RLS readout
+    # stays linear-in-features/closed-form). y = W (h_w * sigmoid(C x + b)),
+    # x = B e_{t-1} (the state input projection). C drawn per seed from the
+    # substrate RNG stream.
+    if cfg['feat'] == 'gate':
+        g_gen = torch.Generator()
+        g_gen.manual_seed(seed * SEED_SCALE + SEED_OFF + 3)
+        C = (torch.randn(N_STATE, N_STATE, dtype=torch.float64,
+                         generator=g_gen) / np.sqrt(N_STATE))
+        b_gate = torch.zeros(N_STATE, dtype=torch.float64)
+    else:
+        C = b_gate = None
+
     def build_phi(hw, prev_tok):
         """Readout features for the arm: whitened state (state), current
-        token projection (proj), or both (skip), plus bias."""
+        token projection (proj), both (skip), or input-gated state
+        (gate: h_w * sigmoid(C x + b), the P3a Mamba-style gate), plus
+        bias."""
         if cfg['feat'] == 'state':
             parts = [hw]
         elif cfg['feat'] == 'proj':
             parts = [B[:, prev_tok]]
-        else:
+        elif cfg['feat'] == 'skip':
             parts = [hw, B[:, prev_tok]]
+        else:  # 'gate'
+            gamma = cfg.get('gamma', 1.0)
+            parts = [hw * torch.sigmoid(gamma * (C @ B[:, prev_tok])
+                                        + b_gate)]
         parts.append(torch.ones(1, dtype=torch.float64))
         return torch.cat(parts)
 
@@ -411,6 +442,11 @@ def main():
                   'ceiling (oracle 7.34)',
         'CV-skip': 'whitened state + current-token projection (fix '
                    'direction preview)',
+        'CV-gate': 'P3a: input-gated state, y = W (h_w * sigmoid(C x + b)), '
+                   'x = B e_{t-1}, C fixed random per seed - the Mamba-'
+                   'style multiplicative gate at the feature level',
+        'CV-gate-g5': 'same gate with gamma=5.0 (sharper sigmoid) - '
+                      'fixed-gate result is not a tuning artifact',
     }
     paired = {}
     for arm in ARMS:

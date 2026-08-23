@@ -162,9 +162,47 @@ use the corrected metric (CE = -ln(clip(y_hat[target]))).
 and reported honestly (falsified). Data: `data/s19_ssm_rls_readout_v1.csv`
 / `.json` (50 rows).
 
+### P3a - input-gated (selective) readout (DONE 2026-02-18, FALSIFIED)
+
+Executed BEFORE P2 on P1's evidence (user gate). Tests whether a
+Mamba-style multiplicative gate makes the diagonal-SSM state readable by
+the RLS readout: y = W (h_w * sigmoid(gamma * C x + b)), x = B e_{t-1},
+C fixed random per seed, gamma in {1, 5}. Gate is applied at the FEATURE
+level so the RLS readout stays linear-in-features/closed-form; the
+literal output-gated form y = (W phi) (*) sigmoid(Cx+b) would break the
+squared-loss readout's distribution interpretation (mass < 1) and is not
+tested.
+
+**Result (10 seeds, 70 runs)**: FALSIFIED - stream ppl 77.2 (CV-gate)
+and 72.2 (CV-gate-g5) vs A1 15.01, improved 0/10; oracle 37.1 / 38.5
+(sharper gate is WORSE - the negative is not a tuning artifact).
+Feature-isolation diagnostics (seed 0): the current-token projection
+B e_{t-1} alone reaches the pooled-table ceiling (oracle 7.34; RLS
+11.75, 10/10 better than A1), and EVERY state-feature combination (fast
+channels only, full state, gated at gamma 1/3/5, with/without B e)
+degrades the pooled prediction (oracle 18.4-60.8) - the state carries
+domain level and recent-token mixture that are uninformative noise for
+the pooled-bigram readout, and near-constant slow columns poison
+conditioning.
+
+**Conclusion**: (1) the RLS readout's job is the INPUT path - the current
+token must enter the readout as a clean ADDITIVE feature (B e); it
+cannot be recovered from the linearly-mixed state by any FIXED gate; (2)
+a fixed gate carries the prev code only multiplicatively inside a
+time-varying state - noise, not signal; (3) Mamba's selectivity works
+because the gate and state are LEARNED end-to-end (gradient), which
+breaks the RLS-only constraint - a design boundary to flag, not to cross
+silently; (4) the state's value is the DOMAIN LEVEL for M3 metadata
+(P2), not the next-token readout.
+
 ### P2 - M3 EMA second state + drift detection (1 w)
-- EMA second state m_t on h_t; detector + routing arms (A3-analogue) and
-  gating-only arm (A2-analogue) on the SSM host; tau_m in {200,500,1000,2000}.
+- P1/P3a premise (updated): the readout must carry the current-token
+  input path (B e_{t-1}, additive); the state alone is not a readout
+  substrate (P1 falsified) and fixed gates do not fix it (P3a
+  falsified). The state's role is the M3 metadata: an EMA second state
+  m_t on h_t carries the domain level; detector + routing arms
+  (A3-analogue) and gating-only arm (A2-analogue) on the SSM host;
+  tau_m in {200,500,1000,2000}.
 - Exit: P2 prediction tested (host-invariance of the policy lesson).
 
 ### P3 - M4 + M5 (2-3 w)
@@ -222,3 +260,14 @@ and reported honestly (falsified). Data: `data/s19_ssm_rls_readout_v1.csv`
   metric bug during P1 (double-softmax of the linear-MMSE readout output).
   Next: P2 (M3 EMA second state + routing on a host that can represent
   the current token), or P3 (selectivity) - user gate.
+- 2026-02-18: **P3a (S19 extension) DONE - FALSIFIED.** Fixed Mamba-style
+  multiplicative gates (gamma 1 and 5) do NOT make the state readable:
+  stream ppl 77.2/72.2 vs A1 15.01 (0/10 improved), oracle 37.1/38.5
+  (sharper gate worse). Feature-isolation shows the current-token
+  projection B e is the only useful readout feature (oracle 7.34, RLS
+  11.75 10/10) and every state-feature combination degrades the pooled
+  prediction. Conclusion: the RLS readout needs the additive input path;
+  fixed gates carry the prev code only as multiplicative noise inside the
+  time-varying state; Mamba-style selectivity must be LEARNED (gradient),
+  a design boundary for the RLS-only constraint; the state's value is the
+  domain level for M3 (P2). Next: P2 (M3 EMA + routing) - user gate.

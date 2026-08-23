@@ -33,11 +33,12 @@ companion papers (plus a fourth in development):
   with Native Online Learning, Meta-Adaptation, and Structural
   Plasticity"* — a native SSM/Mamba-hosted foundation model instantiating
   M1/M3/M4/M5 from the ground up, motivated by Paper C's host-boundary
-  result. P1 (S19) DONE: bare-M1 prediction falsified (0/10), mechanism
-  isolated — the linear readout cannot use the linearly-mixed diagonal-SSM
-  state; M1 itself works (control 11.75 vs A1 15.01, 10/10), so the host
-  needs a nonlinear/gated output path (P3). (Target: NeurIPS/ICML stretch;
-  arXiv + workshop first)
+  result. P1 + P3a (S19) DONE, both falsified with mechanisms isolated:
+  the linear readout cannot use the linearly-mixed state (0/10), fixed
+  Mamba-style gates don't fix it (0/10); M1 works on the additive
+  current-token input path (control 11.75 vs A1 15.01, 10/10), so the
+  state's role is the M3 domain metadata (P2) and real selectivity must be
+  learned. (Target: NeurIPS/ICML stretch; arXiv + workshop first)
   → See [`paper_d/README.md`](paper_d/README.md) and
   [`paper_d/PAPER_D_sketch.md`](paper_d/PAPER_D_sketch.md)
 

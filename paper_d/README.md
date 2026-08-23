@@ -4,17 +4,19 @@
 Architecture with Native Online Learning, Meta-Adaptation, and Structural
 Plasticity
 
-**Status**: P1 (S19) DONE 2026-02-18 - the bare-M1 prototype was built and
-its prediction FALSIFIED (stream ppl 58-116 vs A1 15.01 on every
-state-feature arm, 0/10 improved), with the mechanism isolated: M1 (RLS)
-works (current-token-projection control: 11.75, 10/10 better than A1), the
-failure is the linearly-mixed diagonal-SSM state - a linear readout cannot
-recover the current token from the decayed mixture (in-sample ridge oracle
-~31 ~ uniform vs 7.25 on the projection). Design implication: the host
-needs a nonlinear/gated output path (Mamba-style selectivity) - P3 is now
-evidence-driven. Next phases: P2 (M3 EMA second state + routing), P3 (M4 +
-M5/selectivity). Data: `data/s19_ssm_rls_readout_v1.csv` (50 rows, 10
-seeds).
+**Status**: P1 + P3a DONE 2026-02-18, both FALSIFIED with mechanisms
+isolated. (1) P1: the bare-M1 linear readout on the diagonal-SSM state
+cannot track (stream ppl 58-116 vs A1 15.01, 0/10 improved; oracle ~31 ~
+uniform) because a linear readout cannot recover the current token from
+the linearly-decayed mixture; M1 itself works (current-token-projection
+control: 11.75, 10/10 better than A1, oracle 7.25 ~ the pooled-table
+ceiling). (2) P3a: fixed Mamba-style gates (feature-level, gamma 1/5) do
+NOT fix it (77.2/72.2, oracle 37.1/38.5, sharper worse) - the current
+token must enter the readout as an ADDITIVE input feature; the state's
+value is the domain level for M3 metadata (P2), and real selectivity must
+be learned (gradient), a design boundary for the RLS-only constraint.
+Next phases: P2 (M3 EMA second state + routing). Data:
+`data/s19_ssm_rls_readout_v1.csv` (70 rows, 10 seeds).
 
 ## Origin and motivation
 
