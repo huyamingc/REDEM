@@ -15,10 +15,56 @@ Provides:
                       baseline and for S1-style memory capacity fits.
   * sliding_metrics : vectorized running-mean helpers for accuracy/MSE curves.
 
-NOTE: pure NumPy/BLAS (no numba): the per-step cost is an O(N^2) inverse-
-covariance update that BLAS already vectorizes; numba would fight it.
+NOTE: RLS update uses numba @njit for the O(N^2) inner loop to eliminate
+per-step Python overhead and temporary array allocations.
 """
 import numpy as np
+
+try:
+    from numba import njit
+    _HAS_NUMBA = True
+except ImportError:
+    _HAS_NUMBA = False
+    def njit(*args, **kwargs):
+        if len(args) == 1 and callable(args[0]):
+            return args[0]
+        return lambda f: f
+
+
+@njit(fastmath=True, cache=True)
+def _rls_update_nb(P, W, x, y, forgetting, inv_forgetting, reg,
+                   eye, kz_work, z_work, e_work, trace_cap,
+                   n_features, n_outputs):
+    """In-place RLS update (numba). Modifies P, W, kz_work, z_work, e_work."""
+    for i in range(n_features):
+        s = 0.0
+        for j in range(n_features):
+            s += P[i, j] * x[j]
+        z_work[i] = s
+    dot_xz = 0.0
+    for i in range(n_features):
+        dot_xz += x[i] * z_work[i]
+    denom = forgetting + dot_xz
+    for j in range(n_outputs):
+        s = 0.0
+        for i in range(n_features):
+            s += x[i] * W[i, j]
+        e_work[j] = y[j] - s
+    for i in range(n_features):
+        ki = z_work[i] / denom
+        for j in range(n_outputs):
+            W[i, j] += ki * e_work[j]
+        for j in range(n_features):
+            kz_val = ki * z_work[j]
+            P[i, j] = (P[i, j] - kz_val) * inv_forgetting + reg * eye[i, j]
+    tr = 0.0
+    for i in range(n_features):
+        tr += P[i, i]
+    if tr > trace_cap:
+        scale = trace_cap / tr
+        for i in range(n_features):
+            for j in range(n_features):
+                P[i, j] *= scale
 
 
 class OnlineRLS:
@@ -49,6 +95,11 @@ class OnlineRLS:
         self.reg = float(reg)
         self.P = np.eye(n_features, dtype=np.float64) * float(init_cov)
         self.W = np.zeros((n_features, n_outputs), dtype=np.float64)
+        self._eye = np.eye(n_features, dtype=np.float64)
+        self._inv_forgetting = 1.0 / float(forgetting)
+        self._kz = np.empty((n_features, n_features), dtype=np.float64)
+        self._z = np.empty(n_features, dtype=np.float64)
+        self._e = np.empty(n_outputs, dtype=np.float64)
         self.steps = 0
 
     def predict(self, x):
@@ -57,17 +108,25 @@ class OnlineRLS:
 
     def update(self, x, y):
         """Online update from one (x, y) pair."""
-        x = np.asarray(x, dtype=np.float64)
-        y = np.asarray(y, dtype=np.float64)
+        x = np.ascontiguousarray(x, dtype=np.float64)
+        y = np.ascontiguousarray(y, dtype=np.float64)
+        if _HAS_NUMBA:
+            _rls_update_nb(self.P, self.W, x, y, self.forgetting,
+                           self._inv_forgetting, self.reg, self._eye,
+                           self._kz, self._z, self._e, self.trace_cap,
+                           self.n_features, self.n_outputs)
+            self.steps += 1
+            return self._e.copy()
         z = self.P @ x
         denom = self.forgetting + float(x @ z)
         k = z / denom
         e = y - (x @ self.W)
         self.W += np.outer(k, e)
-        self.P -= np.outer(k, z)
-        self.P /= self.forgetting
+        np.outer(k, z, out=self._kz)
+        self.P -= self._kz
+        np.multiply(self.P, self._inv_forgetting, out=self.P)
         if self.reg > 0.0:
-            self.P += self.reg * np.eye(self.n_features)
+            self.P += self.reg * self._eye
         tr = np.trace(self.P)
         if tr > self.trace_cap:
             self.P *= (self.trace_cap / tr)

@@ -25,7 +25,7 @@ simulation code and data but ask different questions:
 |---|---|---|
 | **Question** | What can this physical substrate compute? | How do you learn on top of it? |
 | **Content** | Dynamics theory: memory–chaos phase diagram, forgetting kernel, λ-homeostat robustness (full derivations in Appendix A) | Learning algorithm + benchmarks: online RLS readout, dual-timescale metadata, chaos homeostat, structure plasticity, ablations |
-| **Key results** | Order–chaos transition at κ*∈(25,30); held-out memory +24–53% just before it; forgetting kernel M(t)=∫p(τ)e^{−t/τ}dτ matches the measured memory curve (r=0.97); λ-homeostat restores 8–18% after disturbances | Tracks drift where frozen batch learners (GRU, transformer) fail permanently; integrated system matches or beats every ablation and the bare baseline (0.996 vs 0.988/0.994/0.973; N=1024: 0.998 vs 0.976); metadata is substrate-agnostic and transfers to a matched ESN |
+| **Key results** | Order–chaos transition at κ*∈(25,30); held-out memory +24–53% just before it; forgetting kernel M(t)=∫p(τ)e^{−t/τ}dτ matches the measured memory curve (r=0.97); λ-homeostat restores 8–18% after disturbances; edge of chaos (λ_target=0) identified as optimal target (+25%) | Tracks drift where frozen batch learners (GRU, transformer) fail permanently; integrated system matches or beats every ablation and the bare baseline (0.996 vs 0.988/0.994/0.973; N=1024: 0.998 vs 0.976); metadata is substrate-agnostic and transfers to a matched ESN; +32% memory after three sequential disturbances; causal audit confirms all mechanisms are causally clean |
 | **Target journal** | IJBC / Chaos | Neural Networks |
 | **Relationship** | Substrate theory; cites the prior Si₃N₄ pulse-encoding paper for device calibration | Builds on Paper A's substrate theory (cited as the companion in §2) |
 
@@ -55,7 +55,7 @@ letter points).
 
 ## Scripts
 
-All 22 committed scripts in `scripts/`, typed per `CLAUDE.md`
+All 25 committed scripts in `scripts/`, typed per `CLAUDE.md`
 (ML > CORE > PAPER > FIG > EXPLORE). Two legacy scripts from the prior
 Si₃N₄-pulse-encoding project are kept as shared dependencies (imported by the
 new code) and are never modified.
@@ -79,6 +79,9 @@ new code) and are never modified.
 | `forgetting_curve_theory.py` | EXPLORE | S10: forgetting-kernel theory M(t), Gauss–Hermite, r=0.97 validation |
 | `esn_metadata_comparison.py` | PAPER | S10: metadata transfer to a matched ESN |
 | `cv_sweep.py` | PAPER | S10: task-level CV sweep |
+| `s11_disturbance_chain.py` | PAPER | E3: sequential disturbance chain (3 rounds, 10 seeds) |
+| `s12_lambda_target_sweep.py` | PAPER | E4: λ_target × CV optimization sweep (5 seeds) |
+| `s13_causal_audit.py` | PAPER | O4: causal leakage audit (7 arms, 3 seeds) |
 | `gen_architecture_schematic.py` | FIG | Paper Fig. 1 schematics (substrate / REDEM, M4↔M5 loop) |
 | `gen_substrate_phase_diagram.py` | FIG | S1 phase-diagram figure |
 | `gen_s2_curves.py` | FIG | S2 learning curves |

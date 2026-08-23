@@ -21,7 +21,7 @@ GPU, no fabrication — everything runs numerically on CPU.
 | Substrate | log-normal τ traps (median 174 µs, CV 0.20), per-pulse contrast coupling (κ knob) | nonlinear fading-memory kernel; chaos tuneable |
 | Readout | Online RLS (λ=0.999, predict-before-update) | the online learner; error-driven, second-order |
 | M3 Metadata | per-unit slow EMA of fast features (τ_m = 200–1000 pulses) | long-horizon statistical memory |
-| M5 Chaos homeostat | Benettin FTLE estimate every 1000 pulses → κ step toward λ_target = −0.02 | keeps substrate near the memory-optimal subcritical point |
+| M5 Chaos homeostat | Benettin FTLE estimate every 1000 pulses → κ step toward λ_target = −0.02 (manually tuned; E4 sweep identifies λ_target = 0 as optimal) | keeps substrate near the memory-optimal critical point |
 | M4 Structure plasticity | every 2000 pulses, prune 5% lowest-|corr| edges, grow 5% highest-|corr| unconnected pairs | slow structural adaptation |
 
 Two negative results delimit the design: reward-modulated Hebbian readouts
@@ -45,8 +45,11 @@ the structure level (M4).
 | Theory | Forgetting kernel M(t)=∫p(τ)e^{−t/τ}dτ: 1/e horizon ≈16 pulses (median-pinned); tail steepness set by CV; measured MC curve follows it with r = 0.97 |
 | S10-CV | Task-level CV sweep: uncoupled MC rises with CV (+33%, kernel theory); coupled near-critical MC falls (narrow CV best) — operating-regime-dependent knob |
 | S10-ESN | Metadata transfer: ESN+meta 0.998 ≈ ESN 0.996 ≈ REDEM-full 0.994 on regime task — the mechanism equalizes the systems |
+| E3 | Sequential disturbance chain (3 rounds: τ-drift → edge-prune → noise, 10 seeds): regulated arm maintains MC 8.47 vs fixed 6.41 (+32%) after all three; κ drifts 26.2→28.5 (active compensation) |
+| E4 | λ_target sweep (4 values × 3 CV × 5 seeds): λ_target=0 (edge of chaos) is optimal — +25%/+19%/+5% MC gain over fixed at CV=0.1/0.2/0.4; monotonic improvement as λ→0 |
+| O4 | Causal audit (7 arms × 3 seeds): all adaptive mechanisms are causally clean — injecting 1% future data changes accuracy <0.02 pp; causal-split plasticity protocol within 0.01 pp of normal |
 
-## Scripts (22 committed; 2 legacy dependencies kept for compatibility)
+## Scripts (25 committed; 2 legacy dependencies kept for compatibility)
 
 | Script | Type | Purpose |
 |---|---|---|
@@ -69,6 +72,9 @@ the structure level (M4).
 | `forgetting_curve_theory.py` | EXPLORE | S10 theory: M(t) kernel, Gauss–Hermite, r=0.97 validation |
 | `esn_metadata_comparison.py` | PAPER | S10: ESN with/without metadata vs REDEM on regime task |
 | `cv_sweep.py` | PAPER | S10: task-level CV sweep (CV∈{0.1,0.2,0.4} at optimal κ) |
+| `s11_disturbance_chain.py` | PAPER | E3: sequential disturbance chain (3 rounds, 10 seeds) |
+| `s12_lambda_target_sweep.py` | PAPER | E4: λ_target × CV optimization sweep (5 seeds) |
+| `s13_causal_audit.py` | PAPER | O4: causal leakage audit (7 arms, 3 seeds) |
 | `gen_architecture_schematic.py` | FIG | Paper Fig 1 schematics (substrate / REDEM; M4↔M5 loop) |
 | `gen_paperA_supp_figures.py` | FIG | Paper A Supplementary Fig. S1 (task-level CV sweep) |
 | `gen_paper_figures.py` | FIG | Paper figure batch (robustness / metadata / ablation / showdown) |
@@ -80,7 +86,9 @@ the structure level (M4).
   `data/s5_dual_timescale_v1.*`, `data/s6_chaos_regulator_v1.*`,
   `data/s7_structure_plasticity_v1.*`, `data/s8_integrated_v1.*`,
   `data/s9_baseline_showdown_v1.*`, `data/forgetting_curve_theory.csv`,
-  `data/s10_esn_metadata_v1.*`, `data/s10_cv_sweep_v1.*`
+  `data/s10_esn_metadata_v1.*`, `data/s10_cv_sweep_v1.*`,
+  `data/s11_disturbance_chain_v1.*`, `data/s12_lambda_target_sweep_v1.*`,
+  `data/s13_causal_audit_v1.*`
   (CSV per run + JSON with params and per-cell aggregates).
 - Figures: `figures/substrate_phase_diagram_v2.pdf`,
   `figures/s2_online_readout_v1.pdf`, `figures/forgetting_curve_theory.pdf`,
@@ -107,11 +115,15 @@ scipy, matplotlib, torch (CPU) for S9 only.
 & .venv\Scripts\python.exe scripts\chaos_regulator.py
 & .venv\Scripts\python.exe scripts\structure_plasticity.py
 & .venv\Scripts\python.exe scripts\integrated_benchmark.py
-& .venv\Scripts\python.exe scripts\baseline_showdown.py
+& .venv\Scripts\python.exe scripts\cv_sweep.py
 # theory + figures
 & .venv\Scripts\python.exe scripts\forgetting_curve_theory.py
 & .venv\Scripts\python.exe scripts\esn_metadata_comparison.py
 & .venv\Scripts\python.exe scripts\cv_sweep.py
+# supplementary experiments (E3, E4, O4)
+& .venv\Scripts\python.exe scripts\s11_disturbance_chain.py --sequential
+& .venv\Scripts\python.exe scripts\s12_lambda_target_sweep.py --sequential
+& .venv\Scripts\python.exe scripts\s13_causal_audit.py --sequential
 & .venv\Scripts\python.exe scripts\gen_architecture_schematic.py
 & .venv\Scripts\python.exe scripts\gen_paper_figures.py
 ```
@@ -162,6 +174,9 @@ ws-ijbc.cls / revtex4-2 for Paper A (IJBC/Chaos), elsarticle.cls for Paper B
 | S8 integration + ablations + N=1024 | done |
 | S9 baseline showdown | done |
 | S10 papers | done (drafts + post-review revision pass; all figures complete) |
+| E3 disturbance chain | done (10 seeds, +32% MC after 3 sequential disturbances) |
+| E4 λ_target sweep | done (5 seeds × 4λ × 3CV, λ=0 optimal with +25% MC) |
+| O4 causal audit | done (3 seeds × 7 arms, all mechanisms causally clean) |
 
 ## Open items
 

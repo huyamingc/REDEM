@@ -7,9 +7,9 @@ Paper Section:  Paper A Fig 1 / Paper B Fig 1
 Experiment:     Programmatic block diagrams (no simulation).
 
 Figures:
-  figures/paperA_fig1_substrate.png : substrate schematic (units, coupling,
+  figures/paperA_fig1_substrate.pdf : substrate schematic (units, coupling,
                                       log-normal tau histogram, readout)
-  figures/paperB_fig1_redem.png     : REDEM system schematic (substrate,
+  figures/paperB_fig1_redem.pdf     : REDEM system schematic (substrate,
                                       metadata, readout, homeostat, plasticity)
 
 Usage: python gen_architecture_schematic.py

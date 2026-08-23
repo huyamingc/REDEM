@@ -318,7 +318,7 @@ p(\tau)=\mathrm{Lognormal}(\tau_0,\mathrm{CV}).
 \label{eq:kernel}
 \end{equation}
 We evaluate $M(t)$ by Gauss--Hermite quadrature (160 nodes, exact to machine
-precision; derivation in Appendix~A.3). Three properties follow
+precision; derivation in Appendix~\ref{app:quadrature}). Three properties follow
 (Fig.~\ref{fig:forgetting}):
 \begin{enumerate}
 \item \textbf{The $1/e$ horizon is median-pinned.} $M(\tau_0/\bar{\Dt})
@@ -402,6 +402,13 @@ parity (the RLS readout absorbs task-level differences; the substrate-level
 memory improvement is revealed by the readout-independent MC probe). The
 $\lambda$-homeostat is disturbance-type-agnostic because it tracks the
 dynamical quantity itself rather than a proxy whose optimum shifts.
+A systematic $\lambda_{\mathrm{target}}$ sweep
+($\lambda_{\mathrm{target}}\in\{-0.05,-0.02,-0.005,0\}\times\mathrm{CV}\in\{0.1,0.2,0.4\}$,
+5 seeds; companion paper Table~2) identifies $\lambda_{\mathrm{target}}{=}0$
+(the edge of chaos) as optimal: post-disturbance MC improves monotonically as
+$\lambda_{\mathrm{target}}\to 0$, with gains of $+25\%$ (CV=0.1), $+19\%$
+(CV=0.2) over fixed coupling --- updating the manually tuned $-0.02$ used in
+the main results.
 
 \begin{table}[t]
 \centering

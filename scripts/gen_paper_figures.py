@@ -7,10 +7,10 @@ Paper Section:  Paper A Fig 4, Paper B Figs 3/5/6 (see PAPER_*_sketch.md)
 Experiment:     Render remaining result figures from the experiment JSONs.
 
 Figures:
-  paperA_fig4_robustness.png  : S6 homeostat post-disturbance MC gains
-  paperB_fig3_metadata.png    : S5 dual-timescale regime results
-  paperB_fig5_ablation.png    : S8 integrated ablation matrix (N=256, 1024)
-  paperB_fig6_showdown.png    : S9 online-vs-frozen showdown (drift + MG)
+  paperA_fig4_robustness.pdf  : S6 homeostat post-disturbance MC gains
+  paperB_fig3_metadata.pdf    : S5 dual-timescale regime results
+  paperB_fig5_ablation.pdf    : S8 integrated ablation matrix (N=256, 1024)
+  paperB_fig6_showdown.pdf    : S9 online-vs-frozen showdown (drift + MG)
 
 Usage: python gen_paper_figures.py
 """

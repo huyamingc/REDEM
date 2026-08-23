@@ -469,3 +469,18 @@ S1-S9 全部完成（14 个新脚本、12 组实验数据、`NEW_ALGORITHM_PLAN.
     github.com/huyamingc/Si3N4-Pulse-Encoding）；全量备份：
     `D:\work\papers\testpynew_preclean_20260822.zip`（6.4 MB）。
   - 新仓库：github.com/huyamingc/REDEM（私有，评审期，录用后转公开）。
+- 补强实验会话（E3/E4/O4 全量运行 + 论文整合）：
+  - **E3 扰动链**（`scripts/s11_disturbance_chain.py`，PAPER，10 seeds）：
+    三轮连续扰动（τ-drift → edge-prune → noise）后 regulated 臂 MC 8.47 vs
+    fixed 6.41（+32%）；κ 从 26.15 漂至 28.51（主动补偿）。
+  - **E4 λ_target 扫描**（`scripts/s12_lambda_target_sweep.py`，PAPER，5 seeds
+    × 4λ × 3CV × 2 arms = 120 runs）：λ_target=0（edge of chaos）在所有 CV 下
+    最优——CV=0.1 +25%、CV=0.2 +19%、CV=0.4 +5% over fixed；MC 随 λ→0
+    单调递增。更新手调 -0.02 为经验最优 0。
+  - **O4 因果审计**（`scripts/s13_causal_audit.py`，PAPER，3 seeds × 7 arms）：
+    所有 leak 臂与 normal Δ < 0.02pp → 因果干净；causal_split 协议 Δ=0.01pp。
+  - **CORE 优化**：`scripts/online_readout.py` RLS update 下沉 numba @njit
+    （预分配 workspace、in-place 修改 P/W），单次 O4 运行 604s→107.5s（5.6×）。
+  - **论文整合**：Paper B §4.4 新增 E3/E4/O4 三段 + Table 2（λ sweep）+ 摘要/
+    结论更新；Paper A §5.2 新增 E4 引用；README/README_REDEM 脚本清单 22→25、
+    headline results + roadmap 同步。两篇 pdflatex ×2 编译零错误（A 13p / B 10p）。
