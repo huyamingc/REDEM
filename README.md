@@ -29,11 +29,15 @@ companion papers (plus a fourth in development):
   [`paper_c/DERIVATION.md`](paper_c/DERIVATION.md) and
   [`paper_c/PAPER_C_sketch.md`](paper_c/PAPER_C_sketch.md)
 
-- **Paper D (sketch stage)**: *"REDEM-SSM: A Foundation Model Architecture
+- **Paper D (in development)**: *"REDEM-SSM: A Foundation Model Architecture
   with Native Online Learning, Meta-Adaptation, and Structural
   Plasticity"* — a native SSM/Mamba-hosted foundation model instantiating
   M1/M3/M4/M5 from the ground up, motivated by Paper C's host-boundary
-  result (target: NeurIPS/ICML stretch; arXiv + workshop first)
+  result. P1 (S19) DONE: bare-M1 prediction falsified (0/10), mechanism
+  isolated — the linear readout cannot use the linearly-mixed diagonal-SSM
+  state; M1 itself works (control 11.75 vs A1 15.01, 10/10), so the host
+  needs a nonlinear/gated output path (P3). (Target: NeurIPS/ICML stretch;
+  arXiv + workshop first)
   → See [`paper_d/README.md`](paper_d/README.md) and
   [`paper_d/PAPER_D_sketch.md`](paper_d/PAPER_D_sketch.md)
 
@@ -78,7 +82,7 @@ letter points).
 
 ## Scripts
 
-All 35 committed scripts in `scripts/`, typed per `CLAUDE.md`
+All 36 committed scripts in `scripts/`, typed per `CLAUDE.md`
 (ML > CORE > PAPER > FIG > EXPLORE). Two legacy scripts from the prior
 Si₃N₄-pulse-encoding project are kept as shared dependencies (imported by the
 new code) and are never modified.
@@ -112,6 +116,7 @@ new code) and are never modified.
 | `s5b_controlled_adaptation.py` | PAPER | S5 three-arm controlled adaptation re-measurement (2 substrates, 10 seeds) |
 | `s17_substrate_stress.py` | PAPER | Paper C: ESN substrate stress — equalizer gain positive at all configs (120 runs) |
 | `s18_llm_drift_gate.py` | ML | Paper C §7 PoC: LLM drift gate (tiny transformer + LoRA, 90 runs, torch CPU) |
+| `s19_ssm_rls_readout.py` | ML | Paper D P1: per-token RLS readout on a hand-rolled diagonal SSM (5 arms, 50 runs, torch CPU) |
 | `gen_architecture_schematic.py` | FIG | Paper Fig. 1 schematics (substrate / REDEM, M4↔M5 loop) |
 | `gen_substrate_phase_diagram.py` | FIG | S1 phase-diagram figure |
 | `gen_s2_curves.py` | FIG | S2 learning curves |

@@ -109,7 +109,7 @@ Bibliography (verify exact venue/year before citing in the paper):
 
 | # | Prediction | Falsification criterion | Phase |
 |---|---|---|---|
-| P1 | Per-token RLS on the SSM output projection tracks known domain switches at least as well as the s18 Transformer+LoRA A1 arm | RLS-on-SSM stream ppl worse than A1 reference at every tau_m, 0/10 positive | P1 |
+| P1 | Per-token RLS on the SSM output projection tracks known domain switches at least as well as the s18 Transformer+LoRA A1 arm | RLS-on-SSM stream ppl worse than the A1 reference on every seed (0/10 improved) | P1 |
 | P2 | Routing on the M3 EMA second state improves forgetting on the SSM host (like A3 on the Transformer); gating-only on the SSM host is falsified (like A2) | Routing forgetting diffs <= 0 at every tau_m (0/10 positive), OR gating-only stream ppl diffs <= 0 at every tau_m | P2 |
 | P3 | Gradual M4 structural changes beat abrupt ones on forgetting and stream ppl | Abrupt M4 wins (10/10 positive) | P3 |
 | P4 | M5 stability regulation keeps stream performance stable under disturbance injection where bare SSM degrades | Bare SSM and regulated SSM degrade equally (no separation, 10-seed) | P3 |
@@ -122,16 +122,45 @@ mapping revised --- same discipline as C's s14/s16/s18.
 
 ## 6. Roadmap with exit criteria
 
-### P1 - RLS-on-SSM prototype (1-2 w)
-- Build a hand-rolled diagonal SSM in torch CPU: state dim N in 64-256,
-  d_model 64-128, ~1M params total. Diagonal A with log-normal tau prior
-  (Paper A parameters: tau0 ~ 174 "steps" scaled to tokens, CV 0.20).
-  Selective dt (Mamba-style, input-dependent) OPTIONAL for P1.
-- Per-token RLS on the output projection, O(r^2), rank r = 16-64
-  (CLAUDE.md: ML class, torch.manual_seed per trial, Pool only around
-  independent trials, no @njit, CSV+JSON dual output).
-- Task: s16-style two-domain streaming stream (known switches, 10 seeds).
-- Exit: P1 prediction tested; prototype runs; no mamba-ssm dependency.
+### P1 - RLS-on-SSM prototype (DONE 2026-02-18, FALSIFIED with mechanism isolated)
+
+**Build**: `scripts/s19_ssm_rls_readout.py` (ML class, torch CPU) - diagonal
+SSM (N=128), per-token RLS on the output projection (O(F^2), F=N+1),
+identical s18 task/generators/seed rules (paired comparison valid).
+
+**Result (10 seeds)**: P1 prediction FALSIFIED for every state-feature arm
+- stream ppl 58-116 vs A1 15.01, improved 0/10 (LN-raw 115.0, LN-whiten
+115.9, CV-whiten 81.3, CV-skip 58.5). The B-proj CONTROL (RLS on the
+current-token projection B e_{t-1}, no state) reaches 11.75 - better than
+A1 on 10/10 seeds (paired -3.26), forgetting -0.55 (10/10), oracle 7.25 =
+the pooled-table ceiling. The in-sample ridge oracle on the SSM-state
+features is ~31 (~uniform) vs 7.25 on the projection features.
+
+**Mechanism (isolated)**: the failure is the STATE MIXING, not M1. A
+linear readout cannot recover the current-token component from a
+linearly-decayed state mixture: it would need U*Lambda^k = 0 for k>=1
+while U*Lambda^0 != 0, impossible for a diagonal decay with A_i > 0
+(deconvolution impossibility); older tokens contaminate at Lambda^k and
+whitening fixes scale, not the mixing structure. Empirically the in-sample
+ridge is equally stuck (oracle ~31 ~ uniform), and giving the readout the
+current token directly (B-proj) restores tracking to the ceiling.
+
+**Design implication (evidence-based)**: the diagonal-SSM host requires a
+NONLINEAR/GATED output path (Mamba-style selectivity: y = C h (*) g(x))
+to give the readout access to the current token - this is exactly the P3
+subject, now quantitative. Additional findings: (a) the naive log-normal
+spectrum (tau0=174, CV=0.20) has no fast channels and, unwhitened,
+conditioning blows up (RLS P grows as (1/lambda)^t, W norm ~1.7e4,
+catastrophic held-out ppl); (b) whitening fixes the conditioning but not
+the representation; (c) a metric bug was found and fixed during P1 - the
+squared-loss readout output is a linear MMSE distribution estimate, NOT a
+softmax logit vector; softmaxing it squashed every arm toward uniform
+(ppl ~26-31 ~ uniform vs the 7.34 MLE-table ceiling). All numbers above
+use the corrected metric (CE = -ln(clip(y_hat[target]))).
+
+**Exit**: prototype runs; no mamba-ssm dependency; P1 prediction tested
+and reported honestly (falsified). Data: `data/s19_ssm_rls_readout_v1.csv`
+/ `.json` (50 rows).
 
 ### P2 - M3 EMA second state + drift detection (1 w)
 - EMA second state m_t on h_t; detector + routing arms (A3-analogue) and
@@ -183,3 +212,13 @@ mapping revised --- same discipline as C's s14/s16/s18.
   to Paper C §7 point (6). Literature anchors verified via web search
   (Longhorn, Titans, TTT, test-time SSM alignment). Venue target
   NeurIPS/ICML recorded as stretch; arXiv+workshop first.
+- 2026-02-18: **P1 (S19) DONE - FALSIFIED, mechanism isolated.** Stream
+  ppl 58-116 on every state-feature arm (0/10 improved vs A1 15.01);
+  oracle ~31 (~uniform) vs 7.25 on the current-token projection control
+  (which reaches 11.75, 10/10 better than A1). Conclusion: M1 (RLS) works;
+  the linear readout cannot use the linearly-mixed diagonal-SSM state
+  (deconvolution impossibility); the host needs a nonlinear/gated output
+  path (Mamba-style selectivity) - P3 is now evidence-driven. Also fixed a
+  metric bug during P1 (double-softmax of the linear-MMSE readout output).
+  Next: P2 (M3 EMA second state + routing on a host that can represent
+  the current token), or P3 (selectivity) - user gate.

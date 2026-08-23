@@ -4,10 +4,17 @@
 Architecture with Native Online Learning, Meta-Adaptation, and Structural
 Plasticity
 
-**Status**: sketch stage (scaffold created 2026-02-18). No experiments run
-yet. Host: state-space model (SSM / Mamba-style linear recurrence) on torch
-CPU. Target venue: NeurIPS/ICML (stretch); realistic first step: arXiv +
-workshop, mechanism-oriented journal as fallback (open decision).
+**Status**: P1 (S19) DONE 2026-02-18 - the bare-M1 prototype was built and
+its prediction FALSIFIED (stream ppl 58-116 vs A1 15.01 on every
+state-feature arm, 0/10 improved), with the mechanism isolated: M1 (RLS)
+works (current-token-projection control: 11.75, 10/10 better than A1), the
+failure is the linearly-mixed diagonal-SSM state - a linear readout cannot
+recover the current token from the decayed mixture (in-sample ridge oracle
+~31 ~ uniform vs 7.25 on the projection). Design implication: the host
+needs a nonlinear/gated output path (Mamba-style selectivity) - P3 is now
+evidence-driven. Next phases: P2 (M3 EMA second state + routing), P3 (M4 +
+M5/selectivity). Data: `data/s19_ssm_rls_readout_v1.csv` (50 rows, 10
+seeds).
 
 ## Origin and motivation
 
