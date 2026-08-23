@@ -170,7 +170,82 @@ readout's FEATURE dimension, so:
   PoC of Section 5 avoids RLS entirely (LoRA gradient updates gated by the
   slow trace), so CPU-only is comfortable there.
 
-## 7. Conclusion of the deduction
+## 7. The §7 extension: full experiment spec (deduction)
+
+This section deduces the concrete proof-of-concept that would become
+Paper C Section 7 ("Extension to Large Language Models via LoRA"). Every
+design choice below is inherited from a Paper C result; nothing is
+invented ad hoc.
+
+### 7.1 Task: streaming domain drift with known switch instants
+
+- Two synthetic character-level generators with different n-gram
+  statistics (or two small text corpora with different styles), alternating
+  every L tokens; switch instants KNOWN by construction (the s15 lesson:
+  no window-position ambiguities).
+- L in the range where a slow trace of activations can plausibly track it
+  (e.g. L = 2000-5000 tokens, tau_m swept in {200, 500, 1000, 2000} — the
+  s16 lesson: sweep the gate timescale and report sensitive intervals).
+
+### 7.2 Model and adapter (CPU-only)
+
+- Tiny char-level Transformer adapted from the S9 baseline
+  (`scripts/baseline_showdown.py`: d_model=64, 2 layers, 2 heads,
+  context=256) to next-token prediction (token embedding + vocab head,
+  vocab 64-128). ~0.5-2M parameters total; CPU-feasible.
+- Hand-rolled LoRA (low-rank delta on attention QKV projections), rank
+  r in {4, 16}; no HuggingFace dependency (repo convention, CPU-only).
+
+### 7.3 Arms (deduced from the mechanism mapping of Section 2)
+
+- A1 bare online LoRA: adapter updated every batch with a small fixed LR
+  (the online readout analog; no gating).
+- A2 LoRA + drift gate: a slow EMA of the last hidden states estimates the
+  current domain (Paper C Prop. 2: the slow trace re-centers on the new
+  regime within ~tau_m); the adapter update is boosted for a window after a
+  detected switch and suppressed within a domain (the "when to adapt"
+  claim).
+- A3 LoRA + domain routing: two adapters; the slow-trace estimate routes
+  the active adapter, and only the active one updates (the "which adapter
+  to adapt" claim).
+- A4 (exploratory, optional) + stability monitor: gradient-norm / update
+  magnitude clamp as a heuristic LLM "M5" — explicitly labeled new
+  research, NOT a validation of Paper C's homeostat (D2 boundary).
+
+### 7.4 Metrics and discipline (all inherited from Paper C)
+
+| Metric | Inherited from |
+|---|---|
+| Stream perplexity (overall + per-domain) | S10 accuracy |
+| Post-switch T_adapt in tokens (known switches, running-window threshold) | S15/S5b controlled protocol |
+| Forgetting: perplexity on the previous domain after switching away | LLM-specific addition (Paper C has no episodic-memory metric; this is where the negative result is expected) |
+| tau_m sweep, 10 seeds, paired differences, sign consistency | S16 |
+| Protocol stress: gate computed relative to noise injection | S16b |
+
+### 7.5 Prediction table (deduction from Paper C's committed results)
+
+| Paper C result | §7 prediction | Falsification criterion |
+|---|---|---|
+| S10: metadata equalizes accuracy on statistical tasks | A2/A3 improve stream perplexity over A1, strongest near switches | 0/10 seeds positive at every tau_m -> extension claim falsified (report as such; Paper C-consistent) |
+| S15: adaptation variance collapses (p90 76.5 -> 42) | A3 post-switch T_adapt variance << A1 | variance not reduced |
+| S16: benefit is timescale-sensitive | gain peaks near tau_m ~ L/4..L/2; report the sensitive interval | gain negative at all tau_m |
+| S16b V2: slow trace denoises state-level corruption | bonus arm: quantized activations; slow features improve perplexity under quantization noise | no improvement |
+| Paper C MC finding: metadata adds NO episodic memory | routing does not reduce forgetting beyond its structural domain separation; the gate alone does NOT retain content | (expect the negative; report honestly) |
+
+### 7.6 Budget and integration
+
+- CPU budget: 10 seeds x ~4 tau_m x 3 arms x 10-20k tokens on a ~1M-param
+  model: hours, with Pool over seeds (ML class: Pool only around
+  independent trials, torch.manual_seed per trial — CLAUDE.md).
+- Integration: Paper C Section 7 (7.1 motivation, 7.2 setup, 7.3 results,
+  7.4 discussion) -> +2-3 pages two-column (elsarticle preprint grows to
+  ~11-13 pages). If the page cap is tight, the PoC can be cut to A1 vs A3
+  only.
+- Scope claim (must be locked in the paper): "the principles instantiate
+  on a Transformer substrate" — NOT "this beats Online-LoRA/SLoRA on
+  benchmarks". No SOTA claims.
+
+## 8. Conclusion of the deduction
 
 **Yes — Paper C can be applied to large models, but with boundaries that
 Paper C's own evidence dictates:**
