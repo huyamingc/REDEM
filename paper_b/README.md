@@ -9,7 +9,7 @@ Online learning architecture paper (single author). Target: *Neural Networks*
 | File | Purpose |
 |---|---|
 | `PAPER_B.tex` | Submission-ready LaTeX (compiles standalone with `article`) |
-| `PAPER_B.pdf` | Compiled PDF (9 pages, MiKTeX / pdflatex ×2, zero warnings) |
+| `PAPER_B.pdf` | Compiled PDF (10 pages, MiKTeX / pdflatex ×2, zero warnings) |
 | `PAPER_B_draft.md` | Markdown draft (source prose; revision history in `../NEW_ALGORITHM_PLAN.md`) |
 | `PAPER_B_sketch.md` | Outline, figure/table inventory, key numbers |
 | `README.md` | This file |
