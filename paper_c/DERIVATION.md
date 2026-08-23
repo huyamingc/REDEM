@@ -419,15 +419,44 @@ Readings:
 - r0_mc unchanged across variants (6.16): no episodic-memory effect,
   regardless of protocol.
 
+### s5b - S5 three-arm controlled re-measurement (DONE, 10 seeds)
+
+Script `scripts/s5b_controlled_adaptation.py` (Type: PAPER). The S5
+fast/dual/slow metadata arms on the Si3N4 substrate (parallel +
+random_graph_k25), re-measured under the s15 controlled protocol (known
+switch instants, switch-relative pulses). 100 runs. Overall accuracy
+reproduces S5 exactly (e.g. random_graph fast 0.9734, dual(200) 0.9946).
+
+| substrate | arm (tau_m) | T40 mean | T40 p90 | T200 mean | T200 median |
+|---|---|---|---|---|---|
+| parallel | fast | 83.7 | 136.6 | 264.8 | 255.5 |
+| parallel | dual (200) | 46.8 | 55.5 | 206.9 | 201.5 |
+| parallel | dual (1000) | 45.2 | 54.0 | 202.3 | 201.0 |
+| parallel | slow (200) | 46.6 | 52.2 | 210.8 | 203.0 |
+| random_graph | fast | 123.4 | 170.4 | 303.9 | 301.0 |
+| random_graph | dual (200) | 51.5 | 64.0 | 211.2 | 205.0 |
+| random_graph | dual (1000) | 54.3 | 73.2 | 210.7 | 206.5 |
+| random_graph | slow (200) | 46.9 | 52.0 | 206.3 | 204.0 |
+
+Readings:
+
+- **The honest substrate adaptation speedup of the metadata is a factor
+  1.3-2.4 (T200: 265-304 -> 202-211 pulses; T40: 84-123 -> 45-54), not the
+  "9-20x" claimed from window positions.** The absolute gain is 60-90
+  pulses faster of a ~200-300 pulse recovery.
+- The substrate fast readout is genuinely slow (T200 ~265-304) - much
+  slower than the ESN fast arm (s15 T200 ~210), because the substrate's
+  fast channel must integrate the regime statistics over the RLS weight
+  memory.
+- Used to revise Paper B Section 4.3 / abstract / Section 4.6 (window
+  positions now reported with their exact absolute equivalents, position +
+  199).
+
 ### Remaining experiments (not yet run)
 
 1. **s17 - substrate stress (optional).** Vary ESN spectral radius
    {0.7, 0.9, 0.99} and heterogeneity to show the S10 equalizer gain is
    substrate-insensitive.
-2. **S5-arms controlled rerun (optional, for Paper B).** If Paper B
-   Section 4.3 wording is revised, rerun the fast/dual/slow substrate
-   metadata arms under the s15 controlled protocol to quantify the true
-   adaptation ratio on the substrate.
 
 ## 9. Headline claims (locked on s14 + s16 + s16b, 10 seeds each)
 
@@ -437,9 +466,10 @@ Readings:
 2. On long-horizon statistical tasks the performance bottleneck is timescale
    coverage, not substrate physics; the same slow trace equalizes ESN and
    Si3N4 reservoirs on accuracy and speeds post-switch adaptation (S10
-   accuracy; s15 controlled protocol: ~10 pulses faster of ~200, plus a
-   variance collapse from p90 76.5 to 42). The "47x" / "9-20x" ratios in
-   S10/S5 were window-position metric artifacts and are NOT used.
+   accuracy; controlled protocols: esn arms T40 49.9 -> 40.6 (s15), substrate
+   arms T200 265-304 -> 202-211, factor 1.3-2.4 (s5b)). The "47x" /
+   "9-20x" ratios in S10/S5 were window-position metric artifacts and are
+   NOT used.
 3. The slow trace is a *statistical memory*, not an episodic one: it does
    not add raw memory capacity (S14 + S16: MC unchanged at nominal physics,
    and below the fast baseline under disturbance at EVERY tau_m in
@@ -471,10 +501,10 @@ Readings:
   in the title (it is not the metadata's property).
 - Venue: Neurocomputing vs Neural Networks (short/communication) vs similar
   (open).
-- **Paper B wording flag (user decision).** s15 shows the S10 "47x" and S5
-  "9-20x faster adaptation" ratios are window-position metric artifacts;
-  the true advantage is ~10 pulses (~5%) plus variance collapse. Paper B
-  Section 4.3 and the README headline rows should be softened accordingly
-  (or verified with an S5-arms controlled rerun first).
+- **Paper B wording (RESOLVED 2026-02-17).** s15/s5b show the S10 "47x" and
+  S5 "9-20x faster adaptation" ratios were window-position metric artifacts;
+  the true effects are ~10 pulses + variance collapse (ESN arms, s15) and
+  factor 1.3-2.4 (substrate arms, s5b). Paper B abstract / Section 4.3 /
+  Section 4.5 / Section 4.6 were revised accordingly.
 - Citation closure: cite Paper B Section 4.5 as the seed of Paper C once B
   is public (preprint or acceptance).

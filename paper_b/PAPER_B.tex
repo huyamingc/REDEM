@@ -55,7 +55,8 @@ On a drifting two-class task, REDEM tracks an abrupt class-interval inversion
 within a few hundred pulses, while frozen batch learners (GRU, tiny
 transformer) --- perfect before the drift --- become systematically wrong after
 it and never recover. The dual-timescale memory speeds regime adaptation
-9--20$\times$; the chaos homeostat restores 8--18\% of post-disturbance
+(1.3--2.4$\times$, switch-relative controlled measurement); the chaos
+homeostat restores 8--18\% of post-disturbance
 substrate memory (up to $+25\%$ at the edge of chaos, $+32\%$ after three
 sequential disturbances); and the integrated system matches or beats every
 single-mechanism ablation and the bare baseline (0.996 vs.\ 0.988/0.994/0.973,
@@ -289,9 +290,12 @@ On regime\_switch (where fast memory is provably insufficient), the
 dual-timescale readout (fast + metadata, $\tau_m\in\{200,1000\}$) outperforms
 the fast-only readout by +1.3~pp on the uncoupled substrate (paired $t=19.6$,
 $p<0.0001$) and +2.1~pp on the near-critical substrate ($t=20.2$, $p<0.0001$),
-and --- the larger effect --- adapts to regime boundaries 9--20$\times$ faster
-(3--12 pulses vs.\ 66--105 pulses): the slow trace's low-pass character smooths
-the statistical transition. The metadata-only readout nearly matches the dual
+and --- alongside the accuracy gain --- adapts to regime boundaries faster:
+under a switch-relative controlled measurement (known switch instants,
+200-pulse window) the fast readout needs 265--304 pulses to re-stabilize
+vs.\ 202--211 for the dual readout (factor 1.3--1.4 on T200, 1.6--2.4 on the
+finer T40): the slow trace's low-pass character smooths the statistical
+transition. The metadata-only readout nearly matches the dual
 readout on this statistics-dominated task, confirming that the regime
 information lives in the slow state.
 
@@ -371,10 +375,13 @@ $\mathbf{0}$ & $\mathbf{11.79}$ & $\mathbf{10.30}$ & $\mathbf{7.94}$ & $\mathbf{
 \subsection{Integration and baselines}
 \label{sec:baselines}
 
-\textbf{Ablation matrix.} On regime\_switch, the full system (0.996,
-adaptation 3 pulses) matches or beats every single-mechanism ablation:
-removing the metadata drops to 0.988 (adaptation 36), removing plasticity to
-0.994 (10), removing the homeostat ties at 0.996 (3, its value is in disturbed
+\textbf{Ablation matrix.} On regime\_switch, the full system (0.996;
+boundary adaptation 3 window units, i.e.\ $\sim$202 pulses after the switch)
+matches or beats every single-mechanism ablation:
+removing the metadata drops to 0.988 (adaptation 36 window units,
+$\sim$235 pulses --- the largest degradation), removing plasticity to
+0.994 (10, $\sim$209 pulses), removing the homeostat ties at 0.996
+(3, $\sim$202 pulses, its value is in disturbed
 scenarios per Section~\ref{sec:homeo}); the full system beats the bare
 baseline (RLS on fast features, fixed substrate) by +2.28~pp (paired $t=19.4$,
 $p<0.0001$). At
@@ -417,7 +424,9 @@ ESN-with-metadata 0.998, ESN-fast 0.996, REDEM-full 0.994 (means over 10 seeds;
 steady accuracy 1.000 for all; the REDEM-full 0.994 here is one independent
 seed draw of the 0.996 of Section~\ref{sec:baselines}). Two conclusions follow. (i) The metadata is a
 \emph{general, transferable} mechanism: it improves the ESN (0.996
-$\rightarrow$ 0.998, adaptation 11 $\rightarrow$ 0 pulses) and REDEM (baseline
+$\rightarrow$ 0.998; boundary adaptation T40 49.9 $\rightarrow$ 40.6 pulses
+with p90 76.5 $\rightarrow$ 42.0 under the switch-relative controlled
+protocol) and REDEM (baseline
 0.973 $\rightarrow$ full 0.994) alike --- the long-horizon statistical memory is
 carried by the mechanism, not by any particular substrate. (ii) REDEM's
 differentiation is therefore not raw accuracy on this task (where the ESN's

@@ -4,18 +4,18 @@ Working title (user proposal, adopted): Dissecting Online Learning
 Mechanisms: Statistical Memory, Homeostatic Recovery, and Substrate Physics
 are Non-Transferable
 
-Status: post-s14, post-s16, post-s15, post-s16b (all 10 seeds). The
-three-mechanism disentanglement thesis is adopted (user gate, 2026-02-17).
-The decisive experiments are DONE: s14 falsifies "metadata transfers
-disturbance robustness" (the +32% recovery is homeostat-driven); s16
-confirms the strong claim at every tau_m in {200, 500, 1000, 2000}; s16b
-shows the falsification is robust in sign to the probe protocol but
+Status: post-s14, post-s16, post-s15, post-s16b, post-s5b (all 10 seeds).
+The three-mechanism disentanglement thesis is adopted (user gate,
+2026-02-17). The decisive experiments are DONE: s14 falsifies "metadata
+transfers disturbance robustness" (the +32% recovery is homeostat-driven);
+s16 confirms the strong claim at every tau_m in {200, 500, 1000, 2000};
+s16b shows the falsification is robust in sign to the probe protocol but
 protocol-dependent in magnitude (readout-noise -0.69 vs state-noise -0.01);
-s15 re-measures adaptation with known switch instants (~10 pulses faster of
-~200, variance collapse; the old "47x"/"9-20x" ratios were metric
-artifacts). Only s17 (optional substrate stress) remains before drafting.
-Target: short paper ~6 pages (Neurocomputing or Neural Networks
-short/communication - decide before submission).
+s15/s5b re-measure adaptation with known switch instants (ESN arms ~10
+pulses + variance collapse; substrate arms factor 1.3-2.4; the old
+"47x"/"9-20x" ratios were metric artifacts, and Paper B was revised).
+Only s17 (optional substrate stress) remains before drafting. PAPER_C.tex
+drafted (target ~6 pages; venue decision pending).
 
 ## Positioning (one paragraph, honest)
 
@@ -82,10 +82,12 @@ ESN: in S10 the ESN+metadata arm has the best overall accuracy.
      robust in sign (0/10 positive everywhere); magnitude protocol-
      dependent: V0 (readout noise) -0.69, V1 (std-slow) -0.66, V2
      (state noise) -0.01 - the metadata denoises state-level corruption.
-   - S15 controlled adaptation: known switch instants; T40 40.6 (dual) vs
-     49.9 (fast) vs 52.7 (redem), T40 p90 42 vs 76.5; the "47x"/"9-20x"
+   - S15 controlled adaptation (esn arms): known switch instants; T40 40.6
+     (dual) vs 49.9 (fast) vs 52.7 (redem), T40 p90 42 vs 76.5.
+   - S5b controlled re-measurement (substrate arms): T200 fast 264.8-303.9
+     vs dual/slow 202-211 pulses (factor 1.3-2.4); the "47x"/"9-20x"
      adaptation ratios are window-position artifacts - report the honest
-     ~10-pulse effect + variance collapse.
+     factors + variance collapse.
 5. **Discussion** (~0.8 p)
    - The disentanglement thesis; honesty paragraph (esn_dual best overall
      accuracy; the +32% is homeostat, not metadata; substrate MC advantage
@@ -106,9 +108,10 @@ ESN: in S10 the ESN+metadata arm has the best overall accuracy.
 
 ## Figures (vector PDF only, per repo rule)
 
-- Fig. 1: slow-trace kernel h_m(t) vs substrate kernel M(t) (Eq. 3 and
-  Paper A M(t)); log-log tails. (FIG script: `gen_paperC_fig1_kernel.py`,
-  not yet written)
+- Fig. 1 (DONE): slow-trace kernel h_m(k) vs substrate kernel M(k)
+  (Eq. 3 and Paper A M(t)); log-log tails, tau_m in {200,500,1000}.
+  Output `figures/paperC_fig1_kernel.pdf` via
+  `scripts/gen_paperC_fig1_kernel.py`.
 - Fig. 2 (DONE): post-disturbance MC recovery vs tau_m, esn_dual vs
   esn_fast baseline and redem_reg anchor; right panel r3 NMSE vs tau_m.
   Output `figures/paperC_fig2_recovery.pdf` via

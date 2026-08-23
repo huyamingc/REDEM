@@ -56,18 +56,22 @@ overall accuracy.
 | `../data/s16_tau_m_pressure_test_v1.*` | S16 pressure test: r3 MC paired diffs -0.70/-0.69/-0.68/-0.68 at tau_m 200/500/1000/2000 (0/10 positive), strong claim locked |
 | `../data/s15_controlled_adaptation_v1.*` | S15 controlled adaptation: T40 40.6 vs 49.9 (dual vs fast), p90 42 vs 76.5; "47x" ratio = metric artifact |
 | `../data/s16b_falsification_stress_test_v1.*` | S16b probe stress: 0/10 positive at all (tau_m, variant); magnitude V0 -0.69 -> V2 -0.01 (state-noise denoising) |
+| `../data/s5b_controlled_adaptation_v1.*` | S5b substrate arms controlled: T200 265-304 (fast) vs 202-211 (dual), factor 1.3-2.4; overall acc reproduces S5 |
 | `../scripts/esn_metadata_comparison.py` | S10 producer script |
 | `../scripts/s14_esn_disturbance_chain.py` | S14 producer script (Type: PAPER) |
 | `../scripts/s16_tau_m_pressure_test.py` | S16 producer script (Type: PAPER) |
 | `../scripts/s15_controlled_adaptation.py` | S15 producer script (Type: PAPER) |
 | `../scripts/s16b_falsification_stress_test.py` | S16b producer script (Type: PAPER) |
+| `../scripts/s5b_controlled_adaptation.py` | S5b producer script (Type: PAPER; Paper B revision evidence) |
 
 ## Experiments status
 
 - DONE: s14 (ESN+metadata under the disturbance chain), s16 (tau_m
-  pressure test), s15 (controlled adaptation), s16b (probe stress test) -
-  all 10 seeds; see `DERIVATION.md` Section 8.
+  pressure test), s15 (controlled adaptation, ESN arms), s16b (probe
+  stress test), s5b (S5 substrate arms controlled) - all 10 seeds; see
+  `DERIVATION.md` Section 8.
 - PENDING: s17 (substrate stress, optional).
+- PAPER_C.tex drafted (see `PAPER_C.tex`).
 
 ## Open decisions (user gates)
 

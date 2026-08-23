@@ -64,7 +64,7 @@ letter points).
 
 ## Scripts
 
-All 30 committed scripts in `scripts/`, typed per `CLAUDE.md`
+All 32 committed scripts in `scripts/`, typed per `CLAUDE.md`
 (ML > CORE > PAPER > FIG > EXPLORE). Two legacy scripts from the prior
 Si₃N₄-pulse-encoding project are kept as shared dependencies (imported by the
 new code) and are never modified.
@@ -95,11 +95,13 @@ new code) and are never modified.
 | `s16_tau_m_pressure_test.py` | PAPER | Paper C: τ_m ∈ {200,500,1000,2000} stress test — falsification robust across metadata timescales (10 seeds) |
 | `s15_controlled_adaptation.py` | PAPER | Paper C: controlled adaptation protocol with known switch instants (10 seeds) |
 | `s16b_falsification_stress_test.py` | PAPER | Paper C: probe-protocol stress test (V0/V1/V2, 2 τ_m, 10 seeds) |
+| `s5b_controlled_adaptation.py` | PAPER | S5 three-arm controlled adaptation re-measurement (2 substrates, 10 seeds) |
 | `gen_architecture_schematic.py` | FIG | Paper Fig. 1 schematics (substrate / REDEM, M4↔M5 loop) |
 | `gen_substrate_phase_diagram.py` | FIG | S1 phase-diagram figure |
 | `gen_s2_curves.py` | FIG | S2 learning curves |
 | `gen_paper_figures.py` | FIG | batch: robustness / metadata / ablation / showdown |
 | `gen_paperA_supp_figures.py` | FIG | Paper A Supplementary Fig. S1 (CV sweep) |
+| `gen_paperC_fig1_kernel.py` | FIG | Paper C Fig. 1: slow-trace kernel vs material forgetting kernel |
 | `gen_paperC_fig2_recovery.py` | FIG | Paper C Fig. 2: post-disturbance MC recovery vs τ_m (s16) |
 
 Each FIG script emits a single vector `.pdf` (journal submission); the papers
