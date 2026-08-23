@@ -1,7 +1,7 @@
 # REDEM — Physics-Grounded Online Learning Architecture
 
 This repository contains the complete code, data, and figures for two
-companion papers:
+companion papers (plus a third in development):
 
 - **Paper A**: *"Memory and chaos in a physics-constrained relaxation
   substrate: phase diagram, multi-timescale forgetting, and disturbance
@@ -15,6 +15,14 @@ companion papers:
   — the online learning architecture (target: *Neural Networks*)
   → See [`paper_b/PAPER_B.pdf`](paper_b/PAPER_B.pdf) and
   [`paper_b/PAPER_B.tex`](paper_b/PAPER_B.tex)
+
+- **Paper C (in development)**: *"Dissecting Online Learning Mechanisms:
+  Statistical Memory, Homeostatic Recovery, and Substrate Physics are
+  Non-Transferable"* — three-mechanism disentanglement built on a falsifying
+  experiment (s14: metadata does not transfer disturbance robustness to an
+  ESN; s16: robust across τ_m ∈ [200, 2000])
+  → See [`paper_c/DERIVATION.md`](paper_c/DERIVATION.md) and
+  [`paper_c/PAPER_C_sketch.md`](paper_c/PAPER_C_sketch.md)
 
 **Two papers, one pipeline — two different stories.** Paper A is a physics /
 nonlinear-dynamics theory paper about what the substrate *computes*; Paper B
@@ -43,6 +51,7 @@ Data and figures live in `data/` and `figures/`.
 ```
 ├── paper_a/     Paper A: substrate characterization (PDF, LaTeX, drafts, submission README)
 ├── paper_b/     Paper B: REDEM online learning architecture (PDF, LaTeX, drafts, submission README)
+├── paper_c/     Paper C (in development): three-mechanism disentanglement (derivation, sketch, README)
 ├── scripts/     Shared simulation code (CORE substrate, tasks, readouts, figure scripts)
 ├── data/        All experiment results (CSV + JSON, 10-seed means)
 ├── figures/     All publication figures (vector PDF; no raster twins)
@@ -55,7 +64,7 @@ letter points).
 
 ## Scripts
 
-All 25 committed scripts in `scripts/`, typed per `CLAUDE.md`
+All 28 committed scripts in `scripts/`, typed per `CLAUDE.md`
 (ML > CORE > PAPER > FIG > EXPLORE). Two legacy scripts from the prior
 Si₃N₄-pulse-encoding project are kept as shared dependencies (imported by the
 new code) and are never modified.
@@ -82,11 +91,14 @@ new code) and are never modified.
 | `s11_disturbance_chain.py` | PAPER | E3: sequential disturbance chain (3 rounds, 10 seeds) |
 | `s12_lambda_target_sweep.py` | PAPER | E4: λ_target × CV optimization sweep (5 seeds) |
 | `s13_causal_audit.py` | PAPER | O4: causal leakage audit (7 arms, 3 seeds) |
+| `s14_esn_disturbance_chain.py` | PAPER | Paper C: ESN+metadata under the disturbance chain — falsifies metadata robustness transfer (3 arms, 10 seeds) |
+| `s16_tau_m_pressure_test.py` | PAPER | Paper C: τ_m ∈ {200,500,1000,2000} stress test — falsification robust across metadata timescales (10 seeds) |
 | `gen_architecture_schematic.py` | FIG | Paper Fig. 1 schematics (substrate / REDEM, M4↔M5 loop) |
 | `gen_substrate_phase_diagram.py` | FIG | S1 phase-diagram figure |
 | `gen_s2_curves.py` | FIG | S2 learning curves |
 | `gen_paper_figures.py` | FIG | batch: robustness / metadata / ablation / showdown |
 | `gen_paperA_supp_figures.py` | FIG | Paper A Supplementary Fig. S1 (CV sweep) |
+| `gen_paperC_fig2_recovery.py` | FIG | Paper C Fig. 2: post-disturbance MC recovery vs τ_m (s16) |
 
 Each FIG script emits a single vector `.pdf` (journal submission); the papers
 include the extension-less basename so `pdflatex` picks the vector file

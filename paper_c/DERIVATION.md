@@ -1,14 +1,19 @@
-# Paper C - Derivation Notes: The Metadata Equalizer
+# Paper C - Derivation Notes: Three Mechanisms, Three Roles
 
-**Working title**: The Metadata Equalizer: Substrate-Agnostic Slow-Trace
-Transfer and Disturbance Robustness in Online Reservoir Computing
+**Working title (user proposal, adopted)**: Dissecting Online Learning
+Mechanisms: Statistical Memory, Homeostatic Recovery, and Substrate Physics
+are Non-Transferable
 
-**Status**: derivation stage, s14 DONE. Anchors from committed full-seed
-data: `data/s10_esn_metadata_v1.*`, `data/s11_disturbance_chain_v1.*`,
-and the new `data/s14_esn_disturbance_chain_v1.*` (Section 8). The s14
-result falsifies the original "sequential robustness transfers" thesis and
-reframes the paper as a three-mechanism disentanglement (see Sections 5, 8,
-9). Experiments s15-s17 are still pending.
+**Status**: derivation stage, s14 + s16 DONE (10 seeds each). Anchors from
+committed full-seed data: `data/s10_esn_metadata_v1.*`,
+`data/s11_disturbance_chain_v1.*`, `data/s14_esn_disturbance_chain_v1.*`,
+and `data/s16_tau_m_pressure_test_v1.*` (Sections 8-9). The thesis is the
+three-mechanism disentanglement (user-confirmed): metadata is a
+substrate-agnostic *statistical* memory; disturbance recovery is the
+homeostat's role; raw memory capacity is the substrate's physics. The
+original "sequential robustness transfers" claim was falsified by s14 and
+stress-tested by s16 (strong claim holds at all tau_m). Experiments s15 and
+s16+ (standardization stress test) are still pending.
 
 ---
 
@@ -18,7 +23,7 @@ reframes the paper as a three-mechanism disentanglement (see Sections 5, 8,
 |---|---|---|---|
 | Protagonist | substrate physics | REDEM (RLS + M3 + M4 + M5) | a single mechanism: the M3 slow trace |
 | Substrate | Si3N4 relaxation array | Si3N4; ESN as honest baseline | any reservoir: ESN primary, Si3N4 secondary |
-| Core claim | material forgetting kernel M(t), phase diagram, homeostat theory | training-inference-unified online learning, robust to disturbance | slow trace = synthesized forgetting kernel, substrate-agnostic; the metadata equalizer |
+| Core claim | material forgetting kernel M(t), phase diagram, homeostat theory | training-inference-unified online learning, robust to disturbance | three-mechanism disentanglement: metadata = statistical memory (synthesized forgetting kernel, substrate-agnostic); homeostat = disturbance recovery; physics = raw memory |
 | New experiments needed | none | none | s14-s17 (Section 8) |
 
 Hard non-overlap rules:
@@ -303,22 +308,54 @@ Interpretation: three mechanisms, three roles - metadata = timescale
 coverage + noise attenuation (statistical memory); homeostat = disturbance
 recovery; substrate physics = raw memory capacity (r0 MC 10.19 vs 6.17).
 
+### s16 - tau_m pressure test (DONE, 10 seeds)
+
+Script `scripts/s16_tau_m_pressure_test.py` (Type: PAPER). Inherits the S14
+protocol; sweeps the metadata timescale tau_m in {200, 500, 1000, 2000}
+with arms esn_dual (10 seeds each) and the esn_fast baseline (tau_m = 0
+sentinel; identical to the S14 arm, reproducibility check). Output columns:
+`tau_m, arm, seed, r0_mc, r1_mc, r2_mc, r3_mc, r3_nmse`.
+
+Mean over 10 seeds (judgment rule verdict: STRONG CLAIM holds):
+
+| tau_m | r0_mc | r1_mc | r2_mc | r3_mc | r3_nmse | paired diff r3_mc (dual-fast) |
+|---|---|---|---|---|---|---|
+| 200 (dual) | 6.16 | 1.04 | 0.99 | 1.04 | 0.0254 | -0.701 +- 0.144 (0/10 positive) |
+| 500 (dual) | 6.16 | 1.04 | 1.00 | 1.05 | 0.0251 | -0.693 +- 0.144 (0/10) |
+| 1000 (dual) | 6.16 | 1.05 | 1.01 | 1.06 | 0.0235 | -0.682 +- 0.143 (0/10) |
+| 2000 (dual) | 6.16 | 1.06 | 1.01 | 1.06 | 0.0235 | -0.678 +- 0.143 (0/10) |
+| 0 (fast) | 6.17 | 1.82 | 1.76 | 1.74 | 0.0277 | - |
+
+Readings:
+
+- **The falsification is robust across the entire tau_m range.** At every
+  tau_m, esn_dual r3 MC sits ~0.68-0.70 below esn_fast with 0/10 seeds
+  positive (~5x the paired std). There is no sensitive interval where the
+  metadata closes the MC gap; the weak monotonic trend (r3 MC 1.04 -> 1.06
+  as tau_m grows) does not approach esn_fast (1.74).
+- Noise attenuation transfers at all tau_m: r3 NMSE dual 0.0235-0.0254 vs
+  fast 0.0277 (9-10/10 seeds better, improving with tau_m).
+- Reproducibility: esn_fast baseline and tau_m=500 match the S14 arms
+  exactly (fast r0 6.17/r3 1.74; dual tau_m=500 r0 6.16/r3 1.05).
+
+**Paper C decision (user gate, 2026-02-17): adopt the strong claim** - the
+metadata is non-transferable for MC robustness; no sensitive interval needs
+to be flagged. The weak claim ("typical timescales 200-1000") is NOT
+needed.
+
 ### Remaining experiments (not yet run)
 
 1. **s15 - Controlled adaptation protocol.** Known switch instants; report
    T_adapt distribution per arm (fixes the windowed-statistic ambiguity of
    S10's adapt_time). Needed for the Prop. 3 claim.
-2. **s16 - tau_m sweep on ESN and REDEM.** tau_m in {50, 200, 500, 1000,
-   2000}; verify (a) the S10 ceiling is controlled by tau_m, (b) the
-   Prop. 1 kernel prediction on a correlated-input task, and (c) whether
-   the S14 MC finding (metadata does not add episodic memory) is robust to
-   feature standardization and tau_m - the falsification should be stress-
-   tested before it enters the paper.
+2. **s16+ - Falsification stress test (optional).** Re-run the dual MC probe
+   with S10-style feature standardization (per-unit z-score from the first
+   30%) to confirm the s14/s16 MC finding is not a preprocessing artifact.
 3. **s17 - substrate stress (optional).** Vary ESN spectral radius
    {0.7, 0.9, 0.99} and heterogeneity to show the S10 equalizer gain is
    substrate-insensitive.
 
-## 9. Headline claims (honest wording; s14 locked, s15-s16 pending)
+## 9. Headline claims (locked on s14 + s16, 10 seeds each)
 
 1. A single algorithmic component - a slow exponential trace of reservoir
    states - constitutes a synthesized forgetting kernel with a controllable
@@ -326,32 +363,38 @@ recovery; substrate physics = raw memory capacity (r0 MC 10.19 vs 6.17).
 2. On long-horizon statistical tasks the performance bottleneck is timescale
    coverage, not substrate physics; the same slow trace equalizes ESN and
    Si3N4 reservoirs on accuracy and collapses post-switch adaptation ~47x
-   (Proposition 2-3; S10 data).
+   (Propositions 2-3; S10 data).
 3. The slow trace is a *statistical memory*, not an episodic one: it does
-   not add raw memory capacity (S14: MC unchanged at nominal physics, and
-   slightly degraded under disturbance on the ESN, 0/10 seeds positive) but
-   it attenuates readout noise on the online task (S14 r3 NMSE -9.5%,
-   10/10 seeds; Proposition 4).
+   not add raw memory capacity (S14 + S16: MC unchanged at nominal physics,
+   and below the fast baseline under disturbance at EVERY tau_m in
+   {200,500,1000,2000}, 0/10 seeds positive) but it attenuates readout
+   noise on the online task (S14/S16 r3 NMSE -9.5% to -15%, 9-10/10 seeds;
+   Proposition 4).
 4. Three mechanisms, three roles (the disentanglement thesis, S10 + S11 +
-   S14): metadata = timescale coverage and noise attenuation (statistical
-   memory); homeostat = sequential disturbance recovery (+32% in S11,
-   +18% r1->r3 in S14, kappa 25.3->28.5); substrate physics = raw memory
-   capacity (r0 MC 10.19 vs ~6.17 for the ESN).
+   S14 + S16): metadata = timescale coverage and noise attenuation
+   (statistical memory); homeostat = sequential disturbance recovery (+32%
+   in S11, +18% r1->r3 in S14, kappa 25.3->28.5); substrate physics = raw
+   memory capacity (r0 MC 10.19 vs ~6.17 for the ESN). The mechanisms are
+   functionally non-transferable: no tau_m lets the metadata reproduce the
+   homeostat's recovery, and no algorithm in this work closes the
+   substrate's raw-memory lead.
 
 ## 10. Open decisions (user gates)
 
-- **Thesis reframing (decided by s14's falsification; user confirmation
-  required).** The original "sequential robustness transfers" claim is
-  falsified: the +32% recovery is homeostat-driven. Recommended thesis:
-  the three-mechanism disentanglement (Section 9, claim 4) - metadata is a
-  substrate-agnostic *statistical* memory; disturbance recovery is the
-  homeostat's job; raw memory is the substrate's physics.
-- **Title.** If the disentanglement thesis is adopted, "Disturbance
-  Robustness" should move out of the title (it is not the metadata's
-  property); suggested working title becomes: "The Metadata Equalizer:
-  a substrate-agnostic statistical memory for online reservoirs".
-- Venue: Neurocomputing vs Neural Networks (short/communication) vs similar.
-- Run s15-s16 before drafting? (Recommended: yes - s15 fixes the Prop. 3
-  adaptation claim, s16 stress-tests the falsification before it is printed.)
-- Citation closure: cite Paper B Section 4.5 as the seed of Paper C once B is
-  public (preprint or acceptance).
+- **Thesis reframing (ADOPTED, 2026-02-17).** The three-mechanism
+  disentanglement thesis (Section 9, claim 4) is the Paper C core: metadata
+  is a substrate-agnostic *statistical* memory; disturbance recovery is the
+  homeostat's job; raw memory is the substrate's physics. s16 confirms the
+  strong claim - no tau_m lets the metadata reproduce the homeostat's
+  recovery.
+- **Title (user proposal, 2026-02-17).** "Dissecting Online Learning
+  Mechanisms: Statistical Memory, Homeostatic Recovery, and Substrate
+  Physics are Non-Transferable". "Disturbance Robustness" no longer appears
+  in the title (it is not the metadata's property).
+- Venue: Neurocomputing vs Neural Networks (short/communication) vs similar
+  (open).
+- Run s15 (controlled adaptation protocol) and the s16+ standardization
+  stress test before drafting? (Recommended: yes - they harden Props. 3 and
+  the MC falsification.)
+- Citation closure: cite Paper B Section 4.5 as the seed of Paper C once B
+  is public (preprint or acceptance).

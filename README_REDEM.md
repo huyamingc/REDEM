@@ -48,8 +48,10 @@ the structure level (M4).
 | E3 | Sequential disturbance chain (3 rounds: τ-drift → edge-prune → noise, 10 seeds): regulated arm maintains MC 8.47 vs fixed 6.41 (+32%) after all three; κ drifts 26.2→28.5 (active compensation) |
 | E4 | λ_target sweep (4 values × 3 CV × 5 seeds): λ_target=0 (edge of chaos) is optimal — +25%/+19%/+5% MC gain over fixed at CV=0.1/0.2/0.4; monotonic improvement as λ→0 |
 | O4 | Causal audit (7 arms × 3 seeds): all adaptive mechanisms are causally clean — injecting 1% future data changes accuracy <0.02 pp; causal-split plasticity protocol within 0.01 pp of normal |
+| s14 | ESN+metadata under the S11 disturbance chain (3 arms × 10 seeds): the slow trace does NOT transfer MC robustness to the ESN (paired diffs −0.78/−0.76/−0.69, 0/10 seeds positive) — the S11 +32% recovery is homeostat-driven; metadata still attenuates readout noise (r3 NMSE −9.5%, 10/10 seeds); redem_reg reproduces the S11 anchor exactly |
+| s16 | τ_m pressure test (τ_m ∈ {200,500,1000,2000} × 10 seeds): the falsification is robust — esn_dual r3 MC ≤ esn_fast at every τ_m (0/10 seeds positive, ~5σ), no sensitive interval; noise-attenuation transfer holds at all τ_m. Paper C adopts the strong claim |
 
-## Scripts (25 committed; 2 legacy dependencies kept for compatibility)
+## Scripts (28 committed; 2 legacy dependencies kept for compatibility)
 
 | Script | Type | Purpose |
 |---|---|---|
@@ -75,9 +77,12 @@ the structure level (M4).
 | `s11_disturbance_chain.py` | PAPER | E3: sequential disturbance chain (3 rounds, 10 seeds) |
 | `s12_lambda_target_sweep.py` | PAPER | E4: λ_target × CV optimization sweep (5 seeds) |
 | `s13_causal_audit.py` | PAPER | O4: causal leakage audit (7 arms, 3 seeds) |
+| `s14_esn_disturbance_chain.py` | PAPER | Paper C: ESN+metadata under the disturbance chain — falsifies metadata robustness transfer (esn_fast/esn_dual/redem_reg, 10 seeds) |
+| `s16_tau_m_pressure_test.py` | PAPER | Paper C: τ_m ∈ {200,500,1000,2000} pressure test of the falsification (10 seeds) |
 | `gen_architecture_schematic.py` | FIG | Paper Fig 1 schematics (substrate / REDEM; M4↔M5 loop) |
 | `gen_paperA_supp_figures.py` | FIG | Paper A Supplementary Fig. S1 (task-level CV sweep) |
 | `gen_paper_figures.py` | FIG | Paper figure batch (robustness / metadata / ablation / showdown) |
+| `gen_paperC_fig2_recovery.py` | FIG | Paper C Fig. 2: post-disturbance MC recovery vs τ_m (s16) |
 
 ## Data and figures
 
@@ -88,14 +93,16 @@ the structure level (M4).
   `data/s9_baseline_showdown_v1.*`, `data/forgetting_curve_theory.csv`,
   `data/s10_esn_metadata_v1.*`, `data/s10_cv_sweep_v1.*`,
   `data/s11_disturbance_chain_v1.*`, `data/s12_lambda_target_sweep_v1.*`,
-  `data/s13_causal_audit_v1.*`
+  `data/s13_causal_audit_v1.*`, `data/s14_esn_disturbance_chain_v1.*`,
+  `data/s16_tau_m_pressure_test_v1.*`
   (CSV per run + JSON with params and per-cell aggregates).
 - Figures: `figures/substrate_phase_diagram_v2.pdf`,
   `figures/s2_online_readout_v1.pdf`, `figures/forgetting_curve_theory.pdf`,
   `figures/paperA_fig1_substrate.pdf`, `figures/paperA_fig4_robustness.pdf`,
   `figures/paperA_figS1_cv_sweep.pdf` (Supplementary Fig. S1),
   `figures/paperB_fig1_redem.pdf`, `figures/paperB_fig3_metadata.pdf`,
-  `figures/paperB_fig5_ablation.pdf`, `figures/paperB_fig6_showdown.pdf`
+  `figures/paperB_fig5_ablation.pdf`, `figures/paperB_fig6_showdown.pdf`,
+  `figures/paperC_fig2_recovery.pdf` (Paper C, in development)
   (vector PDF only; the papers include the extension-less basename so
   `pdflatex` picks the vector version).
 
@@ -124,6 +131,10 @@ scipy, matplotlib, torch (CPU) for S9 only.
 & .venv\Scripts\python.exe scripts\s11_disturbance_chain.py --sequential
 & .venv\Scripts\python.exe scripts\s12_lambda_target_sweep.py --sequential
 & .venv\Scripts\python.exe scripts\s13_causal_audit.py --sequential
+# Paper C experiments (s14, s16) + figure
+& .venv\Scripts\python.exe scripts\s14_esn_disturbance_chain.py --sequential
+& .venv\Scripts\python.exe scripts\s16_tau_m_pressure_test.py --sequential
+& .venv\Scripts\python.exe scripts\gen_paperC_fig2_recovery.py
 & .venv\Scripts\python.exe scripts\gen_architecture_schematic.py
 & .venv\Scripts\python.exe scripts\gen_paper_figures.py
 ```
@@ -158,6 +169,16 @@ ws-ijbc.cls / revtex4-2 for Paper A (IJBC/Chaos), elsarticle.cls for Paper B
   swap in elsarticle.cls at submission.
 - `PAPER_A_sketch.md` / `PAPER_B_sketch.md` — outlines, figure/table
   inventories, key-number tables.
+- `paper_c/` (in development) — Paper C "Dissecting Online Learning
+  Mechanisms: Statistical Memory, Homeostatic Recovery, and Substrate
+  Physics are Non-Transferable". The three-mechanism disentanglement thesis
+  is locked on s14/s16: the slow trace is a substrate-agnostic *statistical*
+  memory (S10 equalization, s14 noise attenuation) that does NOT transfer
+  disturbance robustness (s14 falsification, s16 τ_m robustness); +32%
+  sequential recovery is the homeostat's role; raw memory (MC 10.19 vs
+  6.17) is the substrate's physics. See `paper_c/DERIVATION.md` and
+  `paper_c/PAPER_C_sketch.md`; s15 (controlled adaptation) and s16+
+  follow-ups pending before drafting.
 
 ## Roadmap status
 
@@ -177,6 +198,9 @@ ws-ijbc.cls / revtex4-2 for Paper A (IJBC/Chaos), elsarticle.cls for Paper B
 | E3 disturbance chain | done (10 seeds, +32% MC after 3 sequential disturbances) |
 | E4 λ_target sweep | done (5 seeds × 4λ × 3CV, λ=0 optimal with +25% MC) |
 | O4 causal audit | done (3 seeds × 7 arms, all mechanisms causally clean) |
+| s14 ESN disturbance chain | done (10 seeds × 3 arms; metadata does not transfer MC robustness; +32% is homeostat) |
+| s16 τ_m pressure test | done (10 seeds × 4 τ_m; falsification robust, strong claim adopted) |
+| Paper C derivation | in progress (thesis locked; s15/s16+ follow-ups and PAPER_C.tex pending) |
 
 ## Open items
 
@@ -184,5 +208,9 @@ ws-ijbc.cls / revtex4-2 for Paper A (IJBC/Chaos), elsarticle.cls for Paper B
 - Swap journal document classes at submission (ws-ijbc / revtex4-2 for A;
   elsarticle for B).
 - Final algorithm name (working name REDEM).
-- Possible follow-ups: ESN-with-metadata fair comparison; S4's forward-model
-  intrinsic variant.
+- Paper C: run s15 (controlled adaptation protocol) and the s16+
+  follow-ups (MC falsification stress test under feature standardization)
+  before drafting `paper_c/PAPER_C.tex`; decide venue (Neurocomputing vs
+  Neural Networks short) and title (proposed:
+  "Dissecting Online Learning Mechanisms: Statistical Memory, Homeostatic
+  Recovery, and Substrate Physics are Non-Transferable").
