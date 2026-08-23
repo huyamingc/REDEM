@@ -139,7 +139,38 @@ extension must include the same:
   is reported as falsified — and that itself is a Paper C-consistent
   result (mechanisms do not transfer beyond their job).
 
-## 6. Conclusion of the deduction
+## 6. Scalability: the O(F^2) readout is width-bound, not parameter-bound
+
+The naive objection to REDEM on large models is the recursive-least-squares
+covariance: O(n^2) storage and update. On a 70B-parameter model that sounds
+catastrophic. The resolution is that REDEM's RLS never touches the
+substrate/backbone weights - it adapts only the READOUT W over the feature
+vector phi (the reservoir state in this paper; the frozen backbone's
+activations on a Transformer). The covariance P is F x F where F is the
+readout's FEATURE dimension, so:
+
+- **Output projection head**: F = model width d. For 7B-class (d=4096) the
+  covariance is d^2 ~= 16.7M entries (~67 MB fp32); for 70B-class (d=8192),
+  ~67M entries (~268 MB). The per-update cost is ~2-3 d^2 flops (tens to
+  hundreds of MFLOP) - independent of the vocabulary size and of the total
+  parameter count. Online updates amortize this per token or per chunk (no
+  BPTT, no full-batch recomputation).
+- **LoRA-style adapters as readouts**: if the adapter delta is B(A x), the
+  feature for an RLS update on B is the rank-r projection A x (r = 8-64),
+  so the per-adapter covariance is r x r - even cheaper than the head.
+  Total cost = (#adapted layers) x O(r^2), bounded by depth and rank, not
+  by the 70B count.
+- **What you must NOT do**: full-rank RLS over the concatenated adapter
+  parameter vector (that IS O(params^2) and infeasible). RLS lives in
+  activation/feature space - exactly how REDEM defines it (P over the
+  feature, never over substrate parameters).
+- **CPU feasibility on this project**: the numba RLS kernel at F=513 is
+  ~1-2 ms/step; F=8192 scales as (8192/513)^2 ~= 255x, i.e. ~0.3-0.5 s per
+  step on CPU - usable at chunk-granularity updates, trivial on GPU. The
+  PoC of Section 5 avoids RLS entirely (LoRA gradient updates gated by the
+  slow trace), so CPU-only is comfortable there.
+
+## 7. Conclusion of the deduction
 
 **Yes — Paper C can be applied to large models, but with boundaries that
 Paper C's own evidence dictates:**

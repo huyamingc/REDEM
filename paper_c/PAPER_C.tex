@@ -373,7 +373,14 @@ task timescale. The substrate's homeostat requires a Lyapunov estimate
 \textbf{Future work.} Consolidating stable, repeatedly encountered
 knowledge into the structural connectivity would create a hierarchy
 between fast tracking and slow accumulation, but introduces a
-consolidation-vs-overwrite trade-off beyond the present scope.
+consolidation-vs-overwrite trade-off beyond the present scope. Second,
+REDEM's readout is validated at medium reservoir scale ($N \le 1024$); on
+large Transformers the same online readout updates can be deployed
+directly on the output projection or on low-rank (LoRA-style) adapters.
+The recursive-least-squares update cost is $O(F^2)$ in the readout
+\emph{feature} dimension $F$ --- the model width (thousands) or an
+adapter rank (tens) --- not $O(P^2)$ in the total parameter count (tens
+of billions), so the full-rank bottleneck does not arise.
 
 \section{Conclusion}
 \label{sec:concl}
