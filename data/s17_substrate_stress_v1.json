@@ -1,0 +1,144 @@
+{
+  "params": {
+    "n_units": 256,
+    "cv_tau": 0.2,
+    "tau_slow": 500.0,
+    "spectral_radii": [
+      0.7,
+      0.9,
+      0.99
+    ],
+    "hetero_options": [
+      true,
+      false
+    ],
+    "esn": "input_scaling=0.5, base leaking_rate=0.2",
+    "rls_forgetting": 0.999,
+    "warmup": 200,
+    "task": "regime_switch (S10 protocol)",
+    "n_seeds": 10,
+    "quick": false
+  },
+  "aggregates": [
+    {
+      "spectral_radius": 0.7,
+      "hetero": false,
+      "arm": "esn_dual",
+      "n_runs": 10,
+      "overall_acc_mean": 0.9969777777777779,
+      "overall_acc_std": 0.0003777777777777736,
+      "steady_acc_mean": 1.0,
+      "steady_acc_std": 0.0
+    },
+    {
+      "spectral_radius": 0.7,
+      "hetero": false,
+      "arm": "esn_fast",
+      "n_runs": 10,
+      "overall_acc_mean": 0.9874111111111112,
+      "overall_acc_std": 0.0019283780685614067,
+      "steady_acc_mean": 1.0,
+      "steady_acc_std": 0.0
+    },
+    {
+      "spectral_radius": 0.7,
+      "hetero": true,
+      "arm": "esn_dual",
+      "n_runs": 10,
+      "overall_acc_mean": 0.9970444444444443,
+      "overall_acc_std": 0.0004012326685615106,
+      "steady_acc_mean": 1.0,
+      "steady_acc_std": 0.0
+    },
+    {
+      "spectral_radius": 0.7,
+      "hetero": true,
+      "arm": "esn_fast",
+      "n_runs": 10,
+      "overall_acc_mean": 0.9880777777777778,
+      "overall_acc_std": 0.0020221306450570868,
+      "steady_acc_mean": 1.0,
+      "steady_acc_std": 0.0
+    },
+    {
+      "spectral_radius": 0.9,
+      "hetero": false,
+      "arm": "esn_dual",
+      "n_runs": 10,
+      "overall_acc_mean": 0.9978999999999999,
+      "overall_acc_std": 0.00012619796323999218,
+      "steady_acc_mean": 1.0,
+      "steady_acc_std": 0.0
+    },
+    {
+      "spectral_radius": 0.9,
+      "hetero": false,
+      "arm": "esn_fast",
+      "n_runs": 10,
+      "overall_acc_mean": 0.9953777777777779,
+      "overall_acc_std": 0.0015228303732454929,
+      "steady_acc_mean": 1.0,
+      "steady_acc_std": 0.0
+    },
+    {
+      "spectral_radius": 0.9,
+      "hetero": true,
+      "arm": "esn_dual",
+      "n_runs": 10,
+      "overall_acc_mean": 0.9979111111111111,
+      "overall_acc_std": 0.00013877773329772157,
+      "steady_acc_mean": 1.0,
+      "steady_acc_std": 0.0
+    },
+    {
+      "spectral_radius": 0.9,
+      "hetero": true,
+      "arm": "esn_fast",
+      "n_runs": 10,
+      "overall_acc_mean": 0.9955111111111112,
+      "overall_acc_std": 0.0014999588471721042,
+      "steady_acc_mean": 1.0,
+      "steady_acc_std": 0.0
+    },
+    {
+      "spectral_radius": 0.99,
+      "hetero": false,
+      "arm": "esn_dual",
+      "n_runs": 10,
+      "overall_acc_mean": 0.9980777777777778,
+      "overall_acc_std": 0.00022798093920758843,
+      "steady_acc_mean": 1.0,
+      "steady_acc_std": 0.0
+    },
+    {
+      "spectral_radius": 0.99,
+      "hetero": false,
+      "arm": "esn_fast",
+      "n_runs": 10,
+      "overall_acc_mean": 0.9969777777777777,
+      "overall_acc_std": 0.0010046804049295506,
+      "steady_acc_mean": 1.0,
+      "steady_acc_std": 0.0
+    },
+    {
+      "spectral_radius": 0.99,
+      "hetero": true,
+      "arm": "esn_dual",
+      "n_runs": 10,
+      "overall_acc_mean": 0.998088888888889,
+      "overall_acc_std": 0.00020964402515681935,
+      "steady_acc_mean": 1.0,
+      "steady_acc_std": 0.0
+    },
+    {
+      "spectral_radius": 0.99,
+      "hetero": true,
+      "arm": "esn_fast",
+      "n_runs": 10,
+      "overall_acc_mean": 0.9971333333333334,
+      "overall_acc_std": 0.0008024653371230213,
+      "steady_acc_mean": 1.0,
+      "steady_acc_std": 0.0
+    }
+  ]
+}

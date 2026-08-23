@@ -53,8 +53,9 @@ the structure level (M4).
 | s15 | Controlled adaptation (10 seeds × 5 switches, known switch instants): T40 40.6 (dual) vs 49.9 (fast) vs 52.7 (redem); T40 p90 42 vs 76.5 — the true metadata adaptation effect is ~10 pulses + variance collapse; the "47×"/"9–20×" ratios are metric artifacts |
 | s16b | Probe-protocol stress test (10 seeds × 2 τ_m × 3 variants): falsification robust in sign (0/10 positive everywhere); magnitude protocol-dependent — V0 (readout noise) −0.69, V1 (std-slow) −0.66, V2 (state noise) −0.01 (EMA denoising nearly closes the gap) |
 | s5b | S5 three-arm controlled re-measurement (2 substrates × 5 arm configs × 10 seeds): T200 fast 264.8–303.9 vs dual/slow 202–211 pulses (factor 1.28–1.44; T40 factor 1.79–2.40); overall acc reproduces S5 exactly — Paper B §4.3/abstract revised |
+| s17 | Substrate stress (3 spectral radii × 2 hetero × 10 seeds): equalizer gain positive at all 6 ESN configs (+0.1 to +1.0 pp), magnitude tracks the fast channel's timescale starvation; heterogeneity irrelevant |
 
-## Scripts (32 committed; 2 legacy dependencies kept for compatibility)
+## Scripts (33 committed; 2 legacy dependencies kept for compatibility)
 
 | Script | Type | Purpose |
 |---|---|---|
@@ -85,6 +86,7 @@ the structure level (M4).
 | `s15_controlled_adaptation.py` | PAPER | Paper C: controlled adaptation protocol, known switch instants (10 seeds × 5 switches) |
 | `s16b_falsification_stress_test.py` | PAPER | Paper C: probe-protocol stress test (V0/V1/V2, 2 τ_m, 10 seeds) |
 | `s5b_controlled_adaptation.py` | PAPER | S5 three-arm controlled adaptation re-measurement (2 substrates, 10 seeds) |
+| `s17_substrate_stress.py` | PAPER | Paper C: ESN substrate stress (3 spectral radii × 2 hetero, 10 seeds) |
 | `gen_architecture_schematic.py` | FIG | Paper Fig 1 schematics (substrate / REDEM; M4↔M5 loop) |
 | `gen_paperA_supp_figures.py` | FIG | Paper A Supplementary Fig. S1 (task-level CV sweep) |
 | `gen_paper_figures.py` | FIG | Paper figure batch (robustness / metadata / ablation / showdown) |
@@ -102,7 +104,8 @@ the structure level (M4).
   `data/s11_disturbance_chain_v1.*`, `data/s12_lambda_target_sweep_v1.*`,
   `data/s13_causal_audit_v1.*`, `data/s14_esn_disturbance_chain_v1.*`,
   `data/s16_tau_m_pressure_test_v1.*`, `data/s15_controlled_adaptation_v1.*`,
-  `data/s16b_falsification_stress_test_v1.*`, `data/s5b_controlled_adaptation_v1.*`
+  `data/s16b_falsification_stress_test_v1.*`, `data/s5b_controlled_adaptation_v1.*`,
+  `data/s17_substrate_stress_v1.*`
   (CSV per run + JSON with params and per-cell aggregates).
 - Figures: `figures/substrate_phase_diagram_v2.pdf`,
   `figures/s2_online_readout_v1.pdf`, `figures/forgetting_curve_theory.pdf`,
@@ -145,6 +148,7 @@ scipy, matplotlib, torch (CPU) for S9 only.
 & .venv\Scripts\python.exe scripts\s16_tau_m_pressure_test.py --sequential
 & .venv\Scripts\python.exe scripts\s15_controlled_adaptation.py --sequential
 & .venv\Scripts\python.exe scripts\s16b_falsification_stress_test.py --sequential
+& .venv\Scripts\python.exe scripts\s17_substrate_stress.py --sequential
 & .venv\Scripts\python.exe scripts\gen_paperC_fig1_kernel.py
 & .venv\Scripts\python.exe scripts\gen_paperC_fig2_recovery.py
 # Paper B revision: S5 arms controlled re-measurement
@@ -214,7 +218,8 @@ ws-ijbc.cls / revtex4-2 for Paper A (IJBC/Chaos), elsarticle.cls for Paper B
 | s15 controlled adaptation | done (10 seeds × 5 switches; true effect ~10 pulses + variance collapse; "47×" is a metric artifact) |
 | s16b probe stress test | done (10 seeds × 2 τ_m × 3 variants; sign robust, magnitude protocol-dependent) |
 | s5b S5 controlled re-measurement | done (100 runs; T200 factor 1.28–1.44, T40 1.79–2.40; Paper B revised) |
-| Paper C derivation | in progress (thesis locked; PAPER_C.tex drafted, elsarticle preprint, 9 pp) |
+| s17 substrate stress | done (120 runs; equalizer gain positive at all ESN configs) |
+| Paper C derivation | in progress (thesis locked; PAPER_C.tex submission-ready; LLM extension designed in `paper_c/LLM_EXTENSION.md`) |
 
 ## Open items
 
@@ -224,8 +229,9 @@ ws-ijbc.cls / revtex4-2 for Paper A (IJBC/Chaos), elsarticle.cls for Paper B
 - Final algorithm name (working name REDEM).
 - Paper C: `paper_c/PAPER_C.tex` drafted (elsarticle preprint, 9 pp, zero
   warnings). Venue decided: Neurocomputing / Neural Networks short paper.
-  Remaining before submission: author placeholders, cover letter,
-  optional s17 substrate stress.
+  Remaining before submission: author placeholders, cover letter. Optional
+  follow-up: the LLM extension PoC designed in `paper_c/LLM_EXTENSION.md`
+  (tiny-transformer LoRA + slow-trace drift gate, CPU-only).
 - Paper B wording: revised (2026-02-17) - §4.3/§4.5/§4.6 and abstract use
   the controlled s15/s5b adaptation measurements (factor 1.3-2.4 instead
   of the artifact "9-20x").

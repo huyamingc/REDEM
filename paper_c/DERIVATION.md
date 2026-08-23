@@ -452,11 +452,41 @@ Readings:
   positions now reported with their exact absolute equivalents, position +
   199).
 
-### Remaining experiments (not yet run)
+### s17 - Substrate stress test (DONE, 10 seeds)
 
-1. **s17 - substrate stress (optional).** Vary ESN spectral radius
-   {0.7, 0.9, 0.99} and heterogeneity to show the S10 equalizer gain is
-   substrate-insensitive.
+Script `scripts/s17_substrate_stress.py` (Type: PAPER). ESN spectral
+radius {0.7, 0.9, 0.99} x heterogeneity {hetero-lr, uniform} x arms
+{esn_fast, esn_dual} x 10 seeds = 120 runs on regime_switch. Equalizer
+gain (dual minus fast overall accuracy) is POSITIVE at every
+configuration (sign-insensitive), and its magnitude tracks the fast
+channel's timescale starvation:
+
+| sr | hetero | dual | fast | gain |
+|---|---|---|---|---|
+| 0.70 | T | 0.9970 | 0.9881 | +0.0090 |
+| 0.90 | T | 0.9979 | 0.9955 | +0.0024 |
+| 0.99 | T | 0.9981 | 0.9971 | +0.0010 |
+| 0.70 | F | 0.9970 | 0.9874 | +0.0096 |
+| 0.90 | F | 0.9979 | 0.9954 | +0.0025 |
+| 0.99 | F | 0.9981 | 0.9970 | +0.0011 |
+
+Readings:
+
+- The metadata helps MOST when the fast ESN is weakest (sr=0.7, gain
+  ~+0.9-1.0 pp) and least when the ESN's own memory suffices (sr=0.99,
+  gain ~+0.1 pp) - consistent with Prop. 2 (timescale coverage is the
+  bottleneck; the metadata supplies exactly the missing timescale).
+- Heterogeneity barely matters (gains nearly identical between hetero and
+  uniform at each sr): the equalizer is insensitive to the ESN's internal
+  tuning - it is a property of the metadata, not an ESN-specific fix.
+- Reproducibility: sr=0.9/hetero=True reproduces S10 exactly (dual
+  0.9979, fast 0.9955).
+
+### Remaining experiments
+
+None mandatory. All Paper C supporting experiments are DONE (s10, s11,
+s14, s15, s16, s16b, s5b, s17). Optional future: the LLM extension PoC
+(see `LLM_EXTENSION.md`).
 
 ## 9. Headline claims (locked on s14 + s16 + s16b, 10 seeds each)
 

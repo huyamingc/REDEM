@@ -4,18 +4,20 @@ Working title (user proposal, adopted): Dissecting Online Learning
 Mechanisms: Statistical Memory, Homeostatic Recovery, and Substrate Physics
 are Non-Transferable
 
-Status: post-s14, post-s16, post-s15, post-s16b, post-s5b (all 10 seeds).
-The three-mechanism disentanglement thesis is adopted (user gate,
-2026-02-17). The decisive experiments are DONE: s14 falsifies "metadata
-transfers disturbance robustness" (the +32% recovery is homeostat-driven);
-s16 confirms the strong claim at every tau_m in {200, 500, 1000, 2000};
-s16b shows the falsification is robust in sign to the probe protocol but
-protocol-dependent in magnitude (readout-noise -0.69 vs state-noise -0.01);
-s15/s5b re-measure adaptation with known switch instants (ESN arms ~10
-pulses + variance collapse; substrate arms factor 1.3-2.4; the old
-"47x"/"9-20x" ratios were metric artifacts, and Paper B was revised).
-Only s17 (optional substrate stress) remains before drafting. PAPER_C.tex
-drafted (target ~6 pages; venue decision pending).
+Status: post-s14, post-s16, post-s15, post-s16b, post-s5b, post-s17
+(all 10 seeds). The three-mechanism disentanglement thesis is adopted
+(user gate, 2026-02-17). All supporting experiments are DONE: s14
+falsifies "metadata transfers disturbance robustness" (the +32% recovery
+is homeostat-driven); s16 confirms the strong claim at every tau_m in
+{200, 500, 1000, 2000}; s16b shows the falsification is robust in sign to
+the probe protocol but protocol-dependent in magnitude (readout-noise
+-0.69 vs state-noise -0.01); s15/s5b re-measure adaptation with known
+switch instants (ESN arms ~10 pulses + variance collapse; substrate arms
+factor 1.3-2.4; the old "47x"/"9-20x" ratios were metric artifacts, and
+Paper B was revised); s17 shows the equalizer gain is positive at all ESN
+configurations (magnitude tracks timescale starvation). PAPER_C.tex is
+drafted in elsarticle preprint (9 pp, zero warnings); the optional LLM
+extension PoC is designed in `LLM_EXTENSION.md`.
 
 ## Positioning (one paragraph, honest)
 

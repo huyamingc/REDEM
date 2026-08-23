@@ -34,8 +34,9 @@ overall accuracy.
 
 | File | Purpose |
 |---|---|
-| `DERIVATION.md` | The theory: Propositions 1-4, s14/s16 results, the locked disentanglement thesis, remaining experiments |
+| `DERIVATION.md` | The theory: Propositions 1-4, s14/s15/s16/s16b/s5b/s17 results, the locked disentanglement thesis |
 | `PAPER_C_sketch.md` | Section outline, figure/table inventory, key numbers, submission checklist |
+| `LLM_EXTENSION.md` | Deduction: whether/how the disentanglement thesis transfers to Transformer/LoRA systems (PoC design, falsification discipline) |
 | `README.md` | This file |
 
 ## Non-overlap with Papers A and B (hard rules)
@@ -59,6 +60,7 @@ overall accuracy.
 | `../data/s15_controlled_adaptation_v1.*` | S15 controlled adaptation: T40 40.6 vs 49.9 (dual vs fast), p90 42 vs 76.5; "47x" ratio = metric artifact |
 | `../data/s16b_falsification_stress_test_v1.*` | S16b probe stress: 0/10 positive at all (tau_m, variant); magnitude V0 -0.69 -> V2 -0.01 (state-noise denoising) |
 | `../data/s5b_controlled_adaptation_v1.*` | S5b substrate arms controlled: T200 265-304 (fast) vs 202-211 (dual), factor 1.3-2.4; overall acc reproduces S5 |
+| `../data/s17_substrate_stress_v1.*` | S17 substrate stress: equalizer gain positive at all 6 ESN configs (+0.1 to +1.0 pp), magnitude tracks timescale starvation |
 | `../scripts/esn_metadata_comparison.py` | S10 producer script |
 | `../scripts/s14_esn_disturbance_chain.py` | S14 producer script (Type: PAPER) |
 | `../scripts/s16_tau_m_pressure_test.py` | S16 producer script (Type: PAPER) |
@@ -70,10 +72,12 @@ overall accuracy.
 
 - DONE: s14 (ESN+metadata under the disturbance chain), s16 (tau_m
   pressure test), s15 (controlled adaptation, ESN arms), s16b (probe
-  stress test), s5b (S5 substrate arms controlled) - all 10 seeds; see
-  `DERIVATION.md` Section 8.
-- PENDING: s17 (substrate stress, optional).
-- PAPER_C.tex drafted (see `PAPER_C.tex`).
+  stress test), s5b (S5 substrate arms controlled), s17 (substrate stress:
+  equalizer gain positive at all ESN configs, magnitude tracks timescale
+  starvation) - all 10 seeds; see `DERIVATION.md` Section 8.
+- PAPER_C.tex drafted and submission-ready (elsarticle preprint, 9 pp,
+  zero warnings).
+- PENDING (optional): the LLM extension PoC - see `LLM_EXTENSION.md`.
 
 ## Open decisions (user gates)
 

@@ -67,7 +67,7 @@ letter points).
 
 ## Scripts
 
-All 32 committed scripts in `scripts/`, typed per `CLAUDE.md`
+All 33 committed scripts in `scripts/`, typed per `CLAUDE.md`
 (ML > CORE > PAPER > FIG > EXPLORE). Two legacy scripts from the prior
 Si₃N₄-pulse-encoding project are kept as shared dependencies (imported by the
 new code) and are never modified.
@@ -99,6 +99,7 @@ new code) and are never modified.
 | `s15_controlled_adaptation.py` | PAPER | Paper C: controlled adaptation protocol with known switch instants (10 seeds) |
 | `s16b_falsification_stress_test.py` | PAPER | Paper C: probe-protocol stress test (V0/V1/V2, 2 τ_m, 10 seeds) |
 | `s5b_controlled_adaptation.py` | PAPER | S5 three-arm controlled adaptation re-measurement (2 substrates, 10 seeds) |
+| `s17_substrate_stress.py` | PAPER | Paper C: ESN substrate stress — equalizer gain positive at all configs (120 runs) |
 | `gen_architecture_schematic.py` | FIG | Paper Fig. 1 schematics (substrate / REDEM, M4↔M5 loop) |
 | `gen_substrate_phase_diagram.py` | FIG | S1 phase-diagram figure |
 | `gen_s2_curves.py` | FIG | S2 learning curves |
