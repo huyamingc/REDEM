@@ -3,10 +3,12 @@
 **Working title**: The Metadata Equalizer: Substrate-Agnostic Slow-Trace
 Transfer and Disturbance Robustness in Online Reservoir Computing
 
-**Status**: derivation stage. No new data has been run for Paper C; every
-numerical anchor below is taken from committed, full-seed data
-(`data/s10_esn_metadata_v1.*`, `data/s11_disturbance_chain_v1.*`). The new
-experiments required to publish (Section 8) have not been run yet.
+**Status**: derivation stage, s14 DONE. Anchors from committed full-seed
+data: `data/s10_esn_metadata_v1.*`, `data/s11_disturbance_chain_v1.*`,
+and the new `data/s14_esn_disturbance_chain_v1.*` (Section 8). The s14
+result falsifies the original "sequential robustness transfers" thesis and
+reframes the paper as a three-mechanism disentanglement (see Sections 5, 8,
+9). Experiments s15-s17 are still pending.
 
 ---
 
@@ -139,6 +141,11 @@ Honest reading, to be locked into the paper text:
   about the mechanism, not about beating the ESN; REDEM's differentiation
   (material-set memory design, local sparse structure, robustness mechanisms)
   is Paper B's story, and is untouched by Paper C.
+- Scope of the equalizer: *statistical* tasks (accuracy and adaptation on
+  regime_switch). It does NOT equalize raw memory capacity - the S14 MC
+  probe shows the substrate at 10.19 vs ~6.17 for both ESN arms, and the
+  slow trace adds no MC on the ESN (r0 paired diff -0.0035). "Timescale
+  coverage" and "episodic memory capacity" are different quantities.
 
 ## 4. Proposition 3 - Why adaptation collapses: feature stationarity vs weight integration
 
@@ -173,8 +180,11 @@ is written - experiment s15.
 **Claim.** The EMA is a first-order low-pass filter; short fast-channel
 disturbances are attenuated in the metadata channel, and persistent
 disturbances cause the slow trace to *re-anchor* on the new statistics
-rather than corrupting it. Sequential robustness of the metadata channel
-follows.
+rather than corrupting it. This explains the transferable readout-noise
+attenuation observed in S14 (r3 NMSE -9.5%). It does NOT confer
+memory-capacity recovery: S14 shows the slow trace does not protect (and
+slightly degrades) MC under disturbance on the ESN; sequential recovery is
+the homeostat's role (S11).
 
 **Derivation.** The EMA transfer function has gain
 
@@ -188,18 +198,43 @@ pulse noise). A persistent disturbance (e.g. tau drift of the substrate) is
 within ~tau_m, which is exactly what an online tracker should do - the slow
 channel degrades gracefully instead of failing.
 
-**Data anchor (S11, 10 seeds, REDEM regulated arm; the metadata + homeostat
-system).** After three sequential disturbances (tau x1.5 drift at t=7000,
-40% edge pruning at t=14000, readout noise sigma=0.1 at t=21000), the
-regulated arm retains held-out memory MC = 8.47 +- 0.39 vs 6.41 +- 0.41 for
-the fixed-coupling arm (+32%), with the homeostat drifting kappa
-25.3 -> 26.2 -> 27.4 -> 28.5 to compensate.
+**Data anchor (S11, 10 seeds, REDEM regulated arm; the homeostat system).**
+After three sequential disturbances (tau x1.5 drift at t=7000, 40% edge
+pruning at t=14000, readout noise sigma=0.1 at t=21000), the regulated arm
+retains held-out memory MC = 8.47 +- 0.39 vs 6.41 +- 0.41 for the
+fixed-coupling arm (+32%), with the homeostat drifting kappa
+25.3 -> 26.2 -> 27.4 -> 28.5 to compensate. Note that the S11 features are
+fast-state only (no slow trace): the +32% recovery is produced by the
+homeostat alone.
 
-**Critical limitation.** S11 measures REDEM (metadata + homeostat + RLS), not
-ESN+metadata. The *transferable* statement "ESN+metadata also survives the
-sequential disturbance chain" is NOT supported by any existing data. It is
-the decisive missing experiment (s14) and must be run before the paper can
-make the continuity claim.
+**Transfer test (S14, 10 seeds, DONE - the decisive falsification).** The
+same disturbance chain was run with substrate-agnostic disturbance
+definitions on ESN arms with and without the slow trace (esn_fast vs
+esn_dual, see Section 8). Result: the metadata does NOT transfer sequential
+robustness in memory-capacity terms. Paired per-seed differences
+(esn_dual - esn_fast) on the MC probe are -0.78 +- 0.14 (r1), -0.76 +- 0.20
+(r2), -0.69 +- 0.14 (r3): consistently negative in 10/10 seeds (~5x the
+paired std) - the slow trace slightly *degrades* MC under disturbance on
+the ESN. The r0 paired difference is -0.0035 +- 0.0020 (no effect at
+nominal physics, as Prop. 1 predicts for i.i.d. input: smoothing destroys
+per-lag identifiability). Meanwhile redem_reg reproduces the S11 anchor
+exactly (r0 10.19, r1 7.17, r2 7.51, r3 8.47) and recovers +18% r1->r3,
+while neither ESN arm recovers (dual 1.04->1.05, fast 1.82->1.74).
+
+**What the metadata DOES transfer (S14, task NMSE).** On the online
+Mackey-Glass prediction task, the dual arm improves NMSE at the readout-
+noise round (r3: 0.0251 vs 0.0277, -9.5%, 10/10 seeds) and slightly at r1
+(0.0020 vs 0.0022, 10/10), consistent with the EMA low-pass attenuation of
+Prop. 4; it is slightly worse at r2 (0.0011 vs 0.0009, 10/10).
+
+**Attribution corrected.** The S11 +32% sequential recovery is homeostat-
+driven (kappa adaptation), not metadata-driven. The metadata's transferable
+role is (i) statistical/timescale coverage on regime tasks (S10) and
+(ii) readout-noise attenuation on the online task (S14 r3). The raw-memory
+advantage (r0 MC 10.19 substrate vs 6.17 ESN) is substrate physics, not
+algorithm. These three facts disentangle the three mechanisms - metadata,
+homeostat, substrate physics - which is the reframed thesis of Paper C
+(Section 9).
 
 ## 6. Related theory (anchor points, not derivations)
 
@@ -222,47 +257,101 @@ make the continuity claim.
 |---|---|---|
 | Metadata raises ESN accuracy and collapses adaptation | `data/s10_esn_metadata_v1.*` | 0.9955 -> 0.9979; adapt 11.22 -> 0.24 (10 seeds) |
 | Equalization band | same | all arms in [0.994, 0.998], steady 1.000 |
-| Sequential robustness of metadata+homeostat system | `data/s11_disturbance_chain_v1.*` | MC 8.47 vs 6.41 (+32%), kappa 25.3->28.5 (10 seeds) |
+| Sequential robustness = homeostat (S11, fast-state features only) | `data/s11_disturbance_chain_v1.*` | MC 8.47 vs 6.41 (+32%), kappa 25.3->28.5 (10 seeds) |
+| Metadata does NOT transfer MC robustness to ESN | `data/s14_esn_disturbance_chain_v1.*` | paired diffs -0.78/-0.76/-0.69 at r1/r2/r3, 0/10 positive (10 seeds) |
+| Metadata attenuates readout noise on the online task | same | r3 NMSE 0.0251 vs 0.0277 (-9.5%), 10/10 seeds |
+| redem_reg reproduces the S11 anchor exactly | same | r0 10.19, r1 7.17, r2 7.51, r3 8.47 |
+| Substrate raw memory > ESN raw memory | same | r0 MC 10.19 vs ~6.17 (both ESN arms) |
 | Regime length | `scripts/streaming_tasks.py` | RS_REGIME_LEN = 1500 |
 | Slow trace definition | `scripts/integrated_benchmark.py` | slow_ema, tau_m = 500 |
 
-## 8. Required new experiments (none run yet)
+## 8. Experiments: status and results
 
-Before drafting PAPER_C.tex, run (in order):
+### s14 - ESN+metadata under the disturbance chain (DONE, 10 seeds)
 
-1. **s14 - ESN+metadata under the S11 disturbance chain.** Same chain
-   (tau drift / edge prune / noise), arms: esn_fast, esn_dual, redem
-   (regulated). Decisive for the "sequential robustness transfers" claim.
-   10 seeds.
-2. **s15 - Controlled adaptation protocol.** Known switch instants; report
+Script `scripts/s14_esn_disturbance_chain.py` (Type: PAPER). Three arms:
+esn_fast (ESN fast states + RLS), esn_dual (ESN + slow trace tau_m=500 +
+RLS), redem_reg (S11 regulated arm, re-run via the s11 function for exact
+reproducibility). Disturbance chain cumulative, substrate-agnostic:
+timescale drift (substrate tau*=1.5; ESN leaking rate /=1.5) at t=7k,
+structure prune (substrate 40% edges; ESN 40% weights) at t=14k, readout
+noise sigma=0.1 at t=21k. Metrics per round: NMSE (Mackey-Glass online
+task) and Jaeger MC heldout probe at the settled physics (features [fast]
+or [fast, slow]).
+
+Mean over 10 seeds:
+
+| arm | r0_nmse | r3_nmse | r0_mc | r1_mc | r2_mc | r3_mc |
+|---|---|---|---|---|---|---|
+| esn_fast | 0.0069 | 0.0277 | 6.17 | 1.82 | 1.76 | 1.74 |
+| esn_dual | 0.0069 | 0.0251 | 6.16 | 1.04 | 1.00 | 1.05 |
+| redem_reg | 0.0657 | 0.1063 | 10.19 | 7.17 | 7.51 | 8.47 |
+
+Readings (all paired, 10 seeds):
+
+- MC r0: esn_dual = esn_fast (paired diff -0.0035) - no episodic-memory
+  effect of the slow trace, as Prop. 1 predicts for i.i.d. input.
+- MC r1-r3: esn_dual consistently BELOW esn_fast (paired diffs
+  -0.78/-0.76/-0.69, 0/10 seeds positive) - the metadata does not transfer
+  MC robustness to the ESN.
+- NMSE r3 (readout noise): esn_dual BETTER (0.0251 vs 0.0277, -9.5%,
+  10/10 seeds) - the EMA low-pass attenuation of Prop. 4 transfers.
+- redem_reg reproduces the S11 anchor exactly (10.19/7.17/7.51/8.47) and
+  recovers +18% r1->r3 via the homeostat; neither ESN arm recovers.
+
+Interpretation: three mechanisms, three roles - metadata = timescale
+coverage + noise attenuation (statistical memory); homeostat = disturbance
+recovery; substrate physics = raw memory capacity (r0 MC 10.19 vs 6.17).
+
+### Remaining experiments (not yet run)
+
+1. **s15 - Controlled adaptation protocol.** Known switch instants; report
    T_adapt distribution per arm (fixes the windowed-statistic ambiguity of
-   S10's adapt_time).
-3. **s16 - tau_m sweep on ESN and REDEM.** tau_m in {50, 200, 500, 1000,
-   2000}; verify (a) the performance ceiling is controlled by tau_m, and
-   (b) the Proposition-1 prediction: MC(k) 1/e horizon moves to ~tau_m + 16
-   pulses (Paper A MC(k) protocol on augmented features).
-4. **s17 - substrate stress (optional).** Vary ESN spectral radius
-   {0.7, 0.9, 0.99} and heterogeneity to show the metadata gain is
-   substrate-insensitive, sharpening "equalizer" vs "ESN-specific fix".
+   S10's adapt_time). Needed for the Prop. 3 claim.
+2. **s16 - tau_m sweep on ESN and REDEM.** tau_m in {50, 200, 500, 1000,
+   2000}; verify (a) the S10 ceiling is controlled by tau_m, (b) the
+   Prop. 1 kernel prediction on a correlated-input task, and (c) whether
+   the S14 MC finding (metadata does not add episodic memory) is robust to
+   feature standardization and tau_m - the falsification should be stress-
+   tested before it enters the paper.
+3. **s17 - substrate stress (optional).** Vary ESN spectral radius
+   {0.7, 0.9, 0.99} and heterogeneity to show the S10 equalizer gain is
+   substrate-insensitive.
 
-## 9. Headline claims (honest wording; to be locked after s14-s16)
+## 9. Headline claims (honest wording; s14 locked, s15-s16 pending)
 
 1. A single algorithmic component - a slow exponential trace of reservoir
    states - constitutes a synthesized forgetting kernel with a controllable
    horizon (Proposition 1).
 2. On long-horizon statistical tasks the performance bottleneck is timescale
    coverage, not substrate physics; the same slow trace equalizes ESN and
-   Si3N4 reservoirs (Proposition 2; S10 data).
-3. The slow trace collapses post-switch adaptation ~47x and the
-   metadata-carrying system survives three sequential disturbances (+32%
-   memory; Proposition 4; S11 anchor; ESN transfer pending s14).
+   Si3N4 reservoirs on accuracy and collapses post-switch adaptation ~47x
+   (Proposition 2-3; S10 data).
+3. The slow trace is a *statistical memory*, not an episodic one: it does
+   not add raw memory capacity (S14: MC unchanged at nominal physics, and
+   slightly degraded under disturbance on the ESN, 0/10 seeds positive) but
+   it attenuates readout noise on the online task (S14 r3 NMSE -9.5%,
+   10/10 seeds; Proposition 4).
+4. Three mechanisms, three roles (the disentanglement thesis, S10 + S11 +
+   S14): metadata = timescale coverage and noise attenuation (statistical
+   memory); homeostat = sequential disturbance recovery (+32% in S11,
+   +18% r1->r3 in S14, kappa 25.3->28.5); substrate physics = raw memory
+   capacity (r0 MC 10.19 vs ~6.17 for the ESN).
 
 ## 10. Open decisions (user gates)
 
+- **Thesis reframing (decided by s14's falsification; user confirmation
+  required).** The original "sequential robustness transfers" claim is
+  falsified: the +32% recovery is homeostat-driven. Recommended thesis:
+  the three-mechanism disentanglement (Section 9, claim 4) - metadata is a
+  substrate-agnostic *statistical* memory; disturbance recovery is the
+  homeostat's job; raw memory is the substrate's physics.
+- **Title.** If the disentanglement thesis is adopted, "Disturbance
+  Robustness" should move out of the title (it is not the metadata's
+  property); suggested working title becomes: "The Metadata Equalizer:
+  a substrate-agnostic statistical memory for online reservoirs".
 - Venue: Neurocomputing vs Neural Networks (short/communication) vs similar.
-- Run s14-s17 before drafting? (Recommended: yes, s14 first - it decides the
-  paper's central claim.)
+- Run s15-s16 before drafting? (Recommended: yes - s15 fixes the Prop. 3
+  adaptation claim, s16 stress-tests the falsification before it is printed.)
 - Citation closure: cite Paper B Section 4.5 as the seed of Paper C once B is
   public (preprint or acceptance).
-- Title and naming: "metadata equalizer" working name; decide before
-  submission.
