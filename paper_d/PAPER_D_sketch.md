@@ -422,3 +422,9 @@ journal fallback.
   first-order, no real text, no scaling claims), companion + SSM/online
   refs. Next: draft revision pass (user review), real-text benchmark
   (corpus decision), or submission checklist.
+- 2026-02-18: **P5 draft numbers AUDITED against committed CSVs - all
+  match.** Recomputing every aggregate in the draft from
+  data/s19-s22_*.csv (means, paired diffs, n/10, oracles, M5 metrics)
+  reproduces the quoted values exactly; no corrections needed. The audit
+  script (review_workspace/audit_paperD.py, gitignored) documents the
+  recomputation.
