@@ -110,7 +110,8 @@ Bibliography (verify exact venue/year before citing in the paper):
 | # | Prediction | Falsification criterion | Phase |
 |---|---|---|---|
 | P1 | Per-token RLS on the SSM output projection tracks known domain switches at least as well as the s18 Transformer+LoRA A1 arm | RLS-on-SSM stream ppl worse than the A1 reference on every seed (0/10 improved) | P1 |
-| P2 | Routing on the M3 EMA second state improves forgetting on the SSM host (like A3 on the Transformer); gating-only on the SSM host is falsified (like A2) | Routing forgetting diffs <= 0 at every tau_m (0/10 positive), OR gating-only stream ppl diffs <= 0 at every tau_m | P2 |
+| P2 | Routing on the M3 EMA second state improves forgetting on the SSM host (like A3 on the Transformer); gating-only on the SSM host is falsified (like A2) | Routing forgetting diffs never negative (0/10 improved) at some tau_m, OR gating-only stream diffs never negative (0/10 improved) at every tau_m | P2 |
+| P2 (result) | **PARTIALLY REPLICATED + one inversion** (10 seeds, 90 runs): routing improves forgetting at tau_m<=1000 (10/10, up to -2.05 ppl) - SUPPORTED; gating-only IMPROVES stream ppl 10/10 at every tau_m (opposite of s18's 0/10) - the "gating falsified" prediction itself is falsified. The pause-learning policy's effect is READOUT-DYNAMICS-DEPENDENT (Adam-LoRA: hurts; near-batch RLS: helps, stays near the pooled optimum). |
 | P3 | Gradual M4 structural changes beat abrupt ones on forgetting and stream ppl | Abrupt M4 wins (10/10 positive) | P3 |
 | P4 | M5 stability regulation keeps stream performance stable under disturbance injection where bare SSM degrades | Bare SSM and regulated SSM degrade equally (no separation, 10-seed) | P3 |
 | P5 | The tau-spectrum prior (log-normal A diagonal) beats a uniform A diagonal on forgetting coverage at matched state dim | Uniform A wins (10/10 positive on forgetting) | P1/P4 |
@@ -195,15 +196,47 @@ breaks the RLS-only constraint - a design boundary to flag, not to cross
 silently; (4) the state's value is the DOMAIN LEVEL for M3 metadata
 (P2), not the next-token readout.
 
-### P2 - M3 EMA second state + drift detection (1 w)
-- P1/P3a premise (updated): the readout must carry the current-token
-  input path (B e_{t-1}, additive); the state alone is not a readout
-  substrate (P1 falsified) and fixed gates do not fix it (P3a
-  falsified). The state's role is the M3 metadata: an EMA second state
-  m_t on h_t carries the domain level; detector + routing arms
-  (A3-analogue) and gating-only arm (A2-analogue) on the SSM host;
-  tau_m in {200,500,1000,2000}.
-- Exit: P2 prediction tested (host-invariance of the policy lesson).
+### P2 - M3 EMA second state + drift detection (DONE 2026-02-18, partially replicated + one inversion)
+
+**Build**: `scripts/s20_ssm_m3_routing.py` (ML, torch CPU). Host per
+P1/P3a: readout = additive input path [B e; 1]; M3 metadata = per-token
+EMA second state m_t = (1-1/tau_m) m_{t-1} + (1/tau_m) h_w,t[fast] (the
+FAST-CHANNEL whitened state, tau<=8). Metadata feature note (bug found and
+fixed during P2): the FULL whitened-state EMA is NOT a stationary domain
+statistic - slow channels (tau up to 3000) accumulate over the whole
+stream, so the EMA drifts away from any fixed per-domain reference and the
+detector never flips; fast channels converge in a few tokens, are
+stationary, and separate the domains cleanly (||ref0-ref1|| ~1.2, detector
+tracks all 5 known switches with ~150-800-token lag). Arms: A1 bare
+(single RLS readout), A2 gate-only (RLS error scaled 1.0 for tau_m after a
+detected switch, 0.10 within a domain - the "pause-learning" claim), A3
+routing (two RLS readouts, slow-trace selects active for prediction AND
+update; inactive fully frozen). Task/seed rules/metrics verbatim from s18.
+
+**Result (10 seeds, 90 runs)**: A1 reproduces s19 B-proj exactly
+(11.754/8.387 - cross-check). A3 (routing) improves forgetting at
+tau_m in {200,500,1000}: -2.05/-1.87/-1.20 ppl, 10/10 seeds; neutral at
+2000 (-0.007, 5/10) - the "routing transfers" lesson HOLDS on the SSM
+host. A3 stream ppl is worse than A1 (+0.38..+4.08, 0/10): the
+domain-specialized readouts pay the detection-lag penalty (wrong
+specialist predicts during the ~tau_m lag) - a specialization-vs-lag
+tradeoff NOT seen on the transformer (s18 A3 improved stream at fast
+tau_m). A2 (gating-only) IMPROVES stream ppl 10/10 at EVERY tau_m
+(-1.52..-2.45) - the OPPOSITE of s18 (0/10) - with negligible forgetting
+gain: on a near-batch RLS readout (lambda=0.9999), suppressing within-
+domain updates keeps the readout near the pooled-table optimum, whereas on
+s18's Adam-LoRA readout suppression let within-domain knowledge decay.
+
+**Interpretation**: (1) M3 transfers: the fast-channel state EMA is a
+working domain statistic on the SSM host, and routing retains domain
+specialists (forgetting -2.05, 10/10). (2) The Paper C Sec 6.4 lesson
+"the readout must remain active throughout the stream" is
+READOUT-DYNAMICS-DEPENDENT, not host-invariant: it holds for fast
+adaptive readouts (Adam/LoRA) but not for near-batch RLS readouts where
+pausing is benign-to-beneficial. Paper C's wording may need a qualifier
+(user decision). (3) Routing's stream-vs-forgetting tradeoff is
+host-specific (specialists + detection lag). Data:
+`data/s20_ssm_m3_routing_v1.csv` / `.json` (90 rows).
 
 ### P3 - M4 + M5 (2-3 w)
 - M4: state-dimension activation scores -> gradual prune/grow; or
@@ -271,3 +304,17 @@ silently; (4) the state's value is the DOMAIN LEVEL for M3 metadata
   time-varying state; Mamba-style selectivity must be LEARNED (gradient),
   a design boundary for the RLS-only constraint; the state's value is the
   domain level for M3 (P2). Next: P2 (M3 EMA + routing) - user gate.
+- 2026-02-18: **P2 (S20) DONE - partially replicated + one inversion.**
+  M3 metadata (fast-channel state EMA) transfers to the SSM host: the
+  detector tracks all 5 known switches, and routing (A3) improves
+  forgetting at tau_m<=1000 (-2.05/-1.87/-1.20 ppl, 10/10), neutral at
+  2000 - "routing transfers" HOLDS. Gating-only (A2) IMPROVES stream ppl
+  10/10 at every tau_m (-1.52..-2.45) - the OPPOSITE of s18 (0/10): the
+  pause-learning policy is readout-dynamics-dependent (near-batch RLS
+  stays near the pooled optimum; Adam-LoRA decays). This qualifies Paper C
+  Sec 6.4's "the readout must remain active" lesson (user decision on a
+  qualifier). A3 stream is worse (+0.38..+4.08): specialization-vs-lag
+  tradeoff not seen on the transformer. Also fixed during P2: the full
+  whitened-state EMA is non-stationary (slow-channel accumulation, detector
+  never flipped) - the metadata uses the fast (stationary) channels.
+  Next: P3 (M4 + M5/learned selectivity), P4 benchmarks - user gate.

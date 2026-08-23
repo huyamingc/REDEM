@@ -1,0 +1,223 @@
+{
+  "params": {
+    "host": {
+      "type": "diagonal linear SSM (hand-rolled, torch CPU)",
+      "state_dim": 128,
+      "spectrum": "log-uniform tau in [1,3000] (CV, P1/P3a host)",
+      "whitening": "h_t * sqrt(N*(1-A_i^2))"
+    },
+    "readout_m1": {
+      "type": "per-token RLS on the input path phi = [B e_{t-1}; 1] (P1/P3a evidence: the current token must be an additive feature)",
+      "feature_dim": 129,
+      "lambda": 0.9999,
+      "delta": 1.0,
+      "metric": "CE = -ln(clip(y_hat[target], 1e-12, 1)), no softmax (S19 v2.1 fix)"
+    },
+    "metadata_m3": {
+      "type": "per-token EMA second state m_t = (1-1/tau_m) m_{t-1} + (1/tau_m) h_w,t [fast channels, tau<=8]",
+      "note": "full whitened-state EMA is NOT a stationary domain statistic - slow channels accumulate over the stream (detector never flips; found and fixed during P2); fast channels are stationary and carry the domain marginal (separation ~1.2)",
+      "references": "mean fast-channel whitened state over 1500-token reference streams per domain (s18 seed rule)",
+      "gate": "nearest reference + 1.15 hysteresis margin",
+      "tau_m_list": [
+        200.0,
+        500.0,
+        1000.0,
+        2000.0
+      ]
+    },
+    "arms": {
+      "A1": "bare: single RLS readout, updates every token",
+      "A2": "gate-only: RLS error scaled 1.0 for tau_m tokens after a detected switch, 0.10 within a domain",
+      "A3": "routing: two RLS readouts (one per domain); slow-trace estimate selects active for prediction and update; inactive fully frozen"
+    },
+    "task": {
+      "desc": "identical to s18 (Paper C Sec 6): two biased-bigram Markov generators (A: shift=1 bias {0..7}; B: shift=7 bias {24..31}), known switches, 6x3000",
+      "seg_len": 3000,
+      "n_segments": 6,
+      "t_total": 18000,
+      "seed_rules": "verbatim from s18"
+    },
+    "metrics": {
+      "stream_ppl": "exp(mean CE) over the stream, predict-before-update",
+      "neg_frac": "fraction of clipped (<=0) predictions",
+      "t_adapt_mean": "post-switch tokens to window ppl <= steady*1.5 (known switches)",
+      "forgetting_ppl": "held-out ppl of the previous domain (domain-matched readout for A3)"
+    },
+    "cross_check": {
+      "s19_B-proj_reference": {
+        "stream": 11.754124283044472,
+        "forgetting": 8.386810407106836
+      },
+      "note": "A1 must reproduce s19 B-proj (same readout/task/seeds)"
+    },
+    "paired_vs_a1": {
+      "A2-200": {
+        "stream_diff_mean": -1.5162550836810575,
+        "stream_improved_n": 10,
+        "forgetting_diff_mean": 0.521739230190758,
+        "forgetting_improved_n": 0
+      },
+      "A2-500": {
+        "stream_diff_mean": -2.224662784243441,
+        "stream_improved_n": 10,
+        "forgetting_diff_mean": 0.03171089134088305,
+        "forgetting_improved_n": 5
+      },
+      "A2-1000": {
+        "stream_diff_mean": -2.4538932195573437,
+        "stream_improved_n": 10,
+        "forgetting_diff_mean": -0.23280291941500578,
+        "forgetting_improved_n": 10
+      },
+      "A2-2000": {
+        "stream_diff_mean": -2.0534252468720484,
+        "stream_improved_n": 10,
+        "forgetting_diff_mean": -0.3668398928626348,
+        "forgetting_improved_n": 9
+      },
+      "A3-200": {
+        "stream_diff_mean": 0.3838778495332672,
+        "stream_improved_n": 0,
+        "forgetting_diff_mean": -2.0526782634737266,
+        "forgetting_improved_n": 10
+      },
+      "A3-500": {
+        "stream_diff_mean": 1.5462108879093293,
+        "stream_improved_n": 0,
+        "forgetting_diff_mean": -1.8694660061542134,
+        "forgetting_improved_n": 10
+      },
+      "A3-1000": {
+        "stream_diff_mean": 3.057846133182625,
+        "stream_improved_n": 0,
+        "forgetting_diff_mean": -1.2015268901595104,
+        "forgetting_improved_n": 10
+      },
+      "A3-2000": {
+        "stream_diff_mean": 4.080702256034892,
+        "stream_improved_n": 0,
+        "forgetting_diff_mean": -0.007449635483555284,
+        "forgetting_improved_n": 5
+      }
+    },
+    "predictions_p2": "routing (A3) improves forgetting at every tau_m (s18 A3: 9-10/10); gating-only (A2) falsified at every tau_m (s18 A2: 0/10)",
+    "discipline": "known switch instants (s15), 10 seeds, paired sign consistency (s16)",
+    "env": {
+      "torch": "2.13.0+cpu",
+      "numpy": "2.5.2",
+      "cpu": "torch CPU only, no mamba-ssm dependency"
+    },
+    "n_seeds": 10,
+    "quick": false
+  },
+  "aggregates": [
+    {
+      "arm": "A1",
+      "tau_m": 0.0,
+      "n_runs": 10,
+      "stream_ppl_mean": 11.754124283044472,
+      "stream_ppl_std": 0.1258122511666315,
+      "t_adapt_mean_mean": 20.0,
+      "t_adapt_mean_std": 0.0,
+      "forgetting_ppl_mean": 8.38681040710684,
+      "forgetting_ppl_std": 0.3868929471690577,
+      "neg_frac_mean": 0.015817545419189956
+    },
+    {
+      "arm": "A2",
+      "tau_m": 200.0,
+      "n_runs": 10,
+      "stream_ppl_mean": 10.237869199363413,
+      "stream_ppl_std": 0.20099294178849503,
+      "t_adapt_mean_mean": 20.0,
+      "t_adapt_mean_std": 0.0,
+      "forgetting_ppl_mean": 8.908549637297593,
+      "forgetting_ppl_std": 0.2894961934480914,
+      "neg_frac_mean": 4.4446913717428746e-05
+    },
+    {
+      "arm": "A2",
+      "tau_m": 500.0,
+      "n_runs": 10,
+      "stream_ppl_mean": 9.529461498801032,
+      "stream_ppl_std": 0.0999896326571731,
+      "t_adapt_mean_mean": 20.0,
+      "t_adapt_mean_std": 0.0,
+      "forgetting_ppl_mean": 8.41852129844772,
+      "forgetting_ppl_std": 0.25588466040445185,
+      "neg_frac_mean": 3.8891049502750156e-05
+    },
+    {
+      "arm": "A2",
+      "tau_m": 1000.0,
+      "n_runs": 10,
+      "stream_ppl_mean": 9.300231063487127,
+      "stream_ppl_std": 0.12682069359811768,
+      "t_adapt_mean_mean": 20.0,
+      "t_adapt_mean_std": 0.0,
+      "forgetting_ppl_mean": 8.154007487691832,
+      "forgetting_ppl_std": 0.26890706464171077,
+      "neg_frac_mean": 3.8891049502750156e-05
+    },
+    {
+      "arm": "A2",
+      "tau_m": 2000.0,
+      "n_runs": 10,
+      "stream_ppl_mean": 9.700699036172423,
+      "stream_ppl_std": 0.19802707836453212,
+      "t_adapt_mean_mean": 20.0,
+      "t_adapt_mean_std": 0.0,
+      "forgetting_ppl_mean": 8.019970514244203,
+      "forgetting_ppl_std": 0.36397209103955075,
+      "neg_frac_mean": 2.777932107339297e-05
+    },
+    {
+      "arm": "A3",
+      "tau_m": 200.0,
+      "n_runs": 10,
+      "stream_ppl_mean": 12.138002132577741,
+      "stream_ppl_std": 0.1983427286369428,
+      "t_adapt_mean_mean": 20.0,
+      "t_adapt_mean_std": 0.0,
+      "forgetting_ppl_mean": 6.33413214363311,
+      "forgetting_ppl_std": 0.3606184835825988,
+      "neg_frac_mean": 0.029279404411356187
+    },
+    {
+      "arm": "A3",
+      "tau_m": 500.0,
+      "n_runs": 10,
+      "stream_ppl_mean": 13.300335170953801,
+      "stream_ppl_std": 0.386303040072061,
+      "t_adapt_mean_mean": 20.0,
+      "t_adapt_mean_std": 0.0,
+      "forgetting_ppl_mean": 6.517344400952624,
+      "forgetting_ppl_std": 0.4049731607817397,
+      "neg_frac_mean": 0.029134951941774546
+    },
+    {
+      "arm": "A3",
+      "tau_m": 1000.0,
+      "n_runs": 10,
+      "stream_ppl_mean": 14.811970416227098,
+      "stream_ppl_std": 0.38920037300535226,
+      "t_adapt_mean_mean": 20.0,
+      "t_adapt_mean_std": 0.0,
+      "forgetting_ppl_mean": 7.185283516947327,
+      "forgetting_ppl_std": 0.5124140151606265,
+      "neg_frac_mean": 0.02879604422467915
+    },
+    {
+      "arm": "A3",
+      "tau_m": 2000.0,
+      "n_runs": 10,
+      "stream_ppl_mean": 15.834826539079364,
+      "stream_ppl_std": 0.3777742817016843,
+      "t_adapt_mean_mean": 20.0,
+      "t_adapt_mean_std": 0.0,
+      "forgetting_ppl_mean": 8.379360771623283,
+      "forgetting_ppl_std": 0.6849697747211503,
+      "neg_frac_mean": 0.027901550086115896
+    }
+  ]
+}

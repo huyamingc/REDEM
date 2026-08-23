@@ -33,12 +33,13 @@ companion papers (plus a fourth in development):
   with Native Online Learning, Meta-Adaptation, and Structural
   Plasticity"* — a native SSM/Mamba-hosted foundation model instantiating
   M1/M3/M4/M5 from the ground up, motivated by Paper C's host-boundary
-  result. P1 + P3a (S19) DONE, both falsified with mechanisms isolated:
-  the linear readout cannot use the linearly-mixed state (0/10), fixed
-  Mamba-style gates don't fix it (0/10); M1 works on the additive
-  current-token input path (control 11.75 vs A1 15.01, 10/10), so the
-  state's role is the M3 domain metadata (P2) and real selectivity must be
-  learned. (Target: NeurIPS/ICML stretch; arXiv + workshop first)
+  result. P1+P3a (S19) falsified with mechanisms isolated (linear state
+  mixing; fixed gates don't fix it; M1 works on the additive input path,
+  10/10). P2 (S20) partially replicated: M3 fast-channel state EMA
+  transfers (routing improves forgetting 10/10 at τ_m≤1000), while
+  gating-only improves stream ppl 10/10 (opposite of s18 — the
+  pause-learning policy is readout-dynamics-dependent, qualifying Paper C
+  §6.4). (Target: NeurIPS/ICML stretch; arXiv + workshop first)
   → See [`paper_d/README.md`](paper_d/README.md) and
   [`paper_d/PAPER_D_sketch.md`](paper_d/PAPER_D_sketch.md)
 
@@ -83,7 +84,7 @@ letter points).
 
 ## Scripts
 
-All 36 committed scripts in `scripts/`, typed per `CLAUDE.md`
+All 37 committed scripts in `scripts/`, typed per `CLAUDE.md`
 (ML > CORE > PAPER > FIG > EXPLORE). Two legacy scripts from the prior
 Si₃N₄-pulse-encoding project are kept as shared dependencies (imported by the
 new code) and are never modified.
@@ -117,7 +118,8 @@ new code) and are never modified.
 | `s5b_controlled_adaptation.py` | PAPER | S5 three-arm controlled adaptation re-measurement (2 substrates, 10 seeds) |
 | `s17_substrate_stress.py` | PAPER | Paper C: ESN substrate stress — equalizer gain positive at all configs (120 runs) |
 | `s18_llm_drift_gate.py` | ML | Paper C §7 PoC: LLM drift gate (tiny transformer + LoRA, 90 runs, torch CPU) |
-| `s19_ssm_rls_readout.py` | ML | Paper D P1: per-token RLS readout on a hand-rolled diagonal SSM (5 arms, 50 runs, torch CPU) |
+| `s19_ssm_rls_readout.py` | ML | Paper D P1/P3a: per-token RLS readout on a hand-rolled diagonal SSM (7 arms, 70 runs, torch CPU) |
+| `s20_ssm_m3_routing.py` | ML | Paper D P2: M3 EMA metadata + drift detection + routing on the SSM host (A1/A2/A3, 90 runs, torch CPU) |
 | `gen_architecture_schematic.py` | FIG | Paper Fig. 1 schematics (substrate / REDEM, M4↔M5 loop) |
 | `gen_substrate_phase_diagram.py` | FIG | S1 phase-diagram figure |
 | `gen_s2_curves.py` | FIG | S2 learning curves |

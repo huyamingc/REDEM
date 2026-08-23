@@ -4,19 +4,18 @@
 Architecture with Native Online Learning, Meta-Adaptation, and Structural
 Plasticity
 
-**Status**: P1 + P3a DONE 2026-02-18, both FALSIFIED with mechanisms
-isolated. (1) P1: the bare-M1 linear readout on the diagonal-SSM state
-cannot track (stream ppl 58-116 vs A1 15.01, 0/10 improved; oracle ~31 ~
-uniform) because a linear readout cannot recover the current token from
-the linearly-decayed mixture; M1 itself works (current-token-projection
-control: 11.75, 10/10 better than A1, oracle 7.25 ~ the pooled-table
-ceiling). (2) P3a: fixed Mamba-style gates (feature-level, gamma 1/5) do
-NOT fix it (77.2/72.2, oracle 37.1/38.5, sharper worse) - the current
-token must enter the readout as an ADDITIVE input feature; the state's
-value is the domain level for M3 metadata (P2), and real selectivity must
-be learned (gradient), a design boundary for the RLS-only constraint.
-Next phases: P2 (M3 EMA second state + routing). Data:
-`data/s19_ssm_rls_readout_v1.csv` (70 rows, 10 seeds).
+**Status**: P1 + P3a + P2 DONE 2026-02-18. P1/P3a falsified with mechanisms
+isolated: the linear readout cannot use the linearly-mixed diagonal-SSM
+state (0/10), fixed Mamba-style gates don't fix it (0/10, sharper worse);
+M1 works on the additive current-token input path (control 11.75 vs A1
+15.01, 10/10). P2 partially replicated with one inversion: M3 metadata
+(fast-channel state EMA) transfers to the SSM host - routing improves
+forgetting 10/10 at tau_m<=1000 (-2.05 ppl) but pays a stream cost
+(specialization-vs-lag); gating-only IMPROVES stream ppl 10/10 at every
+tau_m, opposite of s18 - the pause-learning policy is
+readout-dynamics-dependent (qualifies Paper C Sec 6.4). Data:
+`data/s19_ssm_rls_readout_v1.csv` (70 rows), `data/s20_ssm_m3_routing_v1.csv`
+(90 rows). Next: P3 (M4 + M5/learned selectivity), P4 benchmarks.
 
 ## Origin and motivation
 
