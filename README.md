@@ -119,7 +119,7 @@ never modified. `README_REDEM.md` holds the full headline-results registry
 | `cv_sweep.py` | PAPER | A | S10: task-level CV sweep (Paper A Supp. Note 1) | uncoupled MC +33% with CV; coupled near-critical falls |
 | `s11_disturbance_chain.py` | PAPER | A | E3: sequential disturbance chain (3 rounds, 10 seeds) | regulated MC 8.47 vs fixed 6.41 (+32%) |
 | `s12_lambda_target_sweep.py` | PAPER | A | E4: λ_target × CV optimization sweep (5 seeds) | λ_target=0 optimal: +25%/+19%/+5% MC |
-| `s13_causal_audit.py` | PAPER | B | O4: causal leakage audit (7 arms, 3 seeds) | all mechanisms causally clean (<0.02 pp) |
+| `s13_causal_audit.py` | PAPER | B | O4: causal leakage audit (7 arms, 10 seeds) | all mechanisms causally clean (≤0.02 pp; plasticity-correlation leak implemented, −0.01 pp) |
 | `s14_esn_disturbance_chain.py` | PAPER | C | ESN+metadata under the disturbance chain — falsifies metadata robustness transfer (3 arms, 10 seeds) | paired diffs −0.78/−0.76/−0.69, 0/10 seeds positive |
 | `s16_tau_m_pressure_test.py` | PAPER | C | τ_m ∈ {200,500,1000,2000} stress test — falsification robust across metadata timescales (10 seeds) | 0/10 seeds positive at every τ_m (~5σ) |
 | `s15_controlled_adaptation.py` | PAPER | C | controlled adaptation protocol with known switch instants (10 seeds) | true effect ~10 pulses + variance collapse (p90 76.5→42) |

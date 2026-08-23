@@ -484,3 +484,15 @@ S1-S9 全部完成（14 个新脚本、12 组实验数据、`NEW_ALGORITHM_PLAN.
   - **论文整合**：Paper B §4.4 新增 E3/E4/O4 三段 + Table 2（λ sweep）+ 摘要/
     结论更新；Paper A §5.2 新增 E4 引用；README/README_REDEM 脚本清单 22→25、
     headline results + roadmap 同步。两篇 pdflatex ×2 编译零错误（A 13p / B 10p）。
+- O4 复核会话（2026-02-19，s13 审查修复）：
+  - **修复 bug**：`scripts/s13_causal_audit.py` 原 `leak_plasticity` 臂未实现
+    （`LEAK_FRAC_PLASTICITY=0.10` 定义后从未被引用，该臂与 normal 逐位相同，
+    已由数据核对证实）。补实现：C 混入 10% 下一块相关性（从当前态 x_cur +
+    当前物理跑未来 PLASTICITY_EVERY 脉冲轨迹求 C_fut），与 leak_metadata
+    同构；N_SEEDS 3→10；Pool(4)→min(cpu_count(), n_runs)。
+  - **重跑结果**（7 臂 × 10 seeds，217.8s）：所有 leak 臂因果干净——
+    最大偏移 0.012pp（leak_rls），可塑性 leak −0.01pp（最负，说明 M4
+    不利用未来相关性）；causal_split 0.9963 vs normal 0.9963。
+  - **论文更新**：Paper B §4.4 O4 段数字/seed 数更新（10 seeds，
+    0.9964–0.9962 vs 0.9963，≤0.02pp）；README/README_REDEM O4 行同步。
+    备份 scripts/s13_causal_audit.bak.py。

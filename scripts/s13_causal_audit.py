@@ -61,7 +61,7 @@ N_UNITS = 256
 CV_TAU = 0.20
 TOPO_SEED = 777
 AVG_DEGREE = 8
-N_SEEDS = 3
+N_SEEDS = 10
 FEATURE_SCALE = 10.0
 
 RLS_FORGETTING = 0.999
@@ -226,6 +226,28 @@ def run_single(args):
                     obs_half.std(axis=0) + 1e-12)
                 C = (z_half.T @ z_half) / half
 
+            if arm == 'leak_plasticity':
+                # Inject LEAK_FRAC_PLASTICITY of the NEXT block's
+                # correlation (future info) into C: run an extra trajectory
+                # from the current state x_cur with the current physics
+                # (ip_c/idx_c/wt_c, kappa, tau) over the following
+                # PLASTICITY_EVERY pulses. The real system at time
+                # blk_start+n_blk cannot know these future states.
+                t_fut0 = blk_start + n_blk
+                n_fut = min(PLASTICITY_EVERY, T - t_fut0)
+                if n_fut >= 2:
+                    st_f, _, _ = run_trajectory_nb(
+                        x_cur, tau, dt_seq[t_fut0:t_fut0 + n_fut], PW,
+                        ip_c, idx_c, wt_c, kappa,
+                        ALPHA0, ALPHA_MIN, ALPHA_MAX, gamma,
+                        COUPLING_CONTRAST_SELF, 0)
+                    obs_f = np.exp(gamma * st_f) / FEATURE_SCALE
+                    z_f = (obs_f - obs_f.mean(axis=0)) / (
+                        obs_f.std(axis=0) + 1e-12)
+                    C_fut = (z_f.T @ z_f) / obs_f.shape[0]
+                    C = ((1.0 - LEAK_FRAC_PLASTICITY) * C
+                         + LEAK_FRAC_PLASTICITY * C_fut)
+
             n_grow = max(1, int(PLASTICITY_CHURN * n_edges))
             mask = evolve_mask(mask, C, n_grow)
             n_edges = int(mask.sum())
@@ -332,7 +354,7 @@ def main():
                 print(f"[{time.strftime('%H:%M:%S')}] progress {done}/{n_runs}",
                       flush=True)
     else:
-        with Pool(min(4, max(1, n_runs))) as pool:
+        with Pool(min(cpu_count(), max(1, n_runs))) as pool:
             done = 0
             for res in pool.imap_unordered(run_single, all_args, chunksize=1):
                 results.append(res)

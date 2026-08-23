@@ -338,11 +338,13 @@ to the empirically optimal edge of chaos.
 \textbf{Causal audit.} To verify that all adaptive mechanisms use only past
 information, we inject 1\% future data into each mechanism (RLS target,
 metadata EMA, FTLE estimate, plasticity correlation) and test a causal-split
-plasticity protocol (3 seeds, 7 arms). All leak arms show $<0.02$~pp accuracy
-change vs.\ normal ($0.9966$--$0.9965$ vs.\ $0.9965$), confirming causal
-cleanliness --- no mechanism benefits from future information. The
-causal-split protocol ($0.9964$) is within $0.01$~pp of normal, validating
-that M4's block-level correlation can be computed on past data only.
+plasticity protocol (10 seeds, 7 arms). All leak arms change accuracy by
+$\le 0.02$~pp vs.\ normal ($0.9964$--$0.9962$ vs.\ $0.9963$), confirming
+causal cleanliness --- no mechanism benefits from future information; the
+plasticity-correlation leak ($-0.01$~pp) is the most negative, so M4 does not
+exploit future correlation. The causal-split protocol ($0.9963$) is within
+$0.01$~pp of normal, validating that M4's block-level correlation can be
+computed on past data only.
 
 \textbf{Plasticity.} Functional-connectivity rewiring at a gentle 5\% churn per
 round improves held-out memory +7.8\% (ring start) and repairs pruned damage
