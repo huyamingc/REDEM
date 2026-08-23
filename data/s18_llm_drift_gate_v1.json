@@ -1,0 +1,136 @@
+{
+  "params": {
+    "model": "tiny char LM: d_model=64, layers=2, heads=2, ctx=128, vocab=32",
+    "lora_rank": 16,
+    "n_adapters": 2,
+    "lr_head": 0.001,
+    "lr_lora": 0.001,
+    "gate_low_frac": 0.1,
+    "task": {
+      "desc": "two bigram Markov generators (vowel vs consonant biased) with known switches",
+      "seg_len": 3000,
+      "n_segments": 6,
+      "t_total": 18000
+    },
+    "arms": {
+      "A1": "bare online LoRA (update every chunk)",
+      "A2": "drift gate: slow EMA of frozen-base hidden means, boost for tau_m after detected switch, 10% within",
+      "A3": "domain routing: two adapters, slow-trace selects active, only active updates"
+    },
+    "tau_m_list": [
+      200.0,
+      500.0,
+      1000.0,
+      2000.0
+    ],
+    "metrics": {
+      "stream_ppl": "exp(mean CE) over the stream",
+      "t_adapt_mean": "post-switch tokens to window ppl <= steady*1.10 (known switches)",
+      "forgetting_ppl": "held-out ppl of the previous domain after switching away"
+    },
+    "discipline": "known switch instants (s15), tau_m sweep (s16), paired sign consistency (s16)",
+    "n_seeds": 10,
+    "quick": false
+  },
+  "aggregates": [
+    {
+      "arm": "A1",
+      "tau_m": 0.0,
+      "n_runs": 10,
+      "stream_ppl_mean": 15.01260304904541,
+      "stream_ppl_std": 0.3298420549813747,
+      "t_adapt_mean_mean": 20.0,
+      "t_adapt_mean_std": 0.0,
+      "forgetting_ppl_mean": 8.936727126681927,
+      "forgetting_ppl_std": 0.3848897700809178
+    },
+    {
+      "arm": "A2",
+      "tau_m": 200.0,
+      "n_runs": 10,
+      "stream_ppl_mean": 17.30603194485499,
+      "stream_ppl_std": 0.5859343487434102,
+      "t_adapt_mean_mean": 20.0,
+      "t_adapt_mean_std": 0.0,
+      "forgetting_ppl_mean": 9.661848351036422,
+      "forgetting_ppl_std": 0.33136679025403326
+    },
+    {
+      "arm": "A2",
+      "tau_m": 500.0,
+      "n_runs": 10,
+      "stream_ppl_mean": 17.05747865998459,
+      "stream_ppl_std": 0.5540505183457141,
+      "t_adapt_mean_mean": 20.0,
+      "t_adapt_mean_std": 0.0,
+      "forgetting_ppl_mean": 9.476014910651317,
+      "forgetting_ppl_std": 0.32611931132014754
+    },
+    {
+      "arm": "A2",
+      "tau_m": 1000.0,
+      "n_runs": 10,
+      "stream_ppl_mean": 16.581536632735443,
+      "stream_ppl_std": 0.49769217441276487,
+      "t_adapt_mean_mean": 20.0,
+      "t_adapt_mean_std": 0.0,
+      "forgetting_ppl_mean": 9.235136094891079,
+      "forgetting_ppl_std": 0.3724922839712805
+    },
+    {
+      "arm": "A2",
+      "tau_m": 2000.0,
+      "n_runs": 10,
+      "stream_ppl_mean": 16.259004148116542,
+      "stream_ppl_std": 0.408777991182826,
+      "t_adapt_mean_mean": 20.0,
+      "t_adapt_mean_std": 0.0,
+      "forgetting_ppl_mean": 9.029538858669861,
+      "forgetting_ppl_std": 0.3469808077147269
+    },
+    {
+      "arm": "A3",
+      "tau_m": 200.0,
+      "n_runs": 10,
+      "stream_ppl_mean": 13.940715731445977,
+      "stream_ppl_std": 0.45418823613564857,
+      "t_adapt_mean_mean": 20.0,
+      "t_adapt_mean_std": 0.0,
+      "forgetting_ppl_mean": 6.424189553147661,
+      "forgetting_ppl_std": 0.3030996830790584
+    },
+    {
+      "arm": "A3",
+      "tau_m": 500.0,
+      "n_runs": 10,
+      "stream_ppl_mean": 14.580883494831482,
+      "stream_ppl_std": 0.5531980683591373,
+      "t_adapt_mean_mean": 20.0,
+      "t_adapt_mean_std": 0.0,
+      "forgetting_ppl_mean": 6.752487959662768,
+      "forgetting_ppl_std": 0.30179666754613355
+    },
+    {
+      "arm": "A3",
+      "tau_m": 1000.0,
+      "n_runs": 10,
+      "stream_ppl_mean": 15.474905647486676,
+      "stream_ppl_std": 0.48274764742330006,
+      "t_adapt_mean_mean": 20.0,
+      "t_adapt_mean_std": 0.0,
+      "forgetting_ppl_mean": 7.432808701358267,
+      "forgetting_ppl_std": 0.40576421767429477
+    },
+    {
+      "arm": "A3",
+      "tau_m": 2000.0,
+      "n_runs": 10,
+      "stream_ppl_mean": 16.074413116789565,
+      "stream_ppl_std": 0.4206087795668735,
+      "t_adapt_mean_mean": 20.0,
+      "t_adapt_mean_std": 0.0,
+      "forgetting_ppl_mean": 8.406685189532958,
+      "forgetting_ppl_std": 0.574940865068703
+    }
+  ]
+}

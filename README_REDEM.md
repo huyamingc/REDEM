@@ -54,8 +54,9 @@ the structure level (M4).
 | s16b | Probe-protocol stress test (10 seeds × 2 τ_m × 3 variants): falsification robust in sign (0/10 positive everywhere); magnitude protocol-dependent — V0 (readout noise) −0.69, V1 (std-slow) −0.66, V2 (state noise) −0.01 (EMA denoising nearly closes the gap) |
 | s5b | S5 three-arm controlled re-measurement (2 substrates × 5 arm configs × 10 seeds): T200 fast 264.8–303.9 vs dual/slow 202–211 pulses (factor 1.28–1.44; T40 factor 1.79–2.40); overall acc reproduces S5 exactly — Paper B §4.3/abstract revised |
 | s17 | Substrate stress (3 spectral radii × 2 hetero × 10 seeds): equalizer gain positive at all 6 ESN configs (+0.1 to +1.0 pp), magnitude tracks the fast channel's timescale starvation; heterogeneity irrelevant |
+| s18 | LLM drift-gate PoC (tiny transformer + LoRA, 90 runs): A3 domain routing transfers — forgetting −2.5 ppl (10/10 seeds, τ_m=200), stream ppl −1.07 (10/10) at τ_m≤500; A2 gate falsified (0/10); τ_m≥1000 sensitive interval reported |
 
-## Scripts (33 committed; 2 legacy dependencies kept for compatibility)
+## Scripts (35 committed; 2 legacy dependencies kept for compatibility)
 
 | Script | Type | Purpose |
 |---|---|---|
@@ -87,11 +88,13 @@ the structure level (M4).
 | `s16b_falsification_stress_test.py` | PAPER | Paper C: probe-protocol stress test (V0/V1/V2, 2 τ_m, 10 seeds) |
 | `s5b_controlled_adaptation.py` | PAPER | S5 three-arm controlled adaptation re-measurement (2 substrates, 10 seeds) |
 | `s17_substrate_stress.py` | PAPER | Paper C: ESN substrate stress (3 spectral radii × 2 hetero, 10 seeds) |
+| `s18_llm_drift_gate.py` | ML | Paper C §7 PoC: LLM drift gate (tiny transformer + LoRA, 90 runs, torch CPU) |
 | `gen_architecture_schematic.py` | FIG | Paper Fig 1 schematics (substrate / REDEM; M4↔M5 loop) |
 | `gen_paperA_supp_figures.py` | FIG | Paper A Supplementary Fig. S1 (task-level CV sweep) |
 | `gen_paper_figures.py` | FIG | Paper figure batch (robustness / metadata / ablation / showdown) |
 | `gen_paperC_fig1_kernel.py` | FIG | Paper C Fig. 1: slow-trace kernel vs material forgetting kernel |
 | `gen_paperC_fig2_recovery.py` | FIG | Paper C Fig. 2: post-disturbance MC recovery vs τ_m (s16) |
+| `gen_paperC_fig3_llm.py` | FIG | Paper C Fig. 3: LLM drift-gate results (s18) |
 
 ## Data and figures
 
@@ -105,7 +108,7 @@ the structure level (M4).
   `data/s13_causal_audit_v1.*`, `data/s14_esn_disturbance_chain_v1.*`,
   `data/s16_tau_m_pressure_test_v1.*`, `data/s15_controlled_adaptation_v1.*`,
   `data/s16b_falsification_stress_test_v1.*`, `data/s5b_controlled_adaptation_v1.*`,
-  `data/s17_substrate_stress_v1.*`
+  `data/s17_substrate_stress_v1.*`, `data/s18_llm_drift_gate_v1.*`
   (CSV per run + JSON with params and per-cell aggregates).
 - Figures: `figures/substrate_phase_diagram_v2.pdf`,
   `figures/s2_online_readout_v1.pdf`, `figures/forgetting_curve_theory.pdf`,
@@ -113,8 +116,8 @@ the structure level (M4).
   `figures/paperA_figS1_cv_sweep.pdf` (Supplementary Fig. S1),
   `figures/paperB_fig1_redem.pdf`, `figures/paperB_fig3_metadata.pdf`,
   `figures/paperB_fig5_ablation.pdf`, `figures/paperB_fig6_showdown.pdf`,
-  `figures/paperC_fig1_kernel.pdf`, `figures/paperC_fig2_recovery.pdf`
-  (Paper C, in development)
+  `figures/paperC_fig1_kernel.pdf`, `figures/paperC_fig2_recovery.pdf`,
+  `figures/paperC_fig3_llm.pdf` (Paper C, in development)
   (vector PDF only; the papers include the extension-less basename so
   `pdflatex` picks the vector version).
 
@@ -149,6 +152,8 @@ scipy, matplotlib, torch (CPU) for S9 only.
 & .venv\Scripts\python.exe scripts\s15_controlled_adaptation.py --sequential
 & .venv\Scripts\python.exe scripts\s16b_falsification_stress_test.py --sequential
 & .venv\Scripts\python.exe scripts\s17_substrate_stress.py --sequential
+& .venv\Scripts\python.exe scripts\s18_llm_drift_gate.py --sequential
+& .venv\Scripts\python.exe scripts\gen_paperC_fig3_llm.py
 & .venv\Scripts\python.exe scripts\gen_paperC_fig1_kernel.py
 & .venv\Scripts\python.exe scripts\gen_paperC_fig2_recovery.py
 # Paper B revision: S5 arms controlled re-measurement
@@ -219,7 +224,8 @@ ws-ijbc.cls / revtex4-2 for Paper A (IJBC/Chaos), elsarticle.cls for Paper B
 | s16b probe stress test | done (10 seeds × 2 τ_m × 3 variants; sign robust, magnitude protocol-dependent) |
 | s5b S5 controlled re-measurement | done (100 runs; T200 factor 1.28–1.44, T40 1.79–2.40; Paper B revised) |
 | s17 substrate stress | done (120 runs; equalizer gain positive at all ESN configs) |
-| Paper C derivation | in progress (thesis locked; PAPER_C.tex submission-ready; LLM extension designed in `paper_c/LLM_EXTENSION.md`) |
+| s18 LLM drift gate | done (90 runs; A3 routing transfers, A2 gate falsified; §7 results in paper_c/LLM_EXTENSION.md) |
+| Paper C derivation | in progress (thesis locked; PAPER_C.tex submission-ready; §7 LLM PoC results available for the extension section) |
 
 ## Open items
 
@@ -229,9 +235,10 @@ ws-ijbc.cls / revtex4-2 for Paper A (IJBC/Chaos), elsarticle.cls for Paper B
 - Final algorithm name (working name REDEM).
 - Paper C: `paper_c/PAPER_C.tex` drafted (elsarticle preprint, 9 pp, zero
   warnings). Venue decided: Neurocomputing / Neural Networks short paper.
-  Remaining before submission: author placeholders, cover letter. Optional
-  follow-up: the LLM extension PoC designed in `paper_c/LLM_EXTENSION.md`
-  (tiny-transformer LoRA + slow-trace drift gate, CPU-only).
+  The LLM §7 PoC (s18) is DONE: A3 routing transfers (forgetting −28%,
+  ppl −1.07 at τ_m=200), A2 gate falsified; results in
+  `paper_c/LLM_EXTENSION.md` §7.7. Remaining before submission: author
+  placeholders, cover letter, and (optional) writing §7 into PAPER_C.tex.
 - Paper B wording: revised (2026-02-17) - §4.3/§4.5/§4.6 and abstract use
   the controlled s15/s5b adaptation measurements (factor 1.3-2.4 instead
   of the artifact "9-20x").

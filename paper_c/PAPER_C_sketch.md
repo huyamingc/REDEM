@@ -4,20 +4,16 @@ Working title (user proposal, adopted): Dissecting Online Learning
 Mechanisms: Statistical Memory, Homeostatic Recovery, and Substrate Physics
 are Non-Transferable
 
-Status: post-s14, post-s16, post-s15, post-s16b, post-s5b, post-s17
-(all 10 seeds). The three-mechanism disentanglement thesis is adopted
-(user gate, 2026-02-17). All supporting experiments are DONE: s14
-falsifies "metadata transfers disturbance robustness" (the +32% recovery
-is homeostat-driven); s16 confirms the strong claim at every tau_m in
-{200, 500, 1000, 2000}; s16b shows the falsification is robust in sign to
-the probe protocol but protocol-dependent in magnitude (readout-noise
--0.69 vs state-noise -0.01); s15/s5b re-measure adaptation with known
-switch instants (ESN arms ~10 pulses + variance collapse; substrate arms
-factor 1.3-2.4; the old "47x"/"9-20x" ratios were metric artifacts, and
-Paper B was revised); s17 shows the equalizer gain is positive at all ESN
-configurations (magnitude tracks timescale starvation). PAPER_C.tex is
-drafted in elsarticle preprint (9 pp, zero warnings); the optional LLM
-extension PoC is designed in `LLM_EXTENSION.md`.
+Status: post-s14, post-s16, post-s15, post-s16b, post-s5b, post-s17,
+post-s18 (all 10 seeds). The three-mechanism disentanglement thesis is
+adopted (user gate, 2026-02-17). All supporting experiments are DONE,
+including the LLM drift-gate PoC (s18): A3 domain routing transfers to a
+tiny transformer (forgetting -28%, stream ppl -1.07 at tau_m=200, 10/10
+seeds; forgetting benefit at every tau_m), A2 drift gate is falsified
+(0/10 seeds), and the tau_m>=1000 sensitive interval is reported
+(`paper_c/LLM_EXTENSION.md` §7.7, `figures/paperC_fig3_llm.pdf`).
+PAPER_C.tex is drafted in elsarticle preprint (9 pp, zero warnings); the
+§7 extension section can now be written from the s18 results.
 
 ## Positioning (one paragraph, honest)
 

@@ -61,6 +61,7 @@ overall accuracy.
 | `../data/s16b_falsification_stress_test_v1.*` | S16b probe stress: 0/10 positive at all (tau_m, variant); magnitude V0 -0.69 -> V2 -0.01 (state-noise denoising) |
 | `../data/s5b_controlled_adaptation_v1.*` | S5b substrate arms controlled: T200 265-304 (fast) vs 202-211 (dual), factor 1.3-2.4; overall acc reproduces S5 |
 | `../data/s17_substrate_stress_v1.*` | S17 substrate stress: equalizer gain positive at all 6 ESN configs (+0.1 to +1.0 pp), magnitude tracks timescale starvation |
+| `../data/s18_llm_drift_gate_v1.*` | S18 LLM PoC (90 runs): A3 routing transfers (forgetting −2.5 ppl, 10/10 seeds at τ_m=200; ppl −1.07 at τ_m≤500), A2 gate falsified (0/10); sensitive interval τ_m≥1000 |
 | `../scripts/esn_metadata_comparison.py` | S10 producer script |
 | `../scripts/s14_esn_disturbance_chain.py` | S14 producer script (Type: PAPER) |
 | `../scripts/s16_tau_m_pressure_test.py` | S16 producer script (Type: PAPER) |
@@ -72,12 +73,12 @@ overall accuracy.
 
 - DONE: s14 (ESN+metadata under the disturbance chain), s16 (tau_m
   pressure test), s15 (controlled adaptation, ESN arms), s16b (probe
-  stress test), s5b (S5 substrate arms controlled), s17 (substrate stress:
-  equalizer gain positive at all ESN configs, magnitude tracks timescale
-  starvation) - all 10 seeds; see `DERIVATION.md` Section 8.
+  stress test), s5b (S5 substrate arms controlled), s17 (substrate stress),
+  s18 (LLM drift-gate PoC: routing transfers, gate falsified) - all 10
+  seeds; see `DERIVATION.md` Section 8 and `LLM_EXTENSION.md` §7.7.
 - PAPER_C.tex drafted and submission-ready (elsarticle preprint, 9 pp,
-  zero warnings).
-- PENDING (optional): the LLM extension PoC - see `LLM_EXTENSION.md`.
+  zero warnings). The §7 LLM extension results are available
+  (`figures/paperC_fig3_llm.pdf`) for writing the extension section.
 
 ## Open decisions (user gates)
 

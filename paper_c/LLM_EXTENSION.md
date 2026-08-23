@@ -245,6 +245,57 @@ invented ad hoc.
   on a Transformer substrate" — NOT "this beats Online-LoRA/SLoRA on
   benchmarks". No SOTA claims.
 
+### 7.7 Results (DONE, 10 seeds, 90 runs)
+
+Script `scripts/s18_llm_drift_gate.py` (Type: ML; torch CPU; char-level
+tiny transformer d=64/L2/H2/ctx=128, vocab 32, LoRA rank 16 on QKV+out+FFN;
+two biased-bigram domains alternating every 3000 tokens with known
+switches; stream 18k tokens). Data: `data/s18_llm_drift_gate_v1.*`.
+
+| arm | tau_m | stream ppl | paired diff vs A1 | forgetting ppl | paired diff vs A1 |
+|---|---|---|---|---|---|
+| A1 bare | - | 15.01 +- 0.33 | - | 8.94 +- 0.33 | - |
+| A2 gate | 200 | 17.31 | +2.29 (0/10 better) | 9.66 | +0.73 (0/10) |
+| A2 gate | 500 | 17.06 | +2.05 (0/10) | 9.48 | +0.54 (0/10) |
+| A2 gate | 1000 | 16.58 | +1.57 (0/10) | 9.24 | +0.30 (0/10) |
+| A2 gate | 2000 | 16.26 | +1.25 (0/10) | 9.03 | +0.09 (0/10) |
+| A3 route | 200 | 13.94 | **-1.07 (10/10)** | 6.42 | **-2.51 (10/10)** |
+| A3 route | 500 | 14.58 | **-0.43 (10/10)** | 6.75 | **-2.18 (10/10)** |
+| A3 route | 1000 | 15.47 | +0.46 (0/10) | 7.43 | -1.50 (10/10) |
+| A3 route | 2000 | 16.07 | +1.06 (0/10) | 8.41 | -0.53 (9/10) |
+
+Verdict against the Section 7.5 predictions (the falsification discipline
+held):
+
+1. **A3 domain routing TRANSFERS**: it reduces forgetting at every tau_m
+   (9-10/10 seeds, up to -2.5 ppl, 28% at tau_m=200) - the structural
+   domain separation of the two-adapter design preserves each domain's
+   knowledge, exactly the "which adapter" claim. It also improves stream
+   perplexity when the gate is fast (tau_m in {200,500}: 10/10 seeds).
+2. **A2 drift gate is FALSIFIED** (0/10 seeds at every tau_m): aggressive
+   update suppression ("adapt only near switches") loses because the model
+   needs continuous in-domain learning on this task. Reported as a
+   negative - Paper C-consistent (not every metadata instantiation
+   transfers).
+3. **Timescale sensitivity confirmed** (the s16 lesson): the ppl benefit
+   requires small tau_m (<=500); tau_m >= 1000 flips the ppl sign, and
+   the forgetting benefit narrows. The sensitive interval is reported,
+   not hidden.
+4. **T_adapt floors at the 20-token window** for all arms: the task's
+   transition is learnable within one chunk, so adaptation is too fast to
+   resolve; reported at the floor rather than as ratios (the s15 lesson).
+5. The gate estimation itself tracks the domains (5 flips per stream at
+   the 5 known switches, ~500-token lag at tau_m=500, 10% wrong-est
+   chunks) - the metadata channel is functional; the negative A2 result
+   is about the update policy, not the detector.
+
+Scope claim for the paper (unchanged): "the principles instantiate on a
+Transformer substrate; routing transfers (forgetting + fast-gate ppl),
+gating does not; report the sensitive interval". No SOTA claims.
+
+Figure: `figures/paperC_fig3_llm.pdf` (stream ppl and forgetting vs tau_m,
+A1/A2/A3, 10 seeds) via `scripts/gen_paperC_fig3_llm.py`.
+
 ## 8. Conclusion of the deduction
 
 **Yes — Paper C can be applied to large models, but with boundaries that
