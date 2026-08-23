@@ -1,7 +1,7 @@
 # REDEM — Physics-Grounded Online Learning Architecture
 
-This repository contains the complete code, data, and figures for two
-companion papers (plus a third in development):
+This repository contains the complete code, data, and figures for three
+companion papers (plus a fourth in development):
 
 - **Paper A**: *"Memory and chaos in a physics-constrained relaxation
   substrate: phase diagram, multi-timescale forgetting, and disturbance
@@ -21,12 +21,21 @@ companion papers (plus a third in development):
   Non-Transferable"* — three-mechanism disentanglement built on a falsifying
   experiment (s14: metadata does not transfer disturbance robustness to an
   ESN; s16: robust across τ_m ∈ [200, 2000]); §6 LLM extension written
-  (s18: routing transfers, gating-only falsified, Fig 3); drafted for
-  Neurocomputing / Neural Networks short paper
+  (s18: routing transfers, gating-only falsified, Fig 3); §7 conclusion
+  point (6): host-boundary statement (the full framework needs a stateful
+  host); drafted for Neurocomputing / Neural Networks short paper
   → See [`paper_c/PAPER_C.pdf`](paper_c/PAPER_C.pdf),
   [`paper_c/PAPER_C.tex`](paper_c/PAPER_C.tex),
   [`paper_c/DERIVATION.md`](paper_c/DERIVATION.md) and
   [`paper_c/PAPER_C_sketch.md`](paper_c/PAPER_C_sketch.md)
+
+- **Paper D (sketch stage)**: *"REDEM-SSM: A Foundation Model Architecture
+  with Native Online Learning, Meta-Adaptation, and Structural
+  Plasticity"* — a native SSM/Mamba-hosted foundation model instantiating
+  M1/M3/M4/M5 from the ground up, motivated by Paper C's host-boundary
+  result (target: NeurIPS/ICML stretch; arXiv + workshop first)
+  → See [`paper_d/README.md`](paper_d/README.md) and
+  [`paper_d/PAPER_D_sketch.md`](paper_d/PAPER_D_sketch.md)
 
 **Two papers, one pipeline — two different stories.** Paper A is a physics /
 nonlinear-dynamics theory paper about what the substrate *computes*; Paper B
@@ -56,6 +65,7 @@ Data and figures live in `data/` and `figures/`.
 ├── paper_a/     Paper A: substrate characterization (PDF, LaTeX, drafts, submission README)
 ├── paper_b/     Paper B: REDEM online learning architecture (PDF, LaTeX, drafts, submission README)
 ├── paper_c/     Paper C (in development): three-mechanism disentanglement (derivation, sketch, README)
+├── paper_d/     Paper D (sketch): native REDEM-SSM foundation model (README, design doc)
 ├── scripts/     Shared simulation code (CORE substrate, tasks, readouts, figure scripts)
 ├── data/        All experiment results (CSV + JSON, 10-seed means)
 ├── figures/     All publication figures (vector PDF; no raster twins)

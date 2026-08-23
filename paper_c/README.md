@@ -80,6 +80,9 @@ overall accuracy.
 - PAPER_C.tex drafted and submission-ready (elsarticle preprint, 13 pp,
   zero warnings). §6 LLM extension WRITTEN (s18 results + Fig 3 + Table 6;
   A2 gating falsified as design-lesson evidence, A3 routing transfers).
+  §7 conclusion point (6) ADDED (host-boundary statement: the full
+  framework needs a stateful host; calibrated to the §6 policy-level
+  lesson, not an architecture trial).
 
 ## Open decisions (user gates)
 
@@ -119,5 +122,8 @@ pdflatex PAPER_C.tex    # run three times for cross-references (elsarticle)
 - [ ] Keywords present (Elsevier format) - done.
 - [x] §6 LLM extension written into PAPER_C.tex (s18 results + Fig 3 +
       Table 6; A2 falsification framed as design lesson) - done.
+- [x] §7 conclusion point (6) host-boundary paragraph added (calibrated:
+      host property + update-policy attribution + "stateful host" future
+      work; NOT an architecture trial of the Transformer) - done.
 - [ ] Cover letter: the falsifying-experiment angle (which mechanism does
       which job) + honest ESN position.

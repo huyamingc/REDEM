@@ -539,6 +539,17 @@ s14, s15, s16, s16b, s5b, s17). Optional future: the LLM extension PoC
   continuous correction is insufficient"), per the user's positioning that
   honestly reported falsified instantiations strengthen the
   mechanism-decomposition thesis rather than weakening the paper.
+- **§7 conclusion point (6) added (DONE, 2026-02-18).** The host-boundary
+  statement: the s18 boundary is a property of the *host* (frozen
+  feedforward), not of the mechanisms --- routing transfers (point 5) and
+  the A2 failure is attributable to its update policy (M1 removed, M4
+  abrupt). Calibrated against the user's draft "architecture
+  incompatibility" paragraph: we do NOT claim the Transformer itself is an
+  incompatible substrate (A3 transferred on most of the operating range);
+  we claim the *full framework* requires a stateful host, and point future
+  work to designing foundation models from the ground up. Recompiled:
+  13 pp, exit 0 x3, no new warnings. This point is also the roadmap entry
+  for Paper D (REDEM-SSM, see ../paper_d/).
 - **Paper B wording (RESOLVED 2026-02-17).** s15/s5b show the S10 "47x" and
   S5 "9-20x faster adaptation" ratios were window-position metric artifacts;
   the true effects are ~10 pulses + variance collapse (ESN arms, s15) and

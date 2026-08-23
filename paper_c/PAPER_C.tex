@@ -525,6 +525,19 @@ low-rank adapters: slow-trace domain routing transfers (forgetting up to
 $-28\%$, stream perplexity $-1.07$ at $\tau_m{=}200$; 10/10 seeds) while
 a gating-only variant is falsified at every $\tau_m$ (0/10 seeds) ---
 detection without continuous correction is insufficient.
+(6)~That boundary is a property of the \emph{host}, not of the
+mechanisms: routing transfers on a Transformer substrate (point~5), and
+the failure of abrupt gating is attributable to its update policy ---
+removing the continuously active readout (M1) and replacing gradual
+structural switching (M4) with an abrupt one. The full framework
+therefore does not instantiate on a frozen-feedforward host: its
+requirements --- a continuously active online readout, a slowly
+integrating statistical memory, and gradually applied structural
+switches --- are native operations of a persistent stateful substrate,
+not retrofits onto a static architecture. This suggests that future
+work should design foundation models from the ground up with these
+mechanisms natively embedded in a stateful host, rather than
+retrofitting them onto static architectures.
 
 \section*{Code and data availability}
 All simulation scripts and generated data are available at
