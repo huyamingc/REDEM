@@ -4,16 +4,19 @@
 Mechanisms: Statistical Memory, Homeostatic Recovery, and Substrate Physics
 are Non-Transferable
 
-**Status**: derivation stage, s14 + s16 DONE (10 seeds each). Anchors from
-committed full-seed data: `data/s10_esn_metadata_v1.*`,
+**Status**: derivation stage, s14 + s16 + s15 + s16b DONE (10 seeds each).
+Anchors from committed full-seed data: `data/s10_esn_metadata_v1.*`,
 `data/s11_disturbance_chain_v1.*`, `data/s14_esn_disturbance_chain_v1.*`,
-and `data/s16_tau_m_pressure_test_v1.*` (Sections 8-9). The thesis is the
-three-mechanism disentanglement (user-confirmed): metadata is a
+`data/s16_tau_m_pressure_test_v1.*`, `data/s15_controlled_adaptation_v1.*`,
+`data/s16b_falsification_stress_test_v1.*` (Sections 8-9). The thesis is
+the three-mechanism disentanglement (user-confirmed): metadata is a
 substrate-agnostic *statistical* memory; disturbance recovery is the
 homeostat's role; raw memory capacity is the substrate's physics. The
-original "sequential robustness transfers" claim was falsified by s14 and
-stress-tested by s16 (strong claim holds at all tau_m). Experiments s15 and
-s16+ (standardization stress test) are still pending.
+original "sequential robustness transfers" claim was falsified by s14,
+stress-tested by s16 (strong claim holds at all tau_m) and s16b (robust in
+sign to probe protocol; magnitude protocol-dependent), and the adaptation
+claim was re-measured by s15 (true effect ~10 pulses + variance collapse;
+the old "x" ratios were metric artifacts).
 
 ---
 
@@ -139,9 +142,12 @@ readout run on whichever fast signal the substrate emits.
 Honest reading, to be locked into the paper text:
 
 - The metadata raises ESN accuracy 0.9955 -> 0.9979 (+0.24 pp, ~5x the
-  standard error) and collapses adaptation ~47x (11.22 -> 0.24). All three
-  arms fall inside [0.994, 0.998] with steady accuracy 1.000 - the
-  "equalization band".
+  standard error). The S10 "adaptation collapse 11.22 -> 0.24" was a
+  window-position metric artifact: the controlled s15 protocol measures the
+  true effect as ~10 pulses faster of ~200 (about 5%) plus a variance
+  collapse (T40 p90: 42 vs 76.5) - see Section 8. All three arms fall
+  inside [0.994, 0.998] with steady accuracy 1.000 - the "equalization
+  band".
 - `esn_dual`, not REDEM, is the best overall accuracy. The equalizer claim is
   about the mechanism, not about beating the ESN; REDEM's differentiation
   (material-set memory design, local sparse structure, robustness mechanisms)
@@ -174,11 +180,13 @@ re-centers: m(t) tracks the new regime's state distribution within
 weights (which were trained on the same feature mapping) transfer; recovery
 is limited by the feature-side timescale.
 
-**Caveat (honesty).** The S10 adaptation metric is a 200-pulse-windowed
-rolling statistic measured on segment tails with unknown exact switch
-instants; the ratio 11.22/0.24 is a headline number but the protocol should
-be made exact (known switch instants, reported distribution) before the paper
-is written - experiment s15.
+**Empirics (s15, controlled protocol).** With known switch instants the
+true advantage is small in absolute terms: esn_dual recovers ~10 pulses
+faster than esn_fast (~200 vs ~210, both at window-floor resolution) and
+its adaptation is far more consistent (T40 p90 42 vs 76.5; the S10 ratio
+11.22/0.24 is a window-position artifact). The mechanism (feature
+stationarity) is unchanged; the magnitude is modest on this task because
+even the fast-only readout re-estimates the regime within ~210 pulses.
 
 ## 5. Proposition 4 - Disturbance attenuation and sequential robustness
 
@@ -260,11 +268,13 @@ homeostat, substrate physics - which is the reframed thesis of Paper C
 
 | Claim | Data file | Numbers |
 |---|---|---|
-| Metadata raises ESN accuracy and collapses adaptation | `data/s10_esn_metadata_v1.*` | 0.9955 -> 0.9979; adapt 11.22 -> 0.24 (10 seeds) |
+| Metadata raises ESN accuracy; true adaptation effect measured by s15 | `data/s10_esn_metadata_v1.*`, `data/s15_controlled_adaptation_v1.*` | acc 0.9955 -> 0.9979; T40 40.6 vs 49.9, T40 p90 42 vs 76.5 (10 seeds) |
 | Equalization band | same | all arms in [0.994, 0.998], steady 1.000 |
 | Sequential robustness = homeostat (S11, fast-state features only) | `data/s11_disturbance_chain_v1.*` | MC 8.47 vs 6.41 (+32%), kappa 25.3->28.5 (10 seeds) |
 | Metadata does NOT transfer MC robustness to ESN | `data/s14_esn_disturbance_chain_v1.*` | paired diffs -0.78/-0.76/-0.69 at r1/r2/r3, 0/10 positive (10 seeds) |
 | Metadata attenuates readout noise on the online task | same | r3 NMSE 0.0251 vs 0.0277 (-9.5%), 10/10 seeds |
+| Falsification robust in sign to probe protocol (std-slow, state-noise) | `data/s16b_falsification_stress_test_v1.*` | all (tau_m, variant): 0/10 positive; magnitude -0.69 (V0) to -0.01 (V2) |
+| Controlled adaptation (known switch instants) | `data/s15_controlled_adaptation_v1.*` | T40 40.6 vs 49.9 (dual vs fast), p90 42 vs 76.5; overall acc replicates S10 |
 | redem_reg reproduces the S11 anchor exactly | same | r0 10.19, r1 7.17, r2 7.51, r3 8.47 |
 | Substrate raw memory > ESN raw memory | same | r0 MC 10.19 vs ~6.17 (both ESN arms) |
 | Regime length | `scripts/streaming_tasks.py` | RS_REGIME_LEN = 1500 |
@@ -341,43 +351,111 @@ Readings:
 **Paper C decision (user gate, 2026-02-17): adopt the strong claim** - the
 metadata is non-transferable for MC robustness; no sensitive interval needs
 to be flagged. The weak claim ("typical timescales 200-1000") is NOT
-needed.
+needed. Refined by s16b (below): the claim holds in SIGN under every probe
+protocol, but its MAGNITUDE is protocol-dependent (readout noise vs state
+noise).
+
+### s15 - Controlled adaptation protocol (DONE, 10 seeds)
+
+Script `scripts/s15_controlled_adaptation.py` (Type: PAPER). regime_switch
+with known switch instants (exact segment boundaries, L = 1500); arms
+esn_fast / esn_dual (tau_m=500) / redem (S10 protocol); T_adapt reported
+switch-relative in pulses with a distribution over 5 switches x 10 seeds:
+T_adapt_200 (200-pulse window, thr 0.98) and T_adapt_40 (40-pulse window,
+thr 0.95).
+
+| arm | overall acc | T40 mean | T40 median | T40 p90 | T200 mean | T200 median |
+|---|---|---|---|---|---|---|
+| esn_fast | 0.9955 | 49.9 | 42.0 | 76.5 | 210.2 | 201.0 |
+| esn_dual | 0.9979 | 40.6 | 41.0 | 42.0 | 199.2 | 199.0 |
+| redem | 0.9942 | 52.7 | 48.0 | 67.0 | 210.3 | 205.0 |
+
+Readings:
+
+- **The true adaptation advantage of the slow trace is ~10 pulses of a
+  ~200-pulse recovery (about 5%), plus a large variance collapse** (T40 p90:
+  42 vs 76.5; esn_dual near-deterministic). The S10 "47x" (esn adapt
+  11.22 -> 0.24) and the S5 "9-20x faster" ratios were computed as ratios of
+  window positions (near-zero denominators) and are metric artifacts; the
+  absolute effect is small. (Flagged for Paper B Section 4.3 wording, user
+  decision.)
+- esn_dual is at/near the T200 floor (199.2): its first fully-post-switch
+  200-pulse window is already >= 0.98. esn_fast and redem need ~10 more
+  pulses.
+- Overall accuracy replicates S10 (0.9955 / 0.9979 / 0.9942).
+
+### s16b - Falsification stress test (DONE, 10 seeds)
+
+Script `scripts/s16b_falsification_stress_test.py` (Type: PAPER). Re-runs
+the dual MC probe under three protocol variants at tau_m in {500, 2000}
+(fast baseline once per seed):
+V0 raw-slow (reference), V1 slow on standardized states (S10
+preprocessing), V2 state-level noise (noise injected into the states BEFORE
+the slow trace, EMA denoises it; both channels noisy).
+
+| tau_m | variant | r0_mc | r3_mc | paired diff r3 (dual-fast) | n_pos |
+|---|---|---|---|---|---|
+| 500 | V0 | 6.16 | 1.05 | -0.693 +- ... | 0/10 |
+| 500 | V1 | 6.16 | 1.08 | -0.663 | 0/10 |
+| 500 | V2 | 6.16 | 1.72 | -0.015 | 0/10 |
+| 2000 | V0 | 6.16 | 1.06 | -0.678 | 0/10 |
+| 2000 | V1 | 6.16 | 1.07 | -0.664 | 0/10 |
+| 2000 | V2 | 6.16 | 1.73 | -0.009 | 0/10 |
+| (fast) | V0 | 6.17 | 1.74 | - | - |
+
+Readings:
+
+- **The falsification is robust in SIGN under every probe protocol: 0/10
+  seeds positive at all (tau_m, variant).** Feature standardization (V1)
+  leaves it unchanged.
+- **The MAGNITUDE is protocol-dependent and informative.** Under readout-
+  noise semantics (V0, the S11/S14/S16 definition of the noise disturbance),
+  the gap is large (-0.69). Under state-noise semantics (V2), the slow
+  trace's EMA denoising nearly neutralizes the fast channel's corruption:
+  gap shrinks to ~-0.01 (dual 1.72-1.73 vs fast 1.74). This is the precise
+  statement of Prop. 4's transferable value: the metadata denoises
+  STATE-level corruption, but cannot help when the readout noise hits the
+  metadata channel equally.
+- r0_mc unchanged across variants (6.16): no episodic-memory effect,
+  regardless of protocol.
 
 ### Remaining experiments (not yet run)
 
-1. **s15 - Controlled adaptation protocol.** Known switch instants; report
-   T_adapt distribution per arm (fixes the windowed-statistic ambiguity of
-   S10's adapt_time). Needed for the Prop. 3 claim.
-2. **s16+ - Falsification stress test (optional).** Re-run the dual MC probe
-   with S10-style feature standardization (per-unit z-score from the first
-   30%) to confirm the s14/s16 MC finding is not a preprocessing artifact.
-3. **s17 - substrate stress (optional).** Vary ESN spectral radius
+1. **s17 - substrate stress (optional).** Vary ESN spectral radius
    {0.7, 0.9, 0.99} and heterogeneity to show the S10 equalizer gain is
    substrate-insensitive.
+2. **S5-arms controlled rerun (optional, for Paper B).** If Paper B
+   Section 4.3 wording is revised, rerun the fast/dual/slow substrate
+   metadata arms under the s15 controlled protocol to quantify the true
+   adaptation ratio on the substrate.
 
-## 9. Headline claims (locked on s14 + s16, 10 seeds each)
+## 9. Headline claims (locked on s14 + s16 + s16b, 10 seeds each)
 
 1. A single algorithmic component - a slow exponential trace of reservoir
    states - constitutes a synthesized forgetting kernel with a controllable
    horizon (Proposition 1).
 2. On long-horizon statistical tasks the performance bottleneck is timescale
    coverage, not substrate physics; the same slow trace equalizes ESN and
-   Si3N4 reservoirs on accuracy and collapses post-switch adaptation ~47x
-   (Propositions 2-3; S10 data).
+   Si3N4 reservoirs on accuracy and speeds post-switch adaptation (S10
+   accuracy; s15 controlled protocol: ~10 pulses faster of ~200, plus a
+   variance collapse from p90 76.5 to 42). The "47x" / "9-20x" ratios in
+   S10/S5 were window-position metric artifacts and are NOT used.
 3. The slow trace is a *statistical memory*, not an episodic one: it does
    not add raw memory capacity (S14 + S16: MC unchanged at nominal physics,
    and below the fast baseline under disturbance at EVERY tau_m in
-   {200,500,1000,2000}, 0/10 seeds positive) but it attenuates readout
-   noise on the online task (S14/S16 r3 NMSE -9.5% to -15%, 9-10/10 seeds;
-   Proposition 4).
+   {200,500,1000,2000}, 0/10 seeds positive). The falsification is robust
+   in sign to the probe protocol (s16b: 0/10 positive under standardization
+   and state-noise variants), but its magnitude is protocol-dependent: the
+   metadata's EMA denoising nearly closes the gap under state-level noise
+   (V2: -0.01) while readout-level noise keeps it large (V0: -0.69).
 4. Three mechanisms, three roles (the disentanglement thesis, S10 + S11 +
-   S14 + S16): metadata = timescale coverage and noise attenuation
-   (statistical memory); homeostat = sequential disturbance recovery (+32%
-   in S11, +18% r1->r3 in S14, kappa 25.3->28.5); substrate physics = raw
-   memory capacity (r0 MC 10.19 vs ~6.17 for the ESN). The mechanisms are
-   functionally non-transferable: no tau_m lets the metadata reproduce the
-   homeostat's recovery, and no algorithm in this work closes the
-   substrate's raw-memory lead.
+   S14 + S16 + S16b + S15): metadata = timescale coverage and denoising of
+   state-level corruption (statistical memory); homeostat = sequential
+   disturbance recovery (+32% in S11, +18% r1->r3 in S14, kappa
+   25.3->28.5); substrate physics = raw memory capacity (r0 MC 10.19 vs
+   ~6.17 for the ESN). The mechanisms are functionally non-transferable:
+   no tau_m lets the metadata reproduce the homeostat's recovery, and no
+   algorithm in this work closes the substrate's raw-memory lead.
 
 ## 10. Open decisions (user gates)
 
@@ -393,8 +471,10 @@ needed.
   in the title (it is not the metadata's property).
 - Venue: Neurocomputing vs Neural Networks (short/communication) vs similar
   (open).
-- Run s15 (controlled adaptation protocol) and the s16+ standardization
-  stress test before drafting? (Recommended: yes - they harden Props. 3 and
-  the MC falsification.)
+- **Paper B wording flag (user decision).** s15 shows the S10 "47x" and S5
+  "9-20x faster adaptation" ratios are window-position metric artifacts;
+  the true advantage is ~10 pulses (~5%) plus variance collapse. Paper B
+  Section 4.3 and the README headline rows should be softened accordingly
+  (or verified with an S5-arms controlled rerun first).
 - Citation closure: cite Paper B Section 4.5 as the seed of Paper C once B
   is public (preprint or acceptance).

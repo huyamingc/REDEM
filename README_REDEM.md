@@ -37,21 +37,23 @@ the structure level (M4).
 | S1 | Order–chaos transition at κ* ∈ (25,30); held-out memory +24–53% just before it; chaos destroys memory |
 | S2 | Online RLS tracks class-inversion drift (mean acc 0.974–0.982, recover 225–616 pulses); frozen offline inverts and never recovers; near-critical coupling → Mackey-Glass NMSE 0.0018 (50× vs uncoupled) |
 | S3/S4 | Reward-only three-factor fails at inversion (post 0.06–0.10); novelty intrinsic never rescues (stream mean ≤ 0.514) — negative results that fix the design |
-| S5 | Dual-timescale metadata: regime task +1.3–2.1 pp (p<0.0001), 9–20× faster boundary adaptation |
+| S5 | Dual-timescale metadata: regime task +1.3–2.1 pp (p<0.0001); adaptation advantage re-measured by s15 as ~10 pulses of ~200 + variance collapse (the earlier "9–20× faster" ratio was a window-position metric artifact) |
 | S6 | λ-homeostat: post-disturbance held-out memory +8–18% (τ-drift +18%) |
 | S7 | Gentle (5%) correlation-guided rewiring +8–11%; aggressive (20%) −23%; pruning redundancy helps (de-homogenization) |
 | S8 | Integrated system beats every ablation: 0.996 vs 0.973 (p<0.0001); persists at N=1024 (0.998 vs 0.976) |
 | S9 | Online (REDEM 0.991, ESN 0.998) vs frozen batch (GRU 0.371, transformer 0.351, inverted post-swap); ESN edge on standard tasks reported honestly |
 | Theory | Forgetting kernel M(t)=∫p(τ)e^{−t/τ}dτ: 1/e horizon ≈16 pulses (median-pinned); tail steepness set by CV; measured MC curve follows it with r = 0.97 |
 | S10-CV | Task-level CV sweep: uncoupled MC rises with CV (+33%, kernel theory); coupled near-critical MC falls (narrow CV best) — operating-regime-dependent knob |
-| S10-ESN | Metadata transfer: ESN+meta 0.998 ≈ ESN 0.996 ≈ REDEM-full 0.994 on regime task — the mechanism equalizes the systems |
+| S10-ESN | Metadata transfer: ESN+meta 0.998 ≈ ESN 0.996 ≈ REDEM-full 0.994 on regime task — the mechanism equalizes the systems (adapt 11.22→0.24 in the S10 metric; controlled s15 shows the true effect is ~10 pulses + variance collapse) |
 | E3 | Sequential disturbance chain (3 rounds: τ-drift → edge-prune → noise, 10 seeds): regulated arm maintains MC 8.47 vs fixed 6.41 (+32%) after all three; κ drifts 26.2→28.5 (active compensation) |
 | E4 | λ_target sweep (4 values × 3 CV × 5 seeds): λ_target=0 (edge of chaos) is optimal — +25%/+19%/+5% MC gain over fixed at CV=0.1/0.2/0.4; monotonic improvement as λ→0 |
 | O4 | Causal audit (7 arms × 3 seeds): all adaptive mechanisms are causally clean — injecting 1% future data changes accuracy <0.02 pp; causal-split plasticity protocol within 0.01 pp of normal |
 | s14 | ESN+metadata under the S11 disturbance chain (3 arms × 10 seeds): the slow trace does NOT transfer MC robustness to the ESN (paired diffs −0.78/−0.76/−0.69, 0/10 seeds positive) — the S11 +32% recovery is homeostat-driven; metadata still attenuates readout noise (r3 NMSE −9.5%, 10/10 seeds); redem_reg reproduces the S11 anchor exactly |
 | s16 | τ_m pressure test (τ_m ∈ {200,500,1000,2000} × 10 seeds): the falsification is robust — esn_dual r3 MC ≤ esn_fast at every τ_m (0/10 seeds positive, ~5σ), no sensitive interval; noise-attenuation transfer holds at all τ_m. Paper C adopts the strong claim |
+| s15 | Controlled adaptation (10 seeds × 5 switches, known switch instants): T40 40.6 (dual) vs 49.9 (fast) vs 52.7 (redem); T40 p90 42 vs 76.5 — the true metadata adaptation effect is ~10 pulses + variance collapse; the "47×"/"9–20×" ratios are metric artifacts |
+| s16b | Probe-protocol stress test (10 seeds × 2 τ_m × 3 variants): falsification robust in sign (0/10 positive everywhere); magnitude protocol-dependent — V0 (readout noise) −0.69, V1 (std-slow) −0.66, V2 (state noise) −0.01 (EMA denoising nearly closes the gap) |
 
-## Scripts (28 committed; 2 legacy dependencies kept for compatibility)
+## Scripts (30 committed; 2 legacy dependencies kept for compatibility)
 
 | Script | Type | Purpose |
 |---|---|---|
@@ -79,6 +81,8 @@ the structure level (M4).
 | `s13_causal_audit.py` | PAPER | O4: causal leakage audit (7 arms, 3 seeds) |
 | `s14_esn_disturbance_chain.py` | PAPER | Paper C: ESN+metadata under the disturbance chain — falsifies metadata robustness transfer (esn_fast/esn_dual/redem_reg, 10 seeds) |
 | `s16_tau_m_pressure_test.py` | PAPER | Paper C: τ_m ∈ {200,500,1000,2000} pressure test of the falsification (10 seeds) |
+| `s15_controlled_adaptation.py` | PAPER | Paper C: controlled adaptation protocol, known switch instants (10 seeds × 5 switches) |
+| `s16b_falsification_stress_test.py` | PAPER | Paper C: probe-protocol stress test (V0/V1/V2, 2 τ_m, 10 seeds) |
 | `gen_architecture_schematic.py` | FIG | Paper Fig 1 schematics (substrate / REDEM; M4↔M5 loop) |
 | `gen_paperA_supp_figures.py` | FIG | Paper A Supplementary Fig. S1 (task-level CV sweep) |
 | `gen_paper_figures.py` | FIG | Paper figure batch (robustness / metadata / ablation / showdown) |
@@ -94,7 +98,8 @@ the structure level (M4).
   `data/s10_esn_metadata_v1.*`, `data/s10_cv_sweep_v1.*`,
   `data/s11_disturbance_chain_v1.*`, `data/s12_lambda_target_sweep_v1.*`,
   `data/s13_causal_audit_v1.*`, `data/s14_esn_disturbance_chain_v1.*`,
-  `data/s16_tau_m_pressure_test_v1.*`
+  `data/s16_tau_m_pressure_test_v1.*`, `data/s15_controlled_adaptation_v1.*`,
+  `data/s16b_falsification_stress_test_v1.*`
   (CSV per run + JSON with params and per-cell aggregates).
 - Figures: `figures/substrate_phase_diagram_v2.pdf`,
   `figures/s2_online_readout_v1.pdf`, `figures/forgetting_curve_theory.pdf`,
@@ -131,9 +136,11 @@ scipy, matplotlib, torch (CPU) for S9 only.
 & .venv\Scripts\python.exe scripts\s11_disturbance_chain.py --sequential
 & .venv\Scripts\python.exe scripts\s12_lambda_target_sweep.py --sequential
 & .venv\Scripts\python.exe scripts\s13_causal_audit.py --sequential
-# Paper C experiments (s14, s16) + figure
+# Paper C experiments (s14, s16, s15, s16b) + figure
 & .venv\Scripts\python.exe scripts\s14_esn_disturbance_chain.py --sequential
 & .venv\Scripts\python.exe scripts\s16_tau_m_pressure_test.py --sequential
+& .venv\Scripts\python.exe scripts\s15_controlled_adaptation.py --sequential
+& .venv\Scripts\python.exe scripts\s16b_falsification_stress_test.py --sequential
 & .venv\Scripts\python.exe scripts\gen_paperC_fig2_recovery.py
 & .venv\Scripts\python.exe scripts\gen_architecture_schematic.py
 & .venv\Scripts\python.exe scripts\gen_paper_figures.py
@@ -200,7 +207,9 @@ ws-ijbc.cls / revtex4-2 for Paper A (IJBC/Chaos), elsarticle.cls for Paper B
 | O4 causal audit | done (3 seeds × 7 arms, all mechanisms causally clean) |
 | s14 ESN disturbance chain | done (10 seeds × 3 arms; metadata does not transfer MC robustness; +32% is homeostat) |
 | s16 τ_m pressure test | done (10 seeds × 4 τ_m; falsification robust, strong claim adopted) |
-| Paper C derivation | in progress (thesis locked; s15/s16+ follow-ups and PAPER_C.tex pending) |
+| s15 controlled adaptation | done (10 seeds × 5 switches; true effect ~10 pulses + variance collapse; "47×" is a metric artifact) |
+| s16b probe stress test | done (10 seeds × 2 τ_m × 3 variants; sign robust, magnitude protocol-dependent) |
+| Paper C derivation | in progress (thesis locked; PAPER_C.tex pending) |
 
 ## Open items
 
@@ -208,9 +217,11 @@ ws-ijbc.cls / revtex4-2 for Paper A (IJBC/Chaos), elsarticle.cls for Paper B
 - Swap journal document classes at submission (ws-ijbc / revtex4-2 for A;
   elsarticle for B).
 - Final algorithm name (working name REDEM).
-- Paper C: run s15 (controlled adaptation protocol) and the s16+
-  follow-ups (MC falsification stress test under feature standardization)
-  before drafting `paper_c/PAPER_C.tex`; decide venue (Neurocomputing vs
-  Neural Networks short) and title (proposed:
-  "Dissecting Online Learning Mechanisms: Statistical Memory, Homeostatic
-  Recovery, and Substrate Physics are Non-Transferable").
+- Paper C: draft `paper_c/PAPER_C.tex` (all supporting experiments done:
+  s14, s16, s15, s16b); decide venue (Neurocomputing vs Neural Networks
+  short) and title (proposed: "Dissecting Online Learning Mechanisms:
+  Statistical Memory, Homeostatic Recovery, and Substrate Physics are
+  Non-Transferable").
+- Paper B wording: soften the "9–20×"/"47×" adaptation ratios in §4.3 /
+  headline rows per the s15 controlled measurement (metric artifact;
+  true effect ~10 pulses + variance collapse).

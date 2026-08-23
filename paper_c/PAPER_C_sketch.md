@@ -4,14 +4,18 @@ Working title (user proposal, adopted): Dissecting Online Learning
 Mechanisms: Statistical Memory, Homeostatic Recovery, and Substrate Physics
 are Non-Transferable
 
-Status: post-s14 + post-s16. The three-mechanism disentanglement thesis is
-adopted (user gate, 2026-02-17). The decisive experiments are DONE: s14
-falsifies "metadata transfers disturbance robustness" (the +32% recovery is
-homeostat-driven), and s16 confirms the strong claim at every tau_m in
-{200, 500, 1000, 2000}. s15 (controlled adaptation) and s16+ (standardization
-stress test) remain before drafting. Target: short paper ~6 pages
-(Neurocomputing or Neural Networks short/communication - decide before
-submission).
+Status: post-s14, post-s16, post-s15, post-s16b (all 10 seeds). The
+three-mechanism disentanglement thesis is adopted (user gate, 2026-02-17).
+The decisive experiments are DONE: s14 falsifies "metadata transfers
+disturbance robustness" (the +32% recovery is homeostat-driven); s16
+confirms the strong claim at every tau_m in {200, 500, 1000, 2000}; s16b
+shows the falsification is robust in sign to the probe protocol but
+protocol-dependent in magnitude (readout-noise -0.69 vs state-noise -0.01);
+s15 re-measures adaptation with known switch instants (~10 pulses faster of
+~200, variance collapse; the old "47x"/"9-20x" ratios were metric
+artifacts). Only s17 (optional substrate stress) remains before drafting.
+Target: short paper ~6 pages (Neurocomputing or Neural Networks
+short/communication - decide before submission).
 
 ## Positioning (one paragraph, honest)
 
@@ -19,17 +23,21 @@ A single mechanism - the slow exponential trace of reservoir states (M3) - is
 a synthesized forgetting kernel: controllable horizon, exponential tail,
 substrate-independent by construction (Prop. 1). On long-horizon statistical
 tasks the bottleneck is timescale coverage, not physics; the same slow trace
-equalizes an ESN and the Si3N4 substrate on accuracy and collapses post-
-switch adaptation ~47x (Props. 2-3, S10). It is a *statistical* memory, not
-an episodic one: it adds no raw memory capacity and does not transfer
-disturbance robustness to an ESN at any metadata timescale (s14 + s16: MC
-paired diffs -0.68 to -0.70, 0/10 seeds positive) but attenuates readout
-noise on the online task (r3 NMSE -9.5% to -15%). Sequential disturbance
-recovery (+32% in S11, +18% r1->r3 in S14) is produced by the homeostat, not
-the metadata. Three mechanisms, three roles: metadata = timescale coverage
-and noise attenuation; homeostat = disturbance recovery; substrate physics =
-raw memory capacity (r0 MC 10.19 vs ~6.17 for the ESN). We never claim REDEM
-beats the ESN: in S10 the ESN+metadata arm has the best overall accuracy.
+equalizes an ESN and the Si3N4 substrate on accuracy and speeds post-switch
+adaptation (s15 controlled protocol: ~10 pulses of ~200, plus variance
+collapse from p90 76.5 to 42; the S10 "47x" ratio was a metric artifact).
+It is a *statistical* memory, not an episodic one: it adds no raw memory
+capacity and does not transfer disturbance robustness to an ESN at any
+metadata timescale (s14 + s16: MC paired diffs -0.68 to -0.70, 0/10 seeds
+positive; s16b: robust in sign to probe protocol). Its transferable value is
+denoising STATE-level corruption (s16b V2: gap -0.69 -> -0.01 when noise
+enters before the slow trace) plus readout-noise attenuation on the online
+task (r3 NMSE -9.5% to -15%). Sequential disturbance recovery (+32% in S11,
++18% r1->r3 in S14) is produced by the homeostat, not the metadata. Three
+mechanisms, three roles: metadata = timescale coverage and state-noise
+denoising; homeostat = disturbance recovery; substrate physics = raw memory
+capacity (r0 MC 10.19 vs ~6.17 for the ESN). We never claim REDEM beats the
+ESN: in S10 the ESN+metadata arm has the best overall accuracy.
 
 ## Section outline
 
@@ -70,7 +78,14 @@ beats the ESN: in S10 the ESN+metadata arm has the best overall accuracy.
      r3 MC vs tau_m. Strong claim: no tau_m closes the gap (0/10 seeds
      positive; paired diffs -0.68 to -0.70); noise attenuation transfers
      at all tau_m (r3 NMSE 0.0235-0.0254 vs 0.0277).
-   - s15 controlled adaptation protocol (pending): T_adapt distribution.
+   - S16b probe stress test: 2 tau_m x 3 variants x 10 seeds; falsification
+     robust in sign (0/10 positive everywhere); magnitude protocol-
+     dependent: V0 (readout noise) -0.69, V1 (std-slow) -0.66, V2
+     (state noise) -0.01 - the metadata denoises state-level corruption.
+   - S15 controlled adaptation: known switch instants; T40 40.6 (dual) vs
+     49.9 (fast) vs 52.7 (redem), T40 p90 42 vs 76.5; the "47x"/"9-20x"
+     adaptation ratios are window-position artifacts - report the honest
+     ~10-pulse effect + variance collapse.
 5. **Discussion** (~0.8 p)
    - The disentanglement thesis; honesty paragraph (esn_dual best overall
      accuracy; the +32% is homeostat, not metadata; substrate MC advantage
@@ -122,6 +137,12 @@ beats the ESN: in S10 the ESN+metadata arm has the best overall accuracy.
   1.06 (1000), 1.06 (2000); esn_fast 1.74. Paired diffs
   -0.701/-0.693/-0.682/-0.678 (0/10 positive each). r3 NMSE dual
   0.0254/0.0251/0.0235/0.0235 vs fast 0.0277 (9-10/10 better).
+- S16b (10 seeds): r3 MC dual V0 1.05/1.06, V1 1.08/1.07, V2 1.72/1.73
+  (tau_m 500/2000); fast 1.74. Paired diffs: V0 -0.69/-0.68, V1 -0.66,
+  V2 -0.015/-0.009 (0/10 positive all).
+- S15 (10 seeds, 5 switches): T40 mean esn_dual 40.6 / esn_fast 49.9 /
+  redem 52.7; T40 p90 42.0 / 76.5 / 67.0; T200 mean 199.2 / 210.2 / 210.3;
+  overall acc 0.9979 / 0.9955 / 0.9942 (replicates S10).
 - RS_REGIME_LEN = 1500; tau_m = 500 (S10/S14); tau_f = 1000 (lambda_f =
   0.999); substrate 1/e horizon ~16 pulses (Paper A).
 

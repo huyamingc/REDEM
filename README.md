@@ -64,7 +64,7 @@ letter points).
 
 ## Scripts
 
-All 28 committed scripts in `scripts/`, typed per `CLAUDE.md`
+All 30 committed scripts in `scripts/`, typed per `CLAUDE.md`
 (ML > CORE > PAPER > FIG > EXPLORE). Two legacy scripts from the prior
 Si₃N₄-pulse-encoding project are kept as shared dependencies (imported by the
 new code) and are never modified.
@@ -93,6 +93,8 @@ new code) and are never modified.
 | `s13_causal_audit.py` | PAPER | O4: causal leakage audit (7 arms, 3 seeds) |
 | `s14_esn_disturbance_chain.py` | PAPER | Paper C: ESN+metadata under the disturbance chain — falsifies metadata robustness transfer (3 arms, 10 seeds) |
 | `s16_tau_m_pressure_test.py` | PAPER | Paper C: τ_m ∈ {200,500,1000,2000} stress test — falsification robust across metadata timescales (10 seeds) |
+| `s15_controlled_adaptation.py` | PAPER | Paper C: controlled adaptation protocol with known switch instants (10 seeds) |
+| `s16b_falsification_stress_test.py` | PAPER | Paper C: probe-protocol stress test (V0/V1/V2, 2 τ_m, 10 seeds) |
 | `gen_architecture_schematic.py` | FIG | Paper Fig. 1 schematics (substrate / REDEM, M4↔M5 loop) |
 | `gen_substrate_phase_diagram.py` | FIG | S1 phase-diagram figure |
 | `gen_s2_curves.py` | FIG | S2 learning curves |
