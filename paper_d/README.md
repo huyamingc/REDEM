@@ -4,23 +4,23 @@
 Architecture with Native Online Learning, Meta-Adaptation, and Structural
 Plasticity
 
-**Status**: P1–P4 DONE 2026-02-18. P1/P3a falsified with mechanisms
+**Status**: P1–P5 DONE 2026-02-18. P1/P3a falsified with mechanisms
 isolated (linear state mixing; fixed gates don't fix it; M1 works on the
 additive input path, 10/10). P2 partially replicated (M3 routing transfers,
 forgetting −2.05 at τ_m≤1000, 10/10; gating-only inverts on RLS readouts —
-readout-dynamics-dependent, qualifies Paper C §6.4). P3 both supported (soft
-routing beats abrupt −1.82, 10/10; dormant covariance refresh flips routing
-to −1.72; M5 homeostat bounds the state 11.3 vs 50.2 and restores the
-full-state EMA detector 5/5). P4 benchmark (4-domain irregular switches)
-both hypotheses 10/10: SSM-REDEM beats bare (stream −2.25, forget −4.47)
-and beats the s18 Transformer A1 (stream −9.28, forget −10.08; even bare
-SSM beats TF-A1). Data: `data/s19_ssm_rls_readout_v1.csv`,
-`data/s20_ssm_m3_routing_v1.csv`, `data/s21_ssm_m4_m5_v1.csv`,
-`data/s22_ssm_p4_benchmark_v1.csv`. **P5: PAPER_D.tex first draft
-written 2026-02-18 (elsarticle preprint, 11 pp, zero warnings, 3
-figures, 2 tables; honest falsification narrative + companion refs).**
-Next: draft revision pass, real-text benchmark (user decision on corpus),
-or submission checklist.
+readout-dynamics-dependent, with the what-is-paused qualifier). P3 both
+supported (soft routing beats abrupt −1.82, 10/10; dormant covariance
+refresh flips routing to −1.72; M5 homeostat bounds the state 11.3 vs 50.2
+and restores the full-state EMA detector 5/5). P4 benchmark (4-domain
+irregular switches) both hypotheses 10/10 (REDEM vs bare −2.25/−4.47, vs
+TF-A1 −9.28/−10.08) + real-text transfer (S23, two Gutenberg books:
+REDEM vs bare −1.27 stream 10/10, vs TF-A1 −5.23 10/10; corpus in
+`../data/corpora/`). **P5: PAPER_D.tex draft (11 pp, zero warnings; author
+info filled; A2-claim qualifier + real-text results in revision pass 1).**
+Data: `data/s19_ssm_rls_readout_v1.csv`, `data/s20_ssm_m3_routing_v1.csv`,
+`data/s21_ssm_m4_m5_v1.csv`, `data/s22_ssm_p4_benchmark_v1.csv`,
+`data/s23_ssm_p4_realtext_v1.csv`. Next: draft revision (user review),
+Cover Letter, or submission checklist.
 
 ## Origin and motivation
 

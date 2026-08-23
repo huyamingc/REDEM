@@ -24,10 +24,10 @@
 \title{REDEM-SSM: A Foundation Model Architecture with Native Online
 Learning, Meta-Adaptation, and Structural Plasticity}
 
-\author{[Author Name]}
+\author{Yaming Hu\thanks{ORCID: 0009-0003-1406-0485}}
 \affiliation[1]{organization={Independent Researcher},
 city={Guiyang}, country={China}}
-\ead{[author@example.com]}
+\ead{64687555@qq.com}
 
 \begin{abstract}
 We instantiate the REDEM mechanisms --- an online readout (M1), a
@@ -111,7 +111,8 @@ paper's main contribution:
 \end{enumerate}
 
 On a four-domain irregular-switch benchmark the full stack beats the bare
-host and the Transformer+LoRA reference on every seed
+host and the Transformer+LoRA reference on every seed, and the result
+transfers to a two-book real-text protocol
 (Section~\ref{sec:p4}). All experiments are CPU-only, tiny by design,
 and make no scaling claims (Section~\ref{sec:lim}).
 
@@ -298,15 +299,20 @@ frozen-covariance variant ($+0.38$ to $+4.08$) is removed by
 dormant-covariance refresh (Section~\ref{sec:m4}, Section~\ref{sec:p3}).
 
 The gating-only arm (A2) \emph{improves} stream perplexity at every
-$\tau_m$ ($-1.52$ to $-2.45$, 10/10), the opposite of its 0/10
-falsification on the Transformer's Adam/LoRA readout \cite{redemc}: a
-near-batch RLS readout ($\lambda=0.9999$) that pauses within domains
-stays near the pooled-table optimum, whereas a fast Adam/LoRA readout
-that pauses lets within-domain knowledge decay. The companion lesson
-``the readout must remain active throughout the stream''
-\cite{redemc} is therefore \emph{readout-dynamics-dependent}, not
-host-invariant; we report this qualification here rather than editing
-the companion paper.
+$\tau_m$ ($-1.52$ to $-2.45$, 10/10), the opposite of the companion's
+A2 falsification (0/10). Two differences must be stated honestly: the
+companion's A2 paused its LoRA \emph{plasticity} while keeping the head
+\emph{readout} active at every step, whereas here the RLS readout is the
+only trainable component, so pausing it pauses all learning --- the two
+arms are not the same experiment. The mechanism of the inversion is the
+readout's dynamics: a near-batch RLS readout ($\lambda=0.9999$) that
+pauses within domains stays near the pooled-table optimum, whereas a
+fast Adam/LoRA readout that pauses lets within-domain knowledge decay.
+Taken together the two results show that the pause policy's effect
+depends on the learner's dynamics \emph{and} on what is paused; the
+companion lesson ``the readout must remain active throughout the stream''
+\cite{redemc} is not a universal principle. We report this qualification
+here rather than editing the companion paper.
 
 \begin{table}[t]
 \centering
@@ -377,6 +383,20 @@ transformer reference 10/10 ($-7.03$): the RLS readout's second-order
 convergence dominates online Adam/LoRA when domains switch faster than
 the LoRA can track (the reference sits near uniform, 22.46).
 
+\emph{Real-text transfer.} The same protocol on two public-domain books
+(Alice's Adventures in Wonderland vs.\ A Tale of Two Cities, character
+-level, case-folded, 32-symbol vocabulary) reproduces the result:
+SSM-REDEM beats SSM-bare (stream $-1.27$, 10/10; forgetting $-0.47$,
+9/10) and beats TF-A1 (stream $-5.23$, forgetting $-2.01$; 10/10); even
+the bare host beats TF-A1 10/10. The fast-channel metadata separates the
+two sources, and soft routing retains per-source specialists, although
+the forgetting gain is smaller than on the synthetic task --- the two
+books share English letter bigram statistics, so their specialists
+overlap more than the four synthetic domains'. The first-order readout
+reaches the char-bigram regime (ppl $\sim$12--13); higher-order text
+structure is out of its reach and is reported as a boundary, not a
+result.
+
 \begin{figure}[t]
 \centering
 \includegraphics[width=0.9\linewidth]{paperD_fig3_benchmark}
@@ -437,10 +457,11 @@ abandoned.
 \section{Limitations}
 \label{sec:lim}
 
-CPU-only, toy-scale (state 128, $\sim$4k readout parameters); first-order
-tasks only (the input-path readout is a bigram model --- real-text and
-higher-order benchmarks are deferred pending a corpus decision); linear
-host (no chaos; M5 is a stability-edge regulator, an analogy to the
+CPU-only, toy-scale (state 128, $\sim$4k readout parameters); the
+input-path readout is a first-order bigram model --- the real-text
+benchmark transfers (Section~\ref{sec:p4}) but higher-order text
+structure is out of reach; linear host (no chaos; M5 is a
+stability-edge regulator, an analogy to the
 homeostat of \cite{redema,redemb}, not a validation of it); the learned
 selectivity route (real Mamba-style gating) is not crossed; the
 transformer reference uses the companion's hyperparameters untuned for

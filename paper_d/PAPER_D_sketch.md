@@ -307,10 +307,16 @@ cannot keep up with 4 domains).
 **Honest scope (recorded)**: 1st-order task (the input-path readout's
 natural capacity); the transformer baseline is the bare online LoRA with
 the s18 hyperparameters (not re-tuned for 4 domains); TF-A3 (transformer
-routing) not run (the s18 model has 2 adapters); the real-text corpus
-benchmark is DEFERRED (no external text in the repo - user decision
-needed); no WikiText-103, no scaling claims. Data:
-`data/s22_ssm_p4_benchmark_v1.csv` / `.json` (30 rows).
+routing) not run (the s18 model has 2 adapters); no WikiText-103, no
+scaling claims. **Real-text extension (S23, DONE 2026-02-18)**: two
+public-domain books (Alice vs Dickens, Gutenberg, committed in
+`data/corpora/`), char-level 32-symbol vocab, 6x3000 alternating
+segments - REDEM beats bare (stream -1.27, 10/10; forget -0.47, 9/10)
+and TF-A1 (stream -5.23, forget -2.01, 10/10); even bare beats TF-A1
+10/10; the first-order readout reaches the char-bigram regime (ppl
+~12-13) and higher-order structure is out of reach (reported as a
+boundary). Data: `data/s22_ssm_p4_benchmark_v1.csv` / `.json` (30
+rows), `data/s23_ssm_p4_realtext_v1.csv` / `.json` (30 rows).
 
 ### P5 - Paper (DRAFTED 2026-02-18)
 
@@ -428,3 +434,16 @@ journal fallback.
   reproduces the quoted values exactly; no corrections needed. The audit
   script (review_workspace/audit_paperD.py, gitignored) documents the
   recomputation.
+- 2026-02-18: **Author info filled in all four papers** (Yaming Hu, ORCID
+  0009-0003-1406-0485, Independent Researcher Guiyang, email
+  64687555@qq.com): \thanks form (elsarticle \orcid unsupported in the
+  installed class - compile-tested). Papers A-D recompiled clean
+  (13/10/13/11 pp).
+- 2026-02-18: **P5 draft revision pass 1** - fixed the A2-inversion claim
+  with the honest what-is-paused qualifier (the companion's A2 paused
+  LoRA plasticity with the head active; here pausing the RLS readout
+  pauses all learning; the two arms are not the same experiment) and
+  added the S23 real-text results to Section 3.4 + limitations. Open
+  items for the user: title overclaim ("Foundation Model Architecture"
+  for a toy prototype) - recommend a revision; optional related-work
+  paragraph; per-mechanism ablation table.
