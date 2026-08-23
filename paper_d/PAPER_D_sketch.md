@@ -1,7 +1,9 @@
 # Paper D - Design Sketch: REDEM-SSM
 
-**Working title**: REDEM-SSM: A Foundation Model Architecture with Native
-Online Learning, Meta-Adaptation, and Structural Plasticity
+**Working title**: REDEM-SSM: A State-Space Architecture with Native
+Online Learning, Meta-Adaptation, and Structural Plasticity (revised
+2026-02-19: was "A Foundation Model Architecture ..." — dropped as
+overclaiming for the toy-scale PoC)
 
 **Status**: sketch (2026-02-18). No experiments yet. This document is the
 design contract for the paper; every mechanism mapping below is a
@@ -444,6 +446,6 @@ journal fallback.
   LoRA plasticity with the head active; here pausing the RLS readout
   pauses all learning; the two arms are not the same experiment) and
   added the S23 real-text results to Section 3.4 + limitations. Open
-  items for the user: title overclaim ("Foundation Model Architecture"
-  for a toy prototype) - recommend a revision; optional related-work
-  paragraph; per-mechanism ablation table.
+  items for the user: title overclaim — RESOLVED 2026-02-19 (revised to
+  "A State-Space Architecture with Native Online Learning ...");
+  optional related-work paragraph; per-mechanism ablation table.

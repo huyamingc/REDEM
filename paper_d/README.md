@@ -1,8 +1,9 @@
 # Paper D - REDEM-SSM (working title, sketch stage)
 
-**Working title (user proposal, adopted)**: REDEM-SSM: A Foundation Model
-Architecture with Native Online Learning, Meta-Adaptation, and Structural
-Plasticity
+**Working title (user proposal, revised 2026-02-19)**: REDEM-SSM: A
+State-Space Architecture with Native Online Learning, Meta-Adaptation, and
+Structural Plasticity (was "A Foundation Model Architecture ..." — dropped
+as overclaiming for a toy-scale, CPU-only PoC).
 
 **Status**: P1–P5 DONE 2026-02-18. P1/P3a falsified with mechanisms
 isolated (linear state mixing; fixed gates don't fix it; M1 works on the
@@ -138,3 +139,22 @@ see `../data/corpora/README.md`).
 All results are committed under `../data/` (CSV per run + JSON with params
 and aggregates); figures are vector PDF under `../figures/`. The paper
 includes the extension-less basename so `pdflatex` picks the vector file.
+
+## Submission checklist (Paper D — arXiv + workshop first, NeurIPS/ICML stretch)
+
+- [x] Title revised (2026-02-19): "A State-Space Architecture ..." —
+      "Foundation Model" dropped as overclaiming for the toy-scale PoC.
+- [x] Author filled (2026-02-19): Yaming Hu, ORCID 0009-0003-1406-0485,
+      Independent Researcher, Guiyang, Guizhou Province, China;
+      64687555@qq.com. Abstract note / cover letter: `COVER_LETTER.md`.
+- [x] `PAPER_D.tex` compiles: elsarticle preprint, 11 pp, zero warnings.
+- [x] P1–P5 evidence committed: s19–s23 + Fig 1–3 + data CSVs/JSONs (10-seed
+      paired discipline, n_pos/10 sign consistency throughout).
+- [x] Honesty scoping in text: CPU-only, toy-scale, no scaling claims;
+      deconvolution impossibility scoped to linear readouts; TF-A1 reference
+      untuned for four domains; real-text gains bounded by shared English
+      bigram statistics.
+- [ ] Optional before arXiv: related-work paragraph (Longhorn ICLR 2025,
+      Titans NeurIPS 2025, TTT ICLR 2024, Mamba/S4/DeltaNet — 13 refs already
+      in the bibliography); per-mechanism ablation table.
+- [ ] Optional: arXiv abstract/format check; workshop CFP match.

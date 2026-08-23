@@ -510,3 +510,16 @@ S1-S9 全部完成（14 个新脚本、12 组实验数据、`NEW_ALGORITHM_PLAN.
   - **论文/文档更新**：PAPER_B.tex 4 处（摘要/批基线段/表/结论）+ sketch
     3 处 + README/README_REDEM S9 行；paperB_fig6_showdown.pdf 重生成；
     PAPER_B 重编译（10 页，零警告）。备份 scripts/baseline_showdown.bak.py。
+- 投稿物料会话（2026-02-19）：
+  - **Paper D 标题修订**：删除 "Foundation Model Architecture"（toy 原型
+    过声称，用户挂起门关闭），改为 "A State-Space Architecture with Native
+    Online Learning, Meta-Adaptation, and Structural Plasticity"。
+    PAPER_D.tex（注释+\title）+ paper_d/README + sketch + 根 README（bullet+
+    布局）+ README_REDEM 开放项 5 处同步；PAPER_D 重编译 11 页零警告。
+  - **Cover Letter ×4**：paper_a/b/c/d/COVER_LETTER.md（真实作者：Yaming Hu,
+    ORCID 0009-0003-1406-0485, Independent Researcher Guiyang, 64687555@qq.com;
+    A→IJBC/Chaos，B→Neural Networks，C→Neurocomputing，D→arXiv/workshop 摘要
+    注记；均含原创性声明 + 代码可用性 + 诚实定位）。
+  - **投稿清单更新**：A/B/C README 作者占位项勾选完成 + 引用 COVER_LETTER；
+    paper_d/README 新增 Submission checklist（标题/作者/编译/证据/诚实范围
+    已勾；可选 related-work 段 + 机制消融表留给用户）。

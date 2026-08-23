@@ -27,7 +27,9 @@ latexmk -pdf PAPER_A.tex
 
 ## Submission checklist (Paper A)
 
-- [ ] Replace `[Author Name]` / affiliation / email in `\author`.
+- [x] Author filled (2026-02-19): Yaming Hu, ORCID 0009-0003-1406-0485,
+      Independent Researcher, Guiyang, Guizhou Province, China;
+      64687555@qq.com. Cover letter: `COVER_LETTER.md`.
 - [ ] Swap the document class: `ws-ijbc.cls` for IJBC, or `revtex4-2` for
       Chaos (math, figures, and tables carry over unchanged).
 - [ ] Keywords present: chaos; reservoir computing; memory capacity;

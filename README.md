@@ -29,9 +29,9 @@ companion papers (plus a fourth in development):
   [`paper_c/DERIVATION.md`](paper_c/DERIVATION.md) and
   [`paper_c/PAPER_C_sketch.md`](paper_c/PAPER_C_sketch.md)
 
-- **Paper D (in development)**: *"REDEM-SSM: A Foundation Model Architecture
-  with Native Online Learning, Meta-Adaptation, and Structural
-  Plasticity"* — a native SSM/Mamba-hosted foundation model instantiating
+- **Paper D (in development)**: *"REDEM-SSM: A State-Space Architecture with
+  Native Online Learning, Meta-Adaptation, and Structural
+  Plasticity"* — a native SSM-hosted architecture instantiating
   M1/M3/M4/M5 from the ground up, motivated by Paper C's host-boundary
   result. P1–P4 (S19–S22) DONE: P1/P3a falsified with mechanisms isolated
   (linear state mixing; fixed gates don't fix it; M1 works on the additive
@@ -77,7 +77,7 @@ Data and figures live in `data/` and `figures/`.
 ├── paper_a/     Paper A: substrate characterization (PDF, LaTeX, drafts, submission README)
 ├── paper_b/     Paper B: REDEM online learning architecture (PDF, LaTeX, drafts, submission README)
 ├── paper_c/     Paper C (in development): three-mechanism disentanglement (derivation, sketch, README)
-├── paper_d/     Paper D (sketch): native REDEM-SSM foundation model (README, design doc)
+├── paper_d/     Paper D (sketch): native REDEM-SSM architecture (README, design doc)
 ├── scripts/     Shared simulation code (CORE substrate, tasks, readouts, figure scripts)
 ├── data/        All experiment results (CSV + JSON, 10-seed means)
 ├── figures/     All publication figures (vector PDF; no raster twins)

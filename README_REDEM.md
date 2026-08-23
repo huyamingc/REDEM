@@ -241,8 +241,9 @@ ws-ijbc.cls / revtex4-2 for Paper A (IJBC/Chaos), elsarticle.cls for Paper B
   `paper_c/LLM_EXTENSION.md` §7.7. Remaining before submission: cover
   letter.
 - Paper D: `paper_d/PAPER_D.tex` drafted (11 pp, zero warnings). Open:
-  title wording (user decision — "Foundation Model Architecture" may
-  overclaim for the toy prototype), optional related-work paragraph +
+  title RESOLVED 2026-02-19 (revised to "A State-Space Architecture ...";
+  "Foundation Model" dropped as overclaiming for the toy prototype),
+  optional related-work paragraph +
   per-mechanism ablation table, cover letter.
 - Paper B wording: revised (2026-02-17) - §4.3/§4.5/§4.6 and abstract use
   the controlled s15/s5b adaptation measurements (factor 1.3-2.4 instead

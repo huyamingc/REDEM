@@ -106,7 +106,9 @@ pdflatex PAPER_C.tex    # run three times for cross-references (elsarticle)
 
 ## Submission checklist (Paper C)
 
-- [ ] Replace `[Author Name]` / `\ead{...}` placeholder.
+- [x] Author filled (2026-02-19): Yaming Hu, ORCID 0009-0003-1406-0485,
+      Independent Researcher, Guiyang, Guizhou Province, China;
+      64687555@qq.com. Cover letter: `COVER_LETTER.md`.
 - [x] Document class: `elsarticle` preprint (Elsevier initial-submission
       format); switch to `\documentclass[final,3p]{elsarticle}` (two-col)
       or `[final,1p]` at acceptance per journal preference.

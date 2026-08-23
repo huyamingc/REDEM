@@ -26,7 +26,9 @@ latexmk -pdf PAPER_B.tex
 
 ## Submission checklist (Paper B)
 
-- [ ] Replace `[Author Name]` / affiliation / email in `\author`.
+- [x] Author filled (2026-02-19): Yaming Hu, ORCID 0009-0003-1406-0485,
+      Independent Researcher, Guiyang, Guizhou Province, China;
+      64687555@qq.com. Cover letter: `COVER_LETTER.md`.
 - [ ] Swap the document class: `elsarticle.cls` (Elsevier template).
 - [ ] Title deliberately contains no "physics" (S1 review decision); the
       physical substrate appears only as background motivation in §1.
