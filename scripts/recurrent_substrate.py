@@ -42,6 +42,12 @@ import sys
 
 import numpy as np
 
+# Unbuffered output (CLAUDE.md 4.5)
+os.environ.setdefault('PYTHONUNBUFFERED', '1')
+if hasattr(sys.stdout, 'reconfigure'):
+    sys.stdout.reconfigure(line_buffering=True)
+    sys.stderr.reconfigure(line_buffering=True)
+
 # numba JIT acceleration (optional), same fallback pattern as existing CORE
 try:
     from numba import njit

@@ -41,7 +41,7 @@ echo-state network with and without the metadata under a sequential
 disturbance chain, 10 seeds) shows that the previously reported $+32\%$
 sequential-recovery gain is produced by the homeostat, not by the
 metadata, and that the metadata does not transfer memory-capacity
-robustness to an ESN at any metadata timescale
+robustness to an ESN at any tested metadata timescale
 ($\tau_m \in \{200,500,1000,2000\}$; paired differences $-0.68$ to
 $-0.70$, 0/10 seeds positive). The metadata's transferable value is
 narrower and precisely located: it denoises \emph{state}-level corruption
@@ -275,8 +275,8 @@ $\tau_m$ & dual $r_3$ MC & fast $r_3$ MC & paired diff & $n_{\mathrm{pos}}$ \\
 2000 & 1.06 & 1.74 & $-0.678$ & 0/10 \\
 \bottomrule
 \end{tabular}
-\caption{Metadata-timescale pressure test (10 seeds): no $\tau_m$ closes
-the memory-capacity gap.}
+\caption{Metadata-timescale pressure test (10 seeds): none of the tested
+$\tau_m$ values closes the memory-capacity gap.}
 \label{tab:s16}
 \end{table}
 
@@ -348,7 +348,7 @@ the missing timescale on statistical tasks (Section~\ref{sec:s10}),
 denoises state-level corruption (Section~\ref{sec:s16b}, V2), and
 attenuates readout noise on the online task (Sections~\ref{sec:s14}--\ref{sec:s16})
 --- but it adds no episodic memory capacity (r0 MC unchanged) and cannot
-recover memory under readout-level disturbance at any $\tau_m$
+recover memory under readout-level disturbance at any tested $\tau_m$
 (Sections~\ref{sec:s14}--\ref{sec:s16b}). (ii)~\emph{Homeostat (M5) =
 disturbance recovery}: the $+32\%$ sequential recovery and the $+18\%$
 $r_1\!\to\!r_3$ gain are produced by $\kappa$-regulation alone; the
@@ -516,7 +516,7 @@ substrate physics; the same trace equalizes ESN and substrate accuracy and
 accelerates adaptation by a controlled-measured factor 1.3--2.4
 (Props.~2--3). (3)~The trace is a \emph{statistical} memory, not an
 episodic one: it adds no raw memory capacity and does not transfer
-disturbance robustness at any $\tau_m$ (0/10 seeds positive; Prop.~4).
+disturbance robustness at any tested $\tau_m$ (0/10 seeds positive; Prop.~4).
 (4)~Three mechanisms, three roles --- metadata (statistical memory and
 state-noise denoising), homeostat (sequential recovery), substrate physics
 (raw memory) --- and none is substitutable for another's job.

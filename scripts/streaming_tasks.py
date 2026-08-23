@@ -33,7 +33,16 @@ NOTE: sequence generators are glue code (trivial scalar loops), so numba is
 NOT applied here despite the CORE type; the hot physics loop lives in
 recurrent_substrate.py.
 """
+import os
+import sys
+
 import numpy as np
+
+# Unbuffered output (CLAUDE.md 4.5)
+os.environ.setdefault('PYTHONUNBUFFERED', '1')
+if hasattr(sys.stdout, 'reconfigure'):
+    sys.stdout.reconfigure(line_buffering=True)
+    sys.stderr.reconfigure(line_buffering=True)
 
 # Mapping range for scalar inputs -> pulse intervals [s]
 DT_MAP_LO = 2e-6

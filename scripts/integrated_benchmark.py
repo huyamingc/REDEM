@@ -18,7 +18,7 @@ Arms (each mechanism on/off, 10 seeds at N=256):
   no_plasticity : full with the random_graph topology fixed
   baseline      : RLS fast-only, kappa=25, fixed random_graph (S2/S5 base)
 
-N=1024 confirmation: baseline vs full, 5 seeds.
+N=1024 confirmation: baseline vs full, 3 seeds.
 
 Metrics (S5 protocol): overall accuracy, per-segment steady accuracy,
 regime-switch adaptation time.
