@@ -51,6 +51,12 @@ and accelerates boundary adaptation by a controlled-measured factor of
 ``$9$--$20\times$'' ratios were window-position metric artifacts). Raw
 memory capacity remains a substrate property (MC 10.19 vs.\ 6.17). Three
 mechanisms, three roles --- and none is transferable to another's job.
+A controlled proof of concept on a Transformer substrate with low-rank
+adapters confirms the boundary on a second substrate: slow-trace domain
+routing transfers (forgetting up to $-28\%$, stream perplexity $-1.07$ at
+$\tau_m{=}200$; 10/10 seeds) while a gating-only variant is falsified at
+every $\tau_m$ (0/10 seeds) --- detection without continuous correction
+is insufficient.
 \end{abstract}
 
 \begin{keyword}
@@ -87,7 +93,10 @@ we argue, informative: the metadata is a substrate-agnostic
 \emph{state-noise denoising}, but not \emph{memory-capacity robustness}
 under readout-level disturbance; sequential recovery is the homeostat's
 job; raw memory capacity is the substrate's physics. Three mechanisms,
-three roles --- none substitutable.
+three roles --- none substitutable. Section~\ref{sec:llm} tests whether
+this decomposition survives on a structurally different substrate --- a
+Transformer with low-rank adapters --- and reports one transferable
+instantiation (routing) and one falsified one (gating-only).
 
 \section{Setup}
 \label{sec:setup}
@@ -352,7 +361,9 @@ precisely located job, and swapping them fails in a measurable way. This
 delineates the boundary conditions of ``metadata transfer'' claims in the
 online-reservoir literature: transfer holds for accuracy and
 state-noise denoising, and does not hold for disturbance recovery or
-episodic memory.
+episodic memory. The same boundary reproduces on a Transformer substrate
+with low-rank adapters (Section~\ref{sec:llm}): routing transfers,
+gating does not.
 
 \textbf{Related work.} The slow trace is the linear slow-feature operator
 on reservoir states (cf.\ slow feature analysis \cite{wiskott2002}); the
@@ -374,13 +385,126 @@ task timescale. The substrate's homeostat requires a Lyapunov estimate
 knowledge into the structural connectivity would create a hierarchy
 between fast tracking and slow accumulation, but introduces a
 consolidation-vs-overwrite trade-off beyond the present scope. Second,
-REDEM's readout is validated at medium reservoir scale ($N \le 1024$); on
-large Transformers the same online readout updates can be deployed
-directly on the output projection or on low-rank (LoRA-style) adapters.
-The recursive-least-squares update cost is $O(F^2)$ in the readout
+Section~\ref{sec:llm} instantiates the same online readout on a
+Transformer substrate through low-rank (LoRA-style) adapters; there the
+recursive-least-squares update cost is $O(F^2)$ in the readout
 \emph{feature} dimension $F$ --- the model width (thousands) or an
 adapter rank (tens) --- not $O(P^2)$ in the total parameter count (tens
-of billions), so the full-rank bottleneck does not arise.
+of billions), so the full-rank bottleneck does not arise at any scale
+tested here.
+
+\section{Extension to Transformer substrates: routing transfers, gating does not}
+\label{sec:llm}
+
+\subsection{Motivation and scope}
+
+The three mechanisms are formulated substrate-agnostically, but all
+evidence so far comes from reservoirs. We ask whether the decomposition
+survives on a structurally different substrate --- a Transformer with
+low-rank adapters \cite{hu2022lora} --- under the same falsification
+discipline (10 seeds, paired per-seed differences, sign consistency). The
+scope claim is deliberately narrow: the \emph{principles} instantiate on
+a Transformer substrate; we make no benchmark or SOTA claims. The model
+is tiny by design --- sized to run 90 seeded trials on CPU, not to
+compete with large models.
+
+\subsection{Model, task, and arms}
+
+A character-level transformer \cite{vaswani2017} with $d=64$, two layers,
+two heads, context 128, and a vocabulary of 32 ($\sim10^5$ parameters),
+trained online on a streaming task with known switch instants. Two
+biased-bigram Markov domains alternate every 3000 tokens (6 segments,
+18\,k tokens): domain A biases the shift-1 bigram toward symbols 0--7;
+domain B biases the shift-7 bigram toward symbols 24--31. Single tokens
+are nearly indistinguishable across domains --- only bigram statistics
+discriminate (the analogue of the timescale gap of
+Section~\ref{sec:setup}). Embeddings, positions, and layer norms are
+frozen; the output head is a trainable readout; two low-rank (rank-16)
+adapters on the QKV, output, and FFN projections carry the trainable
+plasticity.
+
+\textbf{Arms.} \emph{A1 (bare online LoRA):} both adapters update every
+batch at a fixed learning rate --- the online-readout analogue with M1
+always on. \emph{A2 (drift gate):} a slow exponential trace of the hidden
+states (M3, Eq.~\ref{eq:ema}) estimates the current domain; the adapter
+update is boosted for a window after a detected switch and suppressed
+within a domain --- the ``when to adapt'' claim. \emph{A3 (domain
+routing):} the same slow-trace estimate selects the active adapter, and
+only the active one updates --- the ``which adapter to adapt'' claim.
+$\tau_m\in\{200,500,1000,2000\}$.
+
+\textbf{Metrics.} Stream perplexity (overall); forgetting perplexity
+(perplexity on the previous domain after switching away --- the
+episodic-memory probe); post-switch adaptation time in tokens (known
+switches, 20-token window, $1.5\times$ steady-state threshold).
+
+\subsection{Results: routing transfers, gating does not}
+
+Table~\ref{tab:s18} and Fig.~\ref{fig:llm}. A3 (routing) transfers:
+forgetting improves at \emph{every} $\tau_m$ (9--10/10 seeds, up to
+$-2.51$ ppl, $-28\%$ at $\tau_m{=}200$), and stream perplexity improves
+when the trace is fast ($\tau_m\in\{200,500\}$: $-1.07$/$-0.43$, 10/10
+seeds). A2 (gating-only) is falsified: stream perplexity is worse than
+A1 at every $\tau_m$ (paired differences $+1.25$ to $+2.29$, 0/10 seeds
+positive) and forgetting never improves (0/10). The stream-ppl benefit
+of A3 is timescale-sensitive: at $\tau_m\ge1000$ its sign flips --- the
+same sensitive interval reported for the reservoir
+(Section~\ref{sec:s16}). $T_{\mathrm{adapt}}$ floors at the 20-token
+window for every arm: the task transition is learnable within one chunk,
+so adaptation is too fast to resolve --- reported at the floor, not as
+ratios (the Section~\ref{sec:adapt} lesson). The gate detector itself is
+functional: it tracks the five known switches (5 flips per stream,
+$\sim$500-token lag at $\tau_m{=}500$, $\sim$10\% wrong-estimate chunks),
+so the A2 failure is a failure of the update \emph{policy}, not of the
+detector.
+
+\begin{table}[t]
+\centering
+\small
+\begin{tabular}{lccccc}
+\toprule
+arm & $\tau_m$ & stream ppl & $\Delta_{\mathrm{ppl}}$ & forget ppl & $\Delta_{\mathrm{forget}}$ \\
+\midrule
+A1 bare & --- & 15.01 & --- & 8.94 & --- \\
+A2 gate & 200 & 17.31 & $+2.29$ (0/10) & 9.66 & $+0.73$ (0/10) \\
+A2 gate & 500 & 17.06 & $+2.05$ (0/10) & 9.48 & $+0.54$ (0/10) \\
+A2 gate & 1000 & 16.58 & $+1.57$ (0/10) & 9.24 & $+0.30$ (0/10) \\
+A2 gate & 2000 & 16.26 & $+1.25$ (0/10) & 9.03 & $+0.09$ (0/10) \\
+A3 route & 200 & 13.94 & $-1.07$ (10/10) & 6.42 & $-2.51$ (10/10) \\
+A3 route & 500 & 14.58 & $-0.43$ (10/10) & 6.75 & $-2.18$ (10/10) \\
+A3 route & 1000 & 15.47 & $+0.46$ (0/10) & 7.43 & $-1.50$ (10/10) \\
+A3 route & 2000 & 16.07 & $+1.06$ (0/10) & 8.41 & $-0.53$ (9/10) \\
+\bottomrule
+\end{tabular}
+\caption{Transformer drift-gate proof of concept (10 seeds, 90 runs):
+stream and forgetting perplexity vs.\ metadata timescale $\tau_m$; paired
+per-seed differences vs.\ A1 with $n_{\mathrm{pos}}/10$ seeds. A3 domain
+routing transfers (forgetting at every $\tau_m$, stream perplexity at
+$\tau_m\le500$); A2 gating-only is falsified (0/10 at every $\tau_m$).}
+\label{tab:s18}
+\end{table}
+
+\subsection{Discussion: detection without continuous correction is insufficient}
+
+The falsification of A2 is the informative result. Gating-only
+instantiates the metadata as a detector (M3) while suppressing the
+readout between detected switches: it removes M1's continuous online
+correction and replaces gradual switching with an abrupt boost/suppress
+policy. On the streaming task this loses twice --- within-domain
+knowledge decays between switches (forgetting never improves, 0/10) and
+the stream pays for the suppressed updates ($+1.25$ to $+2.29$ ppl).
+This is the direct analogue of the reservoir finding that the metadata
+supplies statistical memory but not episodic memory
+(Section~\ref{sec:s14}): a detector does not learn. The general design
+principle is that \emph{detection without continuous online correction
+is insufficient}; the readout must remain active throughout the stream
+to maintain within-domain knowledge, and switching must be gradual
+(M4's ``gentle wins''), not abrupt. The A3 contrast locates the
+transferable instantiation precisely: the slow trace's value lies in
+\emph{selecting which plasticity is active}, not in \emph{deciding when
+to pause learning}. The readout cost is feature-bound ($O(F^2)$ in model
+width or adapter rank, not $O(P^2)$ in total parameters;
+Section~\ref{sec:disc}).
 
 \section{Conclusion}
 \label{sec:concl}
@@ -396,6 +520,11 @@ disturbance robustness at any $\tau_m$ (0/10 seeds positive; Prop.~4).
 (4)~Three mechanisms, three roles --- metadata (statistical memory and
 state-noise denoising), homeostat (sequential recovery), substrate physics
 (raw memory) --- and none is substitutable for another's job.
+(5)~The decomposition survives on a Transformer substrate with
+low-rank adapters: slow-trace domain routing transfers (forgetting up to
+$-28\%$, stream perplexity $-1.07$ at $\tau_m{=}200$; 10/10 seeds) while
+a gating-only variant is falsified at every $\tau_m$ (0/10 seeds) ---
+detection without continuous correction is insufficient.
 
 \section*{Code and data availability}
 All simulation scripts and generated data are available at
@@ -425,7 +554,19 @@ transfers at every $\tau_m$.}
 \label{fig:recovery}
 \end{figure}
 
-\begin{thebibliography}{11}
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.85\linewidth]{paperC_fig3_llm}
+\caption{Transformer drift-gate proof of concept (10 seeds). Left: stream
+perplexity vs.\ metadata timescale $\tau_m$ (log scale) --- A1 (bare
+online LoRA) as a horizontal band; A2 (gating-only) never improves;
+A3 (domain routing) improves at $\tau_m\in\{200,500\}$. Right: forgetting
+perplexity on the previous domain --- A3 improves at every $\tau_m$ (up
+to $-28\%$); A2 does not.}
+\label{fig:llm}
+\end{figure}
+
+\begin{thebibliography}{12}
 
 \bibitem{parisi2019} Parisi, G. I., Kemker, R., Part, J. L., Kanan, C.,
 Wermter, S. Continual lifelong learning with neural networks: a review.
@@ -457,6 +598,14 @@ synaptic memory consolidation. \emph{Nature Neuroscience} \textbf{19}(12),
 \bibitem{wiskott2002} Wiskott, L., Sejnowski, T. J. Slow feature analysis:
 unsupervised learning of invariances. \emph{Neural Computation}
 \textbf{14}(4), 715--770 (2002).
+
+\bibitem{hu2022lora} Hu, E. J., Shen, Y., Wallis, P., Allen-Zhu, Z.,
+Li, Y., Wang, S., Wang, L., Chen, W. LoRA: low-rank adaptation of large
+language models. \emph{ICLR} (2022).
+
+\bibitem{vaswani2017} Vaswani, A., Shazeer, N., Parmar, N., Uszkoreit,
+J., Jones, L., Gomez, A. N., Kaiser, L., Polosukhin, I. Attention is all
+you need. \emph{NeurIPS} \textbf{30}, 5998--6008 (2017).
 
 \bibitem{companionA} Author's companion Paper A: Memory and chaos in a
 physics-constrained relaxation substrate: phase diagram, multi-timescale

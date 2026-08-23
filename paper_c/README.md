@@ -1,13 +1,14 @@
 # Paper C - Three Mechanisms, Three Roles (working title)
 
-Short paper (single author, ~6 pages two-column equivalent; elsarticle
-preprint renders 9 pages). Status: post-s14, post-s16, post-s15, post-s16b,
-post-s5b (all 10 seeds). The three-mechanism disentanglement thesis is
-adopted (user gate, 2026-02-17): metadata is a substrate-agnostic
-*statistical* memory; disturbance recovery is the homeostat's role; raw
-memory capacity is the substrate's physics. **PAPER_C.tex is drafted and
-submission-ready** (elsarticle preprint, 9 pp, zero warnings) for
-Neurocomputing / Neural Networks short paper. Theory in `DERIVATION.md`;
+Short paper (single author, ~8 pages two-column equivalent; elsarticle
+preprint renders 13 pages). Status: post-s14, post-s16, post-s15, post-s16b,
+post-s5b, post-s17, post-s18 (all 10 seeds). The three-mechanism
+disentanglement thesis is adopted (user gate, 2026-02-17): metadata is a
+substrate-agnostic *statistical* memory; disturbance recovery is the
+homeostat's role; raw memory capacity is the substrate's physics.
+**PAPER_C.tex is drafted and submission-ready** (elsarticle preprint,
+13 pp, zero warnings, incl. §6 LLM extension with s18 results + Fig 3 +
+Table 6) for Neurocomputing / Neural Networks short paper. Theory in `DERIVATION.md`;
 outline and numbers in `PAPER_C_sketch.md`.
 
 **Working title** (user proposal, adopted): Dissecting Online Learning
@@ -76,9 +77,9 @@ overall accuracy.
   stress test), s5b (S5 substrate arms controlled), s17 (substrate stress),
   s18 (LLM drift-gate PoC: routing transfers, gate falsified) - all 10
   seeds; see `DERIVATION.md` Section 8 and `LLM_EXTENSION.md` §7.7.
-- PAPER_C.tex drafted and submission-ready (elsarticle preprint, 9 pp,
-  zero warnings). The §7 LLM extension results are available
-  (`figures/paperC_fig3_llm.pdf`) for writing the extension section.
+- PAPER_C.tex drafted and submission-ready (elsarticle preprint, 13 pp,
+  zero warnings). §6 LLM extension WRITTEN (s18 results + Fig 3 + Table 6;
+  A2 gating falsified as design-lesson evidence, A3 routing transfers).
 
 ## Open decisions (user gates)
 
@@ -116,5 +117,7 @@ pdflatex PAPER_C.tex    # run three times for cross-references (elsarticle)
 - [ ] Code/data availability statement (REDEM repo, private during review)
       - done.
 - [ ] Keywords present (Elsevier format) - done.
+- [x] §6 LLM extension written into PAPER_C.tex (s18 results + Fig 3 +
+      Table 6; A2 falsification framed as design lesson) - done.
 - [ ] Cover letter: the falsifying-experiment angle (which mechanism does
       which job) + honest ESN position.

@@ -531,6 +531,14 @@ s14, s15, s16, s16b, s5b, s17). Optional future: the LLM extension PoC
   in the title (it is not the metadata's property).
 - Venue: Neurocomputing vs Neural Networks (short/communication) vs similar
   (open).
+- **§6 LLM extension written into PAPER_C.tex (DONE, 2026-02-18).** The s18
+  PoC (90 runs, 10 seeds) is now Section 6 of the paper with Fig 3 and
+  Table 6: A3 domain routing transfers (forgetting up to -28%, stream ppl
+  -1.07 at tau_m=200) and A2 gating-only is falsified (0/10 at every tau_m).
+  The negative result is kept as design-lesson evidence ("detection without
+  continuous correction is insufficient"), per the user's positioning that
+  honestly reported falsified instantiations strengthen the
+  mechanism-decomposition thesis rather than weakening the paper.
 - **Paper B wording (RESOLVED 2026-02-17).** s15/s5b show the S10 "47x" and
   S5 "9-20x faster adaptation" ratios were window-position metric artifacts;
   the true effects are ~10 pulses + variance collapse (ESN arms, s15) and
