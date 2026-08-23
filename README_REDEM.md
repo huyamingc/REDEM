@@ -55,46 +55,19 @@ the structure level (M4).
 | s5b | S5 three-arm controlled re-measurement (2 substrates × 5 arm configs × 10 seeds): T200 fast 264.8–303.9 vs dual/slow 202–211 pulses (factor 1.28–1.44; T40 factor 1.79–2.40); overall acc reproduces S5 exactly — Paper B §4.3/abstract revised |
 | s17 | Substrate stress (3 spectral radii × 2 hetero × 10 seeds): equalizer gain positive at all 6 ESN configs (+0.1 to +1.0 pp), magnitude tracks the fast channel's timescale starvation; heterogeneity irrelevant |
 | s18 | LLM drift-gate PoC (tiny transformer + LoRA, 90 runs): A3 domain routing transfers — forgetting −2.5 ppl (10/10 seeds, τ_m=200), stream ppl −1.07 (10/10) at τ_m≤500; A2 gate falsified (0/10); τ_m≥1000 sensitive interval reported |
+| s19 | Paper D P1/P3a (diagonal SSM, per-token RLS, 70 runs): naive state readout falsified — state arms 58.5–115.9 ppl (0/10) vs B-projection input path 11.75 (d −3.26, 10/10); MLE ceiling probe 7.25 vs 7.35 B-proj oracle |
+| s20 | Paper D P2 (M3 routing, 90 runs): gating-only inverts on the RLS host (stream −1.52…−2.45, 10/10 — what-is-paused qualifier); M3 routing transfers (forget −2.05/−1.87/−1.20 at τ_m≤1000, 10/10) |
+| s21 | Paper D P3 (M4 soft routing + M5 homeostat, 70 runs): soft 8.22 vs abrupt 10.03 (−1.82, 10/10); dormant-covariance refresh flips routing to −1.72; M5 bounds whitened norm 11.3 vs 50.2 and restores the full-state EMA detector 5/5 |
+| s22 | Paper D P4 benchmark (4-domain irregular switches, 30 runs): REDEM 13.18/8.93 vs bare SSM 15.43/13.41 vs TF-A1 22.46/19.01 (stream/forget) — all 10/10 |
+| s23 | Paper D real-text transfer (two Gutenberg books, 30 runs): REDEM 12.07/11.85 vs bare 13.34/12.31 vs TF 17.31/13.86 — stream −1.27 vs bare (10/10), −5.23 vs TF (10/10) |
 
-## Scripts (35 committed; 2 legacy dependencies kept for compatibility)
+## Scripts (43 committed)
 
-| Script | Type | Purpose |
-|---|---|---|
-| `shallow_trap_array_simulator.py` | CORE (legacy) | Si₃N₄ shallow-trap device simulator from the prior paper; exports γ, τ₀, gen_tau_vec, preprogram_vec — imported by 12 scripts; never modified |
-| `fair_esn_comparison.py` | ML (legacy) | matched ESN reservoir class from the prior paper; imported by `baseline_showdown.py`, `esn_metadata_comparison.py` |
-| `recurrent_substrate.py` | CORE | per-pulse contrast-coupled relaxation substrate (numba core) |
-| `substrate_recurrence_characterization.py` | PAPER | S1: FTLE / held-out MC / separation vs κ sweep (610 runs) |
-| `gen_substrate_phase_diagram.py` | FIG | S1 phase diagram figure |
-| `streaming_tasks.py` | CORE | task generators: drift_binary, narma10, mackey_glass, context_switch, regime_switch |
-| `online_readout.py` | CORE | OnlineRLS, ThreeFactorReadout, ridge_fit, MC/accuracy metrics |
-| `online_readout_streaming.py` | PAPER | S2: online RLS vs offline ridge on streaming tasks |
-| `gen_s2_curves.py` | FIG | S2 learning curves |
-| `three_factor_online_readout.py` | PAPER | S3: RMHL vs error-gated vs RLS (sparse/dense) |
-| `intrinsic_reward_experiment.py` | PAPER | S4: novelty intrinsic × κ_int × reward-frequency ablation |
-| `dual_timescale_metadata.py` | PAPER | S5: fast/dual/slow readouts on regime-switch |
-| `chaos_regulator.py` | PAPER | S6: λ-homeostat vs fixed κ under disturbances |
-| `structure_plasticity.py` | PAPER | S7: functional-connectivity rewiring vs fixed topologies |
-| `integrated_benchmark.py` | PAPER | S8: full system vs ablations; N=1024 confirmation |
-| `baseline_showdown.py` | ML | S9: vs ESN / GRU / tiny transformer (torch CPU) |
-| `forgetting_curve_theory.py` | EXPLORE | S10 theory: M(t) kernel, Gauss–Hermite, r=0.97 validation |
-| `esn_metadata_comparison.py` | PAPER | S10: ESN with/without metadata vs REDEM on regime task |
-| `cv_sweep.py` | PAPER | S10: task-level CV sweep (CV∈{0.1,0.2,0.4} at optimal κ) |
-| `s11_disturbance_chain.py` | PAPER | E3: sequential disturbance chain (3 rounds, 10 seeds) |
-| `s12_lambda_target_sweep.py` | PAPER | E4: λ_target × CV optimization sweep (5 seeds) |
-| `s13_causal_audit.py` | PAPER | O4: causal leakage audit (7 arms, 3 seeds) |
-| `s14_esn_disturbance_chain.py` | PAPER | Paper C: ESN+metadata under the disturbance chain — falsifies metadata robustness transfer (esn_fast/esn_dual/redem_reg, 10 seeds) |
-| `s16_tau_m_pressure_test.py` | PAPER | Paper C: τ_m ∈ {200,500,1000,2000} pressure test of the falsification (10 seeds) |
-| `s15_controlled_adaptation.py` | PAPER | Paper C: controlled adaptation protocol, known switch instants (10 seeds × 5 switches) |
-| `s16b_falsification_stress_test.py` | PAPER | Paper C: probe-protocol stress test (V0/V1/V2, 2 τ_m, 10 seeds) |
-| `s5b_controlled_adaptation.py` | PAPER | S5 three-arm controlled adaptation re-measurement (2 substrates, 10 seeds) |
-| `s17_substrate_stress.py` | PAPER | Paper C: ESN substrate stress (3 spectral radii × 2 hetero, 10 seeds) |
-| `s18_llm_drift_gate.py` | ML | Paper C §7 PoC: LLM drift gate (tiny transformer + LoRA, 90 runs, torch CPU) |
-| `gen_architecture_schematic.py` | FIG | Paper Fig 1 schematics (substrate / REDEM; M4↔M5 loop) |
-| `gen_paperA_supp_figures.py` | FIG | Paper A Supplementary Fig. S1 (task-level CV sweep) |
-| `gen_paper_figures.py` | FIG | Paper figure batch (robustness / metadata / ablation / showdown) |
-| `gen_paperC_fig1_kernel.py` | FIG | Paper C Fig. 1: slow-trace kernel vs material forgetting kernel |
-| `gen_paperC_fig2_recovery.py` | FIG | Paper C Fig. 2: post-disturbance MC recovery vs τ_m (s16) |
-| `gen_paperC_fig3_llm.py` | FIG | Paper C Fig. 3: LLM drift-gate results (s18) |
+The authoritative script inventory — every script with its `CLAUDE.md` type,
+**paper attribution (A/B/C/D/shared)**, purpose, and key result — is the
+table in the root [`README.md`](README.md) (single source of truth; it is
+kept in sync with `git ls-files scripts/`). Paper D experiments s19–s23 and
+their figures are reproduced from `paper_d/README.md`.
 
 ## Data and figures
 
@@ -110,6 +83,10 @@ the structure level (M4).
   `data/s16b_falsification_stress_test_v1.*`, `data/s5b_controlled_adaptation_v1.*`,
   `data/s17_substrate_stress_v1.*`, `data/s18_llm_drift_gate_v1.*`
   (CSV per run + JSON with params and per-cell aggregates).
+  Paper D: `data/s19_ssm_rls_readout_v1.*`, `data/s20_ssm_m3_routing_v1.*`,
+  `data/s21_ssm_m4_m5_v1.*`, `data/s22_ssm_p4_benchmark_v1.*`,
+  `data/s23_ssm_p4_realtext_v1.*`; real-text corpus in
+  `data/corpora/` (Gutenberg public domain, see `data/corpora/README.md`).
 - Figures: `figures/substrate_phase_diagram_v2.pdf`,
   `figures/s2_online_readout_v1.pdf`, `figures/forgetting_curve_theory.pdf`,
   `figures/paperA_fig1_substrate.pdf`, `figures/paperA_fig4_robustness.pdf`,
@@ -117,7 +94,9 @@ the structure level (M4).
   `figures/paperB_fig1_redem.pdf`, `figures/paperB_fig3_metadata.pdf`,
   `figures/paperB_fig5_ablation.pdf`, `figures/paperB_fig6_showdown.pdf`,
   `figures/paperC_fig1_kernel.pdf`, `figures/paperC_fig2_recovery.pdf`,
-  `figures/paperC_fig3_llm.pdf` (Paper C, in development)
+  `figures/paperC_fig3_llm.pdf` (Paper C, in development),
+  `figures/paperD_fig1_p1_arms.pdf`, `figures/paperD_fig2_routing.pdf`,
+  `figures/paperD_fig3_benchmark.pdf` (Paper D, in development)
   (vector PDF only; the papers include the extension-less basename so
   `pdflatex` picks the vector version).
 
@@ -160,6 +139,15 @@ scipy, matplotlib, torch (CPU) for S9 only.
 & .venv\Scripts\python.exe scripts\s5b_controlled_adaptation.py --sequential
 & .venv\Scripts\python.exe scripts\gen_architecture_schematic.py
 & .venv\Scripts\python.exe scripts\gen_paper_figures.py
+# Paper D experiments (s19–s23) + figures — see paper_d/README.md
+& .venv\Scripts\python.exe scripts\s19_ssm_rls_readout.py --sequential
+& .venv\Scripts\python.exe scripts\s20_ssm_m3_routing.py --sequential
+& .venv\Scripts\python.exe scripts\s21_ssm_m4_m5.py --sequential
+& .venv\Scripts\python.exe scripts\s22_ssm_p4_benchmark.py --sequential
+& .venv\Scripts\python.exe scripts\s23_ssm_p4_realtext.py --sequential
+& .venv\Scripts\python.exe scripts\gen_paperD_fig1_p1_arms.py
+& .venv\Scripts\python.exe scripts\gen_paperD_fig2_routing.py
+& .venv\Scripts\python.exe scripts\gen_paperD_fig3_benchmark.py
 ```
 
 All experiments use fixed, per-run seeds (`run_idx * scale + offset`), paired
@@ -196,9 +184,14 @@ ws-ijbc.cls / revtex4-2 for Paper A (IJBC/Chaos), elsarticle.cls for Paper B
   Mechanisms: Statistical Memory, Homeostatic Recovery, and Substrate
   Physics are Non-Transferable". The three-mechanism disentanglement thesis
   is locked on s14/s16/s16b/s15/s5b; `paper_c/PAPER_C.tex` is drafted in
-  elsarticle preprint format (9 pp, zero warnings) for Neurocomputing /
+  elsarticle preprint format (13 pp, zero warnings) for Neurocomputing /
   Neural Networks short paper. See `paper_c/DERIVATION.md` and
   `paper_c/PAPER_C_sketch.md`.
+- `paper_d/` (in development) — Paper D "REDEM-SSM": the SSM instantiation
+  of the three mechanisms (M1 per-token RLS readout, M3 fast-channel EMA
+  routing, M4 soft routing, M5 state-norm homeostat). P1–P5 DONE;
+  `paper_d/PAPER_D.tex` drafted in elsarticle preprint format (11 pp, zero
+  warnings). See `paper_d/README.md` and `paper_d/PAPER_D_sketch.md`.
 
 ## Roadmap status
 
@@ -225,20 +218,32 @@ ws-ijbc.cls / revtex4-2 for Paper A (IJBC/Chaos), elsarticle.cls for Paper B
 | s5b S5 controlled re-measurement | done (100 runs; T200 factor 1.28–1.44, T40 1.79–2.40; Paper B revised) |
 | s17 substrate stress | done (120 runs; equalizer gain positive at all ESN configs) |
 | s18 LLM drift gate | done (90 runs; A3 routing transfers, A2 gate falsified; §7 results in paper_c/LLM_EXTENSION.md) |
+| Paper D s19 | done (70 runs; naive state readout falsified, B-proj input path works 10/10) |
+| Paper D s20 | done (90 runs; gating-only inverts on RLS — what-is-paused qualifier; M3 routing transfers 10/10) |
+| Paper D s21 | done (70 runs; soft routing beats abrupt; M5 homeostat restores detector 5/5) |
+| Paper D s22 | done (30 runs; 4-domain benchmark, REDEM vs bare/TF 10/10) |
+| Paper D s23 | done (30 runs; real-text Gutenberg transfer, REDEM vs bare/TF 10/10) |
+| Paper D P5 | done (PAPER_D.tex draft, 11 pp, zero warnings; revision pass 1: A2 qualifier + real-text results) |
 | Paper C derivation | in progress (thesis locked; PAPER_C.tex submission-ready; §7 LLM PoC results available for the extension section) |
 
 ## Open items
 
-- Fill author name / affiliation / email placeholders in both `.tex` files.
+- Author information (Yaming Hu, ORCID 0009-0003-1406-0485, Independent
+  Researcher Guiyang, 64687555@qq.com) is filled in all four papers
+  (A/B/C/D); the remaining placeholder-free check is the journal-template
+  swap below.
 - Swap journal document classes at submission (ws-ijbc / revtex4-2 for A;
   elsarticle for B).
-- Final algorithm name (working name REDEM).
-- Paper C: `paper_c/PAPER_C.tex` drafted (elsarticle preprint, 9 pp, zero
+- Paper C: `paper_c/PAPER_C.tex` drafted (elsarticle preprint, 13 pp, zero
   warnings). Venue decided: Neurocomputing / Neural Networks short paper.
   The LLM §7 PoC (s18) is DONE: A3 routing transfers (forgetting −28%,
   ppl −1.07 at τ_m=200), A2 gate falsified; results in
-  `paper_c/LLM_EXTENSION.md` §7.7. Remaining before submission: author
-  placeholders, cover letter, and (optional) writing §7 into PAPER_C.tex.
+  `paper_c/LLM_EXTENSION.md` §7.7. Remaining before submission: cover
+  letter.
+- Paper D: `paper_d/PAPER_D.tex` drafted (11 pp, zero warnings). Open:
+  title wording (user decision — "Foundation Model Architecture" may
+  overclaim for the toy prototype), optional related-work paragraph +
+  per-mechanism ablation table, cover letter.
 - Paper B wording: revised (2026-02-17) - §4.3/§4.5/§4.6 and abstract use
   the controlled s15/s5b adaptation measurements (factor 1.3-2.4 instead
   of the artifact "9-20x").

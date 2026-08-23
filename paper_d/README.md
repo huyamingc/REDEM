@@ -96,8 +96,45 @@ gates: each phase's exit criteria are defined in `PAPER_D_sketch.md`
 Section 6; a falsified exit criterion stops the phase and is reported, not
 silently worked around.
 
-## Compile / reproduction
+## Scripts, data, figures (P1–P5, all committed)
 
-No scripts yet. When P1 starts, scripts live in `../scripts/` as `s19_*`
-(ML class per CLAUDE.md) with data in `../data/s19_*_v1.csv/json` and
-figures in `../figures/`.
+All Paper D scripts are ML/FIG class per `CLAUDE.md` (torch CPU, no `@njit`);
+the shared substrate/generators come from `s19_ssm_rls_readout.py` (imported
+by s20–s23). 10-seed paired discipline, `torch.manual_seed` per trial,
+CSV+JSON dual output.
+
+| Script | Type | Experiment | Key result |
+|---|---|---|---|
+| `../scripts/s19_ssm_rls_readout.py` | ML | P1/P3a: per-token RLS readout on a diagonal SSM (7 arms × 10 seeds) | state arms 58.5–115.9 ppl (0/10) vs B-proj input path 11.75 (d −3.26, 10/10); oracles 7.25 vs 7.35 |
+| `../scripts/s20_ssm_m3_routing.py` | ML | P2: M3 fast-channel EMA + drift detection + routing (A1/A2/A3 × τ_m × 10) | A2 stream −1.52…−2.45 (10/10); A3 forget −2.05/−1.87/−1.20 at τ_m≤1000 (10/10) |
+| `../scripts/s21_ssm_m4_m5.py` | ML | P3: M4 soft vs abrupt routing + M5 state-norm homeostat (E1/E2 × 10) | soft 8.22 vs abrupt 10.03 (−1.82, 10/10); M5 flips detector 5/5, norm 11.3 vs 50.2 |
+| `../scripts/s22_ssm_p4_benchmark.py` | ML | P4: 4-domain irregular-switch benchmark (3 arms × 10) | REDEM 13.18/8.93 vs bare 15.43/13.41 vs TF 22.46/19.01 (10/10) |
+| `../scripts/s23_ssm_p4_realtext.py` | ML | real-text transfer: Alice vs Dickens, 32-symbol chars (3 arms × 10) | REDEM 12.07/11.85 vs bare 13.34/12.31 vs TF 17.31/13.86 (−1.27/−5.23, 10/10) |
+| `../scripts/gen_paperD_fig1_p1_arms.py` | FIG | Paper D Fig. 1 | `../figures/paperD_fig1_p1_arms.pdf` |
+| `../scripts/gen_paperD_fig2_routing.py` | FIG | Paper D Fig. 2 | `../figures/paperD_fig2_routing.pdf` |
+| `../scripts/gen_paperD_fig3_benchmark.py` | FIG | Paper D Fig. 3 | `../figures/paperD_fig3_benchmark.pdf` |
+
+Data: `../data/s19_ssm_rls_readout_v1.{csv,json}`,
+`../data/s20_ssm_m3_routing_v1.{csv,json}`,
+`../data/s21_ssm_m4_m5_v1.{csv,json}`,
+`../data/s22_ssm_p4_benchmark_v1.{csv,json}`,
+`../data/s23_ssm_p4_realtext_v1.{csv,json}`;
+corpus `../data/corpora/` (Gutenberg #11 Alice, #98 Dickens; public domain,
+see `../data/corpora/README.md`).
+
+## Reproduction (CPU-only, project venv)
+
+```powershell
+& ..\.venv\Scripts\python.exe ..\scripts\s19_ssm_rls_readout.py --sequential
+& ..\.venv\Scripts\python.exe ..\scripts\s20_ssm_m3_routing.py --sequential
+& ..\.venv\Scripts\python.exe ..\scripts\s21_ssm_m4_m5.py --sequential
+& ..\.venv\Scripts\python.exe ..\scripts\s22_ssm_p4_benchmark.py --sequential
+& ..\.venv\Scripts\python.exe ..\scripts\s23_ssm_p4_realtext.py --sequential
+& ..\.venv\Scripts\python.exe ..\scripts\gen_paperD_fig1_p1_arms.py
+& ..\.venv\Scripts\python.exe ..\scripts\gen_paperD_fig2_routing.py
+& ..\.venv\Scripts\python.exe ..\scripts\gen_paperD_fig3_benchmark.py
+```
+
+All results are committed under `../data/` (CSV per run + JSON with params
+and aggregates); figures are vector PDF under `../figures/`. The paper
+includes the extension-less basename so `pdflatex` picks the vector file.

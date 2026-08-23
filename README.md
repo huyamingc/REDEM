@@ -91,59 +91,63 @@ letter points).
 ## Scripts
 
 All 43 committed scripts in `scripts/`, typed per `CLAUDE.md`
-(ML > CORE > PAPER > FIG > EXPLORE). Two legacy scripts from the prior
-Si₃N₄-pulse-encoding project are kept as shared dependencies (imported by the
-new code) and are never modified.
+(ML > CORE > PAPER > FIG > EXPLORE). The **Paper** column marks which paper
+each script serves (A / B / C / D; shared = library or figure used by more
+than one paper). Two legacy scripts from the prior Si₃N₄-pulse-encoding
+project are kept as shared dependencies (imported by the new code) and are
+never modified. `README_REDEM.md` holds the full headline-results registry
+(S1–s18) and reproduction commands.
 
-| Script | Type | Purpose |
-|---|---|---|
-| `recurrent_substrate.py` | CORE | per-pulse contrast-coupled relaxation substrate (numba core); self-test 4/4 |
-| `shallow_trap_array_simulator.py` | CORE (legacy) | Si₃N₄ shallow-trap device simulator; constants γ/τ₀/gen_tau_vec/preprogram_vec imported by 12 scripts |
-| `fair_esn_comparison.py` | ML (legacy) | matched ESN reservoir class; imported by `baseline_showdown.py` and `esn_metadata_comparison.py` |
-| `streaming_tasks.py` | CORE | task generators: drift_binary, narma10, mackey_glass, context_switch, regime_switch |
-| `online_readout.py` | CORE | OnlineRLS, ThreeFactorReadout, ridge_fit, MC/accuracy metrics |
-| `substrate_recurrence_characterization.py` | PAPER | S1: FTLE / held-out MC / separation vs κ sweep (610 runs) |
-| `online_readout_streaming.py` | PAPER | S2: online RLS vs offline ridge on streaming tasks |
-| `three_factor_online_readout.py` | PAPER | S3: reward-modulated Hebbian vs error-gated vs RLS (negative result) |
-| `intrinsic_reward_experiment.py` | PAPER | S4: novelty intrinsic reward ablation (negative result) |
-| `dual_timescale_metadata.py` | PAPER | S5: fast/dual/slow metadata on regime-switch |
-| `chaos_regulator.py` | PAPER | S6: λ-homeostat under disturbances |
-| `structure_plasticity.py` | PAPER | S7: correlation-guided rewiring |
-| `integrated_benchmark.py` | PAPER | S8: full system vs ablations; N=1024 confirmation |
-| `baseline_showdown.py` | ML | S9: vs matched ESN / GRU / tiny transformer (torch CPU) |
-| `forgetting_curve_theory.py` | EXPLORE | S10: forgetting-kernel theory M(t), Gauss–Hermite, r=0.97 validation |
-| `esn_metadata_comparison.py` | PAPER | S10: metadata transfer to a matched ESN |
-| `cv_sweep.py` | PAPER | S10: task-level CV sweep |
-| `s11_disturbance_chain.py` | PAPER | E3: sequential disturbance chain (3 rounds, 10 seeds) |
-| `s12_lambda_target_sweep.py` | PAPER | E4: λ_target × CV optimization sweep (5 seeds) |
-| `s13_causal_audit.py` | PAPER | O4: causal leakage audit (7 arms, 3 seeds) |
-| `s14_esn_disturbance_chain.py` | PAPER | Paper C: ESN+metadata under the disturbance chain — falsifies metadata robustness transfer (3 arms, 10 seeds) |
-| `s16_tau_m_pressure_test.py` | PAPER | Paper C: τ_m ∈ {200,500,1000,2000} stress test — falsification robust across metadata timescales (10 seeds) |
-| `s15_controlled_adaptation.py` | PAPER | Paper C: controlled adaptation protocol with known switch instants (10 seeds) |
-| `s16b_falsification_stress_test.py` | PAPER | Paper C: probe-protocol stress test (V0/V1/V2, 2 τ_m, 10 seeds) |
-| `s5b_controlled_adaptation.py` | PAPER | S5 three-arm controlled adaptation re-measurement (2 substrates, 10 seeds) |
-| `s17_substrate_stress.py` | PAPER | Paper C: ESN substrate stress — equalizer gain positive at all configs (120 runs) |
-| `s18_llm_drift_gate.py` | ML | Paper C §7 PoC: LLM drift gate (tiny transformer + LoRA, 90 runs, torch CPU) |
-| `s19_ssm_rls_readout.py` | ML | Paper D P1/P3a: per-token RLS readout on a hand-rolled diagonal SSM (7 arms, 70 runs, torch CPU) |
-| `s20_ssm_m3_routing.py` | ML | Paper D P2: M3 EMA metadata + drift detection + routing on the SSM host (A1/A2/A3, 90 runs, torch CPU) |
-| `s21_ssm_m4_m5.py` | ML | Paper D P3: M4 soft vs abrupt routing + M5 state-norm homeostat (E1/E2, 70 runs, torch CPU) |
-| `s22_ssm_p4_benchmark.py` | ML | Paper D P4: 4-domain irregular-switch benchmark (SSM-bare / SSM-REDEM / TF-A1, 30 runs, torch CPU) |
-| `s23_ssm_p4_realtext.py` | ML | Paper D real-text benchmark: two Gutenberg books (Alice vs Dickens), 32-symbol char vocab (30 runs, torch CPU) |
-| `gen_paperD_fig1_p1_arms.py` | FIG | Paper D Fig. 1: P1/P3a state-readout falsification + input-path control |
-| `gen_paperD_fig2_routing.py` | FIG | Paper D Fig. 2: P2 routing retention + P3 soft vs abrupt |
-| `gen_paperD_fig3_benchmark.py` | FIG | Paper D Fig. 3: P4 benchmark bars |
-| `gen_architecture_schematic.py` | FIG | Paper Fig. 1 schematics (substrate / REDEM, M4↔M5 loop) |
-| `gen_substrate_phase_diagram.py` | FIG | S1 phase-diagram figure |
-| `gen_s2_curves.py` | FIG | S2 learning curves |
-| `gen_paper_figures.py` | FIG | batch: robustness / metadata / ablation / showdown |
-| `gen_paperA_supp_figures.py` | FIG | Paper A Supplementary Fig. S1 (CV sweep) |
-| `gen_paperC_fig1_kernel.py` | FIG | Paper C Fig. 1: slow-trace kernel vs material forgetting kernel |
-| `gen_paperC_fig2_recovery.py` | FIG | Paper C Fig. 2: post-disturbance MC recovery vs τ_m (s16) |
-| `gen_paperC_fig3_llm.py` | FIG | Paper C Fig. 3: LLM drift-gate results (s18) |
+| Script | Type | Paper | Purpose | Key result |
+|---|---|---|---|---|
+| `recurrent_substrate.py` | CORE | shared | per-pulse contrast-coupled relaxation substrate (numba core); self-test 4/4 | — |
+| `shallow_trap_array_simulator.py` | CORE (legacy) | shared | Si₃N₄ shallow-trap device simulator; constants γ/τ₀/gen_tau_vec/preprogram_vec imported by 12 scripts | — |
+| `fair_esn_comparison.py` | ML (legacy) | B | matched ESN reservoir class; imported by `baseline_showdown.py` and `esn_metadata_comparison.py` | — |
+| `streaming_tasks.py` | CORE | shared | task generators: drift_binary, narma10, mackey_glass, context_switch, regime_switch | — |
+| `online_readout.py` | CORE | shared | OnlineRLS, ThreeFactorReadout, ridge_fit, MC/accuracy metrics | — |
+| `substrate_recurrence_characterization.py` | PAPER | A | S1: FTLE / held-out MC / separation vs κ sweep (610 runs) | κ* ∈ (25,30); held-out MC +24–53% at the edge |
+| `online_readout_streaming.py` | PAPER | B | S2: online RLS vs offline ridge on streaming tasks | acc 0.974–0.982, recover 225–616; MG NMSE 0.0018 |
+| `three_factor_online_readout.py` | PAPER | B | S3: reward-modulated Hebbian vs error-gated vs RLS (negative result) | reward-only post-inversion 0.06–0.10 |
+| `intrinsic_reward_experiment.py` | PAPER | B | S4: novelty intrinsic reward ablation (negative result) | stream mean ≤ 0.514; never rescues |
+| `dual_timescale_metadata.py` | PAPER | B | S5: fast/dual/slow metadata on regime-switch | +1.3–2.1 pp (p < 0.0001) |
+| `chaos_regulator.py` | PAPER | B | S6: λ-homeostat under disturbances | held-out MC +8–18% |
+| `structure_plasticity.py` | PAPER | B | S7: correlation-guided rewiring | gentle (5%) +8–11%; aggressive (20%) −23% |
+| `integrated_benchmark.py` | PAPER | B | S8: full system vs ablations; N=1024 confirmation | 0.996 vs 0.973 (p<0.0001); N=1024 0.998 vs 0.976 |
+| `baseline_showdown.py` | ML | B | S9: vs matched ESN / GRU / tiny transformer (torch CPU) | REDEM 0.991 vs GRU 0.371 / TF 0.351 (ESN 0.998, honest) |
+| `forgetting_curve_theory.py` | EXPLORE | A | S10: forgetting-kernel theory M(t), Gauss–Hermite validation | measured MC follows M(t), r = 0.97 |
+| `esn_metadata_comparison.py` | PAPER | B | S10: metadata transfer to a matched ESN | equalizes: ESN+meta 0.998 ≈ ESN 0.996 ≈ REDEM 0.994 |
+| `cv_sweep.py` | PAPER | A | S10: task-level CV sweep (Paper A Supp. Note 1) | uncoupled MC +33% with CV; coupled near-critical falls |
+| `s11_disturbance_chain.py` | PAPER | A | E3: sequential disturbance chain (3 rounds, 10 seeds) | regulated MC 8.47 vs fixed 6.41 (+32%) |
+| `s12_lambda_target_sweep.py` | PAPER | A | E4: λ_target × CV optimization sweep (5 seeds) | λ_target=0 optimal: +25%/+19%/+5% MC |
+| `s13_causal_audit.py` | PAPER | B | O4: causal leakage audit (7 arms, 3 seeds) | all mechanisms causally clean (<0.02 pp) |
+| `s14_esn_disturbance_chain.py` | PAPER | C | ESN+metadata under the disturbance chain — falsifies metadata robustness transfer (3 arms, 10 seeds) | paired diffs −0.78/−0.76/−0.69, 0/10 seeds positive |
+| `s16_tau_m_pressure_test.py` | PAPER | C | τ_m ∈ {200,500,1000,2000} stress test — falsification robust across metadata timescales (10 seeds) | 0/10 seeds positive at every τ_m (~5σ) |
+| `s15_controlled_adaptation.py` | PAPER | C | controlled adaptation protocol with known switch instants (10 seeds) | true effect ~10 pulses + variance collapse (p90 76.5→42) |
+| `s16b_falsification_stress_test.py` | PAPER | C | probe-protocol stress test (V0/V1/V2, 2 τ_m, 10 seeds) | sign robust 0/10; magnitude V0 −0.69 → V2 −0.01 |
+| `s5b_controlled_adaptation.py` | PAPER | B | S5 three-arm controlled adaptation re-measurement (2 substrates, 10 seeds) | T200 factor 1.28–1.44, T40 1.79–2.40 (Paper B §4.3 revised) |
+| `s17_substrate_stress.py` | PAPER | C | ESN substrate stress — equalizer gain at all configs (120 runs) | gain positive at all 6 ESN configs (+0.1 to +1.0 pp) |
+| `s18_llm_drift_gate.py` | ML | C | §7 PoC: LLM drift gate (tiny transformer + LoRA, 90 runs, torch CPU) | A3 routing transfers −2.5 ppl (10/10); A2 gate falsified (0/10) |
+| `s19_ssm_rls_readout.py` | ML | D | P1/P3a: per-token RLS readout on a hand-rolled diagonal SSM (7 arms, 70 runs, torch CPU) | state arms 58.5–115.9 (0/10) vs B-proj 11.75 (d −3.26, 10/10); oracle 7.25 |
+| `s20_ssm_m3_routing.py` | ML | D | P2: M3 EMA metadata + drift detection + routing on the SSM host (A1/A2/A3, 90 runs, torch CPU) | A2 stream −1.52…−2.45 (10/10); A3 forget −2.05/−1.87/−1.20 (10/10, τ_m≤1000) |
+| `s21_ssm_m4_m5.py` | ML | D | P3: M4 soft vs abrupt routing + M5 state-norm homeostat (E1/E2, 70 runs, torch CPU) | soft 8.22 vs abrupt 10.03 (−1.82, 10/10); M5 restores EMA detector 5/5, norm 11.3 vs 50.2 |
+| `s22_ssm_p4_benchmark.py` | ML | D | P4: 4-domain irregular-switch benchmark (SSM-bare / SSM-REDEM / TF-A1, 30 runs, torch CPU) | REDEM vs bare −2.25/−4.47, vs TF −9.28/−10.08 (10/10) |
+| `s23_ssm_p4_realtext.py` | ML | D | real-text benchmark: two Gutenberg books (Alice vs Dickens), 32-symbol char vocab (30 runs, torch CPU) | REDEM vs bare −1.27 (10/10), vs TF −5.23 (10/10) |
+| `gen_paperD_fig1_p1_arms.py` | FIG | D | Paper D Fig. 1: P1/P3a state-readout falsification + input-path control | `figures/paperD_fig1_p1_arms.pdf` |
+| `gen_paperD_fig2_routing.py` | FIG | D | Paper D Fig. 2: P2 routing retention + P3 soft vs abrupt | `figures/paperD_fig2_routing.pdf` |
+| `gen_paperD_fig3_benchmark.py` | FIG | D | Paper D Fig. 3: P4 benchmark bars | `figures/paperD_fig3_benchmark.pdf` |
+| `gen_architecture_schematic.py` | FIG | shared | Paper Fig. 1 schematics (substrate / REDEM, M4↔M5 loop) | `figures/paperA_fig1_substrate.pdf`, `figures/paperB_fig1_redem.pdf` |
+| `gen_substrate_phase_diagram.py` | FIG | A | S1 phase-diagram figure | `figures/substrate_phase_diagram_v2.pdf` |
+| `gen_s2_curves.py` | FIG | B | S2 learning curves | `figures/s2_online_readout_v1.pdf` |
+| `gen_paper_figures.py` | FIG | shared | batch: robustness / metadata / ablation / showdown | `figures/paperA_fig4_robustness.pdf`, `figures/paperB_fig3_metadata.pdf`, `figures/paperB_fig5_ablation.pdf`, `figures/paperB_fig6_showdown.pdf` |
+| `gen_paperA_supp_figures.py` | FIG | A | Paper A Supplementary Fig. S1 (CV sweep) | `figures/paperA_figS1_cv_sweep.pdf` |
+| `gen_paperC_fig1_kernel.py` | FIG | C | Paper C Fig. 1: slow-trace kernel vs material forgetting kernel | `figures/paperC_fig1_kernel.pdf` |
+| `gen_paperC_fig2_recovery.py` | FIG | C | Paper C Fig. 2: post-disturbance MC recovery vs τ_m (s16) | `figures/paperC_fig2_recovery.pdf` |
+| `gen_paperC_fig3_llm.py` | FIG | C | Paper C Fig. 3: LLM drift-gate results (s18) | `figures/paperC_fig3_llm.pdf` |
 
 Each FIG script emits a single vector `.pdf` (journal submission); the papers
 include the extension-less basename so `pdflatex` picks the vector file
-automatically. Reproduction commands are in `README_REDEM.md`.
+automatically. Reproduction commands are in `README_REDEM.md` (S1–s18) and
+`paper_d/README.md` (s19–s23).
 
 ## Code availability
 
