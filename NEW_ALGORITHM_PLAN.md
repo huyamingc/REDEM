@@ -496,3 +496,17 @@ S1-S9 全部完成（14 个新脚本、12 组实验数据、`NEW_ALGORITHM_PLAN.
   - **论文更新**：Paper B §4.4 O4 段数字/seed 数更新（10 seeds，
     0.9964–0.9962 vs 0.9963，≤0.02pp）；README/README_REDEM O4 行同步。
     备份 scripts/s13_causal_audit.bak.py。
+- S9 复核会话（2026-02-19，ML 脚本审查修复）：
+  - **修复 3 处 + 1 处文档**：`scripts/baseline_showdown.py` ① ESN 特征加
+    z-score（与 REDEM 同款 30% 拟合窗口，消除预处理不对称）；② TinyTransformer
+    传因果掩码（原 `causal_mask()` 定义了从未使用，256 窗口内双向注意力可偷看
+    未来，开发者注释 "no ->" 已自认）；③ `torch.manual_seed(0)` 全局 → 逐 trial
+    `seed_idx*101+17`（NN 基线不再跨 seed 共享初始化）；④ `N_SEEDS_TRANSFORMER`
+    5→10。`scripts/s18_llm_drift_gate.py` JSON 注释 steady*1.10→1.5（对齐代码）。
+  - **重跑结果**（80 runs，436.7s）：REDEM 不变（0.991 / MG 0.0018）；ESN
+    修正后 1.000 / MG 3.6e-5（z-score 移除劣势，诚实领先叙事更强）；GRU
+    0.371→0.394（pre 0.923→0.860，post 0.070→0.145）；trans drift 0.351
+    不变、MG 1.07→0.71；trans 现为 10 seeds。
+  - **论文/文档更新**：PAPER_B.tex 4 处（摘要/批基线段/表/结论）+ sketch
+    3 处 + README/README_REDEM S9 行；paperB_fig6_showdown.pdf 重生成；
+    PAPER_B 重编译（10 页，零警告）。备份 scripts/baseline_showdown.bak.py。

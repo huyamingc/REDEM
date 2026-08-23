@@ -41,7 +41,7 @@ the structure level (M4).
 | S6 | λ-homeostat: post-disturbance held-out memory +8–18% (τ-drift +18%) |
 | S7 | Gentle (5%) correlation-guided rewiring +8–11%; aggressive (20%) −23%; pruning redundancy helps (de-homogenization) |
 | S8 | Integrated system beats every ablation: 0.996 vs 0.973 (p<0.0001); persists at N=1024 (0.998 vs 0.976) |
-| S9 | Online (REDEM 0.991, ESN 0.998) vs frozen batch (GRU 0.371, transformer 0.351, inverted post-swap); ESN edge on standard tasks reported honestly |
+| S9 | Online (REDEM 0.991, ESN 1.000) vs frozen batch (GRU 0.394, transformer 0.351, inverted post-swap); MG NMSE REDEM 0.0018 vs ESN 3.6e-5 vs GRU 1.56 vs TF 0.71; ESN edge on standard tasks reported honestly (2026-02-19 revision: z-scored ESN features, per-trial torch seed, causal transformer mask) |
 | Theory | Forgetting kernel M(t)=∫p(τ)e^{−t/τ}dτ: 1/e horizon ≈16 pulses (median-pinned); tail steepness set by CV; measured MC curve follows it with r = 0.97 |
 | S10-CV | Task-level CV sweep: uncoupled MC rises with CV (+33%, kernel theory); coupled near-critical MC falls (narrow CV best) — operating-regime-dependent knob |
 | S10-ESN | Metadata transfer: ESN+meta 0.998 ≈ ESN 0.996 ≈ REDEM-full 0.994 on regime task — the mechanism equalizes the systems (adapt 11.22→0.24 in the S10 metric; controlled s15 shows the true effect is ~10 pulses + variance collapse) |

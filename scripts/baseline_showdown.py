@@ -66,7 +66,7 @@ CV_TAU = 0.20
 TOPO_SEED = 777
 AVG_DEGREE = 8
 N_SEEDS = 10
-N_SEEDS_TRANSFORMER = 5
+N_SEEDS_TRANSFORMER = 10
 FEATURE_SCALE = 10.0
 BIAS = 1.0
 KAPPA_RANDOM = 25.0
@@ -119,10 +119,10 @@ class TinyTransformer(nn.Module):
         self.fc = nn.Linear(d_model, out_dim)
 
     def forward(self, x):
-        # x: (B, L, 1)
+        # x: (B, L, 1); causal mask: position t attends only to tokens <= t
         B, L, _ = x.shape
         e = self.embed(x) + self.pos[:, :L]
-        h = self.enc(e)          # causal mask built-in via encoder layers? no ->
+        h = self.enc(e, mask=causal_mask(L))
         return self.fc(h)
 
 
@@ -130,9 +130,11 @@ def causal_mask(size):
     return torch.triu(torch.ones(size, size), diagonal=1).bool()
 
 
-def train_offline(model, u_tr, y_tr, is_class):
-    """Train on the first 30% of the stream (torch, CPU). Returns model."""
-    torch.manual_seed(0)
+def train_offline(model, u_tr, y_tr, is_class, seed_idx):
+    """Train on the first 30% of the stream (torch, CPU). Returns model.
+    torch init seeded per trial (seed_idx*101+17, the repo rule) so the
+    NN baselines do not share one global initialization across seeds."""
+    torch.manual_seed(seed_idx * 101 + 17)
     opt = torch.optim.Adam(model.parameters(), lr=LR)
     n = u_tr.shape[0]
     if is_class:
@@ -221,7 +223,13 @@ def run_single(args):
                   input_scaling=0.5, leaking_rate=0.2, hetero_lr=True,
                   cv_lr=CV_TAU, seed=seed_idx + 999)
         states = esn.process(u_norm[:, None])
-        F = np.hstack([states, np.full((T, 1), BIAS)])
+        # z-score with first-30% stats, same convention as the REDEM arm
+        # (the two online readouts then see comparable feature scales)
+        n_fit = int(0.3 * T)
+        mu = states[:n_fit].mean(axis=0)
+        sd = states[:n_fit].std(axis=0)
+        sd[sd < 1e-9] = 1.0
+        F = np.hstack([(states - mu) / sd, np.full((T, 1), BIAS)])
         rls = OnlineRLS(F.shape[1], 1, forgetting=RLS_FORGETTING,
                         init_cov=RLS_INIT_COV, trace_cap=RLS_TRACE_CAP,
                         reg=RLS_REG)
@@ -236,7 +244,7 @@ def run_single(args):
         else:
             model = TinyTransformer(out_dim=n_classes)
         model.train()
-        train_offline(model, u_tr, y_tr, is_class)
+        train_offline(model, u_tr, y_tr, is_class, seed_idx)
         model.eval()
         # stateful eval
         pred = np.full(T, np.nan)

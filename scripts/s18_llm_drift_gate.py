@@ -528,7 +528,7 @@ def main():
         'tau_m_list': TAU_M_LIST,
         'metrics': {'stream_ppl': 'exp(mean CE) over the stream',
                     't_adapt_mean': 'post-switch tokens to window ppl <= '
-                                    'steady*1.10 (known switches)',
+                                    'steady*1.5 (known switches)',
                     'forgetting_ppl': 'held-out ppl of the previous domain '
                                       'after switching away'},
         'discipline': 'known switch instants (s15), tau_m sweep (s16), '

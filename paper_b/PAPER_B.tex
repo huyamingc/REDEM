@@ -68,8 +68,8 @@ is a physically motivated relaxation memory whose log-normal time-constant
 spectrum is set by shallow-trap device physics (companion theory paper), and
 the slow metadata trace is shown to be a substrate-agnostic mechanism that
 transfers to a matched echo-state network. On standard benchmarks REDEM is
-competitive with a well-tuned ESN (drift accuracy 0.991 vs.\ 0.998;
-Mackey--Glass NMSE 0.0018 vs.\ 0.0002); its differentiated value is the
+competitive with a well-tuned ESN (drift accuracy 0.991 vs.\ 1.000;
+Mackey--Glass NMSE 0.0018 vs.\ $3.6\times10^{-5}$); its differentiated value is the
 mechanism set --- self-regulation, disturbance robustness, local sparse
 coupling, and a material-set multi-timescale memory --- rather than raw
 benchmark supremacy.
@@ -393,10 +393,10 @@ $N=1024$ (3 seeds, computational cost) the full system still beats the
 baseline (0.998 vs.\ 0.976).
 
 \textbf{Batch baselines.} On drift\_binary: REDEM 0.991 and a matched online
-ESN 0.998 track the drift; the frozen GRU (0.371; pre 0.923 $\rightarrow$ post
-0.070) and tiny transformer (0.351; pre 1.000 $\rightarrow$ post 0.000) invert
-and never recover. On Mackey--Glass: REDEM NMSE 0.0018 and ESN 0.0002 forecast
-well; the frozen GRU (1.30) and transformer (1.07) are worse than the mean
+ESN 1.000 track the drift; the frozen GRU (0.394; pre 0.860 $\rightarrow$ post
+0.145) and tiny transformer (0.351; pre 1.000 $\rightarrow$ post 0.000) invert
+and never recover. On Mackey--Glass: REDEM NMSE 0.0018 and ESN $3.6\times10^{-5}$
+forecast well; the frozen GRU (1.56) and transformer (0.71) are worse than the mean
 predictor. The ESN --- 256 units, heterogeneous leak rates matched to the
 $\tau$ distribution, the same RLS readout --- is the strongest standard-task
 baseline and beats REDEM on both tasks (Table~\ref{tab:bench}). We report this
@@ -415,8 +415,8 @@ batch models trained once on the first 30\% of the stream.}
 \toprule
 Metric & REDEM & ESN & GRU & Transformer \\
 \midrule
-drift\_binary accuracy & 0.991 & 0.998 & 0.371 & 0.351 \\
-Mackey--Glass NMSE     & 0.0018 & 0.0002 & 1.30 & 1.07 \\
+drift\_binary accuracy & 0.991 & 1.000 & 0.394 & 0.351 \\
+Mackey--Glass NMSE     & 0.0018 & 0.000036 & 1.56 & 0.71 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -450,7 +450,8 @@ frozen batch models (which additionally require backpropagation through time),
 and it adds substrate-level self-regulation --- a Lyapunov-estimating homeostat
 and functional-connectivity rewiring --- that generic reservoirs lack. Against
 a well-tuned ESN with the identical readout, REDEM is competitive on standard
-tasks (drift accuracy 0.991 vs.\ 0.998; Mackey--Glass NMSE 0.0018 vs.\ 0.0002)
+tasks (drift accuracy 0.991 vs.\ 1.000; Mackey--Glass NMSE 0.0018 vs.\
+$3.6\times10^{-5}$)
 and superior on the dimensions the ESN does not have: disturbance robustness
 (Section~\ref{sec:homeo}) and a locally coupled, physically motivated substrate
 whose multi-timescale memory is set by material parameters rather than

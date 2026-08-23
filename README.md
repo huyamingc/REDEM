@@ -113,7 +113,7 @@ never modified. `README_REDEM.md` holds the full headline-results registry
 | `chaos_regulator.py` | PAPER | B | S6: λ-homeostat under disturbances | held-out MC +8–18% |
 | `structure_plasticity.py` | PAPER | B | S7: correlation-guided rewiring | gentle (5%) +8–11%; aggressive (20%) −23% |
 | `integrated_benchmark.py` | PAPER | B | S8: full system vs ablations; N=1024 confirmation | 0.996 vs 0.973 (p<0.0001); N=1024 0.998 vs 0.976 |
-| `baseline_showdown.py` | ML | B | S9: vs matched ESN / GRU / tiny transformer (torch CPU) | REDEM 0.991 vs GRU 0.371 / TF 0.351 (ESN 0.998, honest) |
+| `baseline_showdown.py` | ML | B | S9: vs matched ESN / GRU / tiny transformer (torch CPU) | REDEM 0.991 vs GRU 0.394 / TF 0.351 (ESN 1.000, honest; z-scored features) |
 | `forgetting_curve_theory.py` | EXPLORE | A | S10: forgetting-kernel theory M(t), Gauss–Hermite validation | measured MC follows M(t), r = 0.97 |
 | `esn_metadata_comparison.py` | PAPER | B | S10: metadata transfer to a matched ESN | equalizes: ESN+meta 0.998 ≈ ESN 0.996 ≈ REDEM 0.994 |
 | `cv_sweep.py` | PAPER | A | S10: task-level CV sweep (Paper A Supp. Note 1) | uncoupled MC +33% with CV; coupled near-critical falls |
