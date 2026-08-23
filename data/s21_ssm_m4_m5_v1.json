@@ -1,0 +1,113 @@
+{
+  "params": {
+    "host": "diagonal linear SSM (N=128), CV spectrum, whitened; readout = RLS on [B e; 1] (P1/P3a host)",
+    "e1_m4": {
+      "tau_m": 500.0,
+      "arms": {
+        "A1": "bare single RLS readout",
+        "A3-abrupt": "P2 routing replication (hysteresis flip)",
+        "A3-soft": "softmax-distance weighted routing, kappa = 0.5*||ref0-ref1|| (gentle)"
+      },
+      "prediction": "soft < abrupt on stream ppl, forgetting not degraded (P3: gradual beats abrupt)"
+    },
+    "e2_m5": {
+      "controller": "Delta_t = clip(Delta_t + eta*(||h_w||-U), 1, dt_max); h_t = A^{Delta_t} h_{t-1} + B e",
+      "U": 11.313708498984761,
+      "eta": 0.05,
+      "dt_max": 10.0,
+      "band": 1.05,
+      "spike": 10.0,
+      "prediction": "REG keeps norm in band and restores the full-state EMA detector (5/5); BARE drifts (P4)"
+    },
+    "task": "identical to s18: two biased-bigram generators, known switches, 6x3000; seed rules verbatim",
+    "metrics": {
+      "E1": "stream ppl / forgetting ppl / T_adapt / neg_frac (s18 protocol)",
+      "E2": "full-state EMA detector flips, norm mean/max/final, recovery tokens, dt activity (mechanism-level)"
+    },
+    "discipline": "10 seeds, paired sign consistency",
+    "env": {
+      "torch": "2.13.0+cpu",
+      "numpy": "2.5.2",
+      "cpu": "torch CPU only, no mamba-ssm dependency"
+    },
+    "n_seeds": 10,
+    "quick": false
+  },
+  "aggregates": [
+    {
+      "exp": "E1",
+      "arm": "A1",
+      "n_runs": 10,
+      "stream_ppl_mean": 11.754124283044472,
+      "neg_frac_mean": 0.015817545419189952,
+      "t_adapt_mean_mean": 20.0,
+      "forgetting_ppl_mean": 8.386810407106838
+    },
+    {
+      "exp": "E1",
+      "arm": "A3-abrupt",
+      "n_runs": 10,
+      "stream_ppl_mean": 10.032775778209635,
+      "neg_frac_mean": 0.0146119228846047,
+      "t_adapt_mean_mean": 20.0,
+      "forgetting_ppl_mean": 6.015284944342913
+    },
+    {
+      "exp": "E1",
+      "arm": "A3-soft",
+      "n_runs": 10,
+      "stream_ppl_mean": 8.218244292247023,
+      "neg_frac_mean": 0.0028168231568420467,
+      "t_adapt_mean_mean": 20.0,
+      "forgetting_ppl_mean": 6.399819055603116
+    },
+    {
+      "exp": "E2",
+      "arm": "BARE-clean",
+      "n_runs": 10,
+      "flips_mean": 0.6,
+      "norm_mean_mean": 50.18823344016563,
+      "norm_max_mean": 57.77049078573564,
+      "norm_final_mean": 52.144868770483946,
+      "recovery_tokens_mean": NaN,
+      "dt_mean_mean": NaN,
+      "dt_max_mean": NaN
+    },
+    {
+      "exp": "E2",
+      "arm": "BARE-dist",
+      "n_runs": 10,
+      "flips_mean": 0.6,
+      "norm_mean_mean": 50.20257540360732,
+      "norm_max_mean": 66.735802855012,
+      "norm_final_mean": 52.1447839559235,
+      "recovery_tokens_mean": NaN,
+      "dt_mean_mean": NaN,
+      "dt_max_mean": NaN
+    },
+    {
+      "exp": "E2",
+      "arm": "REG-clean",
+      "n_runs": 10,
+      "flips_mean": 5.0,
+      "norm_mean_mean": 11.313732258887935,
+      "norm_max_mean": 13.225004178863946,
+      "norm_final_mean": 11.53566929364791,
+      "recovery_tokens_mean": NaN,
+      "dt_mean_mean": 5.403257445144727,
+      "dt_max_mean": 7.938686089145881
+    },
+    {
+      "exp": "E2",
+      "arm": "REG-dist",
+      "n_runs": 10,
+      "flips_mean": 5.0,
+      "norm_mean_mean": 11.313732258887935,
+      "norm_max_mean": 44.905766648889575,
+      "norm_final_mean": 11.535669293647903,
+      "recovery_tokens_mean": 9.8,
+      "dt_mean_mean": 5.407896479915702,
+      "dt_max_mean": 8.565663677710493
+    }
+  ]
+}

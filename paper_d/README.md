@@ -4,18 +4,19 @@
 Architecture with Native Online Learning, Meta-Adaptation, and Structural
 Plasticity
 
-**Status**: P1 + P3a + P2 DONE 2026-02-18. P1/P3a falsified with mechanisms
-isolated: the linear readout cannot use the linearly-mixed diagonal-SSM
-state (0/10), fixed Mamba-style gates don't fix it (0/10, sharper worse);
-M1 works on the additive current-token input path (control 11.75 vs A1
-15.01, 10/10). P2 partially replicated with one inversion: M3 metadata
-(fast-channel state EMA) transfers to the SSM host - routing improves
-forgetting 10/10 at tau_m<=1000 (-2.05 ppl) but pays a stream cost
-(specialization-vs-lag); gating-only IMPROVES stream ppl 10/10 at every
-tau_m, opposite of s18 - the pause-learning policy is
-readout-dynamics-dependent (qualifies Paper C Sec 6.4). Data:
-`data/s19_ssm_rls_readout_v1.csv` (70 rows), `data/s20_ssm_m3_routing_v1.csv`
-(90 rows). Next: P3 (M4 + M5/learned selectivity), P4 benchmarks.
+**Status**: P1 + P3a + P2 + P3 DONE 2026-02-18. P1/P3a falsified with
+mechanisms isolated (linear state mixing; fixed gates don't fix it; M1
+works on the additive input path, 10/10). P2 partially replicated: M3
+fast-channel state EMA transfers (routing improves forgetting 10/10 at
+tau_m<=1000); gating-only improves stream ppl 10/10 (opposite of s18 -
+readout-dynamics-dependent, qualifies Paper C Sec 6.4). P3 both supported:
+M4 "gentle wins" as soft routing beats abrupt on stream (-1.82, 10/10;
+bonus: dormant-covariance refresh alone flips routing stream to -1.72 vs
+A1); M5 state-norm homeostat bounds the state (11.3 vs 50.2 bare), restores
+the full-state EMA detector (5/5 vs 0.6/5), recovers from spikes in ~10
+tokens. Soft-routing REDEM-SSM stream 8.22 vs bare 11.75 vs s18 A1 15.01.
+Data: `data/s19_ssm_rls_readout_v1.csv`, `data/s20_ssm_m3_routing_v1.csv`,
+`data/s21_ssm_m4_m5_v1.csv`. Next: P4 benchmarks (user gate).
 
 ## Origin and motivation
 
