@@ -41,10 +41,12 @@ companion papers (plus a fourth in development):
   covariance refresh flips routing to −1.72; M5 homeostat bounds the state
   and restores the full-state EMA detector 5/5); P4 benchmark (4-domain
   irregular switches) both hypotheses 10/10 (REDEM vs bare −2.25 stream,
-  −4.47 forget; vs TF-A1 −9.28/−10.08). (Target: NeurIPS/ICML stretch;
+  −4.47 forget; vs TF-A1 −9.28/−10.08). P5: PAPER_D.tex first draft
+  (11 pp, zero warnings, 3 figures). (Target: NeurIPS/ICML stretch;
   arXiv + workshop first)
-  → See [`paper_d/README.md`](paper_d/README.md) and
-  [`paper_d/PAPER_D_sketch.md`](paper_d/PAPER_D_sketch.md)
+  → See [`paper_d/README.md`](paper_d/README.md),
+  [`paper_d/PAPER_D_sketch.md`](paper_d/PAPER_D_sketch.md) and
+  [`paper_d/PAPER_D.tex`](paper_d/PAPER_D.tex)
 
 **Two papers, one pipeline — two different stories.** Paper A is a physics /
 nonlinear-dynamics theory paper about what the substrate *computes*; Paper B
@@ -87,7 +89,7 @@ letter points).
 
 ## Scripts
 
-All 39 committed scripts in `scripts/`, typed per `CLAUDE.md`
+All 42 committed scripts in `scripts/`, typed per `CLAUDE.md`
 (ML > CORE > PAPER > FIG > EXPLORE). Two legacy scripts from the prior
 Si₃N₄-pulse-encoding project are kept as shared dependencies (imported by the
 new code) and are never modified.
@@ -125,6 +127,9 @@ new code) and are never modified.
 | `s20_ssm_m3_routing.py` | ML | Paper D P2: M3 EMA metadata + drift detection + routing on the SSM host (A1/A2/A3, 90 runs, torch CPU) |
 | `s21_ssm_m4_m5.py` | ML | Paper D P3: M4 soft vs abrupt routing + M5 state-norm homeostat (E1/E2, 70 runs, torch CPU) |
 | `s22_ssm_p4_benchmark.py` | ML | Paper D P4: 4-domain irregular-switch benchmark (SSM-bare / SSM-REDEM / TF-A1, 30 runs, torch CPU) |
+| `gen_paperD_fig1_p1_arms.py` | FIG | Paper D Fig. 1: P1/P3a state-readout falsification + input-path control |
+| `gen_paperD_fig2_routing.py` | FIG | Paper D Fig. 2: P2 routing retention + P3 soft vs abrupt |
+| `gen_paperD_fig3_benchmark.py` | FIG | Paper D Fig. 3: P4 benchmark bars |
 | `gen_architecture_schematic.py` | FIG | Paper Fig. 1 schematics (substrate / REDEM, M4↔M5 loop) |
 | `gen_substrate_phase_diagram.py` | FIG | S1 phase-diagram figure |
 | `gen_s2_curves.py` | FIG | S2 learning curves |

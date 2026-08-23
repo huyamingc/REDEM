@@ -16,8 +16,11 @@ both hypotheses 10/10: SSM-REDEM beats bare (stream −2.25, forget −4.47)
 and beats the s18 Transformer A1 (stream −9.28, forget −10.08; even bare
 SSM beats TF-A1). Data: `data/s19_ssm_rls_readout_v1.csv`,
 `data/s20_ssm_m3_routing_v1.csv`, `data/s21_ssm_m4_m5_v1.csv`,
-`data/s22_ssm_p4_benchmark_v1.csv`. Next: P5 paper, or the deferred
-real-text corpus benchmark (user decision).
+`data/s22_ssm_p4_benchmark_v1.csv`. **P5: PAPER_D.tex first draft
+written 2026-02-18 (elsarticle preprint, 11 pp, zero warnings, 3
+figures, 2 tables; honest falsification narrative + companion refs).**
+Next: draft revision pass, real-text benchmark (user decision on corpus),
+or submission checklist.
 
 ## Origin and motivation
 
@@ -76,6 +79,7 @@ entry. Paper D never re-derives substrate physics (A), the REDEM algorithm
 |---|---|
 | `README.md` | This file: status, non-overlap rules, honesty discipline |
 | `PAPER_D_sketch.md` | The design doc: positioning, REDEM-SSM mapping, novelty, falsifiable predictions, roadmap P1-P5 |
+| `PAPER_D.tex` | First draft (elsarticle preprint, 11 pp, zero warnings; P1-P4 evidence + honest falsification narrative); figures in `../figures/paperD_fig*.pdf` |
 
 ## Roadmap (corrected estimates, part-time 3-4 months)
 

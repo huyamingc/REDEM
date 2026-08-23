@@ -312,10 +312,21 @@ benchmark is DEFERRED (no external text in the repo - user decision
 needed); no WikiText-103, no scaling claims. Data:
 `data/s22_ssm_p4_benchmark_v1.csv` / `.json` (30 rows).
 
-### P5 - Paper (2-3 w)
-- arXiv + workshop first; NeurIPS/ICML stretch; mechanism-oriented journal
-  fallback. Limitations section: toy scale, CPU, synthetic tasks, linear
-  (non-chaotic) host, tau_m hyperparameter.
+### P5 - Paper (DRAFTED 2026-02-18)
+
+`paper_d/PAPER_D.tex` first draft: elsarticle preprint, 11 pp, zero
+warnings, 3 data-driven figures (`gen_paperD_fig1_p1_arms.py`,
+`gen_paperD_fig2_routing.py`, `gen_paperD_fig3_benchmark.py`) and 2
+tables. Structure: abstract + intro (host-boundary motivation from Paper
+C), methods (host, M1 input-path readout, M3 fast-channel EMA, M4 soft
+routing + dormant-covariance refresh, M5 homeostat, tasks + discipline),
+results (P1/P3a falsifications, P2 routing transfer + gating inversion,
+P3 gentle wins + regulation, P4 benchmark), discussion (three host
+requirements), limitations (toy scale, first-order, no real text, no
+scaling claims), conclusion. Companion refs A/B/C + Mamba/S4/Longhorn/
+Titans/TTT/DeltaNet/LoRA/attention/continual/reservoir.
+Next: arXiv + workshop first; NeurIPS/ICML stretch; mechanism-oriented
+journal fallback.
 
 ---
 
@@ -404,3 +415,10 @@ needed); no WikiText-103, no scaling claims. Data:
   (2-adapter model), real-text corpus deferred (no external text in repo -
   user decision), no scaling claims. Next: P5 (paper) or real-text
   benchmark - user gate.
+- 2026-02-18: **P5 (PAPER_D.tex first draft) DONE.** Elsarticle preprint,
+  11 pp, zero warnings, 3 figures + 2 tables, honest falsification
+  narrative (P1/P3a negatives as design evidence), three host
+  requirements as the contribution, limitations section (toy scale,
+  first-order, no real text, no scaling claims), companion + SSM/online
+  refs. Next: draft revision pass (user review), real-text benchmark
+  (corpus decision), or submission checklist.

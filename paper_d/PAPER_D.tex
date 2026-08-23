@@ -1,0 +1,527 @@
+% ============================================================================
+% Paper D — REDEM-SSM: A Foundation Model Architecture with Native Online
+%   Learning, Meta-Adaptation, and Structural Plasticity (working title)
+% ============================================================================
+% Target: NeurIPS/ICML (stretch); arXiv + workshop first; mechanism-oriented
+%   journal fallback. Draft status: P1-P4 evidence complete (S19-S22).
+% Class: elsarticle preprint; switch to two-column at acceptance.
+% Compile: pdflatex PAPER_D.tex (run twice for cross-refs).
+% Figures resolve via ../figures/ (extension-less basenames).
+% ============================================================================
+\documentclass[preprint,12pt]{elsarticle}
+
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\graphicspath{{../figures/}}
+\usepackage[expansion=false]{microtype}
+\usepackage{url}
+
+\begin{document}
+
+\begin{frontmatter}
+
+\title{REDEM-SSM: A Foundation Model Architecture with Native Online
+Learning, Meta-Adaptation, and Structural Plasticity}
+
+\author{[Author Name]}
+\affiliation[1]{organization={Independent Researcher},
+city={Guiyang}, country={China}}
+\ead{[author@example.com]}
+
+\begin{abstract}
+We instantiate the REDEM mechanisms --- an online readout (M1), a
+slow-trace statistical memory (M3), structural plasticity (M4), and a
+stability homeostat (M5) --- natively on a state-space host (a diagonal
+linear recurrence with a log-uniform timescale spectrum), instead of
+retrofitting them onto a frozen-feedforward Transformer. A falsifying
+development sequence (10-seed paired discipline throughout) isolates
+three host requirements with mechanism-level evidence. (1) A linear
+readout cannot recover the current token from a linearly-decayed state
+mixture (a deconvolution impossibility); the readout must use the
+additive input path $B e_{t-1}$: the state-only readout is stuck near
+uniform perplexity on a bigram streaming task (0/10 seeds vs.\ a
+Transformer+LoRA reference) while the input-path readout beats it 10/10.
+Fixed Mamba-style multiplicative gates do not repair the state readout
+(sharper gates are worse), so input selectivity must be learned --- a
+design boundary we flag rather than cross. (2) The state's role is
+statistical metadata, not the readout: a fast-channel state EMA tracks
+domain switches, and soft routing retains per-domain specialists
+(forgetting $-2.05$ ppl, 10/10 seeds at $\tau_m \le 1000$); the
+pause-learning (gating-only) policy \emph{improves} stream perplexity on
+this near-batch RLS readout (10/10), opposite to its effect on the
+Adam/LoRA readout of the companion study --- the policy lesson is
+readout-dynamics-dependent. (3) Gentle (soft) routing beats abrupt
+switching ($-1.82$ ppl, 10/10) and a state-norm homeostat bounds the
+state and restores the full-state EMA as a valid domain statistic (5/5
+switch detections vs.\ 0.6/5). On a four-domain irregular-switch
+benchmark the full stack beats the bare host ($-2.25$ stream, $-4.47$
+forgetting, 10/10) and the Transformer+LoRA reference ($-9.28$,
+$-10.08$, 10/10). All results are CPU-scale proofs of concept; we make
+no scaling claims.
+\end{abstract}
+
+\begin{keyword}
+online learning \sep state-space models \sep continual learning
+\sep timescale coverage \sep homeostatic regulation
+\end{keyword}
+
+\end{frontmatter}
+
+\section{Introduction}
+
+The REDEM framework couples four adaptive mechanisms: a continuously
+updated online readout (M1), a slow exponential trace that supplies
+statistical memory (M3), structural plasticity (M4), and a homeostatic
+regulator that keeps the substrate at a stable operating point (M5).
+A companion study \cite{redemc} showed that this framework does not
+instantiate on a frozen-feedforward host: on a Transformer substrate with
+low-rank adapters, slow-trace domain routing transferred (forgetting
+$-28\%$, 10/10 seeds) while a gating-only variant was falsified at every
+metadata timescale (0/10), and the paper concluded that the \emph{full}
+framework requires a persistent stateful host rather than a retrofit onto
+a static architecture.
+
+This paper takes the constructive consequence. We design a stateful host
+--- a diagonal linear state-space recurrence with a log-uniform timescale
+spectrum (the timescale-coverage principle of \cite{redemc}) --- and
+instantiate M1, M3, M4, and M5 natively. Rather than asserting that the
+design works, we follow the falsifying discipline of the companion work:
+every claim is a paired 10-seed comparison with sign consistency, and the
+negative results are reported as design evidence, not as failures.
+
+The development sequence produced three host requirements that are the
+paper's main contribution:
+
+\begin{enumerate}
+\item \textbf{The readout needs the input path, not the state}
+   (Section~\ref{sec:p1}). A linear readout on the linearly-decayed state
+   mixture cannot recover the current token (deconvolution impossibility);
+   the readout must consume the additive input projection
+   $B e_{t-1}$. Fixed Mamba-style gates do not repair the state readout;
+   selectivity must be learned (a boundary we flag, not cross).
+\item \textbf{The state's role is statistical metadata}
+   (Section~\ref{sec:p2}). A fast-channel state EMA (M3) tracks domain
+   switches and soft routing (M4) retains per-domain specialists; the
+   pause-learning policy is readout-dynamics-dependent.
+\item \textbf{Gentle wins, and the state must be regulated}
+   (Section~\ref{sec:p3}). Soft routing beats abrupt switching; a
+   state-norm homeostat (M5) bounds the state and restores the full-state
+   EMA as a valid domain statistic.
+\end{enumerate}
+
+On a four-domain irregular-switch benchmark the full stack beats the bare
+host and the Transformer+LoRA reference on every seed
+(Section~\ref{sec:p4}). All experiments are CPU-only, tiny by design,
+and make no scaling claims (Section~\ref{sec:lim}).
+
+\section{Methods}
+\label{sec:methods}
+
+\subsection{Host: diagonal state-space recurrence}
+\label{sec:host}
+
+The host is a diagonal linear recurrence
+\begin{equation}
+h_t = A\, h_{t-1} + B e_{t-1}, \qquad
+A = \operatorname{diag}\big(e^{-1/\tau_i}\big),
+\label{eq:recur}
+\end{equation}
+where $e_{t-1}$ is the one-hot token at step $t-1$, $B \in
+\mathbb{R}^{N \times V}$ is a fixed random input projection
+(entries drawn i.i.d.\ $\mathcal{N}(0, 1/N)$, per-seed), and the
+timescales $\tau_i$ are drawn log-uniformly over $[1, 3000]$ tokens
+($N = 128$, $V = 32$). The log-uniform spectrum realizes the
+timescale-coverage principle of \cite{redemc}: fast channels carry the
+recent token, slow channels carry long-horizon statistics. The state is
+spectrum-whitened,
+\begin{equation}
+h^w_t = h_t \odot \sqrt{N\,(1 - A^2)},
+\label{eq:whiten}
+\end{equation}
+which normalizes each channel to stationary unit variance (the
+steady-state scaling of the linear recurrence) and bounds slow-channel
+magnitude; without it the slow channels accumulate and the RLS
+covariance grows as $(1/\lambda)^t$ in unexcited directions.
+
+\subsection{M1: online RLS readout on the input path}
+\label{sec:m1}
+
+The readout is a per-token recursive-least-squares linear map
+\begin{equation}
+\hat{y}_t = W\, \phi_t, \qquad \phi_t = [\,B e_{t-1};\; 1\,],
+\label{eq:readout}
+\end{equation}
+with $W \in \mathbb{R}^{V \times (N+1)}$ updated online (predict
+before update) against the one-hot target $e_t$ with forgetting factor
+$\lambda = 0.9999$. The cost is $O(F^2)$ per token in the feature
+dimension $F = N+1$, not $O(P^2)$ in a parameter count
+\cite{redemb,redemc}. The squared-loss readout output is a linear MMSE
+estimate of the conditional distribution, so perplexity is evaluated as
+$\mathrm{CE} = -\ln\,\mathrm{clip}(\hat{y}_t[e_t], 10^{-12}, 1)$
+\emph{without} a softmax (a softmax double-normalizes the estimate
+toward uniform; we found and fixed this metric bug during development).
+The fraction of clipped ($\le 0$) predictions is reported as a
+diagnostic.
+
+The input-path feature choice is itself an evidence-driven result
+(Section~\ref{sec:p1}); the whitened state $h^w$ is \emph{not} a readout
+feature.
+
+\subsection{M3: fast-channel metadata EMA}
+\label{sec:m3}
+
+M3 is a per-token exponential moving average of the fast channels of the
+whitened state,
+\begin{equation}
+m_t = \left(1 - \tfrac{1}{\tau_m}\right) m_{t-1} +
+\tfrac{1}{\tau_m}\, h^w_t[\mathrm{fast}], \qquad \tau_i \le 8
+\text{ tokens},
+\label{eq:ema}
+\end{equation}
+with $\tau_m \in \{200,500,1000,2000\}$. The fast channels (which
+converge in a few tokens) are a stationary domain statistic; the full
+state is not --- its slow channels accumulate over the whole stream, so
+an EMA of the full state drifts away from any fixed per-domain reference
+and the detector never flips (found and fixed during development).
+Fixed per-domain references are the mean fast-channel state over
+1500-token reference streams generated per domain.
+
+\subsection{M4: soft routing and dormant-covariance refresh}
+\label{sec:m4}
+
+For $D$ domains, M4 maintains $D$ readouts $(W_d, P_d)$. Routing uses
+continuous softmax weights over the EMA distances,
+\begin{equation}
+w_d = \frac{\exp(-\|m_t - r_d\|/\kappa)}{\sum_{d'}
+\exp(-\|m_t - r_{d'}\|/\kappa)},
+\qquad \kappa = 0.5 \times \text{median pairwise }\|r_d - r_{d'}\|,
+\label{eq:soft}
+\end{equation}
+with the prediction $\hat{y}_t = \sum_d w_d\, W_d \phi_t$ and
+$W_d, P_d$ updated with error scaled by $w_d$. This instantiates the
+``gentle wins'' principle of \cite{redemc} (gradual structural change).
+A second design detail, \emph{dormant-covariance refresh}, keeps the
+inverse-covariance $P_d$ of every readout current with the feature stream
+(weights frozen, $P$ updated with zero error); alone it flips routing
+stream perplexity from $+1.55$ to $-1.72$ vs.\ the bare host on the
+two-domain task.
+
+\subsection{M5: state-norm homeostat}
+\label{sec:m5}
+
+M5 is a closed-loop controller on the whitened-state norm: the effective
+time step is adjusted so that the norm is held in a band around its
+target $\sqrt{N}$ (the whitening's unit-variance intent),
+\begin{equation}
+\Delta_t = \mathrm{clip}\big(\Delta_{t-1} + \eta\,(\|h^w_t\| - \sqrt{N}),
+\; 1,\; \Delta_{\max}\big), \qquad
+h_t = A^{\Delta_t} h_{t-1} + B e_{t-1},
+\label{eq:m5}
+\end{equation}
+with $\eta = 0.05$, $\Delta_{\max} = 10$. M5 is a feedback regulator,
+not a fixed normalization: it responds to the measured state and bounds
+the slow-channel accumulation that otherwise makes the full-state EMA a
+non-stationary statistic.
+
+\subsection{Tasks and discipline}
+\label{sec:tasks}
+
+\textbf{Two-domain protocol (s18)}: two biased-bigram Markov domains
+(shift-1 / shift-7 with disjoint bias sets), alternating every 3000
+tokens (known switch instants), 6 segments, 18k tokens. \textbf{Four
+-domain benchmark}: four domains (shifts 1/3/7/11, disjoint 4-symbol
+bias sets) on a cycling schedule with \emph{irregular} switch intervals
+(Uniform 2500--3500), 8 segments, $\sim$24k tokens. All seed rules and
+metrics (stream perplexity, forgetting perplexity on held-out previous
+domain, post-switch adaptation time) follow \cite{redemc} verbatim.
+Every comparison is paired per seed over 10 seeds with sign consistency
+($n_{\mathrm{pos}}/10$); the Transformer+LoRA reference is the tiny
+online-LoRA model of \cite{redemc} retrained on each task.
+
+\section{Results}
+\label{sec:results}
+
+\subsection{P1/P3a: the readout needs the input path}
+\label{sec:p1}
+
+Fig.~\ref{fig:p1arms} shows stream perplexity on the two-domain protocol
+(10 seeds) for the state-based readout arms and the input-path control,
+against the Transformer+LoRA reference (A1, 15.01). Every state-feature
+readout --- log-normal spectrum (LN-raw 114.99, LN-whiten 115.87),
+coverage spectrum (CV-whiten 81.31), with the current-token projection
+added (CV-skip 58.47) --- is worse than the reference on every seed
+(0/10), and the in-sample ridge oracle on the state features is $\sim31$
+(essentially uniform; the pooled-table ceiling is 7.34). The input-path
+control ($\phi = [B e_{t-1}; 1]$, no state) reaches 11.75, better than
+the reference on 10/10 seeds ($-3.26$), with oracle 7.25. The mechanism
+is a deconvolution impossibility: a linear map from the state mixture
+$h_t = \sum_k \Lambda^k B e_{t-1-k}$ would need
+$U \Lambda^k = 0$ for $k \ge 1$ while $U \Lambda^0 \ne 0$, impossible
+for a diagonal decay with all $A_i > 0$; the older-token contamination
+is structural and whitening fixes scale, not the mixing.
+
+Fixed Mamba-style multiplicative gates ($\hat{y} = W\,(h^w \odot
+\sigma(\gamma C B e_{t-1}))$, $C$ fixed random, $\gamma \in \{1,5\}$)
+do not repair the state readout: stream perplexity 77.19 / 72.21
+(oracle 37.1 / 38.5; the sharper gate is worse, so the negative is not a
+tuning artifact), 0/10. Selectivity in real Mamba-style hosts is
+\emph{learned} end-to-end; a fixed random gate carries the previous
+token only multiplicatively inside a time-varying state, which is noise,
+not signal. Within our RLS-only constraint the honest resolution is the
+additive input path --- which is what Mamba's input branch provides. We
+flag the learned-selectivity route as the natural extension rather than
+crossing the RLS-only boundary in this work.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.9\linewidth]{paperD_fig1_p1_arms}
+\caption{P1/P3a (10 seeds): stream perplexity of state-based readout arms
+vs.\ the input-path control on the two-domain streaming task. All
+state-feature readouts fail (0/10 vs.\ the Transformer+LoRA reference
+A1, dashed); fixed gates do not help; the additive input path
+($B e_{t-1}$) reaches 11.75, below A1, near the pooled-table ceiling
+7.34 (dotted).}
+\label{fig:p1arms}
+\end{figure}
+
+\subsection{P2: routing transfers, gating is readout-dependent}
+\label{sec:p2}
+
+Table~\ref{tab:p2} and Fig.~\ref{fig:routing} (left). M3 (fast-channel
+EMA) tracks all five known switches (detector lag $\sim$150--800 tokens).
+Routing (A3) with two domain specialists improves forgetting at
+$\tau_m \le 1000$ ($-2.05$, $-1.87$, $-1.20$ ppl; 10/10 seeds), neutral
+at 2000 ($-0.007$, 5/10) --- the ``routing transfers'' lesson of
+\cite{redemc} holds on the SSM host. A3's stream cost in the
+frozen-covariance variant ($+0.38$ to $+4.08$) is removed by
+dormant-covariance refresh (Section~\ref{sec:m4}, Section~\ref{sec:p3}).
+
+The gating-only arm (A2) \emph{improves} stream perplexity at every
+$\tau_m$ ($-1.52$ to $-2.45$, 10/10), the opposite of its 0/10
+falsification on the Transformer's Adam/LoRA readout \cite{redemc}: a
+near-batch RLS readout ($\lambda=0.9999$) that pauses within domains
+stays near the pooled-table optimum, whereas a fast Adam/LoRA readout
+that pauses lets within-domain knowledge decay. The companion lesson
+``the readout must remain active throughout the stream''
+\cite{redemc} is therefore \emph{readout-dynamics-dependent}, not
+host-invariant; we report this qualification here rather than editing
+the companion paper.
+
+\begin{table}[t]
+\centering
+\small
+\begin{tabular}{lcccccc}
+\toprule
+arm & $\tau_m$ & stream & $\Delta_{\mathrm{ppl}}$ & forget &
+$\Delta_{\mathrm{forget}}$ \\
+\midrule
+A1 bare & --- & 11.75 & --- & 8.39 & --- \\
+A2 gate & 200 & 10.24 & $-1.52$ (10/10) & 8.91 & $+0.52$ (0/10) \\
+A2 gate & 500 & 9.53 & $-2.23$ (10/10) & 8.42 & $+0.03$ (5/10) \\
+A2 gate & 1000 & 9.30 & $-2.45$ (10/10) & 8.15 & $-0.23$ (10/10) \\
+A2 gate & 2000 & 9.70 & $-2.05$ (10/10) & 8.02 & $-0.37$ (9/10) \\
+A3 route & 200 & 12.14 & $+0.38$ (0/10) & 6.33 & $-2.05$ (10/10) \\
+A3 route & 500 & 13.30 & $+1.55$ (0/10) & 6.52 & $-1.87$ (10/10) \\
+A3 route & 1000 & 14.81 & $+3.06$ (0/10) & 7.19 & $-1.20$ (10/10) \\
+A3 route & 2000 & 15.84 & $+4.08$ (0/10) & 8.38 & $-0.01$ (5/10) \\
+\bottomrule
+\end{tabular}
+\caption{P2 (10 seeds, two-domain protocol): routing (A3) retains domain
+specialists (forgetting improves at $\tau_m \le 1000$, 10/10) at a
+frozen-covariance stream cost that dormant-covariance refresh removes
+(Section~\ref{sec:p3}); gating-only (A2) improves stream perplexity
+10/10 at every $\tau_m$ --- the readout-dynamics dependence.}
+\label{tab:p2}
+\end{table}
+
+\subsection{P3: gentle wins, and the state must be regulated}
+\label{sec:p3}
+
+Fig.~\ref{fig:routing} (right): soft routing (M4, Eq.~\ref{eq:soft})
+beats abrupt routing on stream perplexity at $\tau_m{=}500$ ($-1.82$
+ppl, 10/10) while keeping the forgetting gain ($-1.99$ vs.\ $-2.37$
+for abrupt --- hard switching retains purer specialists). The
+dormant-covariance refresh alone flips the routing stream result from
+$+1.55$ (frozen $P$) to $-1.72$ vs.\ the bare host (10/10).
+
+M5 (Eq.~\ref{eq:m5}) bounds the whitened-state norm (mean 11.3 in band
+vs.\ 50.2 and growing for the bare host), restores the \emph{full}-state
+EMA as a valid domain statistic (5/5 switch detections vs.\ 0.6/5 --- the
+non-stationarity of Section~\ref{sec:m3} fixed at the source), and
+recovers from a $10\times$ state spike in $\sim$10 tokens
+($\Delta_t$ settles near 5.4). This is mechanism-level evidence: on this
+architecture the readout is decoupled from the state (input path), so a
+direct ``stream performance under disturbance'' test is not meaningful
+here.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.9\linewidth]{paperD_fig2_routing}
+\caption{Left (P2): forgetting perplexity vs.\ $\tau_m$ --- routing (A3)
+retains domain specialists below the bare baseline (A1, dashed);
+gating-only (A2) does not. Right (P3): soft routing beats abrupt on
+stream perplexity at $\tau_m{=}500$ (``gentle wins'').}
+\label{fig:routing}
+\end{figure}
+
+\subsection{P4: benchmark on four-domain irregular switching}
+\label{sec:p4}
+
+Fig.~\ref{fig:bench} and Table~\ref{tab:p4}. On the four-domain
+irregular-switch protocol, the full stack (M1 input-path readout + M3
+metadata + M4 soft routing) beats the bare host (stream $-2.25$,
+forgetting $-4.47$; 10/10) and the Transformer+LoRA reference (stream
+$-9.28$, forgetting $-10.08$; 10/10). Even the bare host beats the
+transformer reference 10/10 ($-7.03$): the RLS readout's second-order
+convergence dominates online Adam/LoRA when domains switch faster than
+the LoRA can track (the reference sits near uniform, 22.46).
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.9\linewidth]{paperD_fig3_benchmark}
+\caption{P4 (10 seeds, four-domain irregular-switch protocol): the full
+REDEM-SSM stack beats the bare host and the Transformer+LoRA reference
+on both stream and forgetting perplexity (paired, 10/10).}
+\label{fig:bench}
+\end{figure}
+
+\begin{table}[t]
+\centering
+\small
+\begin{tabular}{lcc}
+\toprule
+arm & stream ppl & forgetting ppl \\
+\midrule
+SSM-bare (M1 only) & 15.43 & 13.41 \\
+SSM-REDEM (M1+M3+M4) & \textbf{13.18} & \textbf{8.93} \\
+TF-A1 (transformer+LoRA) & 22.46 & 19.01 \\
+\midrule
+\multicolumn{3}{l}{\scriptsize paired diffs (10/10): REDEM--bare
+$-2.25$/$-4.47$; REDEM--TF $-9.28$/$-10.08$; bare--TF
+$-7.03$/$-5.61$} \\
+\bottomrule
+\end{tabular}
+\caption{P4 (10 seeds, four-domain irregular-switch protocol): the full
+stack (input-path RLS readout, fast-channel metadata, soft routing over
+four specialists) beats the bare host and the Transformer+LoRA reference
+on every seed. The transformer reference uses the companion's
+hyperparameters, untuned for four domains.}
+\label{tab:p4}
+\end{table}
+
+\section{Discussion}
+
+Three evidence-based host requirements emerged. \textbf{(i)} A linear
+readout cannot use a linearly-decayed state mixture; the current token
+must be an additive input feature (the deconvolution impossibility,
+Section~\ref{sec:p1}), and fixed gates do not substitute for learned
+selectivity. \textbf{(ii)} The state's role is statistical metadata:
+its fast channels, not the readout, carry the domain statistic
+(Section~\ref{sec:p2}); on first-order tasks the slow channels are
+inert for the readout, and their accumulation must be masked
+(Section~\ref{sec:m3}) or regulated (M5, Section~\ref{sec:p3}).
+\textbf{(iii)} The policy lessons of \cite{redemc} transfer in part:
+routing retains specialists, gentle structural change beats abrupt, but
+the pause-learning policy's effect is readout-dynamics-dependent (10/10
+improvement here vs.\ 0/10 there), so ``the readout must remain active''
+is not a universal principle.
+
+The honest negative results are the paper's spine: the naive state
+readout, the fixed gate, the full-state EMA metadata, and the
+frozen-covariance routing all failed in ways that \emph{located} the
+working design (input path, fast-channel metadata, soft routing,
+dormant-covariance refresh, state regulation) rather than merely being
+abandoned.
+
+\section{Limitations}
+\label{sec:lim}
+
+CPU-only, toy-scale (state 128, $\sim$4k readout parameters); first-order
+tasks only (the input-path readout is a bigram model --- real-text and
+higher-order benchmarks are deferred pending a corpus decision); linear
+host (no chaos; M5 is a stability-edge regulator, an analogy to the
+homeostat of \cite{redema,redemb}, not a validation of it); the learned
+selectivity route (real Mamba-style gating) is not crossed; the
+transformer reference uses the companion's hyperparameters untuned for
+four domains; hyperparameters ($\tau_m$, $\kappa$, $\lambda$, $\eta$,
+$\Delta_{\max}$) are fixed, not swept. No scaling claims.
+
+\section{Conclusion}
+
+REDEM mechanisms can be instantiated natively on a state-space host, and
+the falsifying development sequence locates the working design precisely:
+an input-path RLS readout, fast-channel statistical metadata, soft
+routing with dormant-covariance refresh, and a state-norm homeostat. The
+full stack beats the bare host and the Transformer+LoRA reference on a
+four-domain irregular-switch benchmark on every seed. The next steps are
+real-text evaluation, learned selectivity, and scaling --- each with the
+same falsification discipline.
+
+\begin{thebibliography}{14}
+
+\bibitem{redema}
+[Author Name], Memory and chaos in a physics-constrained relaxation
+substrate: phase diagram, multi-timescale forgetting, and disturbance
+robustness, \emph{companion preprint} (2026).
+
+\bibitem{redemb}
+[Author Name], REDEM: training-inference unified learning with
+meta-adaptation and structural plasticity for non-stationary
+environments, \emph{companion preprint} (2026).
+
+\bibitem{redemc}
+[Author Name], Dissecting online learning mechanisms: statistical memory,
+homeostatic recovery, and substrate physics are non-transferable,
+\emph{companion preprint} (2026).
+
+\bibitem{gu2023mamba}
+A.~Gu, T.~Dao, Mamba: Linear-time sequence modeling with selective state
+spaces, arXiv:2312.00752 (2023).
+
+\bibitem{gu2022s4}
+A.~Gu, K.~Goel, C.~R\'e, Efficiently modeling long sequences with
+structured state spaces, in: International Conference on Learning
+Representations (ICLR), 2022.
+
+\bibitem{liu2025longhorn}
+B.~Liu, et al., Longhorn: State space models are amortized online
+learners, in: International Conference on Learning Representations
+(ICLR), 2025.
+
+\bibitem{behrouz2025titans}
+A.~Behrouz, P.~Zhong, V.~Mirrokni, Titans: Learning to memorize at test
+time, in: Advances in Neural Information Processing Systems (NeurIPS),
+2025.
+
+\bibitem{sun2024ttt}
+Y.~Sun, X.~Li, K.~Dalianis, et al., Learning to (learn at test time):
+RNNs with expressive hidden states, in: International Conference on
+Learning Representations (ICLR), 2024.
+
+\bibitem{yang2024deltanet}
+S.~Yang, B.~Wang, Y.~Shen, R.~Panda, J.-H.~Kim, Parallelizing linear
+transformers with the delta rule over sequence length, arXiv:2406.06484
+(2024).
+
+\bibitem{hu2022lora}
+E.~Hu, Y.~Shen, P.~Wallis, et al., LoRA: Low-rank adaptation of large
+language models, in: International Conference on Learning
+Representations (ICLR), 2022.
+
+\bibitem{vaswani2017}
+A.~Vaswani, N.~Shazeer, N.~Parmar, et al., Attention is all you need, in:
+Advances in Neural Information Processing Systems (NeurIPS), 2017.
+
+\bibitem{parisi2019}
+G.~Parisi, R.~Kemker, J.~Part, et al., Continual lifelong learning with
+neural networks: A review, Neural Networks 113 (2019) 54--71.
+
+\bibitem{lukosevicius2009}
+M.~Luko\v{s}evi\v{c}ius, H.~Jaeger, Reservoir computing approaches to
+recurrent neural network training, Computer Science Review 3 (3) (2009)
+127--149.
+
+\end{thebibliography}
+
+\end{document}
