@@ -40,7 +40,13 @@ Guiyang, Guizhou Province, China. E-mail: 64687555@qq.com.
 > collapsing the tuned reference's retention (forgetting 62.2 vs 8.93),
 > and a 4-adapter routing baseline (TF-A3) transfers the M3/M4 mechanism
 > to the Transformer host (−43% forgetting, 10/10) without repairing the
-> stream — the stream advantage is a property of the stateful host.
+> stream — the stream advantage is a property of the stateful host. A
+> char-bigram oracle pins the honest scope: the true first-order ceiling
+> is ppl 10.97 ± 0.18, and the stack sits within ~1.1 ppl of it. Adding
+> the P3 state-norm homeostat to the benchmark is a reported negative
+> (stream +1.53, forgetting +2.90, 10/10 worse): its Δt modulation breaks
+> the Δt=1-calibrated whitening on an already well-conditioned stream,
+> validating the S22 design decision to exclude it from the benchmark.
 >
 > Everything is toy-scale by design (state dim 128, ~4k-parameter readouts,
 > character-level vocabularies); we make no scaling or SOTA claims. The

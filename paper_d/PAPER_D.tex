@@ -438,7 +438,14 @@ books share English letter bigram statistics, so their specialists
 overlap more than the four synthetic domains'. The first-order readout
 reaches the char-bigram regime (ppl $\sim$12--13); higher-order text
 structure is out of its reach and is reported as a boundary, not a
-result.
+result. A count-based bigram oracle pins this boundary quantitatively
+(data/s31\_char\_bigram\_oracle\_v1.csv): the true per-source first-order
+ceiling, estimated from the full books and evaluated on the same
+per-seed windows, is ppl $10.97\pm0.18$ (stream) --- SSM-REDEM's 12.07
+sits within $\sim$1.1 ppl of its structural ceiling (the residual is
+finite-sample loss of the streaming readout), and the Transformer
+reference (17.31) fails to reach even this first-order ceiling, so its
+deficit is not about higher-order structure.
 
 {\sloppy
 \emph{Reference fairness and mechanism transfer (follow-up).} Two
@@ -462,6 +469,18 @@ repair the stream: TF-A3 stays at 21.77, losing to SSM-REDEM on 10/10
 seeds ($+8.59$). The stream advantage of the input-path RLS readout is a
 property of the stateful host, not of the routing mechanism: the
 mechanisms are host-agnostic, the stream performance is not.\par}
+
+\emph{M5 in the benchmark (negative).} The P3 state-norm homeostat was
+deliberately excluded from the P4 stack; adding it confirms the decision
+empirically (data/s33\_ssm\_p4\_m5\_v1.csv): SSM-REDEM+M5 is \emph{worse}
+on all 10 seeds (stream $+1.53$, forgetting $+2.90$; paired $t =
+-22.8/-26.5$). The mechanism is structural: the $\Delta_t$ modulation
+departs from the per-channel whitening calibrated at $\Delta_t = 1$, so
+the readout's features lose their calibrated scale on a stream that is
+already well-conditioned (the norm never runs away --- mean $\Delta_t
+\approx 5.3$ means the controller is constantly active). M5 remains a
+mechanism-level safeguard for the spike regime (P3, E2), not a benchmark
+component.
 
 \begin{figure}[t]
 \centering

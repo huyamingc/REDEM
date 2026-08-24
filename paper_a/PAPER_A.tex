@@ -450,6 +450,13 @@ parity (the RLS readout absorbs task-level differences; the substrate-level
 memory improvement is revealed by the readout-independent MC probe). The
 $\lambda$-homeostat is disturbance-type-agnostic because it tracks the
 dynamical quantity itself rather than a proxy whose optimum shifts.
+The estimate is also robust to its own noise: injecting Gaussian error
+of up to $\sigma_\lambda = 0.10$ (the typical estimate magnitude is
+$0.05$--$0.1$) into every Benettin estimate leaves the settled coupling
+essentially unchanged (r3 $\kappa$ 28.5--28.7) and the post-disturbance
+r3 MC within $0.16$ of the noiseless value with no significant paired
+difference at any noise level (data/s32\_ftle\_noise\_v1.csv) --- the
+clipped proportional feedback integrates over the estimation error.
 A systematic $\lambda_{\mathrm{target}}$ sweep
 ($\lambda_{\mathrm{target}}\in\{-0.05,-0.02,-0.005,0\}\times\mathrm{CV}\in\{0.1,0.2,0.4\}$,
 5 seeds; companion paper Table~2) identifies $\lambda_{\mathrm{target}}{=}0$

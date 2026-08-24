@@ -66,8 +66,12 @@ the structure level (M4).
 | s27 | Clip-range ablation × fine κ grid (3 topologies × 3 α_max × 13 κ × 10 seeds): κ* = 25.3/27.4/27.9 (bootstrap CI ±0.1–0.8); 5× clip widening leaves κ* invariant for lateral_ring (+0.05) and random_graph (−0.21) — order–chaos is coupling-driven; ring_bidir shifts +3.4 (clip contributes); wider clip raises ring_bidir peak MC 11.9→17.7 |
 | s28 | Causal leak audit re-run on the S11 disturbance chain (6 arms × 10 seeds): 1% future leaks into RLS/metadata/FTLE and 10% future correlation into M4 do not improve recovery (r3 MC deltas +0.00/+0.00/+0.28/+0.24, all NS; NMSE ≤0.004); no-plasticity r3 MC 8.47/κ 28.5 = S11 homeostat anchor exactly — causal cleanliness survives a non-ceilinged protocol |
 | s30 | N=1024 integrated replication at 10 seeds (baseline vs full, paired per seed): full 0.9970 ± 0.0007 vs baseline 0.9753 ± 0.0044 (+2.2 pp, paired t=15.3, 10/10) — the scale-up claim now supports a paired test (S8 used 3 seeds) |
+| s31 | Char-bigram oracle on the real-text protocol (full-book vs ref-window fits, 10 seeds): true first-order ceiling ppl 10.97 ± 0.18; SSM-REDEM 12.07 sits within ~1.1 ppl of its structural ceiling — the "first-order regime" boundary is now quantitative |
+| s32 | FTLE-noise robustness of the homeostat (5 noise levels × 10 seeds, S11 chain): no significant r3 MC degradation up to σ=0.10 (~100% of the estimate scale; paired CIs include 0), settled κ 28.5–28.7 — the clipped proportional feedback integrates out estimation error |
+| s33 | M5 in the P4 benchmark (2 arms × 10 seeds): SSM-REDEM+M5 is significantly worse (stream +1.53, forgetting +2.90, t=−22.8/−26.5, 10/10) — Δt modulation breaks the Δt=1-calibrated per-channel whitening on an already well-conditioned stream; S22's exclusion of M5 is validated (M5 stays a spike-regime safeguard, P3 E2) |
+| s34 | Leak sensitivity scan on the S28 audit (6 leak configs × 10 seeds): 10× larger FTLE leaks stay NS (+0.21); the plasticity channel shows a genuine dose-response — 30% future correlation improves recovery (+0.57, CI [+0.08,+1.10], 7/10), 50% reverses it — "causally clean" is scoped to the operational leak magnitudes |
 
-## Scripts (49 committed)
+## Scripts (52 committed)
 
 The authoritative script inventory — every script with its `CLAUDE.md` type,
 **paper attribution (A/B/C/D/shared)**, purpose, and key result — is the
@@ -92,6 +96,8 @@ their figures are reproduced from `paper_d/README.md`.
   `data/s25_reward_gated_plasticity_v1.*`,
   `data/s26_ssm_p4_fair_tf_v1.*`, `data/s27_clip_kappa_fine_v1.*`,
   `data/s28_causal_audit_chain_v1.*`, `data/s30_integrated_1024_v1.*`,
+  `data/s31_char_bigram_oracle_v1.*`, `data/s32_ftle_noise_v1.*`,
+  `data/s33_ssm_p4_m5_v1.*`, `data/s34_leak_sensitivity_v1.*`,
   `data/s16b_falsification_stress_test_v2.*` (v2: all variants at all
   four τ_m; v1 kept for the original table)
   (CSV per run + JSON with params and per-cell aggregates).
@@ -163,6 +169,10 @@ scipy, matplotlib, torch (CPU) for S9 only.
 & .venv\Scripts\python.exe scripts\s27_clip_kappa_fine.py
 & .venv\Scripts\python.exe scripts\s28_causal_audit_chain.py
 & .venv\Scripts\python.exe scripts\s30_integrated_1024.py --workers 4
+& .venv\Scripts\python.exe scripts\s31_char_bigram_oracle.py
+& .venv\Scripts\python.exe scripts\s32_ftle_noise_robustness.py
+& .venv\Scripts\python.exe scripts\s33_ssm_p4_m5.py
+& .venv\Scripts\python.exe scripts\s34_leak_sensitivity.py
 & .venv\Scripts\python.exe scripts\gen_paperD_fig1_p1_arms.py
 & .venv\Scripts\python.exe scripts\gen_paperD_fig2_routing.py
 & .venv\Scripts\python.exe scripts\gen_paperD_fig3_benchmark.py

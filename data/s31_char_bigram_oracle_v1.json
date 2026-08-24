@@ -1,0 +1,100 @@
+{
+  "params": {
+    "experiment": "char-bigram oracle on the S23 real-text protocol",
+    "protocol": "mirrors S23 verbatim (per-seed streams, reference windows REF_LEN=1500, 500-char holdouts)",
+    "fits": {
+      "full": "P(c'|c) from the entire source book",
+      "ref": "P(c'|c) from the per-seed reference windows (the metadata's training signal)"
+    },
+    "alpha": 1.0,
+    "vocab": 32,
+    "n_seeds": 10,
+    "s23_reference": {
+      "SSM-bare": "13.34 stream / 12.31 forget",
+      "SSM-REDEM": "12.07 / 11.85"
+    },
+    "quick": false
+  },
+  "aggregates": {
+    "stream_ppl_full_mean": 10.973725062300073,
+    "stream_ppl_full_std": 0.1795334170670821,
+    "stream_ppl_ref_mean": 14.507230023974477,
+    "stream_ppl_ref_std": 0.47596830890746084,
+    "forgetting_ppl_full_mean": 10.701070834758102,
+    "forgetting_ppl_full_std": 0.22888918321063884,
+    "forgetting_ppl_ref_mean": 14.015874273282254,
+    "forgetting_ppl_ref_std": 0.5127916514133426
+  },
+  "rows": [
+    {
+      "seed": 0,
+      "stream_ppl_full": 10.948724947276553,
+      "stream_ppl_ref": 14.109152115392469,
+      "forgetting_ppl_full": 10.618008863119115,
+      "forgetting_ppl_ref": 12.911595590826915
+    },
+    {
+      "seed": 1,
+      "stream_ppl_full": 10.723386467156132,
+      "stream_ppl_ref": 14.02117335536908,
+      "forgetting_ppl_full": 10.48983851802083,
+      "forgetting_ppl_ref": 13.530298505177672
+    },
+    {
+      "seed": 2,
+      "stream_ppl_full": 11.016559085791759,
+      "stream_ppl_ref": 14.30451781376248,
+      "forgetting_ppl_full": 11.285917222897208,
+      "forgetting_ppl_ref": 14.890016907753283
+    },
+    {
+      "seed": 3,
+      "stream_ppl_full": 11.237356291595374,
+      "stream_ppl_ref": 15.68261705817113,
+      "forgetting_ppl_full": 10.560311302287447,
+      "forgetting_ppl_ref": 14.2563536021589
+    },
+    {
+      "seed": 4,
+      "stream_ppl_full": 10.9580335657666,
+      "stream_ppl_ref": 14.469117283660067,
+      "forgetting_ppl_full": 10.654258494054204,
+      "forgetting_ppl_ref": 14.476777904497226
+    },
+    {
+      "seed": 5,
+      "stream_ppl_full": 10.64261632047233,
+      "stream_ppl_ref": 14.009886101093466,
+      "forgetting_ppl_full": 10.483395796878948,
+      "forgetting_ppl_ref": 13.742212053484092
+    },
+    {
+      "seed": 6,
+      "stream_ppl_full": 10.977545334049822,
+      "stream_ppl_ref": 14.645722160896183,
+      "forgetting_ppl_full": 10.698215189334038,
+      "forgetting_ppl_ref": 14.071031541948471
+    },
+    {
+      "seed": 7,
+      "stream_ppl_full": 11.0030873984813,
+      "stream_ppl_ref": 14.704718335239921,
+      "forgetting_ppl_full": 10.720421355714908,
+      "forgetting_ppl_ref": 14.257618261343561
+    },
+    {
+      "seed": 8,
+      "stream_ppl_full": 10.978891013222036,
+      "stream_ppl_ref": 14.302913841972034,
+      "forgetting_ppl_full": 10.91712532791195,
+      "forgetting_ppl_ref": 14.05347002082828
+    },
+    {
+      "seed": 9,
+      "stream_ppl_full": 11.251050199188814,
+      "stream_ppl_ref": 14.822482174187952,
+      "forgetting_ppl_full": 10.583216277362364,
+      "forgetting_ppl_ref": 13.969368344804144
+    }
+  ]
+}

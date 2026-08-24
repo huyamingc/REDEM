@@ -47,7 +47,11 @@ substrate-level channels are visible — and the verdict reproduces: no leak
 arm improves post-disturbance recovery (r3 MC deltas +0.00/+0.00/+0.28/+0.24,
 none significant), while the same run independently confirms that rewiring
 during the chain is harmful (removing M4 restores r3 MC to the 8.47
-homeostat-only anchor). We report honestly the negative results that
+homeostat-only anchor). A sensitivity scan scopes the claim: 10× larger
+future leaks into the FTLE estimate stay insignificant, while 30% future
+correlation in the plasticity channel does improve recovery (+0.57, 7/10) —
+the mechanisms are clean at operational leak magnitudes, and the audit's
+resolution is reported, not hidden. We report honestly the negative results that
 fixed the design (reward-only readouts cannot credit-assign through a class
 inversion; task-agnostic intrinsic rewards cannot rescue them), and we
 report honestly that a well-tuned online ESN edges REDEM on standard tasks

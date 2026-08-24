@@ -362,7 +362,14 @@ The protocol also isolates a non-leak effect: removing M4 entirely
 improves post-disturbance recovery by $+2.3$ MC (r3 8.47 vs.\ 6.17,
 matching the S11 homeostat-only anchor exactly), independently
 confirming that rewiring during active disturbance compensation is
-harmful rather than merely unhelpful (the M4-M5 loop result above).
+harmful rather than merely unhelpful (the M4-M5 loop result above). The
+audit's resolution is itself bounded (data/s34\_leak\_sensitivity\_v1.csv):
+ten-fold larger future leaks into the FTLE estimate ($10\%$) stay
+insignificant (r3 MC $+0.21$, CI includes zero), and the plasticity
+correlation shows a genuine dose-response --- $30\%$ future correlation
+improves recovery ($+0.57$, 95\% CI $[+0.08,+1.10]$, 7/10 seeds) while
+$50\%$ reverses it --- so ``causally clean'' holds at the operational
+leak magnitudes tested here and is not asserted beyond them.
 
 \textbf{Plasticity.} Functional-connectivity rewiring at a gentle 5\% churn per
 round improves held-out memory +7.8\% (ring start) and repairs pruned damage

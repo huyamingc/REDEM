@@ -1,0 +1,235 @@
+{
+  "params": {
+    "experiment": "M5 state-norm homeostat in the P4 benchmark (S22 had M5 excluded)",
+    "protocol": "S22 verbatim (4-domain irregular switches, 10 seeds, seed rules); M5 controller verbatim from S21 E2 (U=sqrt(128), eta=0.05, dt_max=10)",
+    "arms": {
+      "SSM-REDEM": "M1+M3+M4 (cross-check vs S22)",
+      "SSM-REDEM+M5": "M1+M3+M4+M5"
+    },
+    "s22_reference": "SSM-REDEM stream 13.18, forgetting 8.93",
+    "n_seeds": 10,
+    "quick": false
+  },
+  "rows": [
+    {
+      "arm": "SSM-REDEM",
+      "seed": 0,
+      "stream_ppl": 13.568189010086659,
+      "neg_frac": 0.0010531396726490851,
+      "t_adapt_mean": 20.0,
+      "forgetting_ppl": 8.696480368875545,
+      "dt_mean": NaN,
+      "dt_max": NaN,
+      "runtime_s": 901.4347920417786
+    },
+    {
+      "arm": "SSM-REDEM",
+      "seed": 7,
+      "stream_ppl": 13.52068277431061,
+      "neg_frac": 0.0011390519582931745,
+      "t_adapt_mean": 20.0,
+      "forgetting_ppl": 9.011060816731417,
+      "dt_mean": NaN,
+      "dt_max": NaN,
+      "runtime_s": 901.3139991760254
+    },
+    {
+      "arm": "SSM-REDEM",
+      "seed": 2,
+      "stream_ppl": 12.664277346734092,
+      "neg_frac": 0.0005941518482366422,
+      "t_adapt_mean": 20.0,
+      "forgetting_ppl": 8.774414399963229,
+      "dt_mean": NaN,
+      "dt_max": NaN,
+      "runtime_s": 911.8908562660217
+    },
+    {
+      "arm": "SSM-REDEM+M5",
+      "seed": 0,
+      "stream_ppl": 14.89407526459099,
+      "neg_frac": 0.0005704506560182544,
+      "t_adapt_mean": 20.0,
+      "forgetting_ppl": 11.475000813723085,
+      "dt_mean": 5.308115907925101,
+      "dt_max": 7.932084960118483,
+      "runtime_s": 909.4590492248535
+    },
+    {
+      "arm": "SSM-REDEM",
+      "seed": 5,
+      "stream_ppl": 13.338057564175617,
+      "neg_frac": 0.0007037880356033947,
+      "t_adapt_mean": 20.0,
+      "forgetting_ppl": 9.117517071889706,
+      "dt_mean": NaN,
+      "dt_max": NaN,
+      "runtime_s": 917.8277978897095
+    },
+    {
+      "arm": "SSM-REDEM",
+      "seed": 8,
+      "stream_ppl": 13.880951751777971,
+      "neg_frac": 0.0005831389536821059,
+      "t_adapt_mean": 20.0,
+      "forgetting_ppl": 9.40259508858883,
+      "dt_mean": NaN,
+      "dt_max": NaN,
+      "runtime_s": 915.6604869365692
+    },
+    {
+      "arm": "SSM-REDEM",
+      "seed": 4,
+      "stream_ppl": 13.225325340230569,
+      "neg_frac": 0.00045183815978640376,
+      "t_adapt_mean": 20.0,
+      "forgetting_ppl": 8.878039268494721,
+      "dt_mean": NaN,
+      "dt_max": NaN,
+      "runtime_s": 920.7045538425446
+    },
+    {
+      "arm": "SSM-REDEM",
+      "seed": 6,
+      "stream_ppl": 12.667864653402079,
+      "neg_frac": 0.000655120173606846,
+      "t_adapt_mean": 20.0,
+      "forgetting_ppl": 8.67735418406142,
+      "dt_mean": NaN,
+      "dt_max": NaN,
+      "runtime_s": 919.5477714538574
+    },
+    {
+      "arm": "SSM-REDEM+M5",
+      "seed": 2,
+      "stream_ppl": 14.38692931131804,
+      "neg_frac": 0.0002970759241183211,
+      "t_adapt_mean": 20.0,
+      "forgetting_ppl": 11.422974176918146,
+      "dt_mean": 5.40800526684652,
+      "dt_max": 8.260587877801903,
+      "runtime_s": 894.2370338439941
+    },
+    {
+      "arm": "SSM-REDEM",
+      "seed": 9,
+      "stream_ppl": 13.023387164722706,
+      "neg_frac": 0.00036579417980816127,
+      "t_adapt_mean": 20.0,
+      "forgetting_ppl": 8.485911901799328,
+      "dt_mean": NaN,
+      "dt_max": NaN,
+      "runtime_s": 921.5367949008942
+    },
+    {
+      "arm": "SSM-REDEM",
+      "seed": 3,
+      "stream_ppl": 13.273718432641381,
+      "neg_frac": 0.0006714060031595576,
+      "t_adapt_mean": 20.0,
+      "forgetting_ppl": 9.526302966294539,
+      "dt_mean": NaN,
+      "dt_max": NaN,
+      "runtime_s": 927.651908159256
+    },
+    {
+      "arm": "SSM-REDEM+M5",
+      "seed": 5,
+      "stream_ppl": 14.717318041414964,
+      "neg_frac": 0.00041399296211964395,
+      "t_adapt_mean": 20.0,
+      "forgetting_ppl": 12.110828131389946,
+      "dt_mean": 6.121336764819654,
+      "dt_max": 8.441220712774575,
+      "runtime_s": 856.6691205501556
+    },
+    {
+      "arm": "SSM-REDEM",
+      "seed": 1,
+      "stream_ppl": 12.633408731736484,
+      "neg_frac": 0.0005889743992461128,
+      "t_adapt_mean": 20.0,
+      "forgetting_ppl": 8.741553779375577,
+      "dt_mean": NaN,
+      "dt_max": NaN,
+      "runtime_s": 929.2847845554352
+    },
+    {
+      "arm": "SSM-REDEM+M5",
+      "seed": 4,
+      "stream_ppl": 14.782970447246054,
+      "neg_frac": 0.0004929143561306223,
+      "t_adapt_mean": 20.0,
+      "forgetting_ppl": 11.658601448555151,
+      "dt_mean": 5.322280312460757,
+      "dt_max": 7.789057950165732,
+      "runtime_s": 874.967209815979
+    },
+    {
+      "arm": "SSM-REDEM+M5",
+      "seed": 3,
+      "stream_ppl": 14.531877677982354,
+      "neg_frac": 0.00039494470774091627,
+      "t_adapt_mean": 20.0,
+      "forgetting_ppl": 13.317663908132955,
+      "dt_mean": 5.54585487928215,
+      "dt_max": 7.570245555407073,
+      "runtime_s": 897.7280788421631
+    },
+    {
+      "arm": "SSM-REDEM+M5",
+      "seed": 1,
+      "stream_ppl": 14.294234873608696,
+      "neg_frac": 0.00015705983979896342,
+      "t_adapt_mean": 20.0,
+      "forgetting_ppl": 11.592698251359836,
+      "dt_mean": 4.83311192667529,
+      "dt_max": 7.180225034473679,
+      "runtime_s": 931.0856084823608
+    },
+    {
+      "arm": "SSM-REDEM+M5",
+      "seed": 7,
+      "stream_ppl": 15.08294194294531,
+      "neg_frac": 0.0010514325768860072,
+      "t_adapt_mean": 20.0,
+      "forgetting_ppl": 11.828625155545158,
+      "dt_mean": 5.422297704782373,
+      "dt_max": 8.013369789643944,
+      "runtime_s": 849.8920519351959
+    },
+    {
+      "arm": "SSM-REDEM+M5",
+      "seed": 6,
+      "stream_ppl": 14.440200861827087,
+      "neg_frac": 0.00020472505425213938,
+      "t_adapt_mean": 20.0,
+      "forgetting_ppl": 11.46639850744794,
+      "dt_mean": 5.295619516669039,
+      "dt_max": 7.21358974759799,
+      "runtime_s": 862.6808543205261
+    },
+    {
+      "arm": "SSM-REDEM+M5",
+      "seed": 8,
+      "stream_ppl": 15.12006585837729,
+      "neg_frac": 0.0004998333888703765,
+      "t_adapt_mean": 20.0,
+      "forgetting_ppl": 11.927958110877004,
+      "dt_mean": 4.45658400463085,
+      "dt_max": 7.064337407421785,
+      "runtime_s": 854.8980207443237
+    },
+    {
+      "arm": "SSM-REDEM+M5",
+      "seed": 9,
+      "stream_ppl": 14.808306898153152,
+      "neg_frac": 0.00028450658429523656,
+      "t_adapt_mean": 20.0,
+      "forgetting_ppl": 11.542918295269518,
+      "dt_mean": 5.28349511121042,
+      "dt_max": 8.080055689505366,
+      "runtime_s": 857.5226624011993
+    }
+  ]
+}
