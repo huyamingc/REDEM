@@ -70,7 +70,7 @@ the structure level (M4).
 | s32 | FTLE-noise robustness of the homeostat (5 noise levels × 10 seeds, S11 chain): no significant r3 MC degradation up to σ=0.10 (~100% of the estimate scale; paired CIs include 0), settled κ 28.5–28.7 — the clipped proportional feedback integrates out estimation error |
 | s33 | M5 in the P4 benchmark (2 arms × 10 seeds): SSM-REDEM+M5 is significantly worse (stream +1.53, forgetting +2.90, t=−22.8/−26.5, 10/10) — Δt modulation breaks the Δt=1-calibrated per-channel whitening on an already well-conditioned stream; S22's exclusion of M5 is validated (M5 stays a spike-regime safeguard, P3 E2) |
 | s34 | Leak sensitivity scan on the S28 audit (6 leak configs × 10 seeds): 10× larger FTLE leaks stay NS (+0.21); the plasticity channel shows a genuine dose-response — 30% future correlation improves recovery (+0.57, CI [+0.08,+1.10], 7/10), 50% reverses it — "causally clean" is scoped to the operational leak magnitudes |
-| s35 | P1 readout boundary probes (10 seeds, s19 host verbatim): full-window oracle 31.2 (matches s19, max diff 0.00) vs half-window 17.3; skip 18.0 > proj 7.25 (nested violation 10/10); token linearly decodable from fast channels (τ≤8) at 88.9–99.7% out-of-sample (chance 3.1%), slow channels at chance — the in-sample oracle is window-dependent and metric-pathological, so the P1 0/10 failure is a pooled-readout/metric property, not missing linear information ("no useful linear map" retracted in Paper D) |
+| s35 | P1 readout boundary probes (10 seeds, s19 host verbatim): full-window oracle 31.2 (matches s19, max diff 0.00) vs half-window 17.3; skip 18.0 > proj 7.25 (nested violation 10/10); token linearly decodable from fast channels (τ≤8) at 88.9–99.7% out-of-sample (chance 3.1%), slow channels at chance; fast-channel direct/two-stage next-token readouts still fail out-of-sample (ppl 68–104 vs static table 13.9–17.4) — the in-sample oracle is window-dependent and metric-pathological, so the P1 0/10 failure is a pooled-readout/metric property, not missing linear information ("no useful linear map" retracted in Paper D) |
 
 ## Scripts (54 committed)
 
@@ -266,7 +266,7 @@ ws-ijbc.cls / revtex4-2 for Paper A (IJBC/Chaos), elsarticle.cls for Paper B
 | s32 FTLE-noise robustness | done (50 runs; no significant degradation to σ=0.10) |
 | s33 M5 in P4 | done (20 runs; honest negative 10/10 — M5 breaks Δt=1 whitening) |
 | s34 leak sensitivity | done (60 runs; FTLE 10× NS; plasticity 30% significant +0.57 — audit resolution bounded) |
-| s35 readout boundary probes | done (10 seeds; oracle window-dependence 31.2 vs 17.3, nested violation 10/10, fast-channel decode 88.9–99.7% — P1 corollary rewritten in Paper D) |
+| s35 readout boundary probes | done (10 seeds; oracle window-dependence 31.2 vs 17.3, nested violation 10/10, fast-channel decode 88.9–99.7%; fast next-token readouts still fail 68–104 vs table 13.9–17.4 — P1 corollary rewritten in Paper D) |
 | Paper D P5 | done (PAPER_D.tex draft, 14 pp, zero warnings; revision pass 1: A2 qualifier + real-text results; pass 2: P1 theorem + reference fairness + M5 negative + oracle; pass 3: P1 corollary rewritten with s35 boundary probes + related-work section) |
 | Paper C derivation | in progress (thesis locked; PAPER_C.tex submission-ready; §7 LLM PoC results available for the extension section) |
 

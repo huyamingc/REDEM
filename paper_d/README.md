@@ -14,8 +14,12 @@ P1 corollary "ridge finds no useful linear map because none exists" was
 token IS linearly decodable from the state's fast channels (τ≤8,
 88.9–99.7% out-of-sample, chance 3.1%), the in-sample ridge oracle is
 window-dependent (31.2 full vs 17.3 half) and nested-violating (skip 18.0
-> proj 7.25 on 10/10 seeds), so the measured 0/10 failure is a property of
-the pooled readout under the CE metric, not missing linear information.
+> proj 7.25 on 10/10 seeds), and fast-channel-only direct/two-stage
+next-token readouts still fail out-of-sample (ppl 68–104 vs static table
+13.9–17.4) — the measured 0/10 failure is a property of the pooled
+squared-loss readout under the CE metric (no calibrated next-token
+probabilities from any closed-form linear state readout), not missing
+linear information.
 Related-work section added (activates all 13 bibliography entries);
 code/data availability statement added. P2 partially replicated (M3
 routing transfers, forgetting −2.05 at τ_m≤1000, 10/10; gating-only
@@ -132,7 +136,7 @@ CSV+JSON dual output.
 | `../scripts/s26_ssm_p4_fair_tf.py` | ML | fair TF references for P4: tuned A1 grid (4 lrs × 2 ranks) + 4-adapter A3 routing (9 arms × 10) | tuning cuts the stream gap to −1.68 (0/10) but collapses retention to 62.2; TF-A3 transfers −8.17 forgetting (10/10) without fixing stream (+8.59) — mechanisms host-agnostic, stream performance is not |
 | `../scripts/s31_char_bigram_oracle.py` | PAPER | char-bigram oracle on the real-text protocol (full-book vs ref-window fits, 10 seeds) | true first-order ceiling ppl 10.97 ± 0.18; SSM-REDEM 12.07 within ~1.1 ppl of it — first-order scope now quantitative |
 | `../scripts/s33_ssm_p4_m5.py` | ML | M5 state-norm homeostat added to the P4 stack (2 arms × 10) | honest negative: SSM-REDEM+M5 worse 10/10 (stream +1.53, forgetting +2.90, t=−22.8/−26.5) — Δt modulation breaks Δt=1 whitening; S22's exclusion of M5 validated |
-| `../scripts/s35_readout_boundary_probe.py` | PAPER | P1 readout boundary probes (10 seeds, s19 host verbatim): full/half-window oracle, skip-vs-proj nested check, fast/slow token decoding | full-window oracle 31.2 (matches s19, max diff 0.00) vs half-window 17.3 — the oracle is window-dependent; skip 18.0 > proj 7.25 (nested violation, 10/10); current token linearly decodable from fast channels (τ≤8) at 88.9–99.7% out-of-sample (chance 3.1%), slow channels at chance — "no useful linear map" is false; the P1 failure is a pooled-readout/metric property, not missing linear information |
+| `../scripts/s35_readout_boundary_probe.py` | PAPER | P1 readout boundary probes (10 seeds, s19 host verbatim): full/half-window oracle, skip-vs-proj nested check, fast/slow token decoding, fast-channel next-token readouts vs static-table reference | full-window oracle 31.2 (matches s19, max diff 0.00) vs half-window 17.3 — the oracle is window-dependent; skip 18.0 > proj 7.25 (nested violation, 10/10); current token linearly decodable from fast channels (τ≤8) at 88.9–99.7% out-of-sample (chance 3.1%), slow channels at chance; fast-channel-only direct/two-stage next-token readouts still fail out-of-sample (ppl 68–104 vs static table 13.9–17.4) — "no useful linear map" is false, but no closed-form squared-loss state readout yields calibrated next-token probabilities; the P1 failure is a pooled-readout/metric property, not missing linear information |
 | `../scripts/gen_paperD_fig1_p1_arms.py` | FIG | Paper D Fig. 1 | `../figures/paperD_fig1_p1_arms.pdf` |
 | `../scripts/gen_paperD_fig2_routing.py` | FIG | Paper D Fig. 2 | `../figures/paperD_fig2_routing.pdf` |
 | `../scripts/gen_paperD_fig3_benchmark.py` | FIG | Paper D Fig. 3 | `../figures/paperD_fig3_benchmark.pdf` |

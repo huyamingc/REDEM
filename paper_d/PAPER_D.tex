@@ -332,15 +332,23 @@ window-dependent (28.8--33.4 on the full window vs.\ 16.2--18.4 on the
 first half) and non-monotone in the feature set (adding the clean
 projection makes it worse on every seed: 16.6--19.9 vs.\ 7.15--7.36 for
 the projection alone) --- artifacts of evaluating clipped linear
-outputs by perplexity, not bounds on recoverable information. Within
+outputs by perplexity, not bounds on recoverable information.
+Restricting the readout to the fast channels does not repair the
+next-token readout either: fast-channel-only linear fits and two-stage
+decode-then-table compositions still fail out-of-sample (test ppl
+68--104 vs.\ 13.9--17.4 for the pooled transition table fit on one half
+and evaluated on the other) --- the token is linearly present, but the
+closed-form squared-loss readout never turns it into calibrated
+next-token probabilities, which is exactly what the input-path feature
+achieves by encoding the token itself. Within
 the RLS-only constraint the honest resolution remains the additive
 input path.
 
 Fixed Mamba-style multiplicative gates ($\hat{y} = W\,(h^w \odot
 \sigma(\gamma C B e_{t-1}))$, $C$ fixed random, $\gamma \in \{1,5\}$)
-do not repair the state readout: stream perplexity 77.19 / 72.21
-(oracle 37.1 / 38.5; the sharper gate is worse, so the negative is not a
-tuning artifact), 0/10. Selectivity in real Mamba-style hosts is
+do not repair the state readout: stream perplexity 77.19 / 72.21 (the
+sharper gate is worse, so the negative is not a tuning artifact), 0/10.
+Selectivity in real Mamba-style hosts is
 \emph{learned} end-to-end; a fixed random gate carries the previous
 token only multiplicatively inside a time-varying state, which is noise,
 not signal. Within our RLS-only constraint the honest resolution is the
@@ -356,7 +364,9 @@ vs.\ the input-path control on the two-domain streaming task. All
 state-feature readouts fail (0/10 vs.\ the Transformer+LoRA reference
 A1, dashed); fixed gates do not help; the additive input path
 ($B e_{t-1}$) reaches 11.75, below A1, approaching the in-sample
-pooled-table ceiling 7.34 (dotted).}
+pooled-table ceiling 7.34 (dotted; the same table fit on one half and
+evaluated on the other transfers at $\sim$15 across the domain-mix
+shift, so the input path also beats the non-adapting static table).}
 \label{fig:p1arms}
 \end{figure}
 

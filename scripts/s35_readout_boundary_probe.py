@@ -114,11 +114,40 @@ def run_probe_seed(seed):
     dec_fast30 = decode_acc(hs[:, np.where(fast30)[0]])
     dec_slow = decode_acc(hs[:, np.where(slow)[0]])
 
+    # (5) out-of-sample next-token ppl: fast-channel-only direct linear
+    # readout, two-stage (decode -> table) composition, and the pooled
+    # transition table fit on the train half (reference)
+    def ppl_fast_direct(fastmask):
+        Xf = hs[:, np.where(fastmask)[0]]
+        W, *_ = np.linalg.lstsq(Xf[itr], Y[itr], rcond=None)
+        return ppl_from_pred(Xf[ite] @ W, tgt[ite])
+
+    def ppl_fast_twostage(fastmask):
+        Xf = hs[:, np.where(fastmask)[0]]
+        R, *_ = np.linalg.lstsq(Xf[itr], Eprev[itr], rcond=None)
+        Tb, *_ = np.linalg.lstsq(Xf[itr] @ R, Y[itr], rcond=None)
+        return ppl_from_pred(Xf[ite] @ R @ Tb, tgt[ite])
+
+    cnt_tr = np.zeros((V, V))
+    np.add.at(cnt_tr, (stream[:-1][itr], tgt[itr]), 1.0)
+    Mtr = cnt_tr / cnt_tr.sum(1, keepdims=True)
+    ppl_table_te = ppl_from_pred(Mtr[stream[:-1][ite]], tgt[ite])
+
+    ppl_f8_direct = ppl_fast_direct(fast8)
+    ppl_f30_direct = ppl_fast_direct(fast30)
+    ppl_f8_twostage = ppl_fast_twostage(fast8)
+    ppl_f30_twostage = ppl_fast_twostage(fast30)
+
     return dict(seed=seed, oracle_full=oracle_full, oracle_half=oracle_half,
                 oracle_skip=oracle_skip, oracle_proj=oracle_proj,
                 decode_fast8_te=dec_fast8, decode_fast30_te=dec_fast30,
                 decode_slow_te=dec_slow, n_fast8=int(fast8.sum()),
-                n_fast30=int(fast30.sum()), n_slow=int(slow.sum()))
+                n_fast30=int(fast30.sum()), n_slow=int(slow.sum()),
+                ppl_fast8_direct_te=ppl_f8_direct,
+                ppl_fast30_direct_te=ppl_f30_direct,
+                ppl_fast8_twostage_te=ppl_f8_twostage,
+                ppl_fast30_twostage_te=ppl_f30_twostage,
+                ppl_table_te=ppl_table_te)
 
 
 def main():
@@ -143,7 +172,10 @@ def main():
     # CSV
     cols = ['seed', 'oracle_full', 'oracle_half', 'oracle_skip',
             'oracle_proj', 'decode_fast8_te', 'decode_fast30_te',
-            'decode_slow_te', 'n_fast8', 'n_fast30', 'n_slow']
+            'decode_slow_te', 'n_fast8', 'n_fast30', 'n_slow',
+            'ppl_fast8_direct_te', 'ppl_fast30_direct_te',
+            'ppl_fast8_twostage_te', 'ppl_fast30_twostage_te',
+            'ppl_table_te']
     with open(CSV_OUT, 'w', newline='', encoding='utf-8') as f:
         f.write(','.join(cols) + '\n')
         for r in rows:
@@ -182,7 +214,10 @@ def main():
         'aggregates': {k: agg(k) for k in
                        ['oracle_full', 'oracle_half', 'oracle_skip',
                         'oracle_proj', 'decode_fast8_te',
-                        'decode_fast30_te', 'decode_slow_te']},
+                        'decode_fast30_te', 'decode_slow_te',
+                        'ppl_fast8_direct_te', 'ppl_fast30_direct_te',
+                        'ppl_fast8_twostage_te', 'ppl_fast30_twostage_te',
+                        'ppl_table_te']},
         'per_seed': rows,
     }
     with open(JSON_OUT, 'w', encoding='utf-8') as f:
@@ -202,6 +237,14 @@ def main():
           f'{summary["aggregates"]["decode_slow_te"]["min"]:.3f}..'
           f'{summary["aggregates"]["decode_slow_te"]["max"]:.3f} '
           f'(chance 0.031)', flush=True)
+    print(f'[s35] next-token test ppl: fast8 direct '
+          f'{summary["aggregates"]["ppl_fast8_direct_te"]["min"]:.1f}..'
+          f'{summary["aggregates"]["ppl_fast8_direct_te"]["max"]:.1f} | '
+          f'fast8 two-stage '
+          f'{summary["aggregates"]["ppl_fast8_twostage_te"]["min"]:.1f}..'
+          f'{summary["aggregates"]["ppl_fast8_twostage_te"]["max"]:.1f} | '
+          f'table ref {summary["aggregates"]["ppl_table_te"]["min"]:.1f}..'
+          f'{summary["aggregates"]["ppl_table_te"]["max"]:.1f}', flush=True)
 
 
 if __name__ == '__main__':
