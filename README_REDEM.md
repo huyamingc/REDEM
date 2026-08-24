@@ -51,7 +51,7 @@ the structure level (M4).
 | s14 | ESN+metadata under the S11 disturbance chain (3 arms × 10 seeds): the slow trace does NOT transfer MC robustness to the ESN (paired diffs −0.78/−0.76/−0.69, 0/10 seeds positive) — the S11 +32% recovery is homeostat-driven; metadata still attenuates readout noise (r3 NMSE −9.5%, 10/10 seeds); redem_reg reproduces the S11 anchor exactly |
 | s16 | τ_m pressure test (τ_m ∈ {200,500,1000,2000} × 10 seeds): the falsification is robust — esn_dual r3 MC ≤ esn_fast at every τ_m (0/10 seeds positive, ~5σ), no sensitive interval; noise-attenuation transfer holds at all τ_m. Paper C adopts the strong claim |
 | s15 | Controlled adaptation (10 seeds × 5 switches, known switch instants): T40 40.6 (dual) vs 49.9 (fast) vs 52.7 (redem); T40 p90 42 vs 76.5 — the true metadata adaptation effect is ~10 pulses + variance collapse; the "47×"/"9–20×" ratios are metric artifacts |
-| s16b | Probe-protocol stress test (10 seeds × 2 τ_m × 3 variants): falsification robust in sign (0/10 positive everywhere); magnitude protocol-dependent — V0 (readout noise) −0.69, V1 (std-slow) −0.66, V2 (state noise) −0.01 (EMA denoising nearly closes the gap) |
+| s16b | Probe-protocol stress test (10 seeds × 4 τ_m × 3 variants, v2): falsification robust in sign (≤1/10 positive in every cell; 0/10 in 11 of 12); magnitude protocol-dependent — V0 (readout noise) −0.69, V1 (std-slow) −0.66, V2 (state noise) −0.04…−0.01 across τ_m (EMA denoising nearly closes the gap at every timescale) |
 | s5b | S5 three-arm controlled re-measurement (2 substrates × 5 arm configs × 10 seeds): T200 fast 264.8–303.9 vs dual/slow 202–211 pulses (factor 1.28–1.44; T40 factor 1.79–2.40); overall acc reproduces S5 exactly — Paper B §4.3/abstract revised |
 | s17 | Substrate stress (3 spectral radii × 2 hetero × 10 seeds): equalizer gain positive at all 6 ESN configs (+0.1 to +1.0 pp), magnitude tracks the fast channel's timescale starvation; heterogeneity irrelevant |
 | s18 | LLM drift-gate PoC (tiny transformer + LoRA, 90 runs): A3 domain routing transfers — forgetting −2.5 ppl (10/10 seeds, τ_m=200), stream ppl −1.07 (10/10) at τ_m≤500; A2 gate falsified (0/10); τ_m≥1000 sensitive interval reported |
@@ -65,8 +65,9 @@ the structure level (M4).
 | s26 | Fair Transformer references for P4 (9 arms × 10 seeds): tuned A1 grid — best stream 14.86 (lr 3e-3, r32) still loses to REDEM 13.18 (0/10, −1.68) and its forgetting collapses to 62.2; TF-A3 4-adapter routing — forgetting 10.85 vs 19.01 (−8.17, 10/10, −43%) but stream 21.77 loses 0/10 (+8.59) — the routing mechanism transfers to the Transformer host, the stream advantage does not |
 | s27 | Clip-range ablation × fine κ grid (3 topologies × 3 α_max × 13 κ × 10 seeds): κ* = 25.3/27.4/27.9 (bootstrap CI ±0.1–0.8); 5× clip widening leaves κ* invariant for lateral_ring (+0.05) and random_graph (−0.21) — order–chaos is coupling-driven; ring_bidir shifts +3.4 (clip contributes); wider clip raises ring_bidir peak MC 11.9→17.7 |
 | s28 | Causal leak audit re-run on the S11 disturbance chain (6 arms × 10 seeds): 1% future leaks into RLS/metadata/FTLE and 10% future correlation into M4 do not improve recovery (r3 MC deltas +0.00/+0.00/+0.28/+0.24, all NS; NMSE ≤0.004); no-plasticity r3 MC 8.47/κ 28.5 = S11 homeostat anchor exactly — causal cleanliness survives a non-ceilinged protocol |
+| s30 | N=1024 integrated replication at 10 seeds (baseline vs full, paired per seed): full 0.9970 ± 0.0007 vs baseline 0.9753 ± 0.0044 (+2.2 pp, paired t=15.3, 10/10) — the scale-up claim now supports a paired test (S8 used 3 seeds) |
 
-## Scripts (48 committed)
+## Scripts (49 committed)
 
 The authoritative script inventory — every script with its `CLAUDE.md` type,
 **paper attribution (A/B/C/D/shared)**, purpose, and key result — is the
@@ -90,7 +91,9 @@ their figures are reproduced from `paper_d/README.md`.
   `data/s24_homeo_plasticity_coupling_v1.*`,
   `data/s25_reward_gated_plasticity_v1.*`,
   `data/s26_ssm_p4_fair_tf_v1.*`, `data/s27_clip_kappa_fine_v1.*`,
-  `data/s28_causal_audit_chain_v1.*`
+  `data/s28_causal_audit_chain_v1.*`, `data/s30_integrated_1024_v1.*`,
+  `data/s16b_falsification_stress_test_v2.*` (v2: all variants at all
+  four τ_m; v1 kept for the original table)
   (CSV per run + JSON with params and per-cell aggregates).
   Paper D: `data/s19_ssm_rls_readout_v1.*`, `data/s20_ssm_m3_routing_v1.*`,
   `data/s21_ssm_m4_m5_v1.*`, `data/s22_ssm_p4_benchmark_v1.*`,
@@ -159,6 +162,7 @@ scipy, matplotlib, torch (CPU) for S9 only.
 & .venv\Scripts\python.exe scripts\s26_ssm_p4_fair_tf.py
 & .venv\Scripts\python.exe scripts\s27_clip_kappa_fine.py
 & .venv\Scripts\python.exe scripts\s28_causal_audit_chain.py
+& .venv\Scripts\python.exe scripts\s30_integrated_1024.py --workers 4
 & .venv\Scripts\python.exe scripts\gen_paperD_fig1_p1_arms.py
 & .venv\Scripts\python.exe scripts\gen_paperD_fig2_routing.py
 & .venv\Scripts\python.exe scripts\gen_paperD_fig3_benchmark.py

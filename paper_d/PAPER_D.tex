@@ -11,11 +11,15 @@
 \documentclass[preprint,12pt]{elsarticle}
 
 \usepackage{amsmath,amssymb}
+\usepackage{amsthm}
 \usepackage{booktabs}
 \usepackage{graphicx}
 \graphicspath{{../figures/}}
 \usepackage[expansion=false]{microtype}
 \usepackage{url}
+
+\newtheorem{proposition}{Proposition}[section]
+\newtheorem{lemma}{Lemma}[section]
 
 \begin{document}
 
@@ -263,6 +267,43 @@ $U \Lambda^k = 0$ for $k \ge 1$ while $U \Lambda^0 \ne 0$, impossible
 for a diagonal decay with all $A_i > 0$; the older-token contamination
 is structural and whitening fixes scale, not the mixing.
 
+\begin{proposition}[Deconvolution impossibility for the linear state
+readout]
+\label{prop:p1}
+Let the host be $h_t = \Lambda h_{t-1} + B e_{t-1}$ with
+$\Lambda = \operatorname{diag}(\lambda_1,\dots,\lambda_N)$,
+$0 < \lambda_i < 1$ distinct, and $B \in \mathbb{R}^{N\times V}$ with
+i.i.d.\ continuous entries. For almost every such $(\Lambda, B)$, no
+affine-linear readout $\hat e_t = U h_t + b$ recovers the current token
+exactly ($\hat e_t = e_{t-1}$ for all token histories).
+\end{proposition}
+
+\begin{proof}
+Unrolling the recurrence gives the mixture
+$h_t = \sum_{j\ge0} \Lambda^j B e_{t-1-j}$ (with $e_{-1} = 0$). Exact
+recovery for every history requires
+$U B e_{t-1} = e_{t-1}$ for every token, i.e.\ $U B = I_V$, and
+$U \Lambda^j B = 0$ for every $j \ge 1$. The annihilation conditions say
+$U$ vanishes on $S = \operatorname{span}\{\Lambda^j B u : j \ge 1,\,
+u \in \mathbb{R}^V\}$. Because the $\lambda_i$ are distinct and $B$ is
+random, the Krylov family $\{\Lambda^j B\}_{j\ge0}$ generates
+$\mathbb{R}^N$ almost surely (the $N$ vectors $\Lambda^{j} b_\ell$ for a
+single random column $b_\ell$ form a Vandermonde system with distinct
+nodes, hence are linearly independent a.s.), so
+$S = \Lambda\,\operatorname{span}\{\Lambda^j B\}_{j\ge0} =
+\Lambda\,\mathbb{R}^N = \mathbb{R}^N$ ($\Lambda$ is invertible). Hence
+$U = 0$, contradicting $U B = I_V$. Whitening replaces $h_t$ by
+$D h_t$ with a positive diagonal $D$, i.e.\ $U' \mapsto U' D$; the
+argument is unchanged, so the contamination is structural, not a scale
+artifact. \qed
+\end{proof}
+
+The empirical corollary of Proposition~\ref{prop:p1} is the measured
+0/10 failure of every state-feature readout: ridge finds no useful
+linear map because none exists, and the input-path feature
+$\phi = [B e_{t-1}; 1]$ enters the state equation as the $j{=}0$ term,
+which is exactly the component the readout must consume.
+
 Fixed Mamba-style multiplicative gates ($\hat{y} = W\,(h^w \odot
 \sigma(\gamma C B e_{t-1}))$, $C$ fixed random, $\gamma \in \{1,5\}$)
 do not repair the state readout: stream perplexity 77.19 / 72.21
@@ -408,7 +449,8 @@ data/s26\_ssm\_p4\_fair\_tf\_v1.csv). (i) A small tuning grid (four
 learning rates from $3\times10^{-4}$ to $10^{-2}$; ranks 16 and 32)
 improves the bare reference's stream perplexity to 14.86 at
 $\mathrm{lr}{=}3\times10^{-3}$, rank 32 --- still worse than SSM-REDEM
-on 10/10 seeds ($-1.68$; the best config's forgetting collapses to 62.2
+on 10/10 seeds ($-1.68$, paired $t=8.8$; the best config's forgetting
+collapses to 62.2
 vs.\ 8.93, so the tuning that helps the stream destroys retention and
 the default reference is the balanced representative). The P4 margin is
 therefore robust to reasonable reference tuning, though smaller on

@@ -392,6 +392,25 @@ given in Supplementary Note~1 (Fig.~S1); the kernel-level stability across
 CV $\in[0.02,1.0]$ is in Fig.~\ref{fig:forgetting} and
 Appendix~\ref{app:quadrature}.
 
+\textbf{The kernel survives coupling (shape stability).} The single-unit
+theory was validated on the parallel substrate; the committed per-lag
+memory curves let us ask whether the coupled substrate's curve is still
+kernel-shaped. Fitting an \emph{effective} log-normal spectrum to
+$\sqrt{\mathrm{MC}(k)}$ at each operating point
+(data/substrate\_phase\_diagram\_v2.json; quadrature as in
+Appendix~\ref{app:quadrature}) gives Pearson $r \ge 0.86$ against the
+best fit at every $\kappa \in \{15,\dots,30\}$ of all three mode-1
+topologies, and the \emph{physical} spectrum $(174\,\mu$s, CV $0.20)$
+already achieves $r = 0.84$--$0.95$ over the same range ($r=0.95$ at
+random\_graph $\kappa{=}25$). The fitted effective median stretches
+monotonically with $\kappa$ (from $\approx 1\times$ to $2$--$3\times$
+the physical value as the transition is approached) --- a
+coupling-induced time dilation of the memory kernel consistent with the
+near-critical slowdown of Section~\ref{sec:negfb}. Single curves cannot
+separate the effective median from the width (the fit saturates at wide
+CV), so we report the shape stability and the dilation qualitatively
+rather than as a precise renormalization map.
+
 \section{Disturbance robustness and the \texorpdfstring{$\lambda$}{lambda}-homeostat}
 \label{sec:homeostat}
 
@@ -489,6 +508,25 @@ physics to the state-space-model literature: the substrate is a
 hardware-realizable structured state-space kernel whose decay spectrum is set
 by fabrication (CV). The $r=0.97$ validation shows the connection is
 quantitative, not metaphorical.
+
+\textbf{Spectrum knobs: location versus width.} Across the companion
+papers three single-parameter spectrum knobs appear --- the material
+CV here, the algorithmic EMA timescale $\tau_m$ (companion~C), and the
+log-uniform coverage range of the state-space host (companion~D). They
+are not interchangeable, and the distinction is quantitative: for a
+log-normal spectrum the $1/e$ horizon is set by the \emph{location}
+(median $\tau_0$: $M(\tau_0)\approx e^{-1}$ regardless of CV, measured
+12--16 pulses over CV $\in[0.02,1.0]$) while the tail weight is set by
+the \emph{width} (measured log-log slope $-60.6$ at CV $0.2$ vs.\ $-7.1$
+at CV $1.0$). The companion's $\tau_m$ is a location knob (the
+synthesized kernel's horizon scales with $\tau_m$, tail shape fixed),
+and the log-uniform range is a width knob of a different family. The
+practical corollary: specifying both a horizon and a tail requires two
+independent knobs, and single-knob tuning moves exactly one observable
+cross-section --- the same decomposition that makes the task-level CV
+caveat above a re-projection onto a shifted location rather than a
+contradiction (the effective median drifts $1$--$3\times$ under
+coupling, Section~\ref{sec:kernel}).
 
 \textbf{Limitations.} All results are numerical (Digital-Model level; no
 fabricated device); the task-level CV sweep reveals an

@@ -1,0 +1,198 @@
+{
+  "params": {
+    "n_units": 256,
+    "cv_tau": 0.2,
+    "tau_m_list": [
+      200.0,
+      500.0,
+      1000.0,
+      2000.0
+    ],
+    "variants": [
+      "V0",
+      "V1",
+      "V2"
+    ],
+    "variants_def": {
+      "V0": "slow = EMA(raw states); noise after slow (S14/S16 ref)",
+      "V1": "slow = EMA(standardized states, mu/sd from probe first 30%)",
+      "V2": "noise injected into states BEFORE slow computation"
+    },
+    "esn": "hetero-lr (cv=0.20), spectral_radius=0.9, input_scaling=0.5, base leaking_rate=0.2",
+    "esn_seed_offset": 999,
+    "rls_forgetting": 0.999,
+    "protocol": "inherited from S16 (s16_tau_m_pressure_test.py)",
+    "disturb_times": [
+      7000,
+      14000,
+      21000
+    ],
+    "disturb_types": [
+      "tau_drift",
+      "edge_prune",
+      "noise"
+    ],
+    "judgment": "paired r3_mc(dual)-r3_mc(fast); <=1 positive seed per (tau_m, variant) -> falsification robust to probe protocol",
+    "version_note": "v2: every variant at every tau_m in {200,500,1000,2000} (v1 covered V1/V2 at {500,2000} only); v1 data file kept for the original Table 3",
+    "n_seeds": 10,
+    "quick": false
+  },
+  "aggregates": [
+    {
+      "arm": "esn_dual",
+      "tau_m": 200.0,
+      "variant": "V0",
+      "n_runs": 10,
+      "r0_mc_mean": 6.164698055921472,
+      "r0_mc_std": 0.5345972237068927,
+      "r3_mc_mean": 1.0377148693078038,
+      "r3_mc_std": 0.21247384665722116,
+      "r3_nmse_mean": 0.025432026840253287,
+      "r3_nmse_std": 0.0019038047660028556
+    },
+    {
+      "arm": "esn_dual",
+      "tau_m": 200.0,
+      "variant": "V1",
+      "n_runs": 10,
+      "r0_mc_mean": 6.167190709252409,
+      "r0_mc_std": 0.5355579419141483,
+      "r3_mc_mean": 1.0809300646025057,
+      "r3_mc_std": 0.2177307004316438,
+      "r3_nmse_mean": 0.025432026840253287,
+      "r3_nmse_std": 0.0019038047660028556
+    },
+    {
+      "arm": "esn_dual",
+      "tau_m": 200.0,
+      "variant": "V2",
+      "n_runs": 10,
+      "r0_mc_mean": 6.164698055921472,
+      "r0_mc_std": 0.5345972237068927,
+      "r3_mc_mean": 1.7011666975407695,
+      "r3_mc_std": 0.2872056673350063,
+      "r3_nmse_mean": 0.025432026840253287,
+      "r3_nmse_std": 0.0019038047660028556
+    },
+    {
+      "arm": "esn_dual",
+      "tau_m": 500.0,
+      "variant": "V0",
+      "n_runs": 10,
+      "r0_mc_mean": 6.162691315211381,
+      "r0_mc_std": 0.5346411097327524,
+      "r3_mc_mean": 1.0455214332909673,
+      "r3_mc_std": 0.2126662027706728,
+      "r3_nmse_mean": 0.02508018073265164,
+      "r3_nmse_std": 0.0018481515750751196
+    },
+    {
+      "arm": "esn_dual",
+      "tau_m": 500.0,
+      "variant": "V1",
+      "n_runs": 10,
+      "r0_mc_mean": 6.160002350050215,
+      "r0_mc_std": 0.5347452639707404,
+      "r3_mc_mean": 1.0755780350832853,
+      "r3_mc_std": 0.21736508240619035,
+      "r3_nmse_mean": 0.02508018073265164,
+      "r3_nmse_std": 0.0018481515750751196
+    },
+    {
+      "arm": "esn_dual",
+      "tau_m": 500.0,
+      "variant": "V2",
+      "n_runs": 10,
+      "r0_mc_mean": 6.162691315211381,
+      "r0_mc_std": 0.5346411097327524,
+      "r3_mc_mean": 1.7236169233352765,
+      "r3_mc_std": 0.28910978185440245,
+      "r3_nmse_mean": 0.02508018073265164,
+      "r3_nmse_std": 0.0018481515750751196
+    },
+    {
+      "arm": "esn_dual",
+      "tau_m": 1000.0,
+      "variant": "V0",
+      "n_runs": 10,
+      "r0_mc_mean": 6.163413909920988,
+      "r0_mc_std": 0.5346809120692411,
+      "r3_mc_mean": 1.0563899007038504,
+      "r3_mc_std": 0.21370616305696913,
+      "r3_nmse_mean": 0.023528491100479648,
+      "r3_nmse_std": 0.0015925035855915792
+    },
+    {
+      "arm": "esn_dual",
+      "tau_m": 1000.0,
+      "variant": "V1",
+      "n_runs": 10,
+      "r0_mc_mean": 6.158427251370708,
+      "r0_mc_std": 0.5345234183465615,
+      "r3_mc_mean": 1.0756498233000538,
+      "r3_mc_std": 0.21828241920410282,
+      "r3_nmse_mean": 0.023528491100479648,
+      "r3_nmse_std": 0.0015925035855915792
+    },
+    {
+      "arm": "esn_dual",
+      "tau_m": 1000.0,
+      "variant": "V2",
+      "n_runs": 10,
+      "r0_mc_mean": 6.163413909920988,
+      "r0_mc_std": 0.5346809120692411,
+      "r3_mc_mean": 1.728621901765505,
+      "r3_mc_std": 0.2898820501292598,
+      "r3_nmse_mean": 0.023528491100479648,
+      "r3_nmse_std": 0.0015925035855915792
+    },
+    {
+      "arm": "esn_dual",
+      "tau_m": 2000.0,
+      "variant": "V0",
+      "n_runs": 10,
+      "r0_mc_mean": 6.163309754168394,
+      "r0_mc_std": 0.5350204274107128,
+      "r3_mc_mean": 1.060563413232471,
+      "r3_mc_std": 0.2146758021238403,
+      "r3_nmse_mean": 0.02354376194344155,
+      "r3_nmse_std": 0.0014864477992288458
+    },
+    {
+      "arm": "esn_dual",
+      "tau_m": 2000.0,
+      "variant": "V1",
+      "n_runs": 10,
+      "r0_mc_mean": 6.157405867035665,
+      "r0_mc_std": 0.5345517745618676,
+      "r3_mc_mean": 1.074893223683324,
+      "r3_mc_std": 0.21831828313484147,
+      "r3_nmse_mean": 0.02354376194344155,
+      "r3_nmse_std": 0.0014864477992288458
+    },
+    {
+      "arm": "esn_dual",
+      "tau_m": 2000.0,
+      "variant": "V2",
+      "n_runs": 10,
+      "r0_mc_mean": 6.163309754168394,
+      "r0_mc_std": 0.5350204274107128,
+      "r3_mc_mean": 1.730112222562641,
+      "r3_mc_std": 0.29064215723009384,
+      "r3_nmse_mean": 0.02354376194344155,
+      "r3_nmse_std": 0.0014864477992288458
+    },
+    {
+      "arm": "esn_fast",
+      "tau_m": 500.0,
+      "variant": "V0",
+      "n_runs": 10,
+      "r0_mc_mean": 6.166160956957034,
+      "r0_mc_std": 0.534813248432604,
+      "r3_mc_mean": 1.7386680749305554,
+      "r3_mc_std": 0.2936661862485656,
+      "r3_nmse_mean": 0.027735785243133908,
+      "r3_nmse_std": 0.0011798410336777958
+    }
+  ]
+}

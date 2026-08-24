@@ -1,0 +1,42 @@
+{
+  "params": {
+    "experiment": "N=1024 integrated-system replication at 10 seeds (S8 N=1024 confirmation upgrade)",
+    "protocol": "verbatim from S8 (regime_switch task, RLS fast+slow readout, homeostat lambda_target=-0.02, plasticity 5% churn / 2k pulses); seeds paired per seed_idx",
+    "n_units": 1024,
+    "arms": [
+      "baseline",
+      "full"
+    ],
+    "n_seeds": 10,
+    "s8_reference": "N=1024 baseline 0.97637 (3 seeds), full 0.99770 (3 seeds)",
+    "quick": false
+  },
+  "aggregates": [
+    {
+      "arm": "baseline",
+      "n_units": 1024,
+      "n_runs": 10,
+      "overall_acc_mean": 0.9753444444444443,
+      "overall_acc_std": 0.004408871527743596,
+      "steady_acc_mean": 1.0,
+      "steady_acc_std": 0.0,
+      "adapt_time_mean": 126.2,
+      "adapt_time_std": 40.2118390526969,
+      "kappa_settled_mean": 25.0,
+      "kappa_settled_std": 0.0
+    },
+    {
+      "arm": "full",
+      "n_units": 1024,
+      "n_runs": 10,
+      "overall_acc_mean": 0.9970222222222223,
+      "overall_acc_std": 0.0007006170120192972,
+      "steady_acc_mean": 1.0,
+      "steady_acc_std": 0.0,
+      "adapt_time_mean": 2.16,
+      "adapt_time_std": 1.6267759526130203,
+      "kappa_settled_mean": 24.867140077938117,
+      "kappa_settled_std": 0.0956870276538809
+    }
+  ]
+}

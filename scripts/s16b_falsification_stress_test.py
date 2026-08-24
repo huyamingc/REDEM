@@ -1,12 +1,14 @@
 #!/usr/bin/env python3
 """
-Falsification stress test: MC probe protocol robustness (Paper C S16b).
+Falsification stress test: MC probe protocol robustness (Paper C S16b, v2).
 =============================================================================
 Type:           PAPER
 Experiment:     Does the S14/S16 falsification - the slow trace does not
                 transfer MC robustness to an ESN (esn_dual r3_mc <= esn_fast
                 at every tau_m) - survive probe-protocol choices? Tests three
-                MC probe variants at tau_m in {500, 2000}, 10 seeds:
+                MC probe variants at tau_m in {200, 500, 1000, 2000}, 10 seeds
+                (v2: every variant at every tau_m; v1 covered V1/V2 at
+                {500, 2000} only and is superseded):
 
   V0 raw-slow    : slow = EMA of raw states; noise added after slow
                    (the S14/S16 reference semantics)
@@ -26,9 +28,9 @@ r3_mc(dual) - r3_mc(fast) is negative in (nearly) all seeds, the
 falsification is robust to the probe protocol.
 
 Output files:
-  data/s16b_falsification_stress_test_v1.csv
+  data/s16b_falsification_stress_test_v2.csv
     (columns: tau_m, arm, variant, seed, r0_mc, r3_mc, r3_nmse)
-  data/s16b_falsification_stress_test_v1.json
+  data/s16b_falsification_stress_test_v2.json
 
 Usage: python s16b_falsification_stress_test.py [--quick] [--sequential]
 """
@@ -56,14 +58,14 @@ from s14_esn_disturbance_chain import (
     PRUNE_FRAC, NOISE_SIG, T_TOTAL, DISTURB_TIMES, DISTURB_TYPES,
     esn_process_block, slow_ema_block, prune_esn_weights)
 
-TAU_M_LIST = [500.0, 2000.0]
+TAU_M_LIST = [200.0, 500.0, 1000.0, 2000.0]
 VARIANTS = ['V0', 'V1', 'V2']
 N_SEEDS = 10
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.path.join(SCRIPT_DIR, '..', 'data')
-CSV_PATH = os.path.join(DATA_DIR, 's16b_falsification_stress_test_v1.csv')
-JSON_PATH = os.path.join(DATA_DIR, 's16b_falsification_stress_test_v1.json')
+CSV_PATH = os.path.join(DATA_DIR, 's16b_falsification_stress_test_v2.csv')
+JSON_PATH = os.path.join(DATA_DIR, 's16b_falsification_stress_test_v2.json')
 
 FIELDNAMES = ['tau_m', 'arm', 'variant', 'seed', 'r0_mc', 'r3_mc', 'r3_nmse']
 
@@ -305,6 +307,9 @@ def main():
         'disturb_times': DISTURB_TIMES, 'disturb_types': DISTURB_TYPES,
         'judgment': 'paired r3_mc(dual)-r3_mc(fast); <=1 positive seed per '
                     '(tau_m, variant) -> falsification robust to probe protocol',
+        'version_note': 'v2: every variant at every tau_m in {200,500,1000,'
+                        '2000} (v1 covered V1/V2 at {500,2000} only); v1 data '
+                        'file kept for the original Table 3',
         'n_seeds': n_seeds, 'quick': bool(quick),
     }
     out_json = JSON_PATH if not quick else JSON_PATH.replace('.json', '_quick.json')

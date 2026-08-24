@@ -35,8 +35,10 @@ three mechanisms:
   multi-timescale relaxation spectrum.
 
 The falsification is stress-tested across metadata timescales (τ_m ∈
-{200,500,1000,2000}), probe protocols (V0/V1/V2), and a Transformer/LoRA
-proof of concept (routing transfers 10/10; gating-only is falsified 0/10).
+{200,500,1000,2000}), probe protocols (V0/V1/V2 at every τ_m — the
+state-noise variant V2 narrows the MC gap to −0.04…−0.01 but never
+reverses the sign), and a Transformer/LoRA proof of concept (routing
+transfers 10/10; gating-only is falsified 0/10).
 
 **Fit to the journal.** The paper contributes a falsification methodology for
 online-learning mechanism attribution, directly relevant to continual
