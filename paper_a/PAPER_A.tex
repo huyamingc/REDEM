@@ -262,6 +262,33 @@ ordered configuration before the transition}: random\_graph at $\kappa=25$
 reaches MC $=13.91$ vs.\ $9.07$ uncoupled ($+53\%$), ring\_bidir at $\kappa=20$
 $+30\%$, lateral\_ring at $\kappa=20$ $+24\%$.
 
+\subsection{Transition mechanism: coupling versus the physical clip}
+\label{sec:clipablation}
+
+The sharp transition at $\kappa^\ast$ coincides with the onset of
+$\alpha_{\mathrm{eff}}$ clipping (clip fraction 0.3--0.6), which raises
+the question of whether the chaos is produced by the topology coupling
+or by the physical bounds. A follow-up sweep (data/s27\_clip\_kappa
+\_fine\_v1.csv; $\kappa\in[20,30]$ at unit resolution $\times$
+$\alpha_{\max}\in\{0.1,0.2,0.5\}$, 10 seeds) answers it. First, the fine
+grid pins the mean-FTLE crossing at $\kappa^\ast = 25.3$ (lateral\_ring),
+27.4 (ring\_bidir), and 27.9 (random\_graph), all inside the $(25,30)$
+bracket above, with bootstrap 95\% CIs of $\pm0.1$--$0.8$ --- the
+transition is sharp at unit resolution, not a grid artifact. Second,
+widening the clip five-fold ($\alpha_{\max}=0.5$) does not move the
+transition for the two topologies with the largest memory gains:
+$\kappa^\ast = 25.3\to25.4$ (lateral\_ring; shift $+0.05$, CI
+$[-0.19,+0.29]$) and $27.9\to27.7$ (random\_graph; shift $-0.21$, CI
+$[-0.48,+0.09]$). The order--chaos transition is therefore
+\emph{coupling-driven}: the clip is a consequence of the large contrasts
+it bounds, not their cause. ring\_bidir is the one exception --- its
+crossing moves $+3.4$ (CI $[+2.1,+4.9]$) under the wider clip, so the
+bound contributes to that topology's transition onset. A secondary
+result: widening the clip raises the ring\_bidir memory peak from 11.9
+to 17.7 ($\alpha_{\max}=0.2$), showing that for ring-like topologies the
+physical clip currently caps held-out memory --- a fabrication-tunable
+trade.
+
 \subsection{Positive-feedback family: self-limited criticality, separation without linear memory}
 
 The mode-2 (positive-feedback) topologies behave very differently. The
@@ -438,7 +465,11 @@ envelope: the clip range $[\alpha_{\min},\alpha_{\max}]$ (which bounds coupling
 and, in the positive-feedback family, self-limits the system at criticality),
 the coupling threshold $\kappa^\ast$ (which separates the memory-rich ordered
 side from the memory-destructive chaotic side), and the trap spectrum (which
-fixes both the $1/e$ memory horizon and the forgetting tail). For the
+fixes both the $1/e$ memory horizon and the forgetting tail). A clip-ablation
+sweep (Section~\ref{sec:clipablation}) shows that $\kappa^\ast$ is invariant
+to a five-fold widening of the clip for the memory-relevant topologies, so the
+threshold is a genuine property of the coupling dynamics rather than a clip
+artifact; the clip's role is secondary and topology-dependent. For the
 neuromorphic-design question ``what can this device compute'', the answer is: a
 bounded but substantial region of the memory--chaos plane, fully characterized
 here.

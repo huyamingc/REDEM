@@ -228,6 +228,7 @@ non-stationary statistic.
 \subsection{Tasks and discipline}
 \label{sec:tasks}
 
+{\sloppy
 \textbf{Two-domain protocol (s18)}: two biased-bigram Markov domains
 (shift-1 / shift-7 with disjoint bias sets), alternating every 3000
 tokens (known switch instants), 6 segments, 18k tokens. \textbf{Four
@@ -238,7 +239,7 @@ metrics (stream perplexity, forgetting perplexity on held-out previous
 domain, post-switch adaptation time) follow \cite{redemc} verbatim.
 Every comparison is paired per seed over 10 seeds with sign consistency
 ($n_{\mathrm{pos}}/10$); the Transformer+LoRA reference is the tiny
-online-LoRA model of \cite{redemc} retrained on each task.
+online-LoRA model of \cite{redemc} retrained on each task.\par}
 
 \section{Results}
 \label{sec:results}
@@ -374,6 +375,7 @@ stream perplexity at $\tau_m{=}500$ (``gentle wins'').}
 \subsection{P4: benchmark on four-domain irregular switching}
 \label{sec:p4}
 
+{\sloppy
 Fig.~\ref{fig:bench} and Table~\ref{tab:p4}. On the four-domain
 irregular-switch protocol, the full stack (M1 input-path readout + M3
 metadata + M4 soft routing) beats the bare host (stream $-2.25$,
@@ -381,7 +383,7 @@ forgetting $-4.47$; 10/10) and the Transformer+LoRA reference (stream
 $-9.28$, forgetting $-10.08$; 10/10). Even the bare host beats the
 transformer reference 10/10 ($-7.03$): the RLS readout's second-order
 convergence dominates online Adam/LoRA when domains switch faster than
-the LoRA can track (the reference sits near uniform, 22.46).
+the LoRA can track (the reference sits near uniform, 22.46).\par}
 
 \emph{Real-text transfer.} The same protocol on two public-domain books
 (Alice's Adventures in Wonderland vs.\ A Tale of Two Cities, character
@@ -396,6 +398,28 @@ overlap more than the four synthetic domains'. The first-order readout
 reaches the char-bigram regime (ppl $\sim$12--13); higher-order text
 structure is out of its reach and is reported as a boundary, not a
 result.
+
+{\sloppy
+\emph{Reference fairness and mechanism transfer (follow-up).} Two
+legitimate objections to the TF-A1 comparison are that the reference
+uses the untuned s18 hyperparameters and that it carries no routing
+mechanism. We close both on the same four-domain protocol (10 seeds;
+data/s26\_ssm\_p4\_fair\_tf\_v1.csv). (i) A small tuning grid (four
+learning rates from $3\times10^{-4}$ to $10^{-2}$; ranks 16 and 32)
+improves the bare reference's stream perplexity to 14.86 at
+$\mathrm{lr}{=}3\times10^{-3}$, rank 32 --- still worse than SSM-REDEM
+on 10/10 seeds ($-1.68$; the best config's forgetting collapses to 62.2
+vs.\ 8.93, so the tuning that helps the stream destroys retention and
+the default reference is the balanced representative). The P4 margin is
+therefore robust to reasonable reference tuning, though smaller on
+stream. (ii) The s18 routing mechanism (A3) generalized to four adapters
+(TF-A3, $\tau_m{=}500$) recovers the specialists: forgetting drops from
+19.01 to 10.85 ($-8.17$, 10/10) --- slow-trace routing transfers to the
+Transformer host on this second protocol (Paper~C) --- but does not
+repair the stream: TF-A3 stays at 21.77, losing to SSM-REDEM on 10/10
+seeds ($+8.59$). The stream advantage of the input-path RLS readout is a
+property of the stateful host, not of the routing mechanism: the
+mechanisms are host-agnostic, the stream performance is not.\par}
 
 \begin{figure}[t]
 \centering

@@ -35,6 +35,12 @@ Guiyang, Guizhou Province, China. E-mail: 64687555@qq.com.
 > P4 benchmarks the full stack on a 4-domain irregular-switch stream
 > (10/10 vs bare SSM and vs a Transformer+LoRA reference) and on two
 > real-text corpora (Alice vs Dickens: −1.27 stream ppl vs bare, 10/10).
+> A follow-up closes the reference-fairness gap: a tuned reference grid
+> (4 lrs × 2 ranks) cuts the stream margin to −1.68 (still 10/10) while
+> collapsing the tuned reference's retention (forgetting 62.2 vs 8.93),
+> and a 4-adapter routing baseline (TF-A3) transfers the M3/M4 mechanism
+> to the Transformer host (−43% forgetting, 10/10) without repairing the
+> stream — the stream advantage is a property of the stateful host.
 >
 > Everything is toy-scale by design (state dim 128, ~4k-parameter readouts,
 > character-level vocabularies); we make no scaling or SOTA claims. The
@@ -43,9 +49,13 @@ Guiyang, Guizhou Province, China. E-mail: 64687555@qq.com.
 > throughout.
 
 **Honesty notes (workshop reviewers, please read)**. CPU-only; no
-mamba-ssm dependency; the Transformer+LoRA reference reuses the Paper C §7
-hyperparameters untuned for four domains; real-text gains are smaller than
-synthetic-task gains because the two books share English bigram statistics.
+mamba-ssm dependency; the Transformer+LoRA reference originally reused the
+Paper C §7 hyperparameters untuned for four domains — a follow-up (S26)
+now reports a tuned grid (best stream 14.86 vs our 13.18, 10/10, at the
+cost of catastrophic forgetting 62.2) and a 4-adapter routing baseline
+(TF-A3), so the P4 margins are robust to reference tuning and mechanism
+transfer; real-text gains are smaller than synthetic-task gains because
+the two books share English bigram statistics.
 The deconvolution impossibility is proven for *linear* readouts on the
 diagonal-decay state mixture, and scoped as such.
 

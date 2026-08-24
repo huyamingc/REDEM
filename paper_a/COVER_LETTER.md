@@ -25,7 +25,11 @@ topology-dependent contrast coupling. The substrate is studied as a
 nonlinear dynamical system with a tuneable chaos knob:
 
 - **Order–chaos phase diagram**: a sharp transition at coupling strength
-  κ* ∈ (25, 30), with held-out linear memory peaking +24–53% just before it;
+  κ* ∈ (25, 30) — a follow-up fine sweep (κ ∈ [20,30] at unit resolution)
+  pins κ* = 25.3–27.9 with bootstrap CIs of ±0.1–0.8, and a clip-range
+  ablation (α_max up to 5× wider) shows the transition is invariant to the
+  physical clip for the memory-relevant topologies, i.e. coupling-driven
+  — with held-out linear memory peaking +24–53% just before it;
 - **Multi-timescale forgetting kernel**: the material memory kernel
   M(t) = ∫p(τ)e^{−t/τ}dτ matches the measured memory decay curve with
   Pearson r = 0.97, providing an analytic link between the trap spectrum and

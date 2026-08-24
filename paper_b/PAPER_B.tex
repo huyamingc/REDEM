@@ -349,7 +349,20 @@ causal cleanliness --- no mechanism benefits from future information; the
 plasticity-correlation leak ($-0.01$~pp) is the most negative, so M4 does not
 exploit future correlation. The causal-split protocol ($0.9963$) is within
 $0.01$~pp of normal, validating that M4's block-level correlation can be
-computed on past data only.
+computed on past data only. A follow-up re-runs the same injections on
+the S11 disturbance chain (data/s28\_causal\_audit\_chain\_v1.csv),
+where the mechanisms' substrate-level channels are visible through the
+readout-independent MC probe and no accuracy ceiling binds the task. The
+verdict reproduces: 1\% future leaks into the RLS target, the metadata,
+and the homeostat's FTLE estimate, and 10\% future correlation into M4,
+all fail to improve post-disturbance recovery (per-seed r3 MC deltas
+$+0.00$, $+0.00$, $+0.28$, $+0.24$; none significant; NMSE deltas
+$\le 0.004$) --- the mechanisms are causally clean where it matters.
+The protocol also isolates a non-leak effect: removing M4 entirely
+improves post-disturbance recovery by $+2.3$ MC (r3 8.47 vs.\ 6.17,
+matching the S11 homeostat-only anchor exactly), independently
+confirming that rewiring during active disturbance compensation is
+harmful rather than merely unhelpful (the M4-M5 loop result above).
 
 \textbf{Plasticity.} Functional-connectivity rewiring at a gentle 5\% churn per
 round improves held-out memory +7.8\% (ring start) and repairs pruned damage

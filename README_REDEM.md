@@ -62,13 +62,16 @@ the structure level (M4).
 | s23 | Paper D real-text transfer (two Gutenberg books, 30 runs): REDEM 12.07/11.85 vs bare 13.34/12.31 vs TF 17.31/13.86 — stream −1.27 vs bare (10/10), −5.23 vs TF (10/10) |
 | s24 | M4-M5 coupling loop under the S11 disturbance chain (4 arms × 10 seeds): rewiring churn gated by the homeostat's κ deviation does NOT help recovery — homeostat alone r3 MC 8.47 vs fixed-churn 6.45 (t=−9.6, 0/10) / coupled 5.27 (t=−5.9, 0/10); rewiring during active disturbance compensation is harmful — recovery is the homeostat's job alone |
 | s25 | Novelty-reward-gated rewiring vs correlation-guided (4 arms × 10 seeds, S7 protocol): novelty-guided MC_final 14.59 vs corr 12.43 (d=+2.15, t=4.5, 10/10) vs random 12.60 (t=0.3) vs ring 11.54 (t=8.0, 10/10) — intrinsic novelty is a structure-level tool, improving on M4's correlation heuristic |
+| s26 | Fair Transformer references for P4 (9 arms × 10 seeds): tuned A1 grid — best stream 14.86 (lr 3e-3, r32) still loses to REDEM 13.18 (0/10, −1.68) and its forgetting collapses to 62.2; TF-A3 4-adapter routing — forgetting 10.85 vs 19.01 (−8.17, 10/10, −43%) but stream 21.77 loses 0/10 (+8.59) — the routing mechanism transfers to the Transformer host, the stream advantage does not |
+| s27 | Clip-range ablation × fine κ grid (3 topologies × 3 α_max × 13 κ × 10 seeds): κ* = 25.3/27.4/27.9 (bootstrap CI ±0.1–0.8); 5× clip widening leaves κ* invariant for lateral_ring (+0.05) and random_graph (−0.21) — order–chaos is coupling-driven; ring_bidir shifts +3.4 (clip contributes); wider clip raises ring_bidir peak MC 11.9→17.7 |
+| s28 | Causal leak audit re-run on the S11 disturbance chain (6 arms × 10 seeds): 1% future leaks into RLS/metadata/FTLE and 10% future correlation into M4 do not improve recovery (r3 MC deltas +0.00/+0.00/+0.28/+0.24, all NS; NMSE ≤0.004); no-plasticity r3 MC 8.47/κ 28.5 = S11 homeostat anchor exactly — causal cleanliness survives a non-ceilinged protocol |
 
-## Scripts (45 committed)
+## Scripts (48 committed)
 
 The authoritative script inventory — every script with its `CLAUDE.md` type,
 **paper attribution (A/B/C/D/shared)**, purpose, and key result — is the
 table in the root [`README.md`](README.md) (single source of truth; it is
-kept in sync with `git ls-files scripts/`). Paper D experiments s19–s23 and
+kept in sync with `git ls-files scripts/`). Paper D experiments s19–s23, s26 and
 their figures are reproduced from `paper_d/README.md`.
 
 ## Data and figures
@@ -85,7 +88,9 @@ their figures are reproduced from `paper_d/README.md`.
   `data/s16b_falsification_stress_test_v1.*`, `data/s5b_controlled_adaptation_v1.*`,
   `data/s17_substrate_stress_v1.*`, `data/s18_llm_drift_gate_v1.*`,
   `data/s24_homeo_plasticity_coupling_v1.*`,
-  `data/s25_reward_gated_plasticity_v1.*`
+  `data/s25_reward_gated_plasticity_v1.*`,
+  `data/s26_ssm_p4_fair_tf_v1.*`, `data/s27_clip_kappa_fine_v1.*`,
+  `data/s28_causal_audit_chain_v1.*`
   (CSV per run + JSON with params and per-cell aggregates).
   Paper D: `data/s19_ssm_rls_readout_v1.*`, `data/s20_ssm_m3_routing_v1.*`,
   `data/s21_ssm_m4_m5_v1.*`, `data/s22_ssm_p4_benchmark_v1.*`,
@@ -143,7 +148,7 @@ scipy, matplotlib, torch (CPU) for S9 only.
 & .venv\Scripts\python.exe scripts\s5b_controlled_adaptation.py --sequential
 & .venv\Scripts\python.exe scripts\gen_architecture_schematic.py
 & .venv\Scripts\python.exe scripts\gen_paper_figures.py
-# Paper D experiments (s19–s23) + figures — see paper_d/README.md
+# Paper D experiments (s19–s23, s26) + figures — see paper_d/README.md
 & .venv\Scripts\python.exe scripts\s19_ssm_rls_readout.py --sequential
 & .venv\Scripts\python.exe scripts\s20_ssm_m3_routing.py --sequential
 & .venv\Scripts\python.exe scripts\s21_ssm_m4_m5.py --sequential
@@ -151,6 +156,9 @@ scipy, matplotlib, torch (CPU) for S9 only.
 & .venv\Scripts\python.exe scripts\s23_ssm_p4_realtext.py --sequential
 & .venv\Scripts\python.exe scripts\s24_homeo_plasticity_coupling.py
 & .venv\Scripts\python.exe scripts\s25_reward_gated_plasticity.py
+& .venv\Scripts\python.exe scripts\s26_ssm_p4_fair_tf.py
+& .venv\Scripts\python.exe scripts\s27_clip_kappa_fine.py
+& .venv\Scripts\python.exe scripts\s28_causal_audit_chain.py
 & .venv\Scripts\python.exe scripts\gen_paperD_fig1_p1_arms.py
 & .venv\Scripts\python.exe scripts\gen_paperD_fig2_routing.py
 & .venv\Scripts\python.exe scripts\gen_paperD_fig3_benchmark.py

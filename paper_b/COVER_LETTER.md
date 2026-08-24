@@ -41,7 +41,13 @@ substrate with three concurrent substrate-level mechanisms:
 The integrated system beats every single-mechanism ablation (0.996 vs 0.973,
 p < 0.0001) and the advantage persists at N = 1024. A causal audit (10 seeds,
 7 arms, including the plasticity-correlation leak) confirms all mechanisms
-use only past information. We report honestly the negative results that
+use only past information; a follow-up re-runs the audit on the sequential
+disturbance chain — a non-ceilinged protocol where the mechanisms'
+substrate-level channels are visible — and the verdict reproduces: no leak
+arm improves post-disturbance recovery (r3 MC deltas +0.00/+0.00/+0.28/+0.24,
+none significant), while the same run independently confirms that rewiring
+during the chain is harmful (removing M4 restores r3 MC to the 8.47
+homeostat-only anchor). We report honestly the negative results that
 fixed the design (reward-only readouts cannot credit-assign through a class
 inversion; task-agnostic intrinsic rewards cannot rescue them), and we
 report honestly that a well-tuned online ESN edges REDEM on standard tasks
