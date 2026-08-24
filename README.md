@@ -90,7 +90,7 @@ letter points).
 
 ## Scripts
 
-All 43 committed scripts in `scripts/`, typed per `CLAUDE.md`
+All 45 committed scripts in `scripts/`, typed per `CLAUDE.md`
 (ML > CORE > PAPER > FIG > EXPLORE). The **Paper** column marks which paper
 each script serves (A / B / C / D; shared = library or figure used by more
 than one paper). Two legacy scripts from the prior Si₃N₄-pulse-encoding
@@ -132,6 +132,8 @@ never modified. `README_REDEM.md` holds the full headline-results registry
 | `s21_ssm_m4_m5.py` | ML | D | P3: M4 soft vs abrupt routing + M5 state-norm homeostat (E1/E2, 70 runs, torch CPU) | soft 8.22 vs abrupt 10.03 (−1.82, 10/10); M5 restores EMA detector 5/5, norm 11.3 vs 50.2 |
 | `s22_ssm_p4_benchmark.py` | ML | D | P4: 4-domain irregular-switch benchmark (SSM-bare / SSM-REDEM / TF-A1, 30 runs, torch CPU) | REDEM vs bare −2.25/−4.47, vs TF −9.28/−10.08 (10/10) |
 | `s23_ssm_p4_realtext.py` | ML | D | real-text benchmark: two Gutenberg books (Alice vs Dickens), 32-symbol char vocab (30 runs, torch CPU) | REDEM vs bare −1.27 (10/10), vs TF −5.23 (10/10) |
+| `s24_homeo_plasticity_coupling.py` | PAPER | B | M4-M5 coupling loop under the S11 disturbance chain (4 arms, 10 seeds) | coupling does not help: homeostat alone r3 MC 8.47 vs +fixed-churn 6.45 (t=−9.6, 0/10) / +coupled 5.27 (0/10) — rewiring during disturbance is harmful |
+| `s25_reward_gated_plasticity.py` | PAPER | B | novelty-reward-gated vs correlation-guided rewiring (4 arms, 10 seeds, S7 protocol) | novelty-guided MC 14.59 vs corr 12.43 (+2.15, t=4.5, 10/10) — intrinsic signals are structure-level tools |
 | `gen_paperD_fig1_p1_arms.py` | FIG | D | Paper D Fig. 1: P1/P3a state-readout falsification + input-path control | `figures/paperD_fig1_p1_arms.pdf` |
 | `gen_paperD_fig2_routing.py` | FIG | D | Paper D Fig. 2: P2 routing retention + P3 soft vs abrupt | `figures/paperD_fig2_routing.pdf` |
 | `gen_paperD_fig3_benchmark.py` | FIG | D | Paper D Fig. 3: P4 benchmark bars | `figures/paperD_fig3_benchmark.pdf` |

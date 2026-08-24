@@ -29,7 +29,14 @@ substrate with three concurrent substrate-level mechanisms:
   +8–18% of held-out memory after single disturbances and +32% after three
   sequential disturbances (10 seeds);
 - **M4 structural plasticity**: gentle, correlation-guided rewiring
-  (+8–11%) that destabilizes when aggressive (−23%).
+  (+8–11%) that destabilizes when aggressive (−23%); a novelty-reward-guided
+  variant improves held-out memory further (14.59 vs 12.43, paired t = 4.5,
+  10/10 seeds), confirming that intrinsic signals are structure-level tools;
+- **M4–M5 coupling (negative result)**: under the sequential disturbance
+  chain, rewiring churn gated by the homeostat's κ deviation does not help
+  recovery (homeostat alone r3 MC 8.47 vs +fixed-churn 6.45 / +coupled 5.27,
+  0/10 seeds) — disturbance recovery is the homeostat's job alone, and
+  rewiring during active compensation is counterproductive.
 
 The integrated system beats every single-mechanism ablation (0.996 vs 0.973,
 p < 0.0001) and the advantage persists at N = 1024. A causal audit (10 seeds,

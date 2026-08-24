@@ -60,8 +60,10 @@ the structure level (M4).
 | s21 | Paper D P3 (M4 soft routing + M5 homeostat, 70 runs): soft 8.22 vs abrupt 10.03 (−1.82, 10/10); dormant-covariance refresh flips routing to −1.72; M5 bounds whitened norm 11.3 vs 50.2 and restores the full-state EMA detector 5/5 |
 | s22 | Paper D P4 benchmark (4-domain irregular switches, 30 runs): REDEM 13.18/8.93 vs bare SSM 15.43/13.41 vs TF-A1 22.46/19.01 (stream/forget) — all 10/10 |
 | s23 | Paper D real-text transfer (two Gutenberg books, 30 runs): REDEM 12.07/11.85 vs bare 13.34/12.31 vs TF 17.31/13.86 — stream −1.27 vs bare (10/10), −5.23 vs TF (10/10) |
+| s24 | M4-M5 coupling loop under the S11 disturbance chain (4 arms × 10 seeds): rewiring churn gated by the homeostat's κ deviation does NOT help recovery — homeostat alone r3 MC 8.47 vs fixed-churn 6.45 (t=−9.6, 0/10) / coupled 5.27 (t=−5.9, 0/10); rewiring during active disturbance compensation is harmful — recovery is the homeostat's job alone |
+| s25 | Novelty-reward-gated rewiring vs correlation-guided (4 arms × 10 seeds, S7 protocol): novelty-guided MC_final 14.59 vs corr 12.43 (d=+2.15, t=4.5, 10/10) vs random 12.60 (t=0.3) vs ring 11.54 (t=8.0, 10/10) — intrinsic novelty is a structure-level tool, improving on M4's correlation heuristic |
 
-## Scripts (43 committed)
+## Scripts (45 committed)
 
 The authoritative script inventory — every script with its `CLAUDE.md` type,
 **paper attribution (A/B/C/D/shared)**, purpose, and key result — is the
@@ -81,7 +83,9 @@ their figures are reproduced from `paper_d/README.md`.
   `data/s13_causal_audit_v1.*`, `data/s14_esn_disturbance_chain_v1.*`,
   `data/s16_tau_m_pressure_test_v1.*`, `data/s15_controlled_adaptation_v1.*`,
   `data/s16b_falsification_stress_test_v1.*`, `data/s5b_controlled_adaptation_v1.*`,
-  `data/s17_substrate_stress_v1.*`, `data/s18_llm_drift_gate_v1.*`
+  `data/s17_substrate_stress_v1.*`, `data/s18_llm_drift_gate_v1.*`,
+  `data/s24_homeo_plasticity_coupling_v1.*`,
+  `data/s25_reward_gated_plasticity_v1.*`
   (CSV per run + JSON with params and per-cell aggregates).
   Paper D: `data/s19_ssm_rls_readout_v1.*`, `data/s20_ssm_m3_routing_v1.*`,
   `data/s21_ssm_m4_m5_v1.*`, `data/s22_ssm_p4_benchmark_v1.*`,
@@ -145,6 +149,8 @@ scipy, matplotlib, torch (CPU) for S9 only.
 & .venv\Scripts\python.exe scripts\s21_ssm_m4_m5.py --sequential
 & .venv\Scripts\python.exe scripts\s22_ssm_p4_benchmark.py --sequential
 & .venv\Scripts\python.exe scripts\s23_ssm_p4_realtext.py --sequential
+& .venv\Scripts\python.exe scripts\s24_homeo_plasticity_coupling.py
+& .venv\Scripts\python.exe scripts\s25_reward_gated_plasticity.py
 & .venv\Scripts\python.exe scripts\gen_paperD_fig1_p1_arms.py
 & .venv\Scripts\python.exe scripts\gen_paperD_fig2_routing.py
 & .venv\Scripts\python.exe scripts\gen_paperD_fig3_benchmark.py

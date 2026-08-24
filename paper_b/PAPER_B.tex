@@ -122,8 +122,10 @@ system with an ablation matrix, and against batch baselines (GRU, tiny
 transformer) and a matched echo-state network. We also report two negative
 results --- reward-modulated Hebbian learning without error signals and
 task-agnostic intrinsic rewards --- which delimit what reward signals can and
-cannot do and fix the design: at the readout an error channel is necessary;
-reward and intrinsic signals are re-purposed to structural exploration.
+cannot do and fix the design: at the readout an error channel is necessary and
+reward signals are structurally blind, so the readout is error-driven RLS and
+the structure-level mechanism (M4) is guided by functional connectivity; a
+novelty-gated variant is evaluated in Section~\ref{sec:homeo}.
 
 \section{System architecture}
 \label{sec:architecture}
@@ -132,10 +134,11 @@ reward and intrinsic signals are re-purposed to structural exploration.
 $\rightarrow$ substrate $\rightarrow$ [fast state $\rightarrow$ M3 metadata]
 $\rightarrow$ RLS readout $\rightarrow$ output; the M5 homeostat loops on
 $\kappa$; the M4 plasticity rewires the coupling graph; the readout error feeds
-the online weight update (training == inference). M4 and M5 are coupled: the
-homeostat's $\kappa$ set-point gates the rewiring rate, and rewiring changes
-the structure that feeds the Lyapunov estimate (dotted loop in
-Fig.~\ref{fig:redem}).
+the online weight update (training == inference). M4 and M5 are coupled in
+the design: the homeostat's $\kappa$ set-point is intended to gate the
+rewiring rate, and rewiring changes the structure that feeds the Lyapunov
+estimate (dotted loop in Fig.~\ref{fig:redem}); the coupling loop is tested
+in Section~\ref{sec:homeo}.
 
 The substrate follows the model of the companion theory paper (Paper A,
 Section~2), with the $\tau$-spectrum, the coupling topologies, and the
@@ -194,16 +197,17 @@ readout learners and rejected them: a reward-modulated Hebbian readout
 initial mapping but cannot recover from a class-interval inversion
 (Section~\ref{sec:neg}, Table~\ref{tab:neg}); task-agnostic novelty rewards
 cannot rescue it. The lesson --- an error channel is necessary at the readout,
-rewards are structurally blind --- is what fixes the readout as error-driven
-RLS and re-purposes reward/intrinsic signals to structure-level exploration
-(M4).
+rewards are structurally blind --- fixes the readout as error-driven RLS; at
+the structure level, the plasticity implemented here (M4) is guided by
+functional connectivity, and Section~\ref{sec:homeo} shows that a
+novelty-gated variant improves on it.
 
 \section{Tasks and metrics}
 \label{sec:tasks}
 
 All experiments use 10 seeds with paired draws (identical $\tau$, tasks, and
 substrates across compared configs); the tiny transformer, the most expensive
-model, uses 5 seeds ($\times2$ training cost, Table~\ref{tab:bench}).
+model, shares the same seed count (Table~\ref{tab:bench}).
 \textbf{drift\_binary}: two-class interval
 blocks (20 pulses at 10 vs.\ 60~$\mu$s), a continuous random walk of the class
 intervals plus an abrupt swap of the class--interval mapping every 1000 blocks
@@ -251,9 +255,10 @@ the Hebbian term always reinforces the currently-active (wrong) direction; the
 intrinsic reward can only buy a marginal post-swap recovery by destroying the
 initial learning. The lesson fixes the architecture: at the readout an
 \emph{error channel is necessary} and rewards are structurally blind, so the
-readout is error-driven RLS; reward and intrinsic signals are re-purposed to
-\emph{structural exploration} (M4), where no class direction is needed, only
-novelty. First-order error-gated LMS ($\eta=10^{-4}$) does track the inversion
+readout is error-driven RLS; reward and intrinsic signals, being structurally
+blind at the readout, are usable at the structure level --- a novelty-gated
+rewiring variant improves on the correlation-guided M4 implemented here
+(Section~\ref{sec:homeo}). First-order error-gated LMS ($\eta=10^{-4}$) does track the inversion
 but is numerically fragile on the weakly separated substrate features
 ($\eta\ge10^{-3}$ diverges) and consistently underperforms second-order RLS,
 which is the selected learner.
@@ -355,6 +360,23 @@ pruned dense random graph (644 edges) retains more memory (12.68) than the full
 graph (10.37), and a sparse random graph beats a ring at equal density (13.52
 vs.\ 11.54) --- de-homogenization increases linear decodability.
 
+\textbf{Novelty-gated rewiring and the M4-M5 loop.} Two follow-ups complete the
+mechanism picture. (i) The intrinsic-novelty signal --- structurally blind at
+the readout (Section~\ref{sec:neg}) --- is usable at the structure level: a
+novelty-guided variant of the rewiring rule (grow edges toward the units with
+the highest temporal activity variance, prune the least novel; identical 5\%
+churn) improves held-out MC to 14.59 vs.\ 12.43 for the correlation rule
+($+2.15$, paired $t=4.5$, 10/10 seeds) and 11.54 for the fixed ring
+(data/s25\_reward\_gated\_plasticity\_v1.csv) --- reward/intrinsic signals are
+structure-level, not readout-level, tools. (ii) The M4-M5 coupling loop was
+tested under the sequential disturbance chain (rewiring churn gated by the
+homeostat's $\kappa$ deviation): it does \emph{not} help recovery ---
+churn-gated rewiring reaches $r_3$ MC 5.27 vs.\ 8.47 for the homeostat alone
+(0/10 seeds), and even fixed 5\% churn during the chain is harmful (6.45 vs.\
+8.47, $t=-9.6$, 0/10; data/s24\_homeo\_plasticity\_coupling\_v1.csv). The
+homeostat's disturbance recovery is best left structurally undisturbed;
+rewiring is a steady-state exploration mechanism rather than a recovery tool.
+
 \begin{table}[t]
 \centering
 \caption{Criticality target sweep: post-disturbance held-out MC (5 seeds).
@@ -402,7 +424,10 @@ $\tau$ distribution, the same RLS readout --- is the strongest standard-task
 baseline and beats REDEM on both tasks (Table~\ref{tab:bench}). We report this
 honestly: the value proposition of REDEM is not raw benchmark supremacy but the
 mechanism set --- self-regulation under disturbance, local sparse coupling, and
-physical plausibility --- at competitive standard-task performance.
+physical plausibility --- at competitive standard-task performance. The frozen
+baselines use small, untuned hyperparameters (Table~\ref{tab:bench}); the
+comparison targets the online-vs-frozen dichotomy, not each architecture's
+full capability.
 
 \begin{table}[t]
 \centering
@@ -494,8 +519,9 @@ post-disturbance memory), the homeostat maintains $+32\%$ memory capacity
 after three sequential disturbances, and a causal audit confirms that all
 adaptive mechanisms are causally clean. The two negative
 results on reward-only learning fix the design boundary conditions: at the
-readout an error channel is necessary; reward and intrinsic signals belong at
-the structure level. Honest benchmarking positions REDEM in the online/physical
+readout an error channel is necessary; reward and intrinsic signals, being
+structurally blind at the readout, are usable at the structure level
+(Section~\ref{sec:homeo}). Honest benchmarking positions REDEM in the online/physical
 niche: competitive with generic reservoirs on standard tasks, robust where
 frozen batch learners fail, self-regulating under disturbance, and physically
 realizable --- with the long-horizon statistical mechanism shown to be
