@@ -4,9 +4,8 @@
 
 **To**: The Editor-in-Chief, *Neural Networks* (Elsevier)
 
-**Re**: Submission of the manuscript *"REDEM: Training-Inference Unified
-Learning with Meta-Adaptation and Structural Plasticity for Non-Stationary
-Environments"*
+**Re**: Submission of the manuscript *"REDEM: Online Learning with
+Meta-Adaptation and Structural Plasticity for Non-Stationary Environments"*
 
 Dear Editor,
 

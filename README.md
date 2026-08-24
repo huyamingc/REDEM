@@ -10,8 +10,8 @@ companion papers (plus a fourth in development):
   → See [`paper_a/PAPER_A.pdf`](paper_a/PAPER_A.pdf) and
   [`paper_a/PAPER_A.tex`](paper_a/PAPER_A.tex)
 
-- **Paper B**: *"REDEM: Training-Inference Unified Learning with
-  Meta-Adaptation and Structural Plasticity for Non-Stationary Environments"*
+- **Paper B**: *"REDEM: Online Learning with Meta-Adaptation and Structural
+  Plasticity for Non-Stationary Environments"*
   — the online learning architecture (target: *Neural Networks*)
   → See [`paper_b/PAPER_B.pdf`](paper_b/PAPER_B.pdf) and
   [`paper_b/PAPER_B.tex`](paper_b/PAPER_B.tex)

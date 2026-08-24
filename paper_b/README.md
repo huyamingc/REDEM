@@ -1,4 +1,4 @@
-# Paper B — REDEM: Training-Inference Unified Learning with Meta-Adaptation and Structural Plasticity
+# Paper B — REDEM: Online Learning with Meta-Adaptation and Structural Plasticity
 
 Online learning architecture paper (single author). Target: *Neural Networks*
 (Elsevier). Companion substrate-theory paper: [`../paper_a/`](../paper_a/)
