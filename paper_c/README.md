@@ -98,7 +98,10 @@ overall accuracy.
   preprint class.
 - Paper B wording: resolved (2026-02-17) - §4.3/§4.5/§4.6 and abstract
   revised with the controlled s15/s5b measurements.
-- Citation closure: cite Paper B Section 4.5 once B is public.
+- Citation closure: cite Paper B Section 4.5 once B is public. (2026-08-24:
+  companion papers are now formally cited as companion preprints —
+  `\cite{companionA}` / `\cite{companionB}` — in PAPER_C.tex; swap to the
+  published versions on acceptance.)
 
 ## Compile
 
@@ -119,8 +122,11 @@ pdflatex PAPER_C.tex    # run three times for cross-references (elsarticle)
       text).
 - [ ] Strong claim wording locked on s16 (0/10-seed sign consistency, ~5
       sigma paired diffs) - done.
-- [ ] Cite Paper A Section 5 and Paper B Section 4.5 (companion refs in
-      bibliography).
+- [x] Cite Paper A Section 5 and Paper B Section 4.5 (companion refs in
+      bibliography; `\cite{companionA}` at the substrate definition, 
+      `\cite{companionB}` at the M3 introduction, `\cite{maass2002}` at the
+      reservoir citation — added 2026-08-24 review audit, previously
+      orphaned bibitems).
 - [ ] Code/data availability statement (REDEM repo, private during review)
       - done.
 - [ ] Keywords present (Elsevier format) - done.

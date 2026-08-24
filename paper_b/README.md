@@ -43,7 +43,9 @@ latexmk -pdf PAPER_B.tex
       substrate-agnostic and transfers to a matched ESN; REDEM's
       differentiation is the mechanism set around it (self-regulation,
       disturbance robustness, local sparse coupling).
-- [ ] §2 cross-references the companion Paper A for the substrate model (T3).
+- [x] §2 cross-references the companion Paper A for the substrate model (T3);
+      `\cite{companionA}` added at the abstract substrate sentence and §2
+      (2026-08-24 review audit — the bibitem was previously orphaned).
 - [ ] Figures 1–6 (vector `.pdf` in `../figures/`):
       `../figures/paperB_fig1_redem.pdf`,
       `../figures/s2_online_readout_v1.pdf`,

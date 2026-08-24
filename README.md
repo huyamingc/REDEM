@@ -34,8 +34,14 @@ companion papers (plus a fourth in development):
   Plasticity"* — a native SSM-hosted architecture instantiating
   M1/M3/M4/M5 from the ground up, motivated by Paper C's host-boundary
   result. P1–P4 (S19–S22) DONE: P1/P3a falsified with mechanisms isolated
-  (linear state mixing; fixed gates don't fix it; M1 works on the additive
-  input path, 10/10); P2 M3 routing transfers (forgetting −2.05, 10/10)
+  (exact token recovery is a deconvolution impossibility (Prop. 1); the
+  pooled state readout is stuck near uniform perplexity, 0/10, while M1 on
+  the additive input path works 10/10 — boundary analysis (s35) scopes the
+  failure: the current token IS linearly decodable from the state's fast
+  channels (88.9–99.7% out-of-sample), the in-sample oracle is
+  window-dependent and nested-violating, so the failure is a
+  pooled-readout/metric property, not missing linear information); P2 M3
+  routing transfers (forgetting −2.05, 10/10)
   while gating-only inverts on RLS readouts (readout-dynamics-dependent);
   P3 both supported (soft routing beats abrupt −1.82, 10/10; dormant
   covariance refresh flips routing to −1.72; M5 homeostat bounds the state
@@ -43,9 +49,10 @@ companion papers (plus a fourth in development):
   irregular switches) both hypotheses 10/10 (REDEM vs bare −2.25 stream,
   −4.47 forget; vs TF-A1 −9.28/−10.08) + real-text transfer (two Gutenberg
   books, REDEM vs bare −1.27, vs TF-A1 −5.23, 10/10). P5: PAPER_D.tex
-  draft (13 pp, zero warnings; author info filled; P1 theorem, reference
-  fairness, M5 negative and oracle integrated). (Target: NeurIPS/ICML stretch;
-  arXiv + workshop first)
+  draft (14 pp, zero warnings; author info filled; P1 theorem, reference
+  fairness, M5 negative and oracle integrated; P1 corollary revised with
+  s35 boundary probes; related-work section added). (Target: NeurIPS/ICML
+  stretch; arXiv + workshop first)
   → See [`paper_d/README.md`](paper_d/README.md),
   [`paper_d/PAPER_D_sketch.md`](paper_d/PAPER_D_sketch.md) and
   [`paper_d/PAPER_D.tex`](paper_d/PAPER_D.tex)
@@ -91,13 +98,13 @@ letter points).
 
 ## Scripts
 
-All 53 committed scripts in `scripts/`, typed per `CLAUDE.md`
+All 54 committed scripts in `scripts/`, typed per `CLAUDE.md`
 (ML > CORE > PAPER > FIG > EXPLORE). The **Paper** column marks which paper
 each script serves (A / B / C / D; shared = library or figure used by more
 than one paper). Two legacy scripts from the prior Si₃N₄-pulse-encoding
 project are kept as shared dependencies (imported by the new code) and are
 never modified. `README_REDEM.md` holds the full headline-results registry
-(S1–s34) and reproduction commands.
+(S1–s35) and reproduction commands.
 
 | Script | Type | Paper | Purpose | Key result |
 |---|---|---|---|---|
@@ -118,7 +125,7 @@ never modified. `README_REDEM.md` holds the full headline-results registry
 | `forgetting_curve_theory.py` | EXPLORE | A | S10: forgetting-kernel theory M(t), Gauss–Hermite validation | measured MC follows M(t), r = 0.97 |
 | `esn_metadata_comparison.py` | PAPER | B | S10: metadata transfer to a matched ESN | equalizes: ESN+meta 0.998 ≈ ESN 0.996 ≈ REDEM 0.994 |
 | `cv_sweep.py` | PAPER | A | S10: task-level CV sweep (Paper A Supp. Note 1) | uncoupled MC +33% with CV; coupled near-critical falls |
-| `s11_disturbance_chain.py` | PAPER | A | E3: sequential disturbance chain (3 rounds, 10 seeds) | regulated MC 8.47 vs fixed 6.41 (+32%) |
+| `s11_disturbance_chain.py` | PAPER | B, C | E3: sequential disturbance chain (3 rounds, 10 seeds; anchor for Paper C's ESN falsification) | regulated MC 8.47 vs fixed 6.41 (+32%) |
 | `s12_lambda_target_sweep.py` | PAPER | A | E4: λ_target × CV optimization sweep (5 seeds) | λ_target=0 optimal: +25%/+19%/+5% MC |
 | `s13_causal_audit.py` | PAPER | B | O4: causal leakage audit (7 arms, 10 seeds) | all mechanisms causally clean (≤0.02 pp; plasticity-correlation leak implemented, −0.01 pp) |
 | `s14_esn_disturbance_chain.py` | PAPER | C | ESN+metadata under the disturbance chain — falsifies metadata robustness transfer (3 arms, 10 seeds) | paired diffs −0.78/−0.76/−0.69, 0/10 seeds positive |
@@ -143,6 +150,7 @@ never modified. `README_REDEM.md` holds the full headline-results registry
 | `s32_ftle_noise_robustness.py` | PAPER | A | homeostat with Gaussian noise on every FTLE estimate (5 levels × 10 seeds, S11 chain) | no significant MC degradation up to σ=0.10 (≈100% of estimate scale); settled κ 28.5–28.7 — clipped proportional feedback integrates out estimation noise |
 | `s33_ssm_p4_m5.py` | ML | D | M5 state-norm homeostat added to the P4 stack (2 arms, 10 seeds) | M5 is significantly worse (stream +1.53, forgetting +2.90, t=−22.8/−26.5, 10/10) — Δt modulation breaks the Δt=1-calibrated whitening; S22's exclusion of M5 validated |
 | `s34_leak_sensitivity.py` | PAPER | B | leak sensitivity scan on the S28 audit (6 leak configs, 10 seeds) | 10× FTLE leak still NS (+0.21); plasticity 30% future correlation IS significant (+0.57, CI [+0.08,+1.10], 7/10) — audit resolution is bounded, "causally clean" scoped to operational leaks |
+| `s35_readout_boundary_probe.py` | PAPER | D | P1 readout boundary probes (10 seeds, s19 host verbatim): full/half-window oracle, skip-vs-proj nested check, fast/slow token decoding | full-window oracle 31.2 (matches s19, max diff 0.00) vs half-window 17.3 — oracle is window-dependent; skip 18.0 > proj 7.25 (nested violation, 10/10); token linearly decodable from fast channels (τ≤8) at 88.9–99.7% out-of-sample (chance 3.1%), slow channels at chance — "no useful linear map" is false; the P1 failure is a pooled-readout/metric property, not missing linear information |
 | `gen_paperD_fig1_p1_arms.py` | FIG | D | Paper D Fig. 1: P1/P3a state-readout falsification + input-path control | `figures/paperD_fig1_p1_arms.pdf` |
 | `gen_paperD_fig2_routing.py` | FIG | D | Paper D Fig. 2: P2 routing retention + P3 soft vs abrupt | `figures/paperD_fig2_routing.pdf` |
 | `gen_paperD_fig3_benchmark.py` | FIG | D | Paper D Fig. 3: P4 benchmark bars | `figures/paperD_fig3_benchmark.pdf` |

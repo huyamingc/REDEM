@@ -17,6 +17,7 @@
 \graphicspath{{../figures/}}
 \usepackage[expansion=false]{microtype}
 \usepackage{url}
+\emergencystretch=2em
 
 \begin{document}
 
@@ -74,15 +75,16 @@ disentanglement
 
 Frozen batch models --- including large foundation models --- cannot adapt
 to post-deployment reality without expensive retraining
-\cite{parisi2019}; online reservoirs can \cite{jaeger2001,lukosevicius2009},
+\cite{parisi2019}; online reservoirs can
+\cite{jaeger2001,maass2002,lukosevicius2009},
 but their readouts face a timescale gap on long-horizon statistical tasks:
 fast reservoir states decorrelate far more quickly than the task
 statistics, so the readout must re-integrate after every change. Our
 companion work introduces a slow exponential trace of the reservoir states
 (metadata, M3), a homeostatic regulator that keeps the substrate near the
 edge of chaos (M5), and slow structure plasticity (M4); the integrated
-system tracks drift where frozen learners fail permanently (companion
-Paper~B).
+system tracks drift where frozen learners fail permanently
+(companion Paper~B) \cite{companionB}.
 
 These mechanisms are usually validated \emph{together}. The question we
 ask here is sharper: \emph{which mechanism does which job, and can any of
@@ -108,7 +110,8 @@ leak rates matched to a log-normal spectrum ($\mathrm{CV}=0.20$, spectral
 radius 0.9) and (ii)~a Si$_3$N$_4$-style relaxation substrate whose
 per-unit time constants are log-normal (median $\tau_0\approx174\,\mu$s,
 $\mathrm{CV}=0.20$), driven in per-pulse contrast-coupled dynamics with
-coupling $\kappa$ (companion Paper~A). Both produce a fast state
+coupling $\kappa$ (companion Paper~A) \cite{companionA}. Both produce a
+fast state
 $x(t)\in\mathbb{R}^{256}$ per pulse.
 
 \textbf{Slow trace (M3).} The metadata is a per-unit exponential moving
@@ -288,12 +291,12 @@ $\tau_m$ values closes the memory-capacity gap.}
 \subsection{Probe-protocol stress test (S16b)}
 \label{sec:s16b}
 
-{\sloppy
-The falsification is robust \emph{in sign} to the probe protocol: under
-standardized slow features (V1) and state-level noise injection (V2),
-every ($\tau_m$, variant) cell keeps at most 1/10 seeds positive ---
-0/10 in 11 of 12 cells, 1/10 in the V2 cell at $\tau_m{=}200$
-(Table~\ref{tab:s16b}; the full grid
+{\emergencystretch=2em
+The falsification is robust \emph{in sign} to the probe protocol:
+standardized slow features (V1) and state-level noise injection (V2)
+leave every ($\tau_m$, variant) cell with at most 1/10 seeds positive
+(0/10 in 11 of 12 cells; the exception is the V2 cell at
+$\tau_m{=}200$, 1/10; Table~\ref{tab:s16b}; the full grid
 data/s16b\_falsification\_stress\_test\_v2.csv extends the original
 $\{500,2000\}$ pair to all four timescales). Its \emph{magnitude} is
 protocol-dependent and informative: under readout-noise semantics (V0,
@@ -593,6 +596,7 @@ to $-28\%$); A2 does not.}
 \label{fig:llm}
 \end{figure}
 
+\begingroup\hbadness=2500
 \begin{thebibliography}{12}
 
 \bibitem{parisi2019} Parisi, G. I., Kemker, R., Part, J. L., Kanan, C.,
@@ -636,8 +640,7 @@ you need. \emph{NeurIPS} \textbf{30}, 5998--6008 (2017).
 
 \bibitem{companionA} Author's companion Paper A: Memory and chaos in a
 physics-constrained relaxation substrate: phase diagram, multi-timescale
-forgetting, and disturbance robustness (substrate theory; target:
-\emph{International Journal of Bifurcation and Chaos} / \emph{Chaos}).
+forgetting, and disturbance robustness (substrate theory).
 
 \bibitem{companionB} Author's companion Paper B: REDEM: Training-Inference
 Unified Learning with Meta-Adaptation and Structural Plasticity for
@@ -645,5 +648,6 @@ Non-Stationary Environments (online learning architecture; target:
 \emph{Neural Networks}).
 
 \end{thebibliography}
+\endgroup
 
 \end{document}

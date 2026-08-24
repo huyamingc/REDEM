@@ -65,7 +65,7 @@ single-mechanism ablation and the bare baseline (0.996 vs.\ 0.988/0.994/0.973,
 $p<0.0001$; the homeostat-removal ties at 0.996 --- its value is in disturbed
 scenarios), persisting at $N=1024$. The substrate
 is a physically motivated relaxation memory whose log-normal time-constant
-spectrum is set by shallow-trap device physics (companion theory paper), and
+spectrum is set by shallow-trap device physics \cite{companionA}, and
 the slow metadata trace is shown to be a substrate-agnostic mechanism that
 transfers to a matched echo-state network. On standard benchmarks REDEM is
 competitive with a well-tuned ESN (drift accuracy 0.991 vs.\ 1.000;
@@ -140,8 +140,9 @@ rewiring rate, and rewiring changes the structure that feeds the Lyapunov
 estimate (dotted loop in Fig.~\ref{fig:redem}); the coupling loop is tested
 in Section~\ref{sec:homeo}.
 
-The substrate follows the model of the companion theory paper (Paper A,
-Section~2), with the $\tau$-spectrum, the coupling topologies, and the
+The substrate follows the model of the companion theory paper
+\cite{companionA} (Paper A, Section~2), with the $\tau$-spectrum, the
+coupling topologies, and the
 $\lambda$-homeostat regulator described therein; only the readout and metadata
 layers are new here. Concretely, the substrate is a per-pulse contrast-coupled
 relaxation array: $N=256$ units, log-normal $\tau$ (median 174~$\mu$s,

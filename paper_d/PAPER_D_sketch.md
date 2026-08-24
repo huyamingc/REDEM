@@ -322,7 +322,7 @@ rows), `data/s23_ssm_p4_realtext_v1.csv` / `.json` (30 rows).
 
 ### P5 - Paper (DRAFTED 2026-02-18)
 
-`paper_d/PAPER_D.tex` first draft: elsarticle preprint, 13 pp, zero
+`paper_d/PAPER_D.tex` first draft: elsarticle preprint, 14 pp, zero
 warnings, 3 data-driven figures (`gen_paperD_fig1_p1_arms.py`,
 `gen_paperD_fig2_routing.py`, `gen_paperD_fig3_benchmark.py`) and 2
 tables. Structure: abstract + intro (host-boundary motivation from Paper
@@ -440,7 +440,7 @@ journal fallback.
   0009-0003-1406-0485, Independent Researcher Guiyang, email
   64687555@qq.com): \thanks form (elsarticle \orcid unsupported in the
   installed class - compile-tested). Papers A-D recompiled clean
-  (14/11/13/13 pp).
+  (14/11/13/14 pp).
 - 2026-02-18: **P5 draft revision pass 1** - fixed the A2-inversion claim
   with the honest what-is-paused qualifier (the companion's A2 paused
   LoRA plasticity with the head active; here pausing the RLS readout

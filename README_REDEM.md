@@ -70,14 +70,15 @@ the structure level (M4).
 | s32 | FTLE-noise robustness of the homeostat (5 noise levels × 10 seeds, S11 chain): no significant r3 MC degradation up to σ=0.10 (~100% of the estimate scale; paired CIs include 0), settled κ 28.5–28.7 — the clipped proportional feedback integrates out estimation error |
 | s33 | M5 in the P4 benchmark (2 arms × 10 seeds): SSM-REDEM+M5 is significantly worse (stream +1.53, forgetting +2.90, t=−22.8/−26.5, 10/10) — Δt modulation breaks the Δt=1-calibrated per-channel whitening on an already well-conditioned stream; S22's exclusion of M5 is validated (M5 stays a spike-regime safeguard, P3 E2) |
 | s34 | Leak sensitivity scan on the S28 audit (6 leak configs × 10 seeds): 10× larger FTLE leaks stay NS (+0.21); the plasticity channel shows a genuine dose-response — 30% future correlation improves recovery (+0.57, CI [+0.08,+1.10], 7/10), 50% reverses it — "causally clean" is scoped to the operational leak magnitudes |
+| s35 | P1 readout boundary probes (10 seeds, s19 host verbatim): full-window oracle 31.2 (matches s19, max diff 0.00) vs half-window 17.3; skip 18.0 > proj 7.25 (nested violation 10/10); token linearly decodable from fast channels (τ≤8) at 88.9–99.7% out-of-sample (chance 3.1%), slow channels at chance — the in-sample oracle is window-dependent and metric-pathological, so the P1 0/10 failure is a pooled-readout/metric property, not missing linear information ("no useful linear map" retracted in Paper D) |
 
-## Scripts (53 committed)
+## Scripts (54 committed)
 
 The authoritative script inventory — every script with its `CLAUDE.md` type,
 **paper attribution (A/B/C/D/shared)**, purpose, and key result — is the
 table in the root [`README.md`](README.md) (single source of truth; it is
 kept in sync with `git ls-files scripts/`). Paper D experiments s19–s23, s26,
-s31, s33 and
+s31, s33, s35 and
 their figures are reproduced from `paper_d/README.md`.
 
 ## Data and figures
@@ -99,6 +100,7 @@ their figures are reproduced from `paper_d/README.md`.
   `data/s28_causal_audit_chain_v1.*`, `data/s30_integrated_1024_v1.*`,
   `data/s31_char_bigram_oracle_v1.*`, `data/s32_ftle_noise_v1.*`,
   `data/s33_ssm_p4_m5_v1.*`, `data/s34_leak_sensitivity_v1.*`,
+  `data/s35_readout_boundary_probe_v1.*`,
   `data/s16b_falsification_stress_test_v2.*` (v2: all variants at all
   four τ_m; v1 kept for the original table)
   (CSV per run + JSON with params and per-cell aggregates).
@@ -158,7 +160,7 @@ scipy, matplotlib, torch (CPU) for S9 only.
 & .venv\Scripts\python.exe scripts\s5b_controlled_adaptation.py --sequential
 & .venv\Scripts\python.exe scripts\gen_architecture_schematic.py
 & .venv\Scripts\python.exe scripts\gen_paper_figures.py
-# Paper D experiments (s19–s23, s26, s31, s33) + figures — see paper_d/README.md
+# Paper D experiments (s19–s23, s26, s31, s33, s35) + figures — see paper_d/README.md
 & .venv\Scripts\python.exe scripts\s19_ssm_rls_readout.py --sequential
 & .venv\Scripts\python.exe scripts\s20_ssm_m3_routing.py --sequential
 & .venv\Scripts\python.exe scripts\s21_ssm_m4_m5.py --sequential
@@ -174,6 +176,7 @@ scipy, matplotlib, torch (CPU) for S9 only.
 & .venv\Scripts\python.exe scripts\s32_ftle_noise_robustness.py
 & .venv\Scripts\python.exe scripts\s33_ssm_p4_m5.py
 & .venv\Scripts\python.exe scripts\s34_leak_sensitivity.py
+& .venv\Scripts\python.exe scripts\s35_readout_boundary_probe.py --workers 4
 & .venv\Scripts\python.exe scripts\gen_paperD_fig1_p1_arms.py
 & .venv\Scripts\python.exe scripts\gen_paperD_fig2_routing.py
 & .venv\Scripts\python.exe scripts\gen_paperD_fig3_benchmark.py
@@ -219,7 +222,7 @@ ws-ijbc.cls / revtex4-2 for Paper A (IJBC/Chaos), elsarticle.cls for Paper B
 - `paper_d/` (in development) — Paper D "REDEM-SSM": the SSM instantiation
   of the three mechanisms (M1 per-token RLS readout, M3 fast-channel EMA
   routing, M4 soft routing, M5 state-norm homeostat). P1–P5 DONE;
-  `paper_d/PAPER_D.tex` drafted in elsarticle preprint format (13 pp, zero
+  `paper_d/PAPER_D.tex` drafted in elsarticle preprint format (14 pp, zero
   warnings; P1 theorem, reference fairness, M5 negative, oracle integrated).
   See `paper_d/README.md` and `paper_d/PAPER_D_sketch.md`.
 
@@ -263,7 +266,8 @@ ws-ijbc.cls / revtex4-2 for Paper A (IJBC/Chaos), elsarticle.cls for Paper B
 | s32 FTLE-noise robustness | done (50 runs; no significant degradation to σ=0.10) |
 | s33 M5 in P4 | done (20 runs; honest negative 10/10 — M5 breaks Δt=1 whitening) |
 | s34 leak sensitivity | done (60 runs; FTLE 10× NS; plasticity 30% significant +0.57 — audit resolution bounded) |
-| Paper D P5 | done (PAPER_D.tex draft, 13 pp, zero warnings; revision pass 1: A2 qualifier + real-text results; pass 2: P1 theorem + reference fairness + M5 negative + oracle) |
+| s35 readout boundary probes | done (10 seeds; oracle window-dependence 31.2 vs 17.3, nested violation 10/10, fast-channel decode 88.9–99.7% — P1 corollary rewritten in Paper D) |
+| Paper D P5 | done (PAPER_D.tex draft, 14 pp, zero warnings; revision pass 1: A2 qualifier + real-text results; pass 2: P1 theorem + reference fairness + M5 negative + oracle; pass 3: P1 corollary rewritten with s35 boundary probes + related-work section) |
 | Paper C derivation | in progress (thesis locked; PAPER_C.tex submission-ready; §7 LLM PoC results available for the extension section) |
 
 ## Open items
@@ -280,7 +284,7 @@ ws-ijbc.cls / revtex4-2 for Paper A (IJBC/Chaos), elsarticle.cls for Paper B
   ppl −1.07 at τ_m=200), A2 gate falsified; results in
   `paper_c/LLM_EXTENSION.md` §7.7. Remaining before submission: cover
   letter.
-- Paper D: `paper_d/PAPER_D.tex` drafted (13 pp, zero warnings). Open:
+- Paper D: `paper_d/PAPER_D.tex` drafted (14 pp, zero warnings). Open:
   title RESOLVED 2026-02-19 (revised to "A State-Space Architecture ...";
   "Foundation Model" dropped as overclaiming for the toy prototype),
   optional related-work paragraph +

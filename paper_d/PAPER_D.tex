@@ -17,6 +17,7 @@
 \graphicspath{{../figures/}}
 \usepackage[expansion=false]{microtype}
 \usepackage{url}
+\emergencystretch=2em
 
 \newtheorem{proposition}{Proposition}[section]
 \newtheorem{lemma}{Lemma}[section]
@@ -41,11 +42,11 @@ linear recurrence with a log-uniform timescale spectrum), instead of
 retrofitting them onto a frozen-feedforward Transformer. A falsifying
 development sequence (10-seed paired discipline throughout) isolates
 three host requirements with mechanism-level evidence. (1) A linear
-readout cannot recover the current token from a linearly-decayed state
-mixture (a deconvolution impossibility); the readout must use the
-additive input path $B e_{t-1}$: the state-only readout is stuck near
-uniform perplexity on a bigram streaming task (0/10 seeds vs.\ a
-Transformer+LoRA reference) while the input-path readout beats it 10/10.
+readout on a linearly-decayed state mixture cannot recover the current
+token exactly (a deconvolution impossibility), and the pooled state
+readout is stuck near uniform perplexity in practice (0/10 seeds vs.\ a
+Transformer+LoRA reference); the readout must use the additive input
+path $B e_{t-1}$, which beats the reference 10/10.
 Fixed Mamba-style multiplicative gates do not repair the state readout
 (sharper gates are worse), so input selectivity must be learned --- a
 design boundary we flag rather than cross. (2) The state's role is
@@ -99,11 +100,13 @@ paper's main contribution:
 
 \begin{enumerate}
 \item \textbf{The readout needs the input path, not the state}
-   (Section~\ref{sec:p1}). A linear readout on the linearly-decayed state
-   mixture cannot recover the current token (deconvolution impossibility);
-   the readout must consume the additive input projection
-   $B e_{t-1}$. Fixed Mamba-style gates do not repair the state readout;
-   selectivity must be learned (a boundary we flag, not cross).
+   (Section~\ref{sec:p1}). Exact recovery of the current token from a
+   linearly-decayed state mixture is a deconvolution impossibility
+   (Proposition~\ref{prop:p1}), and the pooled state readout fails in
+   practice (0/10 on a bigram streaming task); the readout must consume
+   the additive input projection $B e_{t-1}$. Fixed Mamba-style gates do
+   not repair the state readout; selectivity must be learned (a boundary
+   we flag, not cross).
 \item \textbf{The state's role is statistical metadata}
    (Section~\ref{sec:p2}). A fast-channel state EMA (M3) tracks domain
    switches and soft routing (M4) retains per-domain specialists; the
@@ -119,6 +122,23 @@ host and the Transformer+LoRA reference on every seed, and the result
 transfers to a two-book real-text protocol
 (Section~\ref{sec:p4}). All experiments are CPU-only, tiny by design,
 and make no scaling claims (Section~\ref{sec:lim}).
+
+\section{Related work}
+\label{sec:related}
+
+State-space models replace the frozen feedforward stack of
+\cite{vaswani2017} with a recurrence whose parameters are trained
+end-to-end (\cite{gu2022s4,gu2023mamba,liu2025longhorn,behrouz2025titans});
+online adaptation has been pursued by rewriting the state with a learned
+optimizer (\cite{sun2024ttt}) and by linear-attention delta updates
+(\cite{yang2024deltanet}). Those hosts train with backpropagation,
+whereas the REDEM line (\cite{redema,redemb,redemc}) restricts the
+readout to an online, local rule on a fixed substrate, in the spirit of
+reservoir computing (\cite{lukosevicius2009}) and of continual-learning
+practice (\cite{parisi2019}). Our Transformer+LoRA reference
+(\cite{hu2022lora}, retrained per task as in \cite{redemc}) is a tiny
+parameter-efficient adapter; we make no scaling claims against larger
+models (Section~\ref{sec:lim}).
 
 \section{Methods}
 \label{sec:methods}
@@ -257,15 +277,10 @@ against the Transformer+LoRA reference (A1, 15.01). Every state-feature
 readout --- log-normal spectrum (LN-raw 114.99, LN-whiten 115.87),
 coverage spectrum (CV-whiten 81.31), with the current-token projection
 added (CV-skip 58.47) --- is worse than the reference on every seed
-(0/10), and the in-sample ridge oracle on the state features is $\sim31$
-(essentially uniform; the pooled-table ceiling is 7.34). The input-path
-control ($\phi = [B e_{t-1}; 1]$, no state) reaches 11.75, better than
-the reference on 10/10 seeds ($-3.26$), with oracle 7.25. The mechanism
-is a deconvolution impossibility: a linear map from the state mixture
-$h_t = \sum_k \Lambda^k B e_{t-1-k}$ would need
-$U \Lambda^k = 0$ for $k \ge 1$ while $U \Lambda^0 \ne 0$, impossible
-for a diagonal decay with all $A_i > 0$; the older-token contamination
-is structural and whitening fixes scale, not the mixing.
+(0/10). The input-path control ($\phi = [B e_{t-1}; 1]$, no state)
+reaches 11.75, better than the reference on 10/10 seeds ($-3.26$).
+Proposition~\ref{prop:p1} shows why exact recovery is impossible; the
+corollary below scopes the measured failure.
 
 \begin{proposition}[Deconvolution impossibility for the linear state
 readout]
@@ -299,10 +314,27 @@ artifact. \qed
 \end{proof}
 
 The empirical corollary of Proposition~\ref{prop:p1} is the measured
-0/10 failure of every state-feature readout: ridge finds no useful
-linear map because none exists, and the input-path feature
-$\phi = [B e_{t-1}; 1]$ enters the state equation as the $j{=}0$ term,
-which is exactly the component the readout must consume.
+0/10 failure of every state-feature readout: a pooled linear readout
+cannot use the state mixture under the streaming perplexity metric, and
+the input-path feature $\phi = [B e_{t-1}; 1]$ enters the state
+equation as the $j{=}0$ term --- exactly the component the readout must
+consume. The proposition bounds \emph{exact} recovery; a boundary
+analysis (data/s35\_readout\_boundary\_probe\_v1.csv) shows the
+measured failure is a property of the pooled readout under this metric
+rather than an absence of linear information. The current token is
+linearly decodable from the fast channels ($\tau_i \le 8$) of the
+whitened state at 88.9--99.7\% out-of-sample accuracy (chance 3.1\%;
+95.4--99.9\% with $\tau_i \le 30$), whereas the slow channels
+($\tau_i \ge 100$) decode at chance (0.034--0.049): the older-token
+contamination is a slow-channel property, and whitening rescales it
+without removing it. The in-sample ridge oracle is itself
+window-dependent (28.8--33.4 on the full window vs.\ 16.2--18.4 on the
+first half) and non-monotone in the feature set (adding the clean
+projection makes it worse on every seed: 16.6--19.9 vs.\ 7.15--7.36 for
+the projection alone) --- artifacts of evaluating clipped linear
+outputs by perplexity, not bounds on recoverable information. Within
+the RLS-only constraint the honest resolution remains the additive
+input path.
 
 Fixed Mamba-style multiplicative gates ($\hat{y} = W\,(h^w \odot
 \sigma(\gamma C B e_{t-1}))$, $C$ fixed random, $\gamma \in \{1,5\}$)
@@ -323,8 +355,8 @@ crossing the RLS-only boundary in this work.
 vs.\ the input-path control on the two-domain streaming task. All
 state-feature readouts fail (0/10 vs.\ the Transformer+LoRA reference
 A1, dashed); fixed gates do not help; the additive input path
-($B e_{t-1}$) reaches 11.75, below A1, near the pooled-table ceiling
-7.34 (dotted).}
+($B e_{t-1}$) reaches 11.75, below A1, approaching the in-sample
+pooled-table ceiling 7.34 (dotted).}
 \label{fig:p1arms}
 \end{figure}
 
@@ -518,9 +550,11 @@ hyperparameters, untuned for four domains.}
 \section{Discussion}
 
 Three evidence-based host requirements emerged. \textbf{(i)} A linear
-readout cannot use a linearly-decayed state mixture; the current token
-must be an additive input feature (the deconvolution impossibility,
-Section~\ref{sec:p1}), and fixed gates do not substitute for learned
+readout cannot use a linearly-decayed state mixture under the streaming
+perplexity metric: exact recovery is a deconvolution impossibility
+(Proposition~\ref{prop:p1}), and the pooled readout fails in practice,
+so the current token must be an additive input feature
+(Section~\ref{sec:p1}); fixed gates do not substitute for learned
 selectivity. \textbf{(ii)} The state's role is statistical metadata:
 its fast channels, not the readout, carry the domain statistic
 (Section~\ref{sec:p2}); on first-order tasks the slow channels are
@@ -564,22 +598,30 @@ four-domain irregular-switch benchmark on every seed. The next steps are
 real-text evaluation, learned selectivity, and scaling --- each with the
 same falsification discipline.
 
+\section*{Code and data availability}
+
+{\sloppy\emergencystretch=2em
+All simulation scripts and generated data are available at
+\url{https://github.com/huyamingc/REDEM} (private during review; released
+on acceptance).\par}
+
+\begingroup\hbadness=2500
 \begin{thebibliography}{14}
 
 \bibitem{redema}
-[Author Name], Memory and chaos in a physics-constrained relaxation
-substrate: phase diagram, multi-timescale forgetting, and disturbance
-robustness, \emph{companion preprint} (2026).
+Author's companion Paper A: Memory and chaos in a physics-constrained
+relaxation substrate: phase diagram, multi-timescale forgetting, and
+disturbance robustness; \emph{companion preprint} (2026).
 
 \bibitem{redemb}
-[Author Name], REDEM: training-inference unified learning with
-meta-adaptation and structural plasticity for non-stationary
+Author's companion Paper B: REDEM: training-inference unified learning
+with meta-adaptation and structural plasticity for non-stationary
 environments, \emph{companion preprint} (2026).
 
 \bibitem{redemc}
-[Author Name], Dissecting online learning mechanisms: statistical memory,
-homeostatic recovery, and substrate physics are non-transferable,
-\emph{companion preprint} (2026).
+Author's companion Paper C: Dissecting online learning mechanisms:
+statistical memory, homeostatic recovery, and substrate physics are
+non-transferable, \emph{companion preprint} (2026).
 
 \bibitem{gu2023mamba}
 A.~Gu, T.~Dao, Mamba: Linear-time sequence modeling with selective state
