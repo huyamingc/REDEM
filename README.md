@@ -43,7 +43,8 @@ companion papers (plus a fourth in development):
   irregular switches) both hypotheses 10/10 (REDEM vs bare −2.25 stream,
   −4.47 forget; vs TF-A1 −9.28/−10.08) + real-text transfer (two Gutenberg
   books, REDEM vs bare −1.27, vs TF-A1 −5.23, 10/10). P5: PAPER_D.tex
-  draft (11 pp, zero warnings; author info filled). (Target: NeurIPS/ICML stretch;
+  draft (13 pp, zero warnings; author info filled; P1 theorem, reference
+  fairness, M5 negative and oracle integrated). (Target: NeurIPS/ICML stretch;
   arXiv + workshop first)
   → See [`paper_d/README.md`](paper_d/README.md),
   [`paper_d/PAPER_D_sketch.md`](paper_d/PAPER_D_sketch.md) and
@@ -90,13 +91,13 @@ letter points).
 
 ## Scripts
 
-All 52 committed scripts in `scripts/`, typed per `CLAUDE.md`
+All 53 committed scripts in `scripts/`, typed per `CLAUDE.md`
 (ML > CORE > PAPER > FIG > EXPLORE). The **Paper** column marks which paper
 each script serves (A / B / C / D; shared = library or figure used by more
 than one paper). Two legacy scripts from the prior Si₃N₄-pulse-encoding
 project are kept as shared dependencies (imported by the new code) and are
 never modified. `README_REDEM.md` holds the full headline-results registry
-(S1–s18) and reproduction commands.
+(S1–s34) and reproduction commands.
 
 | Script | Type | Paper | Purpose | Key result |
 |---|---|---|---|---|

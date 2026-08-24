@@ -9,7 +9,7 @@ Online learning architecture paper (single author). Target: *Neural Networks*
 | File | Purpose |
 |---|---|
 | `PAPER_B.tex` | Submission-ready LaTeX (compiles standalone with `article`) |
-| `PAPER_B.pdf` | Compiled PDF (10 pages, MiKTeX / pdflatex ×2, zero warnings) |
+| `PAPER_B.pdf` | Compiled PDF (11 pages, MiKTeX / pdflatex ×2, zero warnings) |
 | `PAPER_B_draft.md` | Markdown draft (source prose; revision history in `../NEW_ALGORITHM_PLAN.md`) |
 | `PAPER_B_sketch.md` | Outline, figure/table inventory, key numbers |
 | `README.md` | This file |
@@ -56,6 +56,14 @@ latexmk -pdf PAPER_B.tex
 - [ ] Code availability statement:
       <https://github.com/huyamingc/REDEM> (private during review; public on
       acceptance).
+- [x] Follow-up evidence integrated (2026-08-24): §4.3 causal audit re-run on
+      the S11 disturbance chain (s28 — no leak arm improves recovery; the
+      no-plasticity arm reproduces the S11 homeostat anchor 8.47 exactly;
+      leak-sensitivity scan s34 scopes the claim: 10× FTLE leaks NS, 30%
+      plasticity correlation significant +0.57 — audit resolution bounded);
+      N=1024 at 10 seeds (s30 — full 0.9970 vs baseline 0.9753, paired
+      t=15.3); §4.3 novelty-gated rewiring (s25, 14.59 vs 12.43) and the
+      M4-M5 coupling negative (s24).
 - [ ] Cover letter: the online / local / no-BPTT corner; self-regulation under
       disturbance; standard-task parity with a well-tuned ESN reported
       honestly.

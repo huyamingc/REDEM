@@ -10,7 +10,7 @@ paper: [`../paper_b/`](../paper_b/) (REDEM, target: *Neural Networks*).
 | File | Purpose |
 |---|---|
 | `PAPER_A.tex` | Submission-ready LaTeX (compiles standalone with `article`) |
-| `PAPER_A.pdf` | Compiled PDF (13 pages, MiKTeX / pdflatex ×2, zero warnings) |
+| `PAPER_A.pdf` | Compiled PDF (14 pages, MiKTeX / pdflatex ×2, zero warnings) |
 | `PAPER_A_draft.md` | Markdown draft (source prose; revision history in `../NEW_ALGORITHM_PLAN.md`) |
 | `PAPER_A_sketch.md` | Outline, figure/table inventory, key numbers |
 | `README.md` | This file |
@@ -45,6 +45,16 @@ latexmk -pdf PAPER_A.tex
       (λ-homeostat gains); Supplementary Table S1 =
       `../data/substrate_phase_diagram_v2.csv`; Supplementary Note 1 (task-level
       CV sweep, `../data/s10_cv_sweep_v1.*`) with Fig. S1.
+- [x] Follow-up evidence integrated (2026-08-24): §3.5 clip-range ablation ×
+      fine κ grid (κ* = 25.3/27.4/27.9, bootstrap CI ±0.1–0.8; transition
+      coupling-driven — invariant to 5× clip widening for the memory-relevant
+      topologies, `../data/s27_clip_kappa_fine_v1.*`); kernel shape stability
+      under coupling (physical-kernel r = 0.84–0.95 over κ 15–30, effective
+      median stretches 1–3×); λ-homeostat robust to FTLE estimation noise
+      (σ up to 0.10, no significant degradation,
+      `../data/s32_ftle_noise_v1.*`); Discussion adds the "spectrum knobs:
+      location vs width" paragraph (CV ↔ τ_m ↔ log-uniform range across the
+      companion papers).
 - [ ] Appendix A derivations complete: A.1 spectrum log-normality, A.2
       two-pass update order independence, A.3 kernel quadrature + median
       pinning + tail-slope asymptotics, A.4 Benettin iteration, A.5 MC

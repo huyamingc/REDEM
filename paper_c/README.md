@@ -24,8 +24,10 @@ substrate on accuracy and speeds post-switch adaptation (s15: ~10 pulses of
 ~200, variance collapse p90 76.5 -> 42). It is a *statistical* memory, not
 an episodic one: it adds no raw memory capacity and does not transfer
 disturbance robustness to an ESN at any metadata timescale (s14 + s16,
-0/10 seeds positive; s16b: robust in sign to probe protocol), but it
-denoises state-level corruption (s16b V2: gap -0.69 -> -0.01) and
+0/10 seeds positive; s16b v2: sign robust across the probe protocol —
+≤1/10 in every (τ_m, variant) cell over all four timescales), but it
+denoises state-level corruption (s16b V2: gap -0.69 -> -0.04…-0.01 at
+every τ_m) and
 attenuates readout noise on the online task. Sequential disturbance
 recovery is the homeostat's job, not the metadata's. Honest position: we
 never claim REDEM beats the ESN - in S10 the ESN+metadata arm has the best
@@ -59,7 +61,7 @@ overall accuracy.
 | `../data/s14_esn_disturbance_chain_v1.*` | S14 transfer test: MC paired diffs -0.78/-0.76/-0.69 (0/10 positive), r3 NMSE -9.5% (10/10), redem_reg reproduces S11 anchor |
 | `../data/s16_tau_m_pressure_test_v1.*` | S16 pressure test: r3 MC paired diffs -0.70/-0.69/-0.68/-0.68 at tau_m 200/500/1000/2000 (0/10 positive), strong claim locked |
 | `../data/s15_controlled_adaptation_v1.*` | S15 controlled adaptation: T40 40.6 vs 49.9 (dual vs fast), p90 42 vs 76.5; "47x" ratio = metric artifact |
-| `../data/s16b_falsification_stress_test_v1.*` | S16b probe stress: 0/10 positive at all (tau_m, variant); magnitude V0 -0.69 -> V2 -0.01 (state-noise denoising) |
+| `../data/s16b_falsification_stress_test_v2.*` | S16b probe stress (v2: 10 seeds × 4 τ_m × 3 variants; ≤1/10 positive in every cell; magnitude V0 -0.69 -> V2 -0.04…-0.01, state-noise denoising at every τ_m; v1 kept for the original table) |
 | `../data/s5b_controlled_adaptation_v1.*` | S5b substrate arms controlled: T200 265-304 (fast) vs 202-211 (dual), factor 1.3-2.4; overall acc reproduces S5 |
 | `../data/s17_substrate_stress_v1.*` | S17 substrate stress: equalizer gain positive at all 6 ESN configs (+0.1 to +1.0 pp), magnitude tracks timescale starvation |
 | `../data/s18_llm_drift_gate_v1.*` | S18 LLM PoC (90 runs): A3 routing transfers (forgetting −2.5 ppl, 10/10 seeds at τ_m=200; ppl −1.07 at τ_m≤500), A2 gate falsified (0/10); sensitive interval τ_m≥1000 |

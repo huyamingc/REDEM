@@ -16,12 +16,16 @@ and restores the full-state EMA detector 5/5). P4 benchmark (4-domain
 irregular switches) both hypotheses 10/10 (REDEM vs bare −2.25/−4.47, vs
 TF-A1 −9.28/−10.08) + real-text transfer (S23, two Gutenberg books:
 REDEM vs bare −1.27 stream 10/10, vs TF-A1 −5.23 10/10; corpus in
-`../data/corpora/`). **P5: PAPER_D.tex draft (11 pp, zero warnings; author
-info filled; A2-claim qualifier + real-text results in revision pass 1).**
+`../data/corpora/`). **P5: PAPER_D.tex draft (13 pp, zero warnings; author
+info filled; revision pass 1: A2-claim qualifier + real-text results;
+revision pass 2 (audit follow-ups): P1 deconvolution theorem
+(Proposition 1 + Krylov proof), tuned-TF reference grid + 4-adapter TF-A3
+routing (s26), char-bigram oracle (s31), M5-in-P4 honest negative (s33)).**
 Data: `data/s19_ssm_rls_readout_v1.csv`, `data/s20_ssm_m3_routing_v1.csv`,
 `data/s21_ssm_m4_m5_v1.csv`, `data/s22_ssm_p4_benchmark_v1.csv`,
-`data/s23_ssm_p4_realtext_v1.csv`. Next: draft revision (user review),
-Cover Letter, or submission checklist.
+`data/s23_ssm_p4_realtext_v1.csv`, plus follow-ups `s26_ssm_p4_fair_tf_v1.*`,
+`s31_char_bigram_oracle_v1.*`, `s33_ssm_p4_m5_v1.*`. Next: submission
+checklist or arXiv format pass.
 
 ## Origin and motivation
 
@@ -80,7 +84,7 @@ entry. Paper D never re-derives substrate physics (A), the REDEM algorithm
 |---|---|
 | `README.md` | This file: status, non-overlap rules, honesty discipline |
 | `PAPER_D_sketch.md` | The design doc: positioning, REDEM-SSM mapping, novelty, falsifiable predictions, roadmap P1-P5 |
-| `PAPER_D.tex` | First draft (elsarticle preprint, 11 pp, zero warnings; P1-P4 evidence + honest falsification narrative); figures in `../figures/paperD_fig*.pdf` |
+| `PAPER_D.tex` | First draft (elsarticle preprint, 13 pp, zero warnings; P1-P4 evidence + honest falsification narrative + P1 theorem / reference fairness / M5 negative / oracle); figures in `../figures/paperD_fig*.pdf` |
 
 ## Roadmap (corrected estimates, part-time 3-4 months)
 
@@ -111,6 +115,9 @@ CSV+JSON dual output.
 | `../scripts/s21_ssm_m4_m5.py` | ML | P3: M4 soft vs abrupt routing + M5 state-norm homeostat (E1/E2 × 10) | soft 8.22 vs abrupt 10.03 (−1.82, 10/10); M5 flips detector 5/5, norm 11.3 vs 50.2 |
 | `../scripts/s22_ssm_p4_benchmark.py` | ML | P4: 4-domain irregular-switch benchmark (3 arms × 10) | REDEM 13.18/8.93 vs bare 15.43/13.41 vs TF 22.46/19.01 (10/10) |
 | `../scripts/s23_ssm_p4_realtext.py` | ML | real-text transfer: Alice vs Dickens, 32-symbol chars (3 arms × 10) | REDEM 12.07/11.85 vs bare 13.34/12.31 vs TF 17.31/13.86 (−1.27/−5.23, 10/10) |
+| `../scripts/s26_ssm_p4_fair_tf.py` | ML | fair TF references for P4: tuned A1 grid (4 lrs × 2 ranks) + 4-adapter A3 routing (9 arms × 10) | tuning cuts the stream gap to −1.68 (0/10) but collapses retention to 62.2; TF-A3 transfers −8.17 forgetting (10/10) without fixing stream (+8.59) — mechanisms host-agnostic, stream performance is not |
+| `../scripts/s31_char_bigram_oracle.py` | PAPER | char-bigram oracle on the real-text protocol (full-book vs ref-window fits, 10 seeds) | true first-order ceiling ppl 10.97 ± 0.18; SSM-REDEM 12.07 within ~1.1 ppl of it — first-order scope now quantitative |
+| `../scripts/s33_ssm_p4_m5.py` | ML | M5 state-norm homeostat added to the P4 stack (2 arms × 10) | honest negative: SSM-REDEM+M5 worse 10/10 (stream +1.53, forgetting +2.90, t=−22.8/−26.5) — Δt modulation breaks Δt=1 whitening; S22's exclusion of M5 validated |
 | `../scripts/gen_paperD_fig1_p1_arms.py` | FIG | Paper D Fig. 1 | `../figures/paperD_fig1_p1_arms.pdf` |
 | `../scripts/gen_paperD_fig2_routing.py` | FIG | Paper D Fig. 2 | `../figures/paperD_fig2_routing.pdf` |
 | `../scripts/gen_paperD_fig3_benchmark.py` | FIG | Paper D Fig. 3 | `../figures/paperD_fig3_benchmark.pdf` |
@@ -119,7 +126,10 @@ Data: `../data/s19_ssm_rls_readout_v1.{csv,json}`,
 `../data/s20_ssm_m3_routing_v1.{csv,json}`,
 `../data/s21_ssm_m4_m5_v1.{csv,json}`,
 `../data/s22_ssm_p4_benchmark_v1.{csv,json}`,
-`../data/s23_ssm_p4_realtext_v1.{csv,json}`;
+`../data/s23_ssm_p4_realtext_v1.{csv,json}`,
+`../data/s26_ssm_p4_fair_tf_v1.{csv,json}`,
+`../data/s31_char_bigram_oracle_v1.{csv,json}`,
+`../data/s33_ssm_p4_m5_v1.{csv,json}`;
 corpus `../data/corpora/` (Gutenberg #11 Alice, #98 Dickens; public domain,
 see `../data/corpora/README.md`).
 
@@ -131,6 +141,9 @@ see `../data/corpora/README.md`).
 & ..\.venv\Scripts\python.exe ..\scripts\s21_ssm_m4_m5.py --sequential
 & ..\.venv\Scripts\python.exe ..\scripts\s22_ssm_p4_benchmark.py --sequential
 & ..\.venv\Scripts\python.exe ..\scripts\s23_ssm_p4_realtext.py --sequential
+& ..\.venv\Scripts\python.exe ..\scripts\s26_ssm_p4_fair_tf.py
+& ..\.venv\Scripts\python.exe ..\scripts\s31_char_bigram_oracle.py
+& ..\.venv\Scripts\python.exe ..\scripts\s33_ssm_p4_m5.py
 & ..\.venv\Scripts\python.exe ..\scripts\gen_paperD_fig1_p1_arms.py
 & ..\.venv\Scripts\python.exe ..\scripts\gen_paperD_fig2_routing.py
 & ..\.venv\Scripts\python.exe ..\scripts\gen_paperD_fig3_benchmark.py
@@ -147,13 +160,16 @@ includes the extension-less basename so `pdflatex` picks the vector file.
 - [x] Author filled (2026-02-19): Yaming Hu, ORCID 0009-0003-1406-0485,
       Independent Researcher, Guiyang, Guizhou Province, China;
       64687555@qq.com. Abstract note / cover letter: `COVER_LETTER.md`.
-- [x] `PAPER_D.tex` compiles: elsarticle preprint, 11 pp, zero warnings.
+- [x] `PAPER_D.tex` compiles: elsarticle preprint, 13 pp, zero warnings.
 - [x] P1–P5 evidence committed: s19–s23 + Fig 1–3 + data CSVs/JSONs (10-seed
       paired discipline, n_pos/10 sign consistency throughout).
 - [x] Honesty scoping in text: CPU-only, toy-scale, no scaling claims;
-      deconvolution impossibility scoped to linear readouts; TF-A1 reference
-      untuned for four domains; real-text gains bounded by shared English
-      bigram statistics.
+      deconvolution impossibility scoped to linear readouts (formalized as
+      Proposition 1); TF-A1 reference fairness closed by the tuned grid and
+      TF-A3 routing baseline (s26 — best tuned stream 14.86 vs 13.18, 10/10,
+      at the cost of catastrophic retention); real-text first-order ceiling
+      quantified by the bigram oracle (s31, ppl 10.97 ± 0.18); M5-in-P4
+      reported as a negative (s33).
 - [ ] Optional before arXiv: related-work paragraph (Longhorn ICLR 2025,
       Titans NeurIPS 2025, TTT ICLR 2024, Mamba/S4/DeltaNet — 13 refs already
       in the bibliography); per-mechanism ablation table.

@@ -71,12 +71,13 @@ the structure level (M4).
 | s33 | M5 in the P4 benchmark (2 arms × 10 seeds): SSM-REDEM+M5 is significantly worse (stream +1.53, forgetting +2.90, t=−22.8/−26.5, 10/10) — Δt modulation breaks the Δt=1-calibrated per-channel whitening on an already well-conditioned stream; S22's exclusion of M5 is validated (M5 stays a spike-regime safeguard, P3 E2) |
 | s34 | Leak sensitivity scan on the S28 audit (6 leak configs × 10 seeds): 10× larger FTLE leaks stay NS (+0.21); the plasticity channel shows a genuine dose-response — 30% future correlation improves recovery (+0.57, CI [+0.08,+1.10], 7/10), 50% reverses it — "causally clean" is scoped to the operational leak magnitudes |
 
-## Scripts (52 committed)
+## Scripts (53 committed)
 
 The authoritative script inventory — every script with its `CLAUDE.md` type,
 **paper attribution (A/B/C/D/shared)**, purpose, and key result — is the
 table in the root [`README.md`](README.md) (single source of truth; it is
-kept in sync with `git ls-files scripts/`). Paper D experiments s19–s23, s26 and
+kept in sync with `git ls-files scripts/`). Paper D experiments s19–s23, s26,
+s31, s33 and
 their figures are reproduced from `paper_d/README.md`.
 
 ## Data and figures
@@ -157,7 +158,7 @@ scipy, matplotlib, torch (CPU) for S9 only.
 & .venv\Scripts\python.exe scripts\s5b_controlled_adaptation.py --sequential
 & .venv\Scripts\python.exe scripts\gen_architecture_schematic.py
 & .venv\Scripts\python.exe scripts\gen_paper_figures.py
-# Paper D experiments (s19–s23, s26) + figures — see paper_d/README.md
+# Paper D experiments (s19–s23, s26, s31, s33) + figures — see paper_d/README.md
 & .venv\Scripts\python.exe scripts\s19_ssm_rls_readout.py --sequential
 & .venv\Scripts\python.exe scripts\s20_ssm_m3_routing.py --sequential
 & .venv\Scripts\python.exe scripts\s21_ssm_m4_m5.py --sequential
@@ -218,8 +219,9 @@ ws-ijbc.cls / revtex4-2 for Paper A (IJBC/Chaos), elsarticle.cls for Paper B
 - `paper_d/` (in development) — Paper D "REDEM-SSM": the SSM instantiation
   of the three mechanisms (M1 per-token RLS readout, M3 fast-channel EMA
   routing, M4 soft routing, M5 state-norm homeostat). P1–P5 DONE;
-  `paper_d/PAPER_D.tex` drafted in elsarticle preprint format (11 pp, zero
-  warnings). See `paper_d/README.md` and `paper_d/PAPER_D_sketch.md`.
+  `paper_d/PAPER_D.tex` drafted in elsarticle preprint format (13 pp, zero
+  warnings; P1 theorem, reference fairness, M5 negative, oracle integrated).
+  See `paper_d/README.md` and `paper_d/PAPER_D_sketch.md`.
 
 ## Roadmap status
 
@@ -242,7 +244,7 @@ ws-ijbc.cls / revtex4-2 for Paper A (IJBC/Chaos), elsarticle.cls for Paper B
 | s14 ESN disturbance chain | done (10 seeds × 3 arms; metadata does not transfer MC robustness; +32% is homeostat) |
 | s16 τ_m pressure test | done (10 seeds × 4 τ_m; falsification robust, strong claim adopted) |
 | s15 controlled adaptation | done (10 seeds × 5 switches; true effect ~10 pulses + variance collapse; "47×" is a metric artifact) |
-| s16b probe stress test | done (10 seeds × 2 τ_m × 3 variants; sign robust, magnitude protocol-dependent) |
+| s16b probe stress test | done (v2: 10 seeds × 4 τ_m × 3 variants; sign robust ≤1/10 in every cell, V0 −0.69 → V2 −0.04…−0.01) |
 | s5b S5 controlled re-measurement | done (100 runs; T200 factor 1.28–1.44, T40 1.79–2.40; Paper B revised) |
 | s17 substrate stress | done (120 runs; equalizer gain positive at all ESN configs) |
 | s18 LLM drift gate | done (90 runs; A3 routing transfers, A2 gate falsified; §7 results in paper_c/LLM_EXTENSION.md) |
@@ -251,7 +253,17 @@ ws-ijbc.cls / revtex4-2 for Paper A (IJBC/Chaos), elsarticle.cls for Paper B
 | Paper D s21 | done (70 runs; soft routing beats abrupt; M5 homeostat restores detector 5/5) |
 | Paper D s22 | done (30 runs; 4-domain benchmark, REDEM vs bare/TF 10/10) |
 | Paper D s23 | done (30 runs; real-text Gutenberg transfer, REDEM vs bare/TF 10/10) |
-| Paper D P5 | done (PAPER_D.tex draft, 11 pp, zero warnings; revision pass 1: A2 qualifier + real-text results) |
+| s24 M4-M5 coupling | done (40 runs; negative 0/10 — rewiring during disturbance compensation is harmful) |
+| s25 reward-gated plasticity | done (40 runs; novelty-guided +2.15 vs correlation, 10/10) |
+| s26 fair-TF references | done (90 runs; tuned grid closes stream gap to −1.68 (0/10) but collapses retention; TF-A3 routing transfers −43% forgetting) |
+| s27 clip-kappa fine grid | done (1170 runs; κ* = 25.3/27.4/27.9, coupling-driven — invariant to 5× clip widening, ring_bidir excepted) |
+| s28 chain-protocol causal audit | done (60 runs; no leak improves recovery; no-plasticity = 8.47 anchor exactly) |
+| s30 N=1024 replication | done (20 runs; 10 seeds, paired t=15.3) |
+| s31 char-bigram oracle | done (10 seeds; first-order ceiling ppl 10.97 ± 0.18) |
+| s32 FTLE-noise robustness | done (50 runs; no significant degradation to σ=0.10) |
+| s33 M5 in P4 | done (20 runs; honest negative 10/10 — M5 breaks Δt=1 whitening) |
+| s34 leak sensitivity | done (60 runs; FTLE 10× NS; plasticity 30% significant +0.57 — audit resolution bounded) |
+| Paper D P5 | done (PAPER_D.tex draft, 13 pp, zero warnings; revision pass 1: A2 qualifier + real-text results; pass 2: P1 theorem + reference fairness + M5 negative + oracle) |
 | Paper C derivation | in progress (thesis locked; PAPER_C.tex submission-ready; §7 LLM PoC results available for the extension section) |
 
 ## Open items
@@ -268,7 +280,7 @@ ws-ijbc.cls / revtex4-2 for Paper A (IJBC/Chaos), elsarticle.cls for Paper B
   ppl −1.07 at τ_m=200), A2 gate falsified; results in
   `paper_c/LLM_EXTENSION.md` §7.7. Remaining before submission: cover
   letter.
-- Paper D: `paper_d/PAPER_D.tex` drafted (11 pp, zero warnings). Open:
+- Paper D: `paper_d/PAPER_D.tex` drafted (13 pp, zero warnings). Open:
   title RESOLVED 2026-02-19 (revised to "A State-Space Architecture ...";
   "Foundation Model" dropped as overclaiming for the toy prototype),
   optional related-work paragraph +
