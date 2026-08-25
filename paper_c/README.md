@@ -1,13 +1,13 @@
 # Paper C - Three Mechanisms, Three Roles (working title)
 
 Short paper (single author, ~8 pages two-column equivalent; elsarticle
-preprint renders 13 pages). Status: post-s14, post-s16, post-s15, post-s16b,
+preprint renders 14 pages). Status: post-s14, post-s16, post-s15, post-s16b,
 post-s5b, post-s17, post-s18 (all 10 seeds). The three-mechanism
 disentanglement thesis is adopted (user gate, 2026-02-17): metadata is a
 substrate-agnostic *statistical* memory; disturbance recovery is the
 homeostat's role; raw memory capacity is the substrate's physics.
 **PAPER_C.tex is drafted and submission-ready** (elsarticle preprint,
-13 pp, zero warnings, incl. §6 LLM extension with s18 results + Fig 3 +
+14 pp, zero warnings, incl. §6 LLM extension with s18 results + Fig 3 +
 Table 6) for Neurocomputing / Neural Networks short paper. Theory in `DERIVATION.md`;
 outline and numbers in `PAPER_C_sketch.md`.
 
@@ -56,9 +56,9 @@ overall accuracy.
 
 | File | Used for |
 |---|---|
-| `../data/s10_esn_metadata_v1.*` | S10 equalization: esn_fast 0.9955 / esn_dual 0.9979 / redem 0.9942; adapt 11.22 -> 0.24 (10 seeds) |
+| `../data/s10_esn_metadata_v1.*` | S10 equalization: esn_fast 0.9955 / esn_dual 0.9979 / redem 0.9942; adapt 11.22 -> 0.24 (window-position ratio — a metric artifact; cf. the s15 row) (10 seeds) |
 | `../data/s11_disturbance_chain_v1.*` | Homeostat sequential recovery anchor: MC 8.47 vs 6.41 (+32%), kappa 25.3 -> 28.5 (10 seeds) |
-| `../data/s14_esn_disturbance_chain_v1.*` | S14 transfer test: MC paired diffs -0.78/-0.76/-0.69 (0/10 positive), r3 NMSE -9.5% (10/10), redem_reg reproduces S11 anchor |
+| `../data/s14_esn_disturbance_chain_v1.*` | S14 transfer test: MC paired diffs -0.78/-0.76/-0.69 (0/10 positive), r3 NMSE -9.6% (10/10 at tau_m>=500, 9/10 at 200), redem_reg reproduces S11 anchor |
 | `../data/s16_tau_m_pressure_test_v1.*` | S16 pressure test: r3 MC paired diffs -0.70/-0.69/-0.68/-0.68 at tau_m 200/500/1000/2000 (0/10 positive), strong claim locked |
 | `../data/s15_controlled_adaptation_v1.*` | S15 controlled adaptation: T40 40.6 vs 49.9 (dual vs fast), p90 42 vs 76.5; "47x" ratio = metric artifact |
 | `../data/s16b_falsification_stress_test_v2.*` | S16b probe stress (v2: 10 seeds × 4 τ_m × 3 variants; ≤1/10 positive in every cell; magnitude V0 -0.69 -> V2 -0.04…-0.01, state-noise denoising at every τ_m; v1 kept for the original table) |
@@ -79,7 +79,7 @@ overall accuracy.
   stress test), s5b (S5 substrate arms controlled), s17 (substrate stress),
   s18 (LLM drift-gate PoC: routing transfers, gate falsified) - all 10
   seeds; see `DERIVATION.md` Section 8 and `LLM_EXTENSION.md` §7.7.
-- PAPER_C.tex drafted and submission-ready (elsarticle preprint, 13 pp,
+- PAPER_C.tex drafted and submission-ready (elsarticle preprint, 14 pp,
   zero warnings). §6 LLM extension WRITTEN (s18 results + Fig 3 + Table 6;
   A2 gating falsified as design-lesson evidence, A3 routing transfers).
   §7 conclusion point (6) ADDED (host-boundary statement: the full
@@ -117,23 +117,23 @@ pdflatex PAPER_C.tex    # run three times for cross-references (elsarticle)
 - [x] Document class: `elsarticle` preprint (Elsevier initial-submission
       format); switch to `\documentclass[final,3p]{elsarticle}` (two-col)
       or `[final,1p]` at acceptance per journal preference.
-- [ ] Honest wording locked: equalizer is about statistical memory; +32% is
+- [x] Honest wording locked: equalizer is about statistical memory; +32% is
       homeostat; esn_dual best S10 accuracy - state all three (done in
       text).
-- [ ] Strong claim wording locked on s16 (0/10-seed sign consistency, ~5
+- [x] Strong claim wording locked on s16 (0/10-seed sign consistency, ~5
       sigma paired diffs) - done.
 - [x] Cite Paper A Section 5 and Paper B Section 4.5 (companion refs in
       bibliography; `\cite{companionA}` at the substrate definition, 
       `\cite{companionB}` at the M3 introduction, `\cite{maass2002}` at the
       reservoir citation — added 2026-08-24 review audit, previously
       orphaned bibitems).
-- [ ] Code/data availability statement (REDEM repo, private during review)
+- [x] Code/data availability statement (REDEM repo, private during review)
       - done.
-- [ ] Keywords present (Elsevier format) - done.
+- [x] Keywords present (Elsevier format) - done.
 - [x] §6 LLM extension written into PAPER_C.tex (s18 results + Fig 3 +
       Table 6; A2 falsification framed as design lesson) - done.
 - [x] §7 conclusion point (6) host-boundary paragraph added (calibrated:
       host property + update-policy attribution + "stateful host" future
       work; NOT an architecture trial of the Transformer) - done.
-- [ ] Cover letter: the falsifying-experiment angle (which mechanism does
+- [x] Cover letter: the falsifying-experiment angle (which mechanism does
       which job) + honest ESN position.

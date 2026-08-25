@@ -204,7 +204,8 @@ $\lambda_r=1$, features standardized with training-segment statistics) on the
 first 70\% of the collected stream, hold out a $k_{\max}=50$-step leakage
 buffer, and evaluate on the last 30\%; $\MCI_{\mathrm{total}} = \sum_{k=1}^{50}
 r_k^2$. The held-out protocol is essential: the in-sample convention inflates
-memory in the chaotic regime by 2--3$\times$ (Section~\ref{sec:chaos}). The
+memory in the chaotic regime by 7--19$\times$ relative to held-out
+evaluation (Section~\ref{sec:chaos}). The
 estimator derivation and the linear-reservoir closed form that anchors the
 theory are given in Appendix~\ref{app:mc}.
 
@@ -273,16 +274,16 @@ or by the physical bounds. A follow-up sweep (data/s27\_clip\_kappa
 $\alpha_{\max}\in\{0.1,0.2,0.5\}$, 10 seeds) answers it. First, the fine
 grid pins the mean-FTLE crossing at $\kappa^\ast = 25.3$ (lateral\_ring),
 27.4 (ring\_bidir), and 27.9 (random\_graph), all inside the $(25,30)$
-bracket above, with bootstrap 95\% CIs of $\pm0.1$--$0.8$ --- the
-transition is sharp at unit resolution, not a grid artifact. Second,
+bracket above --- the transition is sharp at unit resolution, not a grid
+artifact. Second,
 widening the clip five-fold ($\alpha_{\max}=0.5$) does not move the
 transition for the two topologies with the largest memory gains:
-$\kappa^\ast = 25.3\to25.4$ (lateral\_ring; shift $+0.05$, CI
-$[-0.19,+0.29]$) and $27.9\to27.7$ (random\_graph; shift $-0.21$, CI
-$[-0.48,+0.09]$). The order--chaos transition is therefore
+$\kappa^\ast = 25.3\to25.4$ (lateral\_ring; shift $+0.05$) and
+$27.9\to27.7$ (random\_graph; shift $-0.21$). The order--chaos transition
+is therefore
 \emph{coupling-driven}: the clip is a consequence of the large contrasts
 it bounds, not their cause. ring\_bidir is the one exception --- its
-crossing moves $+3.4$ (CI $[+2.1,+4.9]$) under the wider clip, so the
+crossing moves $+3.4$ under the wider clip, so the
 bound contributes to that topology's transition onset. A secondary
 result: widening the clip raises the ring\_bidir memory peak from 11.9
 to 17.7 ($\alpha_{\max}=0.2$), showing that for ring-like topologies the
@@ -351,7 +352,8 @@ precision; derivation in Appendix~\ref{app:quadrature}). Three properties follow
 (Fig.~\ref{fig:forgetting}):
 \begin{enumerate}
 \item \textbf{The $1/e$ horizon is median-pinned.} $M(\tau_0/\bar{\Dt})
-\approx e^{-1}$ regardless of CV; the horizon is 12--16 pulses for CV
+\approx e^{-1}$ --- within a few percent for CV $\le 0.5$ and within
+$\sim$25\% at CV $=1.0$; the horizon is 12--16 pulses for CV
 $\in[0.02,1.0]$, in agreement with the nominal window $N_{\mathrm{eff}}\approx
 16$. The \emph{median} time constant sets where memory is; the width sets how
 it decays.
@@ -371,7 +373,8 @@ space set by CV.
 \subsection{Validation against the measured memory capacity}
 
 The measured parallel-substrate curve $\sqrt{\MCI(k)}$ (held-out) tracks
-$M(k\cdot\bar{\Dt})$ at CV $=0.20$ with \textbf{Pearson $r=0.97$}; at lag 10
+$M(k\cdot\bar{\Dt})$ at CV $=0.20$ with \textbf{Pearson $r=0.97$}
+(data/forgetting\_curve\_theory\_overlay\_v1.json); at lag 10
 the two agree almost exactly (0.520 vs.\ 0.523), with systematic damping at
 short lags (readout regression attenuation for a random drive). The
 device-physics spectrum thus predicts the substrate's empirical memory curve
@@ -395,21 +398,18 @@ Appendix~\ref{app:quadrature}.
 \textbf{The kernel survives coupling (shape stability).} The single-unit
 theory was validated on the parallel substrate; the committed per-lag
 memory curves let us ask whether the coupled substrate's curve is still
-kernel-shaped. Fitting an \emph{effective} log-normal spectrum to
-$\sqrt{\mathrm{MC}(k)}$ at each operating point
-(data/substrate\_phase\_diagram\_v2.json; quadrature as in
-Appendix~\ref{app:quadrature}) gives Pearson $r \ge 0.86$ against the
-best fit at every $\kappa \in \{15,\dots,30\}$ of all three mode-1
-topologies, and the \emph{physical} spectrum $(174\,\mu$s, CV $0.20)$
-already achieves $r = 0.84$--$0.95$ over the same range ($r=0.95$ at
-random\_graph $\kappa{=}25$). The fitted effective median stretches
-monotonically with $\kappa$ (from $\approx 1\times$ to $2$--$3\times$
-the physical value as the transition is approached) --- a
-coupling-induced time dilation of the memory kernel consistent with the
-near-critical slowdown of Section~\ref{sec:negfb}. Single curves cannot
-separate the effective median from the width (the fit saturates at wide
-CV), so we report the shape stability and the dilation qualitatively
-rather than as a precise renormalization map.
+kernel-shaped. The \emph{physical} spectrum $(174\,\mu$s, CV $0.20)$
+achieves Pearson $r = 0.91$--$0.99$ against $\sqrt{\mathrm{MC}(k)}$ over
+$\kappa \in \{15,\dots,30\}$ of all three mode-1 topologies ($r=0.98$ at
+random\_graph $\kappa{=}25$), without any re-fitting
+(data/kernel\_coupling\_shape\_v1.json; quadrature as in
+Appendix~\ref{app:quadrature}): the kernel shape survives coupling. The
+approach to the transition dilates the memory kernel (consistent with
+the near-critical slowdown of Section~\ref{sec:negfb}), but single
+curves cannot separate an effective-median shift from a width change
+(the fit saturates at wide CV), so we report the shape stability
+quantitatively and the dilation qualitatively rather than as a precise
+renormalization map.
 
 \section{Disturbance robustness and the \texorpdfstring{$\lambda$}{lambda}-homeostat}
 \label{sec:homeostat}
@@ -433,7 +433,7 @@ $\lambda$-homeostat).
 \subsection{The \texorpdfstring{$\lambda$}{lambda}-homeostat}
 
 The homeostat estimates $\lambda$ directly: every 1000 pulses it runs a
-400-pulse Benettin pair at the current $\kappa$ (20\% computational overhead)
+400-pulse Benettin pair at the current $\kappa$ (40\% computational overhead)
 and steps
 \begin{equation}
 \kappa \leftarrow \mathrm{clip}\big(\kappa + \eta\,\mathrm{clip}
@@ -445,9 +445,11 @@ the slightly-ordered side of the transition where held-out MC peaks
 (Section~\ref{sec:negfb}). The regulated system settles at $\kappa \approx
 26$--27 under all conditions and achieves post-disturbance held-out MC gains of
 $+7.6\%$ (none), $+18\%$ ($\tau$-drift), $+7.9\%$ (edge-prune), $+11.8\%$
-(noise) over the fixed coupling (Table~\ref{tab:homeostat}), at task-level NMSE
-parity (the RLS readout absorbs task-level differences; the substrate-level
-memory improvement is revealed by the readout-independent MC probe). The
+(noise) over the fixed coupling (Table~\ref{tab:homeostat}), at broadly
+comparable task-level NMSE (regulated up to $2\times$ worse on the gain arms,
+better under readout noise; the RLS readout absorbs task-level differences,
+and the substrate-level memory improvement is revealed by the
+readout-independent MC probe). The
 $\lambda$-homeostat is disturbance-type-agnostic because it tracks the
 dynamical quantity itself rather than a proxy whose optimum shifts.
 The estimate is also robust to its own noise: injecting Gaussian error
@@ -460,10 +462,11 @@ clipped proportional feedback integrates over the estimation error.
 A systematic $\lambda_{\mathrm{target}}$ sweep
 ($\lambda_{\mathrm{target}}\in\{-0.05,-0.02,-0.005,0\}\times\mathrm{CV}\in\{0.1,0.2,0.4\}$,
 5 seeds; companion paper Table~2) identifies $\lambda_{\mathrm{target}}{=}0$
-(the edge of chaos) as optimal: post-disturbance MC improves monotonically as
-$\lambda_{\mathrm{target}}\to 0$, with gains of $+25\%$ (CV=0.1), $+19\%$
-(CV=0.2) over fixed coupling --- updating the manually tuned $-0.02$ used in
-the main results.
+(the edge of chaos) as optimal: post-disturbance MC peaks near the edge of
+chaos at every CV ($\lambda_{\mathrm{target}}{=}0$ optimal at CV=0.1 and 0.4;
+the $-0.005$ setting marginally ahead at CV=0.2), with gains of $+25\%$
+(CV=0.1), $+19\%$ (CV=0.2), $+5\%$ (CV=0.4) over fixed coupling --- updating
+the manually tuned $-0.02$ used in the main results.
 
 \begin{table}[t]
 \centering
@@ -508,7 +511,8 @@ trace, and the separation must be exploited nonlinearly (a companion work
 develops structure plasticity from functional connectivity). For linear readouts, the
 optimal operating point is the \emph{last ordered configuration before the
 transition} --- a slightly-subcritical target ($\kappa = 20$--25,
-$\lambda \approx -0.05$), exactly where the homeostat parks the system.
+$\lambda \approx -0.05$), consistent with where the homeostat parks the
+system ($\kappa \approx 26$--27).
 
 \textbf{The forgetting kernel as design language.} $M(t)$ connects device
 physics to the state-space-model literature: the substrate is a
@@ -522,7 +526,8 @@ CV here, the algorithmic EMA timescale $\tau_m$ (companion~C), and the
 log-uniform coverage range of the state-space host (companion~D). They
 are not interchangeable, and the distinction is quantitative: for a
 log-normal spectrum the $1/e$ horizon is set by the \emph{location}
-(median $\tau_0$: $M(\tau_0)\approx e^{-1}$ regardless of CV, measured
+(median $\tau_0$: $M(\tau_0)\approx e^{-1}$ --- within a few percent for
+CV $\le 0.5$, within $\sim$25\% at CV $=1.0$; measured
 12--16 pulses over CV $\in[0.02,1.0]$) while the tail weight is set by
 the \emph{width} (measured log-log slope $-60.6$ at CV $0.2$ vs.\ $-7.1$
 at CV $1.0$). The companion's $\tau_m$ is a location knob (the
@@ -638,7 +643,7 @@ The map is therefore a well-defined function of the state at $t$ --- a parallel
 map --- and the order in which individual unit updates are computed is
 irrelevant. At $\kappa=0$, $\alpha_{\mathrm{eff},i}=\alpha_0$ for all $i$ and
 the coupling term vanishes; the map reduces exactly to the parallel array of
-\cite{prior} (verified to $\le 10^{-15}$ in the implementation's self-test).
+\cite{prior} (verified to $\le 10^{-10}$ in the implementation's self-test).
 
 \subsection{The forgetting kernel and its quadrature (Section~\ref{sec:kernel})}
 \label{app:quadrature}
@@ -669,17 +674,22 @@ $\in[0.02,1.0]$, Fig.~\ref{fig:forgetting}).
 
 \textbf{Tail asymptotics.} For $t\gg\tau_0$ the saddle point moves to
 $\tau^*\approx t\,\sigma^2/\ln(t/\tau_0)$, and
-$\ln M(t)\approx-(\ln\tau^*-\mu)^2/(2\sigma^2)-t/\tau^*\approx-(\ln t-\mu)^2/
-(2\sigma^2)$ to leading order. The log--log slope therefore asymptotes to
+$\ln M(t)\approx-(\ln\tau^*-\mu)^2/(2\sigma^2)-t/\tau^*$; dropping the
+$t/\tau^*$ term gives the leading-order log--log slope
 \begin{equation}
 \frac{d\ln M}{d\ln t}\approx -\frac{\ln t-\mu}{\sigma^2}.
 \label{eq:tailslope}
 \end{equation}
-At $t=200$ pulses, CV $=0.2$ ($\sigma^2=0.0392$;
-$\mu=\ln(\tau_0/\bar{\Dt})\approx2.76$ in pulse units), this predicts $-64.8$,
-in agreement with the measured long-lag slope $-60.6$ (the residual difference
-is the sub-leading $t/\tau^*$ term). Narrowing the spectrum (CV$\to0$) makes
-$\sigma^2\to0$ and the slope $\to-\infty$: the single-exponential limit.
+The $t/\tau^*$ correction is not sub-leading in the sampled window: over
+$t\in[5{,}000,\,20{,}000]$ pulses the exact quadrature slope is $-60.6$ at
+CV $=0.2$ ($\sigma^2=0.0392$; $\mu=\ln(\tau_0/\bar{\Dt})\approx2.76$ in pulse
+units), while Eq.~\eqref{eq:tailslope} gives $-147$ to $-182$ --- the
+asymptotic regime is only partially reached (at $t=200$ the exact slope is
+already $-9.3$, against the formula's $-64.8$). The qualitative prediction is
+confirmed: the slope steepens as the spectrum narrows (quadrature $-60.6$ at
+CV $=0.2$ vs.\ $-7.1$ at CV $=1.0$; Eq.~\eqref{eq:tailslope}: $-147$ to
+$-182$ vs.\ $-8.3$ to $-10.3$), and CV$\to0$ makes $\sigma^2\to0$ and the
+slope $\to-\infty$: the single-exponential limit.
 
 \subsection{Benettin algorithm (Section~\ref{sec:methods})}
 \label{app:benettin}
@@ -721,8 +731,8 @@ $\MCI_{\mathrm{total}}=\sum_{k=1}^{50}r_k^2$.
 \textit{Linear closed form.} Linearize the substrate (clip inactive, $\kappa$
 small): $x_{t+1}=A x_t+b u_{t+1}$ with $u_t=\Dt_t$ and $A$ contractive. Then
 $x_t=\sum_{j\ge0}A^j b\,u_{t-j}$; the input at lag $k$ contributes the
-component $A^{k-1}b\,u_{t-k}$, whose covariance with $x_t$ is
-$c_k=A^{k-1}b\,\mathrm{Var}(u)$. The best linear predictor achieves the
+component $A^{k}b\,u_{t-k}$, whose covariance with $x_t$ is
+$c_k=A^{k}b\,\mathrm{Var}(u)$. The best linear predictor achieves the
 multiple correlation
 \begin{equation}
 \MCI(k)=c_k^\top\,\Sigma_x^{-1}\,c_k,\qquad

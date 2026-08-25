@@ -7,7 +7,7 @@ as overclaiming for a toy-scale, CPU-only PoC).
 
 **Status**: P1–P5 DONE 2026-02-18. P1/P3a falsified with mechanisms
 isolated (exact token recovery is a deconvolution impossibility — Prop. 1;
-the pooled state readout is stuck near uniform perplexity, 0/10; M1 works
+the pooled state readout fails out of sample (ppl 58–116), 0/10; M1 works
 on the additive input path, 10/10). **Revision pass 3 (review audit)**: the
 P1 corollary "ridge finds no useful linear map because none exists" was
 **retracted and replaced** by a scoped boundary analysis (s35): the current
@@ -22,11 +22,12 @@ probabilities from any closed-form linear state readout), not missing
 linear information.
 Related-work section added (activates all 13 bibliography entries);
 code/data availability statement added. P2 partially replicated (M3
-routing transfers, forgetting −2.05 at τ_m≤1000, 10/10; gating-only
+routing transfers, forgetting −2.05…−1.20 at τ_m≤1000, 10/10; gating-only
 inverts on RLS readouts — readout-dynamics-dependent, with the
 what-is-paused qualifier). P3 both
-supported (soft routing beats abrupt −1.82, 10/10; dormant covariance
-refresh flips routing to −1.72; M5 homeostat bounds the state 11.3 vs 50.2
+supported (soft routing beats abrupt −1.81, 10/10; dormant covariance
+refresh flips the soft-routing stream result to −3.54; M5 homeostat
+bounds the state 11.3 vs 50.2
 and restores the full-state EMA detector 5/5). P4 benchmark (4-domain
 irregular switches) both hypotheses 10/10 (REDEM vs bare −2.25/−4.47, vs
 TF-A1 −9.28/−10.08) + real-text transfer (S23, two Gutenberg books:
@@ -128,10 +129,10 @@ CSV+JSON dual output.
 
 | Script | Type | Experiment | Key result |
 |---|---|---|---|
-| `../scripts/s19_ssm_rls_readout.py` | ML | P1/P3a: per-token RLS readout on a diagonal SSM (7 arms × 10 seeds) | state arms 58.5–115.9 ppl (0/10) vs B-proj input path 11.75 (d −3.26, 10/10); oracles 7.25 vs 7.35 |
+| `../scripts/s19_ssm_rls_readout.py` | ML | P1/P3a: per-token RLS readout on a diagonal SSM (7 arms × 10 seeds) | state arms 58.5–115.9 ppl (0/10) vs B-proj input path 11.75 (d −3.26, 10/10); oracles 7.25 (mean; 7.15–7.36) |
 | `../scripts/s20_ssm_m3_routing.py` | ML | P2: M3 fast-channel EMA + drift detection + routing (A1/A2/A3 × τ_m × 10) | A2 stream −1.52…−2.45 (10/10); A3 forget −2.05/−1.87/−1.20 at τ_m≤1000 (10/10) |
-| `../scripts/s21_ssm_m4_m5.py` | ML | P3: M4 soft vs abrupt routing + M5 state-norm homeostat (E1/E2 × 10) | soft 8.22 vs abrupt 10.03 (−1.82, 10/10); M5 flips detector 5/5, norm 11.3 vs 50.2 |
-| `../scripts/s22_ssm_p4_benchmark.py` | ML | P4: 4-domain irregular-switch benchmark (3 arms × 10) | REDEM 13.18/8.93 vs bare 15.43/13.41 vs TF 22.46/19.01 (10/10) |
+| `../scripts/s21_ssm_m4_m5.py` | ML | P3: M4 soft vs abrupt routing + M5 state-norm homeostat (E1/E2 × 10) | soft 8.22 vs abrupt 10.03 (−1.81, 10/10); M5 flips detector 5/5, norm 11.3 vs 50.2 |
+| `../scripts/s22_ssm_p4_benchmark.py` | ML | P4: 4-domain irregular-switch benchmark (3 arms × 10) | REDEM 13.18/8.93 vs bare 15.43/13.40 vs TF 22.46/19.01 (10/10) |
 | `../scripts/s23_ssm_p4_realtext.py` | ML | real-text transfer: Alice vs Dickens, 32-symbol chars (3 arms × 10) | REDEM 12.07/11.85 vs bare 13.34/12.31 vs TF 17.31/13.86 (−1.27/−5.23, 10/10) |
 | `../scripts/s26_ssm_p4_fair_tf.py` | ML | fair TF references for P4: tuned A1 grid (4 lrs × 2 ranks) + 4-adapter A3 routing (9 arms × 10) | tuning cuts the stream gap to −1.68 (0/10) but collapses retention to 62.2; TF-A3 transfers −8.17 forgetting (10/10) without fixing stream (+8.59) — mechanisms host-agnostic, stream performance is not |
 | `../scripts/s31_char_bigram_oracle.py` | PAPER | char-bigram oracle on the real-text protocol (full-book vs ref-window fits, 10 seeds) | true first-order ceiling ppl 10.97 ± 0.18; SSM-REDEM 12.07 within ~1.1 ppl of it — first-order scope now quantitative |

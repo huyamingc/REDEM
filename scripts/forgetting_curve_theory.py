@@ -20,6 +20,9 @@ is much slower than a single exponential but faster than a power law.
 
 Outputs:
   data/forgetting_curve_theory.csv   (M(t) per CV on the pulse grid)
+  data/forgetting_curve_theory_overlay_v1.json
+                                    (Pearson r of sqrt(MC(k)) vs M(k) at
+                                     CV=0.2 -- the Paper A r = 0.97 anchor)
   figures/forgetting_curve_theory.pdf (vector PDF for journal submission)
   (a) M(t) vs t in pulses, log-log, for CV in {0.02, 0.2, 0.5, 1.0}
       with single-exp, power-law and stretched-exp references
@@ -176,10 +179,38 @@ def main():
                 r = np.sqrt(np.clip(mc_curve, 0, None))
                 ax.semilogx(k[1:], r[1:], 'ks', ms=3,
                             label='S1 parallel sqrt(MC(k))')
-                t_ref = k * DT_BAR * PULSES_PER_SEC  # lag -> pulses (dt~11us)
-                ax.semilogx(t_ref[1:], M[1, :len(t_ref) - 1] if len(t_ref) - 1 <= len(M[1]) else M[1, :len(t_ref)][1:],
+                t_ref = k  # lag k in pulses (DT_BAR * PULSES_PER_SEC = 1)
+                # theory kernel evaluated AT the lag times t = k pulses
+                # (interpolated on the log pulse grid)
+                M_at_k = np.interp(t_ref[1:], t_pulse, M[1])
+                ax.semilogx(t_ref[1:], M_at_k,
                             color=colors[1], lw=1.5,
                             label='theory M(t), CV=0.2')
+                # Pearson correlation over the plotted lags (Paper A r = 0.97)
+                corr_r = float(np.corrcoef(r[1:], M_at_k)[0, 1])
+                m_at_10 = float(np.interp(10.0, t_pulse, M[1]))
+                print(f'  overlay: Pearson r(sqrt(MC(k)), M(k)) k=1..{len(k) - 1}'
+                      f' = {corr_r:.4f}  (lag-10: sqrt(MC) = {r[10]:.4f} vs '
+                      f'M(10) = {m_at_10:.4f})')
+                overlay = {
+                    'params': {
+                        'note': 'Paper A: sqrt(MC(k)) vs M(k) at CV=0.2, '
+                                'lag k in pulses; S1 parallel substrate '
+                                '(held-out protocol)',
+                        'cv': 0.2,
+                        'k_range': [1, int(len(k) - 1)],
+                        'data': 'data/substrate_phase_diagram_v2.json '
+                                '(parallel mc_curve_mean) + '
+                                'data/forgetting_curve_theory.csv (M_cv0.2)',
+                    },
+                    'r_pearson': corr_r,
+                    'lag10': {'sqrt_mc': float(r[10]), 'm_theory': m_at_10},
+                }
+                overlay_path = os.path.join(
+                    DATA_DIR, 'forgetting_curve_theory_overlay_v1.json')
+                with open(overlay_path, 'w') as f:
+                    json.dump(overlay, f, indent=2)
+                print(f'saved: {overlay_path}')
                 break
         ax.set_xlabel('lag k (pulses)')
         ax.set_ylabel('corr r / M(t)')

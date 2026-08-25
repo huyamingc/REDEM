@@ -40,39 +40,39 @@ the structure level (M4).
 | S5 | Dual-timescale metadata: regime task +1.3–2.1 pp (p<0.0001); adaptation re-measured by s5b (controlled switch-relative): T200 265–304 (fast) vs 202–211 (dual), factor 1.3–2.4 (the earlier "9–20× faster" ratio was a window-position metric artifact) |
 | S6 | λ-homeostat: post-disturbance held-out memory +8–18% (τ-drift +18%) |
 | S7 | Gentle (5%) correlation-guided rewiring +8–11%; aggressive (20%) −23%; pruning redundancy helps (de-homogenization) |
-| S8 | Integrated system beats every ablation: 0.996 vs 0.973 (p<0.0001); persists at N=1024 (0.998 vs 0.976) |
+| S8 | Integrated system beats every ablation: 0.996 vs 0.973 (p<0.0001); persists at N=1024 (s30, 10 seeds: 0.9970 vs 0.9753) |
 | S9 | Online (REDEM 0.991, ESN 1.000) vs frozen batch (GRU 0.394, transformer 0.351, inverted post-swap); MG NMSE REDEM 0.0018 vs ESN 3.6e-5 vs GRU 1.56 vs TF 0.71; ESN edge on standard tasks reported honestly (2026-02-19 revision: z-scored ESN features, per-trial torch seed, causal transformer mask) |
 | Theory | Forgetting kernel M(t)=∫p(τ)e^{−t/τ}dτ: 1/e horizon ≈16 pulses (median-pinned); tail steepness set by CV; measured MC curve follows it with r = 0.97 |
 | S10-CV | Task-level CV sweep: uncoupled MC rises with CV (+33%, kernel theory); coupled near-critical MC falls (narrow CV best) — operating-regime-dependent knob |
 | S10-ESN | Metadata transfer: ESN+meta 0.998 ≈ ESN 0.996 ≈ REDEM-full 0.994 on regime task — the mechanism equalizes the systems (adapt 11.22→0.24 in the S10 metric; controlled s15 shows the true effect is ~10 pulses + variance collapse) |
 | E3 | Sequential disturbance chain (3 rounds: τ-drift → edge-prune → noise, 10 seeds): regulated arm maintains MC 8.47 vs fixed 6.41 (+32%) after all three; κ drifts 26.2→28.5 (active compensation) |
-| E4 | λ_target sweep (4 values × 3 CV × 5 seeds): λ_target=0 (edge of chaos) is optimal — +25%/+19%/+5% MC gain over fixed at CV=0.1/0.2/0.4; monotonic improvement as λ→0 |
+| E4 | λ_target sweep (4 values × 3 CV × 5 seeds): λ_target=0 (edge of chaos) is optimal — +25%/+19%/+5% MC gain over fixed at CV=0.1/0.2/0.4 (λ_target=0 optimal at CV=0.1/0.4; the −0.005 setting marginally ahead at CV=0.2) |
 | O4 | Causal audit (7 arms × 10 seeds, re-run 2026-02-19 with the plasticity-correlation leak implemented): all adaptive mechanisms are causally clean — largest leak-arm deviation 0.012 pp (RLS target), plasticity leak −0.01 pp; causal-split protocol 0.9963 vs normal 0.9963 |
-| s14 | ESN+metadata under the S11 disturbance chain (3 arms × 10 seeds): the slow trace does NOT transfer MC robustness to the ESN (paired diffs −0.78/−0.76/−0.69, 0/10 seeds positive) — the S11 +32% recovery is homeostat-driven; metadata still attenuates readout noise (r3 NMSE −9.5%, 10/10 seeds); redem_reg reproduces the S11 anchor exactly |
+| s14 | ESN+metadata under the S11 disturbance chain (3 arms × 10 seeds): the slow trace does NOT transfer MC robustness to the ESN (paired diffs −0.78/−0.76/−0.69, 0/10 seeds positive) — the S11 +32% recovery is homeostat-driven; metadata still attenuates readout noise (r3 NMSE −9.6%, 10/10 seeds at τ_m≥500, 9/10 at 200); redem_reg reproduces the S11 anchor exactly |
 | s16 | τ_m pressure test (τ_m ∈ {200,500,1000,2000} × 10 seeds): the falsification is robust — esn_dual r3 MC ≤ esn_fast at every τ_m (0/10 seeds positive, ~5σ), no sensitive interval; noise-attenuation transfer holds at all τ_m. Paper C adopts the strong claim |
 | s15 | Controlled adaptation (10 seeds × 5 switches, known switch instants): T40 40.6 (dual) vs 49.9 (fast) vs 52.7 (redem); T40 p90 42 vs 76.5 — the true metadata adaptation effect is ~10 pulses + variance collapse; the "47×"/"9–20×" ratios are metric artifacts |
 | s16b | Probe-protocol stress test (10 seeds × 4 τ_m × 3 variants, v2): falsification robust in sign (≤1/10 positive in every cell; 0/10 in 11 of 12); magnitude protocol-dependent — V0 (readout noise) −0.69, V1 (std-slow) −0.66, V2 (state noise) −0.04…−0.01 across τ_m (EMA denoising nearly closes the gap at every timescale) |
 | s5b | S5 three-arm controlled re-measurement (2 substrates × 5 arm configs × 10 seeds): T200 fast 264.8–303.9 vs dual/slow 202–211 pulses (factor 1.28–1.44; T40 factor 1.79–2.40); overall acc reproduces S5 exactly — Paper B §4.3/abstract revised |
 | s17 | Substrate stress (3 spectral radii × 2 hetero × 10 seeds): equalizer gain positive at all 6 ESN configs (+0.1 to +1.0 pp), magnitude tracks the fast channel's timescale starvation; heterogeneity irrelevant |
 | s18 | LLM drift-gate PoC (tiny transformer + LoRA, 90 runs): A3 domain routing transfers — forgetting −2.5 ppl (10/10 seeds, τ_m=200), stream ppl −1.07 (10/10) at τ_m≤500; A2 gate falsified (0/10); τ_m≥1000 sensitive interval reported |
-| s19 | Paper D P1/P3a (diagonal SSM, per-token RLS, 70 runs): naive state readout falsified — state arms 58.5–115.9 ppl (0/10) vs B-projection input path 11.75 (d −3.26, 10/10); MLE ceiling probe 7.25 vs 7.35 B-proj oracle |
+| s19 | Paper D P1/P3a (diagonal SSM, per-token RLS, 70 runs): naive state readout falsified — state arms 58.5–115.9 ppl (0/10) vs B-projection input path 11.75 (d −3.26, 10/10); MLE ceiling probe oracle 7.25 (mean; 7.15–7.36) |
 | s20 | Paper D P2 (M3 routing, 90 runs): gating-only inverts on the RLS host (stream −1.52…−2.45, 10/10 — what-is-paused qualifier); M3 routing transfers (forget −2.05/−1.87/−1.20 at τ_m≤1000, 10/10) |
-| s21 | Paper D P3 (M4 soft routing + M5 homeostat, 70 runs): soft 8.22 vs abrupt 10.03 (−1.82, 10/10); dormant-covariance refresh flips routing to −1.72; M5 bounds whitened norm 11.3 vs 50.2 and restores the full-state EMA detector 5/5 |
-| s22 | Paper D P4 benchmark (4-domain irregular switches, 30 runs): REDEM 13.18/8.93 vs bare SSM 15.43/13.41 vs TF-A1 22.46/19.01 (stream/forget) — all 10/10 |
+| s21 | Paper D P3 (M4 soft routing + M5 homeostat, 70 runs): soft 8.22 vs abrupt 10.03 (−1.81, 10/10); dormant-covariance refresh flips the soft-routing stream result to −3.54; M5 bounds whitened norm 11.3 vs 50.2 and restores the full-state EMA detector 5/5 |
+| s22 | Paper D P4 benchmark (4-domain irregular switches, 30 runs): REDEM 13.18/8.93 vs bare SSM 15.43/13.40 vs TF-A1 22.46/19.01 (stream/forget) — all 10/10 |
 | s23 | Paper D real-text transfer (two Gutenberg books, 30 runs): REDEM 12.07/11.85 vs bare 13.34/12.31 vs TF 17.31/13.86 — stream −1.27 vs bare (10/10), −5.23 vs TF (10/10) |
 | s24 | M4-M5 coupling loop under the S11 disturbance chain (4 arms × 10 seeds): rewiring churn gated by the homeostat's κ deviation does NOT help recovery — homeostat alone r3 MC 8.47 vs fixed-churn 6.45 (t=−9.6, 0/10) / coupled 5.27 (t=−5.9, 0/10); rewiring during active disturbance compensation is harmful — recovery is the homeostat's job alone |
 | s25 | Novelty-reward-gated rewiring vs correlation-guided (4 arms × 10 seeds, S7 protocol): novelty-guided MC_final 14.59 vs corr 12.43 (d=+2.15, t=4.5, 10/10) vs random 12.60 (t=0.3) vs ring 11.54 (t=8.0, 10/10) — intrinsic novelty is a structure-level tool, improving on M4's correlation heuristic |
 | s26 | Fair Transformer references for P4 (9 arms × 10 seeds): tuned A1 grid — best stream 14.86 (lr 3e-3, r32) still loses to REDEM 13.18 (0/10, −1.68) and its forgetting collapses to 62.2; TF-A3 4-adapter routing — forgetting 10.85 vs 19.01 (−8.17, 10/10, −43%) but stream 21.77 loses 0/10 (+8.59) — the routing mechanism transfers to the Transformer host, the stream advantage does not |
-| s27 | Clip-range ablation × fine κ grid (3 topologies × 3 α_max × 13 κ × 10 seeds): κ* = 25.3/27.4/27.9 (bootstrap CI ±0.1–0.8); 5× clip widening leaves κ* invariant for lateral_ring (+0.05) and random_graph (−0.21) — order–chaos is coupling-driven; ring_bidir shifts +3.4 (clip contributes); wider clip raises ring_bidir peak MC 11.9→17.7 |
-| s28 | Causal leak audit re-run on the S11 disturbance chain (6 arms × 10 seeds): 1% future leaks into RLS/metadata/FTLE and 10% future correlation into M4 do not improve recovery (r3 MC deltas +0.00/+0.00/+0.28/+0.24, all NS; NMSE ≤0.004); no-plasticity r3 MC 8.47/κ 28.5 = S11 homeostat anchor exactly — causal cleanliness survives a non-ceilinged protocol |
+| s27 | Clip-range ablation × fine κ grid (3 topologies × 3 α_max × 13 κ × 10 seeds): κ* = 25.3/27.4/27.9; 5× clip widening leaves κ* invariant for lateral_ring (+0.05) and random_graph (−0.21) — order–chaos is coupling-driven; ring_bidir shifts +3.4 (clip contributes); wider clip raises ring_bidir peak MC 11.9→17.7 |
+| s28 | Causal leak audit re-run on the S11 disturbance chain (6 arms × 10 seeds): 1% future leaks into RLS/metadata/FTLE and 10% future correlation into M4 do not improve recovery (r3 MC deltas +0.00/+0.00/+0.28/+0.24, all NS; mean NMSE ≤0.0042); no-plasticity r3 MC 8.47/κ 28.5 = S11 homeostat anchor exactly — causal cleanliness survives a non-ceilinged protocol |
 | s30 | N=1024 integrated replication at 10 seeds (baseline vs full, paired per seed): full 0.9970 ± 0.0007 vs baseline 0.9753 ± 0.0044 (+2.2 pp, paired t=15.3, 10/10) — the scale-up claim now supports a paired test (S8 used 3 seeds) |
 | s31 | Char-bigram oracle on the real-text protocol (full-book vs ref-window fits, 10 seeds): true first-order ceiling ppl 10.97 ± 0.18; SSM-REDEM 12.07 sits within ~1.1 ppl of its structural ceiling — the "first-order regime" boundary is now quantitative |
 | s32 | FTLE-noise robustness of the homeostat (5 noise levels × 10 seeds, S11 chain): no significant r3 MC degradation up to σ=0.10 (~100% of the estimate scale; paired CIs include 0), settled κ 28.5–28.7 — the clipped proportional feedback integrates out estimation error |
 | s33 | M5 in the P4 benchmark (2 arms × 10 seeds): SSM-REDEM+M5 is significantly worse (stream +1.53, forgetting +2.90, t=−22.8/−26.5, 10/10) — Δt modulation breaks the Δt=1-calibrated per-channel whitening on an already well-conditioned stream; S22's exclusion of M5 is validated (M5 stays a spike-regime safeguard, P3 E2) |
-| s34 | Leak sensitivity scan on the S28 audit (6 leak configs × 10 seeds): 10× larger FTLE leaks stay NS (+0.21); the plasticity channel shows a genuine dose-response — 30% future correlation improves recovery (+0.57, CI [+0.08,+1.10], 7/10), 50% reverses it — "causally clean" is scoped to the operational leak magnitudes |
+| s34 | Leak sensitivity scan on the S28 audit (6 leak configs × 10 seeds): 10× larger FTLE leaks stay NS (+0.21); the plasticity channel shows a dose-response — 30% future correlation improves recovery (+0.57 mean, 7/10; paired t=2.04, 95% CI [−0.06,+1.20]), 50% reverses it — "causally clean" is scoped to the operational leak magnitudes |
 | s35 | P1 readout boundary probes (10 seeds, s19 host verbatim): full-window oracle 31.2 (matches s19, max diff 0.00) vs half-window 17.3; skip 18.0 > proj 7.25 (nested violation 10/10); token linearly decodable from fast channels (τ≤8) at 88.9–99.7% out-of-sample (chance 3.1%), slow channels at chance; fast-channel direct/two-stage next-token readouts still fail out-of-sample (ppl 68–104 vs static table 13.9–17.4) — the in-sample oracle is window-dependent and metric-pathological, so the P1 0/10 failure is a pooled-readout/metric property, not missing linear information ("no useful linear map" retracted in Paper D) |
 
-## Scripts (54 committed)
+## Scripts (55 committed)
 
 The authoritative script inventory — every script with its `CLAUDE.md` type,
 **paper attribution (A/B/C/D/shared)**, purpose, and key result — is the
@@ -88,6 +88,8 @@ their figures are reproduced from `paper_d/README.md`.
   `data/s5_dual_timescale_v1.*`, `data/s6_chaos_regulator_v1.*`,
   `data/s7_structure_plasticity_v1.*`, `data/s8_integrated_v1.*`,
   `data/s9_baseline_showdown_v1.*`, `data/forgetting_curve_theory.csv`,
+  `data/forgetting_curve_theory_overlay_v1.json` (Pearson r of √MC(k) vs
+  M(k) at CV=0.2 — the Paper A r = 0.97 anchor),
   `data/s10_esn_metadata_v1.*`, `data/s10_cv_sweep_v1.*`,
   `data/s11_disturbance_chain_v1.*`, `data/s12_lambda_target_sweep_v1.*`,
   `data/s13_causal_audit_v1.*`, `data/s14_esn_disturbance_chain_v1.*`,
@@ -101,6 +103,7 @@ their figures are reproduced from `paper_d/README.md`.
   `data/s31_char_bigram_oracle_v1.*`, `data/s32_ftle_noise_v1.*`,
   `data/s33_ssm_p4_m5_v1.*`, `data/s34_leak_sensitivity_v1.*`,
   `data/s35_readout_boundary_probe_v1.*`,
+  `data/kernel_coupling_shape_v1.*` (Paper A kernel-coupling r_phys),
   `data/s16b_falsification_stress_test_v2.*` (v2: all variants at all
   four τ_m; v1 kept for the original table)
   (CSV per run + JSON with params and per-cell aggregates).
@@ -140,6 +143,7 @@ scipy, matplotlib, torch (CPU) for S9 only.
 & .venv\Scripts\python.exe scripts\cv_sweep.py
 # theory + figures
 & .venv\Scripts\python.exe scripts\forgetting_curve_theory.py
+& .venv\Scripts\python.exe scripts\kernel_coupling_shape.py
 & .venv\Scripts\python.exe scripts\esn_metadata_comparison.py
 & .venv\Scripts\python.exe scripts\cv_sweep.py
 # supplementary experiments (E3, E4, O4)
@@ -216,7 +220,7 @@ ws-ijbc.cls / revtex4-2 for Paper A (IJBC/Chaos), elsarticle.cls for Paper B
   Mechanisms: Statistical Memory, Homeostatic Recovery, and Substrate
   Physics are Non-Transferable". The three-mechanism disentanglement thesis
   is locked on s14/s16/s16b/s15/s5b; `paper_c/PAPER_C.tex` is drafted in
-  elsarticle preprint format (13 pp, zero warnings) for Neurocomputing /
+  elsarticle preprint format (14 pp, zero warnings) for Neurocomputing /
   Neural Networks short paper. See `paper_c/DERIVATION.md` and
   `paper_c/PAPER_C_sketch.md`.
 - `paper_d/` (in development) — Paper D "REDEM-SSM": the SSM instantiation
@@ -265,7 +269,9 @@ ws-ijbc.cls / revtex4-2 for Paper A (IJBC/Chaos), elsarticle.cls for Paper B
 | s31 char-bigram oracle | done (10 seeds; first-order ceiling ppl 10.97 ± 0.18) |
 | s32 FTLE-noise robustness | done (50 runs; no significant degradation to σ=0.10) |
 | s33 M5 in P4 | done (20 runs; honest negative 10/10 — M5 breaks Δt=1 whitening) |
-| s34 leak sensitivity | done (60 runs; FTLE 10× NS; plasticity 30% significant +0.57 — audit resolution bounded) |
+| s34 leak sensitivity | done (60 runs; FTLE 10× NS; plasticity 30% +0.57 mean on 7/10 — paired t=2.04, CI includes 0 — audit resolution bounded) |
+| kernel-coupling shape | done (physical-kernel r = 0.91–0.99 over κ 15–30 of the mode-1 topologies, 0.98 at random_graph κ=25; effective-median dilation reported qualitatively) |
+| forgetting-curve overlay | done (overlay code fixed — theory M(t) now evaluated at t = k pulses; Pearson r = 0.97 committed in `data/forgetting_curve_theory_overlay_v1.json`) |
 | s35 readout boundary probes | done (10 seeds; oracle window-dependence 31.2 vs 17.3, nested violation 10/10, fast-channel decode 88.9–99.7%; fast next-token readouts still fail 68–104 vs table 13.9–17.4 — P1 corollary rewritten in Paper D) |
 | Paper D P5 | done (PAPER_D.tex draft, 14 pp, zero warnings; revision pass 1: A2 qualifier + real-text results; pass 2: P1 theorem + reference fairness + M5 negative + oracle; pass 3: P1 corollary rewritten with s35 boundary probes + related-work section) |
 | Paper C derivation | in progress (thesis locked; PAPER_C.tex submission-ready; §7 LLM PoC results available for the extension section) |
@@ -278,7 +284,7 @@ ws-ijbc.cls / revtex4-2 for Paper A (IJBC/Chaos), elsarticle.cls for Paper B
   swap below.
 - Swap journal document classes at submission (ws-ijbc / revtex4-2 for A;
   elsarticle for B).
-- Paper C: `paper_c/PAPER_C.tex` drafted (elsarticle preprint, 13 pp, zero
+- Paper C: `paper_c/PAPER_C.tex` drafted (elsarticle preprint, 14 pp, zero
   warnings). Venue decided: Neurocomputing / Neural Networks short paper.
   The LLM §7 PoC (s18) is DONE: A3 routing transfers (forgetting −28%,
   ppl −1.07 at τ_m=200), A2 gate falsified; results in

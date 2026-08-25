@@ -80,9 +80,10 @@ to post-deployment reality without expensive retraining
 but their readouts face a timescale gap on long-horizon statistical tasks:
 fast reservoir states decorrelate far more quickly than the task
 statistics, so the readout must re-integrate after every change. Our
-companion work introduces a slow exponential trace of the reservoir states
-(metadata, M3), a homeostatic regulator that keeps the substrate near the
-edge of chaos (M5), and slow structure plasticity (M4); the integrated
+companion work introduces a continuously active RLS readout (M1), a slow
+exponential trace of the reservoir states (metadata, M3), a homeostatic
+regulator that keeps the substrate near the edge of chaos (M5), and slow
+structure plasticity (M4); the integrated
 system tracks drift where frozen learners fail permanently
 (companion Paper~B) \cite{companionB}.
 
@@ -181,7 +182,7 @@ recovery feature-limited rather than weight-limited. Under a controlled
 switch-relative protocol, the true effect is modest but real: on the
 substrate the fast readout needs $T_{200}=265$--$304$ pulses to
 re-stabilize vs.\ $202$--$211$ for dual (factor 1.3--1.4 on $T_{200}$,
-1.6--2.4 on $T_{40}$); on the ESN, $T_{40}$ drops from 49.9 to 40.6 with
+1.79--2.40 on $T_{40}$); on the ESN, $T_{40}$ drops from 49.9 to 40.6 with
 the p90 collapsing from 76.5 to 42.0 (Table~\ref{tab:adapt}). The
 published earlier ``$9$--$20\times$'' ratios were ratios of window positions with
 near-zero denominators (metric artifacts), not pulse times.\par}
@@ -248,11 +249,13 @@ arm & $r_0$ MC & $r_1$ MC & $r_2$ MC & $r_3$ MC & $r_3$ NMSE \\
 esn-fast & 6.17 & 1.82 & 1.76 & 1.74 & 0.0277 \\
 esn-dual & 6.16 & 1.04 & 1.00 & 1.05 & \textbf{0.0251} \\
 redem-reg & \textbf{10.19} & 7.17 & 7.51 & \textbf{8.47} & 0.1063 \\
+substrate-fixed & 10.19 & 6.47 & 5.97 & 6.41 & 0.1188 \\
 \bottomrule
 \end{tabular}
 \caption{Sequential disturbance chain (10 seeds). The homeostat-regulated
 substrate (redem-reg) reproduces the published anchor exactly
-(10.19/7.17/7.51/8.47).}
+(10.19/7.17/7.51/8.47); the substrate-fixed arm supplies the $+32\%$
+comparison of the text.}
 \label{tab:s14}
 \end{table}
 
@@ -264,11 +267,12 @@ Does any $\tau_m$ let the metadata close the MC gap? No: at
 $\tau_m\in\{200,500,1000,2000\}$, the dual arm's $r_3$ MC is
 1.04/1.05/1.06/1.06 vs.\ 1.74 for fast, with paired differences
 $-0.701$/$-0.693$/$-0.682$/$-0.678$ and 0/10 seeds positive at every
-timescale (Table~\ref{tab:s16}, Fig.~\ref{fig:recovery}left). There is no
+timescale (Table~\ref{tab:s16}, Fig.~\ref{fig:recovery}, left panel). There is no
 sensitive interval; the weak upward trend (1.04$\rightarrow$1.06) does not
 approach the baseline. Meanwhile the readout-noise attenuation transfers
-at every $\tau_m$ ($r_3$ NMSE 0.0235--0.0254 vs.\ 0.0277;
-Fig.~\ref{fig:recovery}right).\par}
+at every $\tau_m$ (mean-level; per-seed 10/10 at $\tau_m\ge500$, 9/10 at
+$\tau_m{=}200$; $r_3$ NMSE 0.0235--0.0254 vs.\ 0.0277;
+Fig.~\ref{fig:recovery}, right panel).\par}
 
 \begin{table}[t]
 \centering
@@ -469,8 +473,7 @@ same sensitive interval reported for the reservoir
 window for every arm: the task transition is learnable within one chunk,
 so adaptation is too fast to resolve --- reported at the floor, not as
 ratios (the Section~\ref{sec:adapt} lesson). The gate detector itself is
-functional: it tracks the five known switches (5 flips per stream,
-$\sim$500-token lag at $\tau_m{=}500$, $\sim$10\% wrong-estimate chunks),
+functional: it tracks the five known switches of the protocol,
 so the A2 failure is a failure of the update \emph{policy}, not of the
 detector.
 

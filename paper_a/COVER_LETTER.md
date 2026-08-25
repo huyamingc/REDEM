@@ -26,7 +26,7 @@ nonlinear dynamical system with a tuneable chaos knob:
 
 - **Order–chaos phase diagram**: a sharp transition at coupling strength
   κ* ∈ (25, 30) — a follow-up fine sweep (κ ∈ [20,30] at unit resolution)
-  pins κ* = 25.3–27.9 with bootstrap CIs of ±0.1–0.8, and a clip-range
+  pins κ* = 25.3–27.9, and a clip-range
   ablation (α_max up to 5× wider) shows the transition is invariant to the
   physical clip for the memory-relevant topologies, i.e. coupling-driven
   — with held-out linear memory peaking +24–53% just before it;

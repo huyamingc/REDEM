@@ -1,0 +1,16 @@
+{
+  "params": {
+    "note": "Paper A: sqrt(MC(k)) vs M(k) at CV=0.2, lag k in pulses; S1 parallel substrate (held-out protocol)",
+    "cv": 0.2,
+    "k_range": [
+      1,
+      50
+    ],
+    "data": "data/substrate_phase_diagram_v2.json (parallel mc_curve_mean) + data/forgetting_curve_theory.csv (M_cv0.2)"
+  },
+  "r_pearson": 0.9706856810206829,
+  "lag10": {
+    "sqrt_mc": 0.5200175549260383,
+    "m_theory": 0.5225761964258
+  }
+}
