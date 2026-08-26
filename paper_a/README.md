@@ -61,7 +61,8 @@ latexmk -pdf PAPER_A.tex
       pinning + tail-slope asymptotics, A.4 Benettin iteration, A.5 MC
       estimator + linear-reservoir closed form.
 - [ ] Companion citations: [4] prior Si₃N₄ pulse-encoding paper (device
-      calibration); [12] Paper B (REDEM, [`../paper_b/`](../paper_b/)).
+      calibration; Zenodo preprint, DOI 10.5281/zenodo.21753791); [12] Paper
+      B (REDEM, [`../paper_b/`](../paper_b/)).
 - [ ] Code availability statement:
       <https://github.com/huyamingc/REDEM> (private during review; public on
       acceptance).
