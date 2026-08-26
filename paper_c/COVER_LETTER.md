@@ -7,7 +7,7 @@
 
 **Re**: Submission of the manuscript *"Dissecting Online Learning Mechanisms:
 Statistical Memory, Homeostatic Recovery, and Substrate Physics are
-Non-Transferable"*
+Non-Substitutable"*
 
 Dear Editor,
 

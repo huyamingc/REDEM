@@ -65,11 +65,10 @@ single-mechanism ablation and the bare baseline (0.996 vs.\ 0.988/0.994/0.973,
 $p<0.0001$; the homeostat-removal ties at 0.996 --- its value is in disturbed
 scenarios), persisting at $N=1024$. The substrate
 is a physically motivated relaxation memory whose log-normal time-constant
-spectrum is set by shallow-trap device physics \cite{companionA}, and
+spectrum is set by shallow-trap device physics (companion Paper~A), and
 the slow metadata trace is shown to be a substrate-agnostic mechanism that
 transfers its statistical-memory benefit to a matched echo-state
-network; disturbance-robustness transfer is falsified in the companion
-study \cite{companionC}. On standard benchmarks REDEM is
+network; disturbance-robustness transfer is falsified in companion Paper~C. On standard benchmarks REDEM is
 competitive with a well-tuned ESN (drift accuracy 0.991 vs.\ 1.000;
 Mackey--Glass NMSE 0.0018 vs.\ $3.6\times10^{-5}$); its differentiated value is the
 mechanism set --- self-regulation, disturbance robustness, local sparse
@@ -113,7 +112,9 @@ inference: (i) an error-driven recursive-least-squares readout as the online
 learner (training == inference); (ii) a \emph{dual-timescale metadata} state
 (M3) that extends the readout's memory to long-horizon statistics; (iii) a
 \emph{chaos homeostat} (M5) that regulates the recurrent substrate's coupling
-strength from online Lyapunov estimates; and (iv) \emph{slow structure
+strength from online Lyapunov estimates --- this substrate-level
+regulation of the adaptation process itself is the paper's
+\emph{meta-adaptation}; and (iv) \emph{slow structure
 plasticity} (M4) that rewires the coupling graph from functional connectivity.
 The substrate is a physically motivated relaxation memory (Si$_3$N$_4$-style
 shallow traps, log-normal time-constant spectrum, per-pulse contrast coupling;
@@ -677,7 +678,7 @@ forgetting, and disturbance robustness (substrate theory; target:
 
 \bibitem{companionC} Author's companion Paper C: Dissecting Online
 Learning Mechanisms: Statistical Memory, Homeostatic Recovery, and
-Substrate Physics are Non-Transferable (three-mechanism
+Substrate Physics are Non-Substitutable (three-mechanism
 disentanglement; companion preprint).
 
 \end{thebibliography}

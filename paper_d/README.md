@@ -1,6 +1,6 @@
-# Paper D - REDEM-SSM (working title, sketch stage)
+# Paper D - REDEM-SSM
 
-**Working title (user proposal, revised 2026-02-19)**: REDEM-SSM: A
+**Title (user proposal, final 2026-02-19)**: REDEM-SSM: A
 State-Space Architecture with Native Online Learning, Meta-Adaptation, and
 Structural Plasticity (was "A Foundation Model Architecture ..." — dropped
 as overclaiming for a toy-scale, CPU-only PoC).
@@ -132,11 +132,11 @@ CSV+JSON dual output.
 | `../scripts/s19_ssm_rls_readout.py` | ML | P1/P3a: per-token RLS readout on a diagonal SSM (7 arms × 10 seeds) | state arms 58.5–115.9 ppl (0/10) vs B-proj input path 11.75 (d −3.26, 10/10); oracles 7.25 (mean; 7.15–7.36) |
 | `../scripts/s20_ssm_m3_routing.py` | ML | P2: M3 fast-channel EMA + drift detection + routing (A1/A2/A3 × τ_m × 10) | A2 stream −1.52…−2.45 (10/10); A3 forget −2.05/−1.87/−1.20 at τ_m≤1000 (10/10) |
 | `../scripts/s21_ssm_m4_m5.py` | ML | P3: M4 soft vs abrupt routing + M5 state-norm homeostat (E1/E2 × 10) | soft 8.22 vs abrupt 10.03 (−1.81, 10/10); M5 flips detector 5/5, norm 11.3 vs 50.2 |
-| `../scripts/s22_ssm_p4_benchmark.py` | ML | P4: 4-domain irregular-switch benchmark (3 arms × 10) | REDEM 13.18/8.93 vs bare 15.43/13.40 vs TF 22.46/19.01 (10/10) |
-| `../scripts/s23_ssm_p4_realtext.py` | ML | real-text transfer: Alice vs Dickens, 32-symbol chars (3 arms × 10) | REDEM 12.07/11.85 vs bare 13.34/12.31 vs TF 17.31/13.86 (−1.27/−5.23, 10/10) |
+| `../scripts/s22_ssm_p4_benchmark.py` | ML | P4: 4-domain irregular-switch benchmark (3 arms × 10) | REDEM-SSM 13.18/8.93 vs bare 15.43/13.40 vs TF 22.46/19.01 (10/10) |
+| `../scripts/s23_ssm_p4_realtext.py` | ML | real-text transfer: Alice vs Dickens, 32-symbol chars (3 arms × 10) | REDEM-SSM 12.07/11.85 vs bare 13.34/12.31 vs TF 17.31/13.86 (−1.27/−5.23, 10/10) |
 | `../scripts/s26_ssm_p4_fair_tf.py` | ML | fair TF references for P4: tuned A1 grid (4 lrs × 2 ranks) + 4-adapter A3 routing (9 arms × 10) | tuning cuts the stream gap to −1.68 (0/10) but collapses retention to 62.2; TF-A3 transfers −8.17 forgetting (10/10) without fixing stream (+8.59) — mechanisms host-agnostic, stream performance is not |
-| `../scripts/s31_char_bigram_oracle.py` | PAPER | char-bigram oracle on the real-text protocol (full-book vs ref-window fits, 10 seeds) | true first-order ceiling ppl 10.97 ± 0.18; SSM-REDEM 12.07 within ~1.1 ppl of it — first-order scope now quantitative |
-| `../scripts/s33_ssm_p4_m5.py` | ML | M5 state-norm homeostat added to the P4 stack (2 arms × 10) | honest negative: SSM-REDEM+M5 worse 10/10 (stream +1.53, forgetting +2.90, t=−22.8/−26.5) — Δt modulation breaks Δt=1 whitening; S22's exclusion of M5 validated |
+| `../scripts/s31_char_bigram_oracle.py` | PAPER | char-bigram oracle on the real-text protocol (full-book vs ref-window fits, 10 seeds) | true first-order ceiling ppl 10.97 ± 0.18; REDEM-SSM 12.07 within ~1.1 ppl of it — first-order scope now quantitative |
+| `../scripts/s33_ssm_p4_m5.py` | ML | M5 state-norm homeostat added to the P4 stack (2 arms × 10) | honest negative: REDEM-SSM+M5 worse 10/10 (stream +1.53, forgetting +2.90, t=−22.8/−26.5) — Δt modulation breaks Δt=1 whitening; S22's exclusion of M5 validated |
 | `../scripts/s35_readout_boundary_probe.py` | PAPER | P1 readout boundary probes (10 seeds, s19 host verbatim): full/half-window oracle, skip-vs-proj nested check, fast/slow token decoding, fast-channel next-token readouts vs static-table reference | full-window oracle 31.2 (matches s19, max diff 0.00) vs half-window 17.3 — the oracle is window-dependent; skip 18.0 > proj 7.25 (nested violation, 10/10); current token linearly decodable from fast channels (τ≤8) at 88.9–99.7% out-of-sample (chance 3.1%), slow channels at chance; fast-channel-only direct/two-stage next-token readouts still fail out-of-sample (ppl 68–104 vs static table 13.9–17.4) — "no useful linear map" is false, but no closed-form squared-loss state readout yields calibrated next-token probabilities; the P1 failure is a pooled-readout/metric property, not missing linear information |
 | `../scripts/gen_paperD_fig1_p1_arms.py` | FIG | Paper D Fig. 1 | `../figures/paperD_fig1_p1_arms.pdf` |
 | `../scripts/gen_paperD_fig2_routing.py` | FIG | Paper D Fig. 2 | `../figures/paperD_fig2_routing.pdf` |

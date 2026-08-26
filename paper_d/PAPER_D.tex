@@ -1,6 +1,6 @@
 % ============================================================================
 % Paper D — REDEM-SSM: A State-Space Architecture with Native Online
-%   Learning, Meta-Adaptation, and Structural Plasticity (working title)
+%   Learning, Meta-Adaptation, and Structural Plasticity
 % ============================================================================
 % Target: NeurIPS/ICML (stretch); arXiv + workshop first; mechanism-oriented
 %   journal fallback. Draft status: P1-P4 evidence complete (S19-S22).
@@ -477,7 +477,7 @@ uniform-chance 32).\par}
 \emph{Real-text transfer.} The same protocol on two public-domain books
 (Alice's Adventures in Wonderland vs.\ A Tale of Two Cities, character
 -level, case-folded, 32-symbol vocabulary) reproduces the result:
-SSM-REDEM beats SSM-bare (stream $-1.27$, 10/10; forgetting $-0.47$,
+REDEM-SSM beats SSM-bare (stream $-1.27$, 10/10; forgetting $-0.47$,
 9/10) and beats TF-A1 (stream $-5.23$, forgetting $-2.01$; 10/10); even
 the bare host beats TF-A1 10/10. The fast-channel metadata separates the
 two sources, and soft routing retains per-source specialists, although
@@ -489,7 +489,7 @@ structure is out of its reach and is reported as a boundary, not a
 result. A count-based bigram oracle pins this boundary quantitatively
 (data/s31\_char\_bigram\_oracle\_v1.csv): the true per-source first-order
 ceiling, estimated from the full books and evaluated on the same
-per-seed windows, is ppl $10.97\pm0.18$ (stream) --- SSM-REDEM's 12.07
+per-seed windows, is ppl $10.97\pm0.18$ (stream) --- REDEM-SSM's 12.07
 sits within $\sim$1.1 ppl of its structural ceiling (the residual is
 finite-sample loss of the streaming readout), and the Transformer
 reference (17.31) fails to reach even this first-order ceiling, so its
@@ -503,7 +503,7 @@ mechanism. We close both on the same four-domain protocol (10 seeds;
 data/s26\_ssm\_p4\_fair\_tf\_v1.csv). (i) A small tuning grid (four
 learning rates from $3\times10^{-4}$ to $10^{-2}$; ranks 16 and 32)
 improves the bare reference's stream perplexity to 14.86 at
-$\mathrm{lr}{=}3\times10^{-3}$, rank 32 --- still worse than SSM-REDEM
+$\mathrm{lr}{=}3\times10^{-3}$, rank 32 --- still worse than REDEM-SSM
 on 10/10 seeds ($-1.68$, paired $t=8.8$; the best config's forgetting
 collapses to 62.2
 vs.\ 8.93, so the tuning that helps the stream destroys retention and
@@ -513,14 +513,14 @@ stream. (ii) The s18 routing mechanism (A3) generalized to four adapters
 (TF-A3, $\tau_m{=}500$) recovers the specialists: forgetting drops from
 19.01 to 10.84 ($-8.17$, 10/10) --- slow-trace routing transfers to the
 Transformer host on this second protocol (Paper~C) --- but does not
-repair the stream: TF-A3 stays at 21.77, losing to SSM-REDEM on 10/10
+repair the stream: TF-A3 stays at 21.77, losing to REDEM-SSM on 10/10
 seeds ($+8.59$). The stream advantage of the input-path RLS readout is a
 property of the stateful host, not of the routing mechanism: the
 mechanisms are host-agnostic, the stream performance is not.\par}
 
 \emph{M5 in the benchmark (negative).} The P3 state-norm homeostat was
 deliberately excluded from the P4 stack; adding it confirms the decision
-empirically (data/s33\_ssm\_p4\_m5\_v1.csv): SSM-REDEM+M5 is \emph{worse}
+empirically (data/s33\_ssm\_p4\_m5\_v1.csv): REDEM-SSM+M5 is \emph{worse}
 on all 10 seeds (stream $+1.53$, forgetting $+2.90$; paired $t =
 -22.8/-26.5$). The mechanism is structural: the $\Delta_t$ modulation
 departs from the per-channel whitening calibrated at $\Delta_t = 1$, so
@@ -547,7 +547,7 @@ on both stream and forgetting perplexity (paired, 10/10).}
 arm & stream ppl & forgetting ppl \\
 \midrule
 SSM-bare (M1 only) & 15.43 & 13.40 \\
-SSM-REDEM (M1+M3+M4) & \textbf{13.18} & \textbf{8.93} \\
+REDEM-SSM (M1+M3+M4) & \textbf{13.18} & \textbf{8.93} \\
 TF-A1 (transformer+LoRA) & 22.46 & 19.01 \\
 \midrule
 \multicolumn{3}{l}{\scriptsize paired diffs (10/10): REDEM--bare
@@ -637,7 +637,7 @@ Environments, \emph{companion preprint} (2026).
 \bibitem{redemc}
 Author's companion Paper C: Dissecting online learning mechanisms:
 statistical memory, homeostatic recovery, and substrate physics are
-non-transferable, \emph{companion preprint} (2026).
+non-substitutable, \emph{companion preprint} (2026).
 
 \bibitem{gu2023mamba}
 A.~Gu, T.~Dao, Mamba: Linear-time sequence modeling with selective state

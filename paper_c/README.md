@@ -13,7 +13,7 @@ outline and numbers in `PAPER_C_sketch.md`.
 
 **Working title** (user proposal, adopted): Dissecting Online Learning
 Mechanisms: Statistical Memory, Homeostatic Recovery, and Substrate Physics
-are Non-Transferable.
+are Non-Substitutable.
 
 **Core claim**: the slow exponential trace of reservoir states (the M3
 metadata of Paper B) is a *synthesized forgetting kernel* - controllable
@@ -92,7 +92,7 @@ overall accuracy.
   disentanglement; strong claim locked on s16 (no tau_m closes the MC gap).
 - **Title (ADOPTED, 2026-02-17):** "Dissecting Online Learning Mechanisms:
   Statistical Memory, Homeostatic Recovery, and Substrate Physics are
-  Non-Transferable".
+  Non-Substitutable".
 - Venue: **Neurocomputing / Neural Networks short paper (DECIDED,
   2026-02-17)** - both Elsevier; `PAPER_C.tex` now uses `elsarticle`
   preprint class.

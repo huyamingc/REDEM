@@ -26,7 +26,7 @@ CSV = os.path.join(HERE, '..', 'data', 's22_ssm_p4_benchmark_v1.csv')
 OUT = os.path.join(HERE, '..', 'figures', 'paperD_fig3_benchmark.pdf')
 
 ARMS = ['SSM-bare', 'SSM-REDEM', 'TF-A1']
-LABELS = ['SSM-bare\n(M1 only)', 'SSM-REDEM\n(M1+M3+M4)', 'TF-A1\n(transformer+LoRA)']
+LABELS = ['SSM-bare\n(M1 only)', 'REDEM-SSM\n(M1+M3+M4)', 'TF-A1\n(transformer+LoRA)']
 
 
 def main():

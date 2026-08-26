@@ -18,7 +18,7 @@ companion papers (plus a fourth in development):
 
 - **Paper C (in development)**: *"Dissecting Online Learning Mechanisms:
   Statistical Memory, Homeostatic Recovery, and Substrate Physics are
-  Non-Transferable"* — three-mechanism disentanglement built on a falsifying
+  Non-Substitutable"* — three-mechanism disentanglement built on a falsifying
   experiment (s14: metadata does not transfer disturbance robustness to an
   ESN; s16: robust across τ_m ∈ [200, 2000]); §6 LLM extension written
   (s18: routing transfers, gating-only falsified, Fig 3); §7 conclusion
@@ -57,6 +57,35 @@ companion papers (plus a fourth in development):
   → See [`paper_d/README.md`](paper_d/README.md),
   [`paper_d/PAPER_D_sketch.md`](paper_d/PAPER_D_sketch.md) and
   [`paper_d/PAPER_D.tex`](paper_d/PAPER_D.tex)
+
+## Provenance: prior Si₃N₄ pulse-encoding paper
+
+This repository continues the author's prior standalone paper, which serves
+as the device-physics foundation ("Paper 0") of the A–D series:
+
+> **Si₃N₄ Shallow-Trap Relaxation for Temporal Pattern Encoding: A
+> Systematic Design-Space Analysis** — preprint, Zenodo
+> [DOI 10.5281/zenodo.21753791](https://doi.org/10.5281/zenodo.21753791)
+> (2026); target venue: *Neuromorphic Computing and Engineering*.
+
+What the prior paper contributes to this repository:
+
+- **Device calibration** — γ = ln 100, τ₀ = 174 µs (Eₐ = 0.55 eV,
+  ν = 10¹³ s⁻¹, T = 300 K), α = 0.02, τ-spread CV = 0.20: the parameter
+  set every Paper A–D simulation inherits, bit-for-bit.
+- **Two legacy scripts** — `shallow_trap_array_simulator.py` and
+  `fair_esn_comparison.py` are frozen from the prior project, imported by
+  the current code, and never modified.
+- **Scope split** — the prior paper studies a *parallel array of
+  independent devices* (quasi-static block coupling, offline Ridge/MLP
+  readout); Papers A–D study the *per-pulse coupled recurrent* substrate
+  (online RLS readout, chaos homeostat). Paper A §1 states this gap
+  explicitly and cites the prior work as `\cite{prior}`; no experimental
+  results are shared between the two lines beyond the device model itself.
+
+If the prior paper is accepted at *Neuromorphic Computing and Engineering*,
+update the `\cite{prior}` entry in `paper_a/PAPER_A.tex` to the journal
+version.
 
 **Two papers, one pipeline — two different stories.** Paper A is a physics /
 nonlinear-dynamics theory paper about what the substrate *computes*; Paper B
@@ -139,8 +168,8 @@ never modified. `README_REDEM.md` holds the full headline-results registry
 | `s19_ssm_rls_readout.py` | ML | D | P1/P3a: per-token RLS readout on a hand-rolled diagonal SSM (7 arms, 70 runs, torch CPU) | state arms 58.5–115.9 (0/10) vs B-proj 11.75 (d −3.26, 10/10); oracle 7.25 |
 | `s20_ssm_m3_routing.py` | ML | D | P2: M3 EMA metadata + drift detection + routing on the SSM host (A1/A2/A3, 90 runs, torch CPU) | A2 stream −1.52…−2.45 (10/10); A3 forget −2.05/−1.87/−1.20 (10/10, τ_m≤1000) |
 | `s21_ssm_m4_m5.py` | ML | D | P3: M4 soft vs abrupt routing + M5 state-norm homeostat (E1/E2, 70 runs, torch CPU) | soft 8.22 vs abrupt 10.03 (−1.82, 10/10); M5 restores EMA detector 5/5, norm 11.3 vs 50.2 |
-| `s22_ssm_p4_benchmark.py` | ML | D | P4: 4-domain irregular-switch benchmark (SSM-bare / SSM-REDEM / TF-A1, 30 runs, torch CPU) | REDEM vs bare −2.25/−4.47, vs TF −9.28/−10.08 (10/10) |
-| `s23_ssm_p4_realtext.py` | ML | D | real-text benchmark: two Gutenberg books (Alice vs Dickens), 32-symbol char vocab (30 runs, torch CPU) | REDEM vs bare −1.27 (10/10), vs TF −5.23 (10/10) |
+| `s22_ssm_p4_benchmark.py` | ML | D | P4: 4-domain irregular-switch benchmark (SSM-bare / SSM-REDEM / TF-A1, 30 runs, torch CPU) | REDEM-SSM vs bare −2.25/−4.47, vs TF −9.28/−10.08 (10/10) |
+| `s23_ssm_p4_realtext.py` | ML | D | real-text benchmark: two Gutenberg books (Alice vs Dickens), 32-symbol char vocab (30 runs, torch CPU) | REDEM-SSM vs bare −1.27 (10/10), vs TF −5.23 (10/10) |
 | `s24_homeo_plasticity_coupling.py` | PAPER | B | M4-M5 coupling loop under the S11 disturbance chain (4 arms, 10 seeds) | coupling does not help: homeostat alone r3 MC 8.47 vs +fixed-churn 6.45 (t=−9.6, 0/10) / +coupled 5.27 (0/10) — rewiring during disturbance is harmful |
 | `s25_reward_gated_plasticity.py` | PAPER | B | novelty-reward-gated vs correlation-guided rewiring (4 arms, 10 seeds, S7 protocol) | novelty-guided MC 14.59 vs corr 12.43 (+2.15, t=4.5, 10/10) — intrinsic signals are structure-level tools |
 | `s26_ssm_p4_fair_tf.py` | ML | D | fair Transformer references for P4: tuned A1 grid (lr×rank) + 4-adapter A3 routing (9 arms, 10 seeds) | tuning cuts the stream gap to −1.68 (0/10) but collapses forgetting to 62.2; TF-A3 routing retains specialists (−8.17 forgetting, 10/10) yet stream stays 21.77 — mechanisms transfer, the host does not |
@@ -148,7 +177,7 @@ never modified. `README_REDEM.md` holds the full headline-results registry
 | `kernel_coupling_shape.py` | PAPER | A | kernel-coupling shape stability: physical-kernel Pearson r against √MC(k) per operating point (from `substrate_phase_diagram_v2.json`) | r_phys = 0.91–0.99 over κ 15–30 of the three mode-1 topologies (0.98 at random_graph κ=25); effective-median dilation reported qualitatively |
 | `s28_causal_audit_chain.py` | PAPER | B | causal leak audit re-run on the S11 disturbance chain (6 arms, 10 seeds) | no leak arm improves recovery (r3 MC deltas +0.00/+0.00/+0.28/+0.24, NS); no-plasticity r3 MC 8.47 = S11 anchor exactly — causal cleanliness survives a non-ceilinged protocol |
 | `s30_integrated_1024.py` | PAPER | B | N=1024 integrated replication at 10 seeds (baseline vs full, paired) | full 0.9970 vs baseline 0.9753 (+2.2 pp, paired t=15.3, 10/10) — the scale-up claim now supports a paired test |
-| `s31_char_bigram_oracle.py` | PAPER | D | char-bigram oracle on the real-text protocol (full-book vs ref-window fits, 10 seeds) | true first-order ceiling ppl 10.97±0.18; SSM-REDEM 12.07 sits within ~1.1 ppl of it — the "first-order regime" boundary is now quantitative |
+| `s31_char_bigram_oracle.py` | PAPER | D | char-bigram oracle on the real-text protocol (full-book vs ref-window fits, 10 seeds) | true first-order ceiling ppl 10.97±0.18; REDEM-SSM 12.07 sits within ~1.1 ppl of it — the "first-order regime" boundary is now quantitative |
 | `s32_ftle_noise_robustness.py` | PAPER | A | homeostat with Gaussian noise on every FTLE estimate (5 levels × 10 seeds, S11 chain) | no significant MC degradation up to σ=0.10 (≈100% of estimate scale); settled κ 28.5–28.7 — clipped proportional feedback integrates out estimation noise |
 | `s33_ssm_p4_m5.py` | ML | D | M5 state-norm homeostat added to the P4 stack (2 arms, 10 seeds) | M5 is significantly worse (stream +1.53, forgetting +2.90, t=−22.8/−26.5, 10/10) — Δt modulation breaks the Δt=1-calibrated whitening; S22's exclusion of M5 validated |
 | `s34_leak_sensitivity.py` | PAPER | B | leak sensitivity scan on the S28 audit (6 leak configs, 10 seeds) | 10× FTLE leak still NS (+0.21); plasticity 30% future correlation +0.57 mean (7/10; paired t=2.04, 95% CI [−0.06,+1.20]) — audit resolution is bounded, "causally clean" scoped to operational leaks |

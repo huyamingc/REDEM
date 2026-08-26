@@ -1,11 +1,15 @@
 # REDEM — Physics-Grounded Online Learning Architecture
 
 > Status: experimental program complete (S1–S9); papers drafted, revised and
-> typeset (S10). The root `README.md` is the repository overview; the Si3N4
+> typeset (S10). This repository lives at
+> github.com/huyamingc/REDEM (private during review; made public on
+> acceptance). The root `README.md` is the repository overview; the Si3N4
 > pulse-encoding paper lives in its own repository
-> (github.com/huyamingc/Si3N4-Pulse-Encoding) and is cited as the substrate
-> calibration source in both papers. `NEW_ALGORITHM_PLAN.md` is the
-> authoritative research plan and changelog for this project.
+> (github.com/huyamingc/Si3N4-Pulse-Encoding; preprint DOI
+> 10.5281/zenodo.21753791) and is cited as the substrate calibration source
+> in Paper A (see the Provenance section of the root README).
+> `NEW_ALGORITHM_PLAN.md` is the authoritative research plan and changelog for
+> this project.
 
 REDEM (working name; REward-gated Dual-timescale Eligibility Mechanism) is an
 online "training == inference" learning architecture built on a
@@ -66,9 +70,9 @@ the structure level (M4).
 | s27 | Clip-range ablation × fine κ grid (3 topologies × 3 α_max × 13 κ × 10 seeds): κ* = 25.3/27.4/27.9; 5× clip widening leaves κ* invariant for lateral_ring (+0.05) and random_graph (−0.21) — order–chaos is coupling-driven; ring_bidir shifts +3.4 (clip contributes); wider clip raises ring_bidir peak MC 11.9→17.7 |
 | s28 | Causal leak audit re-run on the S11 disturbance chain (6 arms × 10 seeds): 1% future leaks into RLS/metadata/FTLE and 10% future correlation into M4 do not improve recovery (r3 MC deltas +0.00/+0.00/+0.28/+0.24, all NS; mean NMSE ≤0.0042); no-plasticity r3 MC 8.47/κ 28.5 = S11 homeostat anchor exactly — causal cleanliness survives a non-ceilinged protocol |
 | s30 | N=1024 integrated replication at 10 seeds (baseline vs full, paired per seed): full 0.9970 ± 0.0007 vs baseline 0.9753 ± 0.0044 (+2.2 pp, paired t=15.3, 10/10) — the scale-up claim now supports a paired test (S8 used 3 seeds) |
-| s31 | Char-bigram oracle on the real-text protocol (full-book vs ref-window fits, 10 seeds): true first-order ceiling ppl 10.97 ± 0.18; SSM-REDEM 12.07 sits within ~1.1 ppl of its structural ceiling — the "first-order regime" boundary is now quantitative |
+| s31 | Char-bigram oracle on the real-text protocol (full-book vs ref-window fits, 10 seeds): true first-order ceiling ppl 10.97 ± 0.18; REDEM-SSM 12.07 sits within ~1.1 ppl of its structural ceiling — the "first-order regime" boundary is now quantitative |
 | s32 | FTLE-noise robustness of the homeostat (5 noise levels × 10 seeds, S11 chain): no significant r3 MC degradation up to σ=0.10 (~100% of the estimate scale; paired CIs include 0), settled κ 28.5–28.7 — the clipped proportional feedback integrates out estimation error |
-| s33 | M5 in the P4 benchmark (2 arms × 10 seeds): SSM-REDEM+M5 is significantly worse (stream +1.53, forgetting +2.90, t=−22.8/−26.5, 10/10) — Δt modulation breaks the Δt=1-calibrated per-channel whitening on an already well-conditioned stream; S22's exclusion of M5 is validated (M5 stays a spike-regime safeguard, P3 E2) |
+| s33 | M5 in the P4 benchmark (2 arms × 10 seeds): REDEM-SSM+M5 is significantly worse (stream +1.53, forgetting +2.90, t=−22.8/−26.5, 10/10) — Δt modulation breaks the Δt=1-calibrated per-channel whitening on an already well-conditioned stream; S22's exclusion of M5 is validated (M5 stays a spike-regime safeguard, P3 E2) |
 | s34 | Leak sensitivity scan on the S28 audit (6 leak configs × 10 seeds): 10× larger FTLE leaks stay NS (+0.21); the plasticity channel shows a dose-response — 30% future correlation improves recovery (+0.57 mean, 7/10; paired t=2.04, 95% CI [−0.06,+1.20]), 50% reverses it — "causally clean" is scoped to the operational leak magnitudes |
 | s35 | P1 readout boundary probes (10 seeds, s19 host verbatim): full-window oracle 31.2 (matches s19, max diff 0.00) vs half-window 17.3; skip 18.0 > proj 7.25 (nested violation 10/10); token linearly decodable from fast channels (τ≤8) at 88.9–99.7% out-of-sample (chance 3.1%), slow channels at chance; fast-channel direct/two-stage next-token readouts still fail out-of-sample (ppl 68–104 vs static table 13.9–17.4) — the in-sample oracle is window-dependent and metric-pathological, so the P1 0/10 failure is a pooled-readout/metric property, not missing linear information ("no useful linear map" retracted in Paper D) |
 
@@ -218,7 +222,7 @@ ws-ijbc.cls / revtex4-2 for Paper A (IJBC/Chaos), elsarticle.cls for Paper B
   inventories, key-number tables.
 - `paper_c/` (in development) — Paper C "Dissecting Online Learning
   Mechanisms: Statistical Memory, Homeostatic Recovery, and Substrate
-  Physics are Non-Transferable". The three-mechanism disentanglement thesis
+  Physics are Non-Substitutable". The three-mechanism disentanglement thesis
   is locked on s14/s16/s16b/s15/s5b; `paper_c/PAPER_C.tex` is drafted in
   elsarticle preprint format (14 pp, zero warnings) for Neurocomputing /
   Neural Networks short paper. See `paper_c/DERIVATION.md` and
