@@ -3,7 +3,7 @@
 Streaming task generators for the recurrent substrate (REDEM S2).
 =============================================================================
 Type:           CORE
-Paper Section:  New-algorithm project Step S2 (see NEW_ALGORITHM_PLAN.md)
+Paper Section:  New-algorithm project Step S2
 Experiment:     Streaming benchmark tasks for online readout evaluation
 
 Tasks (each returns an ordered stream of (dt_seq, target_seq) arrays that
@@ -38,7 +38,7 @@ import sys
 
 import numpy as np
 
-# Unbuffered output (CLAUDE.md 4.5)
+# Unbuffered output
 os.environ.setdefault('PYTHONUNBUFFERED', '1')
 if hasattr(sys.stdout, 'reconfigure'):
     sys.stdout.reconfigure(line_buffering=True)

@@ -3,7 +3,7 @@
 S2 online-readout curves figure (drift adaptation + regression learning).
 =============================================================================
 Type:           FIG
-Paper Section:  New-algorithm project Step S2 (see NEW_ALGORITHM_PLAN.md)
+Paper Section:  New-algorithm project Step S2
 Experiment:     Visualize data/s2_online_readout_v1_curves.npz
 
 Panels:

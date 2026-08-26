@@ -3,7 +3,7 @@
 Chaos regulator homeostat (M5, REDEM S6).
 =============================================================================
 Type:           PAPER
-Paper Section:  New-algorithm project Step S6 (see NEW_ALGORITHM_PLAN.md)
+Paper Section:  New-algorithm project Step S6
 Experiment:     Does a homeostatic coupling regulator (kappa adjusted online
                 to hold a cheap activity proxy near its nominal target) keep
                 the substrate in the memory-rich regime under environmental

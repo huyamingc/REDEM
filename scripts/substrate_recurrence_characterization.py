@@ -3,7 +3,7 @@
 Substrate recurrence characterization: kappa-MC-lambda phase diagram (S1).
 =============================================================================
 Type:           PAPER
-Paper Section:  New-algorithm project Step S1 (see NEW_ALGORITHM_PLAN.md)
+Paper Section:  New-algorithm project Step S1
 Experiment:     Phase diagram of the recurrent relaxation substrate:
                 finite-time Lyapunov exponent (FTLE), memory capacity
                 (MC, Jaeger definition), and input separation vs coupling

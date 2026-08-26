@@ -22,7 +22,7 @@ readout is active (A3 routing) or WHEN updates happen (A2 gating).
 Metadata feature note: the FULL whitened-state EMA is NOT a stationary
 domain statistic - the slow channels (tau up to 3000) accumulate over the
 whole stream, so the EMA drifts away from any fixed per-domain reference
-(the state-EMA detector never flips; found and fixed during P2). The
+(the state-EMA detector never flips). The
 fast channels (tau <= 8) converge in a few tokens, are stationary, and
 their stationary mean carries the domain marginal (separation
 ||ref0-ref1|| ~ 1.2 vs ~0.07 for the input projection alone).
@@ -40,11 +40,11 @@ Arms (s18 protocol verbatim, adapted to RLS readouts):
 Task/seed rules/metrics are verbatim from s18 (Paper C Sec 6): two
 biased-bigram Markov generators (A: shift=1 bias {0..7}; B: shift=7 bias
 {24..31}), known switches, 6 x 3000 tokens. Paired per-seed comparison vs
-A1 with sign consistency (10 seeds). CE metric: the S19 v2.1 fix (linear
-MMSE readout, CE = -ln(clip(y_hat[target], eps, 1)), no softmax), with
+A1 with sign consistency (10 seeds). CE metric: linear CE on the MMSE
+readout (CE = -ln(clip(y_hat[target], eps, 1)), no softmax), with
 neg_frac reported as diagnostic.
 
-P2 predictions (paper_d/PAPER_D_sketch.md Section 5, P2):
+P2 predictions (Paper D, P2):
   - routing (A3) improves forgetting on the SSM host at every tau_m
     (like s18 A3: 9-10/10 seeds);
   - gating-only (A2) is falsified on the SSM host (like s18 A2: stream ppl
@@ -148,7 +148,7 @@ def gate_estimate(slow, refs, prev=0, margin=GATE_MARGIN):
 # ========================== Per-run experiment ==========================
 
 def make_readout(F):
-    """Fresh RLS readout: uniform-prior bias init (S19 v2.1)."""
+    """Fresh RLS readout: uniform-prior bias init."""
     W = torch.zeros(VOCAB, F, dtype=torch.float64)
     W[:, -1] = 1.0 / VOCAB
     P = torch.eye(F, dtype=torch.float64) / RLS_DELTA
@@ -436,15 +436,14 @@ def main():
                        'feature_dim': N_STATE + 1,
                        'lambda': RLS_LAMBDA, 'delta': RLS_DELTA,
                        'metric': 'CE = -ln(clip(y_hat[target], 1e-12, 1)), '
-                                 'no softmax (S19 v2.1 fix)'},
+                                 'no softmax'},
         'metadata_m3': {'type': 'per-token EMA second state m_t = '
                                 '(1-1/tau_m) m_{t-1} + (1/tau_m) h_w,t '
                                 '[fast channels, tau<=8]',
                         'note': 'full whitened-state EMA is NOT a '
                                 'stationary domain statistic - slow '
                                 'channels accumulate over the stream '
-                                '(detector never flips; found and fixed '
-                                'during P2); fast channels are stationary '
+                                '(detector never flips); fast channels are stationary '
                                 'and carry the domain marginal '
                                 '(separation ~1.2)',
                         'references': 'mean fast-channel whitened state '

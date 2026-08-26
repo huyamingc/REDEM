@@ -43,13 +43,13 @@ the structure level (M4).
 | S6 | λ-homeostat: post-disturbance held-out memory +8–18% (τ-drift +18%) |
 | S7 | Gentle (5%) correlation-guided rewiring +8–11%; aggressive (20%) −23%; pruning redundancy helps (de-homogenization) |
 | S8 | Integrated system beats every ablation: 0.996 vs 0.973 (p<0.0001); persists at N=1024 (s30, 10 seeds: 0.9970 vs 0.9753) |
-| S9 | Online (REDEM 0.991, ESN 1.000) vs frozen batch (GRU 0.394, transformer 0.351, inverted post-swap); MG NMSE REDEM 0.0018 vs ESN 3.6e-5 vs GRU 1.56 vs TF 0.71; ESN edge on standard tasks reported honestly (2026-02-19 revision: z-scored ESN features, per-trial torch seed, causal transformer mask) |
+| S9 | Online (REDEM 0.991, ESN 1.000) vs frozen batch (GRU 0.394, transformer 0.351, inverted post-swap); MG NMSE REDEM 0.0018 vs ESN 3.6e-5 vs GRU 1.56 vs TF 0.71; ESN edge on standard tasks reported honestly (fairness protocol: z-scored ESN features, per-trial torch seed, causal transformer mask) |
 | Theory | Forgetting kernel M(t)=∫p(τ)e^{−t/τ}dτ: 1/e horizon ≈16 pulses (median-pinned); tail steepness set by CV; measured MC curve follows it with r = 0.97 |
 | S10-CV | Task-level CV sweep: uncoupled MC rises with CV (+33%, kernel theory); coupled near-critical MC falls (narrow CV best) — operating-regime-dependent knob |
 | S10-ESN | Metadata transfer: ESN+meta 0.998 ≈ ESN 0.996 ≈ REDEM-full 0.994 on regime task — the mechanism equalizes the systems (adapt 11.22→0.24 in the S10 metric; controlled s15 shows the true effect is ~10 pulses + variance collapse) |
 | E3 | Sequential disturbance chain (3 rounds: τ-drift → edge-prune → noise, 10 seeds): regulated arm maintains MC 8.47 vs fixed 6.41 (+32%) after all three; κ drifts 26.2→28.5 (active compensation) |
 | E4 | λ_target sweep (4 values × 3 CV × 5 seeds): λ_target=0 (edge of chaos) is optimal — +25%/+19%/+5% MC gain over fixed at CV=0.1/0.2/0.4 (λ_target=0 optimal at CV=0.1/0.4; the −0.005 setting marginally ahead at CV=0.2) |
-| O4 | Causal audit (7 arms × 10 seeds, re-run 2026-02-19 with the plasticity-correlation leak implemented): all adaptive mechanisms are causally clean — largest leak-arm deviation 0.012 pp (RLS target), plasticity leak −0.01 pp; causal-split protocol 0.9963 vs normal 0.9963 |
+| O4 | Causal audit (7 arms × 10 seeds, re-run with the plasticity-correlation leak implemented): all adaptive mechanisms are causally clean — largest leak-arm deviation 0.012 pp (RLS target), plasticity leak −0.01 pp; causal-split protocol 0.9963 vs normal 0.9963 |
 | s14 | ESN+metadata under the S11 disturbance chain (3 arms × 10 seeds): the slow trace does NOT transfer MC robustness to the ESN (paired diffs −0.78/−0.76/−0.69, 0/10 seeds positive) — the S11 +32% recovery is homeostat-driven; metadata still attenuates readout noise (r3 NMSE −9.6%, 10/10 seeds at τ_m≥500, 9/10 at 200); redem_reg reproduces the S11 anchor exactly |
 | s16 | τ_m pressure test (τ_m ∈ {200,500,1000,2000} × 10 seeds): the falsification is robust — esn_dual r3 MC ≤ esn_fast at every τ_m (0/10 seeds positive, ~5σ), no sensitive interval; noise-attenuation transfer holds at all τ_m. Paper C adopts the strong claim |
 | s15 | Controlled adaptation (10 seeds × 5 switches, known switch instants): T40 40.6 (dual) vs 49.9 (fast) vs 52.7 (redem); T40 p90 42 vs 76.5 — the true metadata adaptation effect is ~10 pulses + variance collapse; the "47×"/"9–20×" ratios are metric artifacts |
@@ -160,7 +160,7 @@ scipy, matplotlib, torch (CPU) for S9 only.
 & .venv\Scripts\python.exe scripts\gen_paperC_fig3_llm.py
 & .venv\Scripts\python.exe scripts\gen_paperC_fig1_kernel.py
 & .venv\Scripts\python.exe scripts\gen_paperC_fig2_recovery.py
-# Paper B revision: S5 arms controlled re-measurement
+# Paper B: S5 arms controlled re-measurement
 & .venv\Scripts\python.exe scripts\s5b_controlled_adaptation.py --sequential
 & .venv\Scripts\python.exe scripts\gen_architecture_schematic.py
 & .venv\Scripts\python.exe scripts\gen_paper_figures.py
@@ -242,10 +242,10 @@ ws-ijbc.cls / revtex4-2 for Paper A (IJBC/Chaos), elsarticle.cls for Paper B
 | S7 structure plasticity | done |
 | S8 integration + ablations + N=1024 | done |
 | S9 baseline showdown | done |
-| S10 papers | done (drafts + post-review revision pass; all figures complete) |
+| S10 papers | done (all four papers complete; all figures complete) |
 | E3 disturbance chain | done (10 seeds, +32% MC after 3 sequential disturbances) |
 | E4 λ_target sweep | done (5 seeds × 4λ × 3CV, λ=0 optimal with +25% MC) |
-| O4 causal audit | done (10 seeds × 7 arms, all mechanisms causally clean; plasticity-correlation leak implemented and verified 2026-02-19) |
+| O4 causal audit | done (10 seeds × 7 arms, all mechanisms causally clean; plasticity-correlation leak implemented and verified) |
 | s14 ESN disturbance chain | done (10 seeds × 3 arms; metadata does not transfer MC robustness; +32% is homeostat) |
 | s16 τ_m pressure test | done (10 seeds × 4 τ_m; falsification robust, strong claim adopted) |
 | s15 controlled adaptation | done (10 seeds × 5 switches; true effect ~10 pulses + variance collapse; "47×" is a metric artifact) |

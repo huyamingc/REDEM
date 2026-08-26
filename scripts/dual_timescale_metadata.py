@@ -3,7 +3,7 @@
 Dual-timescale metadata benchmark (M3, REDEM S5).
 =============================================================================
 Type:           PAPER
-Paper Section:  New-algorithm project Step S5 (see NEW_ALGORITHM_PLAN.md)
+Paper Section:  New-algorithm project Step S5
 Experiment:     Does the slow metadata state (per-unit EMA of fast features,
                 natural forgetting) give the readout long-horizon statistical
                 memory beyond the fast substrate?

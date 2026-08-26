@@ -3,7 +3,7 @@
 Intrinsic-reward rescue experiment (M2 completion, REDEM S4).
 =============================================================================
 Type:           PAPER
-Paper Section:  New-algorithm project Step S4 (see NEW_ALGORITHM_PLAN.md)
+Paper Section:  New-algorithm project Step S4
 Experiment:     Does a task-agnostic intrinsic reward (feature novelty)
                 rescue reward-modulated Hebbian learning (RMHL) from the
                 class-inversion failure found in S3? Ablation over the

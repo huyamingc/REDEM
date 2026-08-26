@@ -31,7 +31,7 @@ first switch). Metrics (mechanism-level, honest scope): full-state-EMA
 detector flips (5/5 known switches), norm mean/max/final, recovery tokens
 to return to the band after the spike, Delta_t activity.
 
-Predictions (paper_d/PAPER_D_sketch.md Section 5):
+Predictions (Paper D, P3/P4):
   P3: gradual M4 beats abrupt on stream ppl (soft < abrupt, n>=6/10),
       forgetting not degraded.
   P4: M5 regulation keeps the state norm in band (and restores the

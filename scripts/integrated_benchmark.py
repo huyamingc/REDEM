@@ -3,7 +3,7 @@
 Integrated system + ablation matrix (REDEM S8).
 =============================================================================
 Type:           PAPER
-Paper Section:  New-algorithm project Step S8 (see NEW_ALGORITHM_PLAN.md)
+Paper Section:  New-algorithm project Step S8
 Experiment:     Full system (RLS readout + dual-timescale metadata +
                 lambda-homeostat + gentle structure plasticity) vs ablations
                 on the regime_switch task; N=1024 scale confirmation.

@@ -3,7 +3,7 @@
 Batch figure generation for the Paper A/B writing pass (REDEM S10).
 =============================================================================
 Type:           FIG
-Paper Section:  Paper A Fig 4, Paper B Figs 3/5/6 (see PAPER_*_sketch.md)
+Paper Section:  Paper A Fig 4, Paper B Figs 3/5/6
 Experiment:     Render remaining result figures from the experiment JSONs.
 
 Figures:

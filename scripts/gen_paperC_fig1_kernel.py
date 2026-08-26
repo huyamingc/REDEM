@@ -10,8 +10,8 @@ Data:           analytic curves only:
                           tau, CV 0.20, median tau0 ~174 us), evaluated at
                           k pulses via dt_bar = 11 us
                   h_m(k) = (e^{-k/tau_m} - e^{-k/tau_x}) / (tau_m - tau_x),
-                          the input->slow-trace kernel (Eq. 3 of
-                          DERIVATION.md) with tau_x = 16 pulses (substrate
+                          the input->slow-trace kernel (the Paper C
+                          M3 slow-trace formula) with tau_x = 16 pulses (substrate
                           fast timescale), tau_m in {200, 500, 1000}
 Figure:         log-log plot of the normalized kernels: the material kernel
                 has a log-normal tail fixed by physics; the slow-trace
@@ -51,7 +51,7 @@ K_GRID = np.logspace(0, 3.7, 400)   # lag in pulses, 1..~5000
 
 
 def slow_trace_kernel(k, tau_m, tau_x=TAU_X):
-    """Input->slow-trace kernel h_m(k) (Eq. 3 of DERIVATION.md)."""
+    """Input->slow-trace kernel h_m(k) (Paper C, M3 slow-trace formula)."""
     return (np.exp(-k / tau_m) - np.exp(-k / tau_x)) / (tau_m - tau_x)
 
 

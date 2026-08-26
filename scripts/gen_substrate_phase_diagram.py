@@ -3,7 +3,7 @@
 Phase diagram figure for the recurrent substrate (S1): kappa-MC-FTLE.
 =============================================================================
 Type:           FIG
-Paper Section:  New-algorithm project Step S1 (see NEW_ALGORITHM_PLAN.md)
+Paper Section:  New-algorithm project Step S1
 Experiment:     Visualize substrate_recurrence_characterization v2 output.
 
 Reads data/substrate_phase_diagram_v2.json (aggregates) and produces:

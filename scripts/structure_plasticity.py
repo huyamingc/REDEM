@@ -3,7 +3,7 @@
 Structure plasticity benchmark (M4, REDEM S7).
 =============================================================================
 Type:           PAPER
-Paper Section:  New-algorithm project Step S7 (see NEW_ALGORITHM_PLAN.md)
+Paper Section:  New-algorithm project Step S7
 Experiment:     Does usage-driven structural rewiring (prune low-co-activity
                 edges, grow random novel edges, constant edge count) evolve
                 topologies whose memory capacity matches or beats fixed

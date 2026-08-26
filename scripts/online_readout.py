@@ -3,7 +3,7 @@
 Online readouts for the recurrent substrate (REDEM S2).
 =============================================================================
 Type:           CORE
-Paper Section:  New-algorithm project Step S2 (see NEW_ALGORITHM_PLAN.md)
+Paper Section:  New-algorithm project Step S2
 Experiment:     Online learning readout: RLS with forgetting factor
 
 Provides:

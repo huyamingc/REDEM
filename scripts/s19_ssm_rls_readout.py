@@ -26,7 +26,7 @@ timescale-coverage spectrum (log-uniform tau in [1, 3000] tokens - the
 Paper C "timescale coverage" thesis applied to the host), and RLS
 lambda = 0.9999 (memory ~ 10k tokens ~ task horizon).
 
-Metric note (v2.1): the RLS readout minimizes squared error on one-hot
+Metric note: the RLS readout minimizes squared error on one-hot
 targets, so its output y_hat = W phi is a LINEAR ESTIMATE OF THE
 CONDITIONAL DISTRIBUTION (linear MMSE), NOT a softmax logit vector.
 Applying softmax to it double-normalizes and squashes the estimate toward
@@ -61,7 +61,7 @@ shift=1, bias {0..7}; domain B: shift=7, bias {24..31}), alternating every
 seed rules, and metrics are copied verbatim from s18_llm_drift_gate.py so
 the per-seed paired comparison against the committed A1 arm is valid.
 
-P1 prediction (paper_d/PAPER_D_sketch.md Section 5, P1): per-token RLS on
+P1 prediction (Paper D, P1): per-token RLS on
 the SSM output projection tracks known domain switches at least as well as
 the s18 A1 arm. Falsification: RLS-on-SSM stream ppl worse than A1 on
 every seed (0/10 improved). Reported honestly either way, plus a pooled
@@ -92,7 +92,7 @@ torch.set_num_threads(1)   # per-worker; Pool gives process-level parallelism
 
 # ========================== Fixed parameters ==========================
 VOCAB = 32
-N_STATE = 128               # SSM state dimension (sketch: 64-256)
+N_STATE = 128               # SSM state dimension (64-256)
 TAU0 = 174.0                # Paper A median tau, scaled to tokens
 CV_TAU = 0.20               # Paper A log-normal CV
 TAU_MIN = 1.0               # coverage-spectrum range (tokens)
@@ -486,7 +486,7 @@ def main():
                                  'bias initialized to uniform prior',
                        'metric': 'CE = -ln(clip(y_hat[target], 1e-12, 1)) '
                                  'on the linear MMSE output y_hat = W phi '
-                                 '(no softmax - v2.1 metric fix)'},
+                                 '(no softmax)'},
         'arms': arm_desc,
         'p1_v1_pitfall': 'Naive v1 spec failed on two counts: (1) host '
                          'conditioning - the log-normal tau spectrum '
@@ -499,7 +499,8 @@ def main():
                          'estimate, and softmaxing it (as if it were '
                          'logits) squashed all arms toward uniform '
                          '(ppl ~26-31 vs the 7.34 MLE-table ceiling). '
-                         'Both fixed in v2.1 (whitening + coverage '
+                         'Both addressed by the revised host (whitening + '
+                         'coverage '
                          'spectrum + lambda=0.9999; direct CE with '
                          'eps-clipping).',
         'task': {'desc': 'identical to s18 (Paper C Sec 6): two biased-'

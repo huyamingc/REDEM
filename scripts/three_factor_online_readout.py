@@ -3,7 +3,7 @@
 Three-factor learning benchmark (M1 eligibility + M2 reward gating, REDEM S3).
 =============================================================================
 Type:           PAPER
-Paper Section:  New-algorithm project Step S3 (see NEW_ALGORITHM_PLAN.md)
+Paper Section:  New-algorithm project Step S3
 Experiment:     Reward-gated vs error-gated vs second-order readouts on the
                 drift-binary task (sparse block-end reward/supervision) and
                 regression verification on NARMA-10 / Mackey-Glass.

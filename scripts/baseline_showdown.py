@@ -3,7 +3,7 @@
 Baseline showdown (REDEM S9): online systems vs batch learners.
 =============================================================================
 Type:           ML
-Paper Section:  New-algorithm project Step S9 (see NEW_ALGORITHM_PLAN.md)
+Paper Section:  New-algorithm project Step S9
 Experiment:     Honest ecosystem positioning: our integrated system (REDEM
                 core: coupled substrate + online RLS) vs an ESN with the
                 same online readout vs batch-trained GRU / tiny transformer

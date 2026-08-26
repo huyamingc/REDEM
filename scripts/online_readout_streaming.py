@@ -3,7 +3,7 @@
 Online readout streaming benchmark: RLS vs offline ridge (REDEM S2).
 =============================================================================
 Type:           PAPER
-Paper Section:  New-algorithm project Step S2 (see NEW_ALGORITHM_PLAN.md)
+Paper Section:  New-algorithm project Step S2
 Experiment:     Online-vs-offline readout comparison on streaming tasks,
                 over the S1-characterized substrate operating points.
 

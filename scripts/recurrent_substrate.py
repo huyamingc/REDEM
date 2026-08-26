@@ -3,7 +3,7 @@
 Recurrent relaxation substrate with per-pulse topology coupling (REDEM S1).
 =============================================================================
 Type:           CORE
-Paper Section:  New-algorithm project Step S1 (see NEW_ALGORITHM_PLAN.md)
+Paper Section:  New-algorithm project Step S1
 Experiment:     REDEM recurrent substrate core dynamics
 
 Purpose:
@@ -42,7 +42,7 @@ import sys
 
 import numpy as np
 
-# Unbuffered output (CLAUDE.md 4.5)
+# Unbuffered output
 os.environ.setdefault('PYTHONUNBUFFERED', '1')
 if hasattr(sys.stdout, 'reconfigure'):
     sys.stdout.reconfigure(line_buffering=True)

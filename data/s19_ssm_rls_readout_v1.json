@@ -14,7 +14,7 @@
       "lambda": 0.9999,
       "delta": 1.0,
       "update": "predict-before-update, one-hot target, bias initialized to uniform prior",
-      "metric": "CE = -ln(clip(y_hat[target], 1e-12, 1)) on the linear MMSE output y_hat = W phi (no softmax - v2.1 metric fix)"
+      "metric": "CE = -ln(clip(y_hat[target], 1e-12, 1)) on the linear MMSE output y_hat = W phi (no softmax)"
     },
     "arms": {
       "LN-raw": "log-normal tau (tau0=174, CV=0.20, Paper A params), no whitening, P1 v1 naive spec (documented pitfall)",
@@ -25,7 +25,7 @@
       "CV-gate": "P3a: input-gated state, y = W (h_w * sigmoid(C x + b)), x = B e_{t-1}, C fixed random per seed - the Mamba-style multiplicative gate at the feature level",
       "CV-gate-g5": "same gate with gamma=5.0 (sharper sigmoid) - fixed-gate result is not a tuning artifact"
     },
-    "p1_v1_pitfall": "Naive v1 spec failed on two counts: (1) host conditioning - the log-normal tau spectrum (tau0=174, CV=0.20) has no fast channels, slow channels accumulate state magnitude while RLS P grows as (1/lambda)^t in unexcited directions (W norm ~1.7e4, P trace ~9e8, catastrophic held-out ppl); (2) metric bug - the squared-loss readout output is a linear MMSE distribution estimate, and softmaxing it (as if it were logits) squashed all arms toward uniform (ppl ~26-31 vs the 7.34 MLE-table ceiling). Both fixed in v2.1 (whitening + coverage spectrum + lambda=0.9999; direct CE with eps-clipping).",
+    "p1_v1_pitfall": "Naive v1 spec failed on two counts: (1) host conditioning - the log-normal tau spectrum (tau0=174, CV=0.20) has no fast channels, slow channels accumulate state magnitude while RLS P grows as (1/lambda)^t in unexcited directions (W norm ~1.7e4, P trace ~9e8, catastrophic held-out ppl); (2) metric bug - the squared-loss readout output is a linear MMSE distribution estimate, and softmaxing it (as if it were logits) squashed all arms toward uniform (ppl ~26-31 vs the 7.34 MLE-table ceiling). Both addressed by the revised host (whitening + coverage spectrum + lambda=0.9999; direct CE with eps-clipping).",
     "task": {
       "desc": "identical to s18 (Paper C Sec 6): two biased-bigram Markov generators (A: shift=1 bias {0..7}; B: shift=7 bias {24..31}), known switches, 6x3000",
       "seg_len": 3000,
