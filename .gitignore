@@ -31,6 +31,20 @@ _zip_temp/
 README.zip
 *.bak.py
 
+# Internal working documents — kept locally, excluded from the published repository
+**/COVER_LETTER.md
+**/PAPER_*_draft.md
+**/PAPER_*_sketch.md
+paper_a/README.md
+paper_b/README.md
+paper_c/README.md
+paper_d/README.md
+paper_c/DERIVATION.md
+paper_c/LLM_EXTENSION.md
+NEW_ALGORITHM_PLAN.md
+CLAUDE.md
+preprint_titles_abstracts.txt
+
 # OS files
 .DS_Store
 Thumbs.db

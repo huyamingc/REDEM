@@ -1,6 +1,6 @@
 # REDEM — Physics-Grounded Online Learning Architecture
 
-> Status: experimental program complete (S1–S9); papers drafted, revised and
+> Status: experimental program complete (S1–S9); papers finalized and
 > typeset (S10). This repository lives at
 > github.com/huyamingc/REDEM (private during review; made public on
 > acceptance). The root `README.md` is the repository overview; the Si3N4
@@ -8,8 +8,6 @@
 > (github.com/huyamingc/Si3N4-Pulse-Encoding; preprint DOI
 > 10.5281/zenodo.21753791) and is cited as the substrate calibration source
 > in Paper A (see the Provenance section of the root README).
-> `NEW_ALGORITHM_PLAN.md` is the authoritative research plan and changelog for
-> this project.
 
 REDEM (working name; REward-gated Dual-timescale Eligibility Mechanism) is an
 online "training == inference" learning architecture built on a
@@ -74,16 +72,14 @@ the structure level (M4).
 | s32 | FTLE-noise robustness of the homeostat (5 noise levels × 10 seeds, S11 chain): no significant r3 MC degradation up to σ=0.10 (~100% of the estimate scale; paired CIs include 0), settled κ 28.5–28.7 — the clipped proportional feedback integrates out estimation error |
 | s33 | M5 in the P4 benchmark (2 arms × 10 seeds): REDEM-SSM+M5 is significantly worse (stream +1.53, forgetting +2.90, t=−22.8/−26.5, 10/10) — Δt modulation breaks the Δt=1-calibrated per-channel whitening on an already well-conditioned stream; S22's exclusion of M5 is validated (M5 stays a spike-regime safeguard, P3 E2) |
 | s34 | Leak sensitivity scan on the S28 audit (6 leak configs × 10 seeds): 10× larger FTLE leaks stay NS (+0.21); the plasticity channel shows a dose-response — 30% future correlation improves recovery (+0.57 mean, 7/10; paired t=2.04, 95% CI [−0.06,+1.20]), 50% reverses it — "causally clean" is scoped to the operational leak magnitudes |
-| s35 | P1 readout boundary probes (10 seeds, s19 host verbatim): full-window oracle 31.2 (matches s19, max diff 0.00) vs half-window 17.3; skip 18.0 > proj 7.25 (nested violation 10/10); token linearly decodable from fast channels (τ≤8) at 88.9–99.7% out-of-sample (chance 3.1%), slow channels at chance; fast-channel direct/two-stage next-token readouts still fail out-of-sample (ppl 68–104 vs static table 13.9–17.4) — the in-sample oracle is window-dependent and metric-pathological, so the P1 0/10 failure is a pooled-readout/metric property, not missing linear information ("no useful linear map" retracted in Paper D) |
+| s35 | P1 readout boundary probes (10 seeds, s19 host verbatim): full-window oracle 31.2 (matches s19, max diff 0.00) vs half-window 17.3; skip 18.0 > proj 7.25 (nested violation 10/10); token linearly decodable from fast channels (τ≤8) at 88.9–99.7% out-of-sample (chance 3.1%), slow channels at chance; fast-channel direct/two-stage next-token readouts still fail out-of-sample (ppl 68–104 vs static table 13.9–17.4) — the in-sample oracle is window-dependent and metric-pathological, so the P1 0/10 failure is a pooled-readout/metric property, not missing linear information (boundary analysis in Paper D §3) |
 
 ## Scripts (55 committed)
 
-The authoritative script inventory — every script with its `CLAUDE.md` type,
+The authoritative script inventory — every script with its type,
 **paper attribution (A/B/C/D/shared)**, purpose, and key result — is the
 table in the root [`README.md`](README.md) (single source of truth; it is
-kept in sync with `git ls-files scripts/`). Paper D experiments s19–s23, s26,
-s31, s33, s35 and
-their figures are reproduced from `paper_d/README.md`.
+kept in sync with `git ls-files scripts/`).
 
 ## Data and figures
 
@@ -168,7 +164,7 @@ scipy, matplotlib, torch (CPU) for S9 only.
 & .venv\Scripts\python.exe scripts\s5b_controlled_adaptation.py --sequential
 & .venv\Scripts\python.exe scripts\gen_architecture_schematic.py
 & .venv\Scripts\python.exe scripts\gen_paper_figures.py
-# Paper D experiments (s19–s23, s26, s31, s33, s35) + figures — see paper_d/README.md
+# Paper D experiments (s19–s23, s26, s31, s33, s35) + figures
 & .venv\Scripts\python.exe scripts\s19_ssm_rls_readout.py --sequential
 & .venv\Scripts\python.exe scripts\s20_ssm_m3_routing.py --sequential
 & .venv\Scripts\python.exe scripts\s21_ssm_m4_m5.py --sequential
@@ -192,7 +188,7 @@ scipy, matplotlib, torch (CPU) for S9 only.
 
 All experiments use fixed, per-run seeds (`run_idx * scale + offset`), paired
 draws across compared configs, CSV+JSON dual output, and unbuffered progress
-logging per `CLAUDE.md`. Multiprocessing `Pool` is used for Monte-Carlo trials
+logging. Multiprocessing `Pool` is used for Monte-Carlo trials
 (Windows spawn; requires the process sandbox to allow named pipes).
 
 ## Compiling the papers
@@ -201,38 +197,31 @@ Both `.tex` files compile standalone with the article class (MiKTeX verified):
 `pdflatex PAPER_A.tex` twice, `pdflatex PAPER_B.tex` twice (or `latexmk` if
 Perl is installed). At submission, swap in the journal class:
 ws-ijbc.cls / revtex4-2 for Paper A (IJBC/Chaos), elsarticle.cls for Paper B
-(Neural Networks); fill the `[Author Name]` placeholders.
+(Neural Networks).
 
-## Papers (drafted + revised, S10)
+## Papers (finalized, S10)
 
-- `PAPER_A_draft.md` / `PAPER_A.tex` — substrate characterization: phase
+- `PAPER_A.tex` — substrate characterization: phase
   diagram, forgetting kernel theory (full derivations in Appendix A),
-  λ-homeostat robustness; task-level CV sweep moved to Supplementary Note 1 /
+  λ-homeostat robustness; task-level CV sweep in Supplementary Note 1 /
   Fig. S1. Target: *International Journal of Bifurcation and Chaos* or *Chaos*.
-  `PAPER_A.tex` compiles standalone (latexmk -pdf) with the article class;
+  Compiles standalone (latexmk -pdf) with the article class;
   swap in ws-ijbc.cls (IJBC) or revtex4-2 (Chaos) at submission.
-- `PAPER_B_draft.md` / `PAPER_B.tex` — REDEM architecture, mechanisms,
-  ablations, baselines. Target: *Neural Networks* (Elsevier). Post-review
-  revision applied: title without "physics" (S1), differentiators-first
-  abstract (S2), compressed negative results (Table 1, S3), corrected
-  metadata-transfer conclusion (T1), cross-reference to Paper A §2 (T3),
-  Fig. 1 with M4↔M5 coupling loop (T2). `PAPER_B.tex` compiles standalone;
+- `PAPER_B.tex` — REDEM architecture, mechanisms,
+  ablations, baselines. Target: *Neural Networks* (Elsevier).
+  `PAPER_B.tex` compiles standalone;
   swap in elsarticle.cls at submission.
-- `PAPER_A_sketch.md` / `PAPER_B_sketch.md` — outlines, figure/table
-  inventories, key-number tables.
 - `paper_c/` — Paper C "Dissecting Online Learning
   Mechanisms: Statistical Memory, Homeostatic Recovery, and Substrate
   Physics are Non-Substitutable". The three-mechanism disentanglement thesis
   is locked on s14/s16/s16b/s15/s5b; `paper_c/PAPER_C.tex` is drafted in
   elsarticle preprint format (14 pp, zero warnings) for Neurocomputing /
-  Neural Networks short paper. See `paper_c/DERIVATION.md` and
-  `paper_c/PAPER_C_sketch.md`.
+  Neural Networks short paper.
 - `paper_d/` — Paper D "REDEM-SSM": the SSM instantiation
   of the three mechanisms (M1 per-token RLS readout, M3 fast-channel EMA
   routing, M4 soft routing, M5 state-norm homeostat). P1–P5 DONE;
   `paper_d/PAPER_D.tex` drafted in elsarticle preprint format (14 pp, zero
   warnings; P1 theorem, reference fairness, M5 negative, oracle integrated).
-  See `paper_d/README.md` and `paper_d/PAPER_D_sketch.md`.
 
 ## Roadmap status
 
@@ -258,7 +247,7 @@ ws-ijbc.cls / revtex4-2 for Paper A (IJBC/Chaos), elsarticle.cls for Paper B
 | s16b probe stress test | done (v2: 10 seeds × 4 τ_m × 3 variants; sign robust ≤1/10 in every cell, V0 −0.69 → V2 −0.04…−0.01) |
 | s5b S5 controlled re-measurement | done (100 runs; T200 factor 1.28–1.44, T40 1.79–2.40; Paper B revised) |
 | s17 substrate stress | done (120 runs; equalizer gain positive at all ESN configs) |
-| s18 LLM drift gate | done (90 runs; A3 routing transfers, A2 gate falsified; §7 results in paper_c/LLM_EXTENSION.md) |
+| s18 LLM drift gate | done (90 runs; A3 routing transfers, A2 gate falsified; results in PAPER_C.tex §6) |
 | Paper D s19 | done (70 runs; naive state readout falsified, B-proj input path works 10/10) |
 | Paper D s20 | done (90 runs; gating-only inverts on RLS — what-is-paused qualifier; M3 routing transfers 10/10) |
 | Paper D s21 | done (70 runs; soft routing beats abrupt; M5 homeostat restores detector 5/5) |
@@ -275,30 +264,14 @@ ws-ijbc.cls / revtex4-2 for Paper A (IJBC/Chaos), elsarticle.cls for Paper B
 | s33 M5 in P4 | done (20 runs; honest negative 10/10 — M5 breaks Δt=1 whitening) |
 | s34 leak sensitivity | done (60 runs; FTLE 10× NS; plasticity 30% +0.57 mean on 7/10 — paired t=2.04, CI includes 0 — audit resolution bounded) |
 | kernel-coupling shape | done (physical-kernel r = 0.91–0.99 over κ 15–30 of the mode-1 topologies, 0.98 at random_graph κ=25; effective-median dilation reported qualitatively) |
-| forgetting-curve overlay | done (overlay code fixed — theory M(t) now evaluated at t = k pulses; Pearson r = 0.97 committed in `data/forgetting_curve_theory_overlay_v1.json`) |
-| s35 readout boundary probes | done (10 seeds; oracle window-dependence 31.2 vs 17.3, nested violation 10/10, fast-channel decode 88.9–99.7%; fast next-token readouts still fail 68–104 vs table 13.9–17.4 — P1 corollary rewritten in Paper D) |
-| Paper D P5 | done (PAPER_D.tex draft, 14 pp, zero warnings; revision pass 1: A2 qualifier + real-text results; pass 2: P1 theorem + reference fairness + M5 negative + oracle; pass 3: P1 corollary rewritten with s35 boundary probes + related-work section) |
-| Paper C derivation | in progress (thesis locked; PAPER_C.tex submission-ready; §7 LLM PoC results available for the extension section) |
+| forgetting-curve overlay | done (theory M(t) evaluated at t = k pulses; Pearson r = 0.97 committed in `data/forgetting_curve_theory_overlay_v1.json`) |
+| s35 readout boundary probes | done (10 seeds; oracle window-dependence 31.2 vs 17.3, nested violation 10/10, fast-channel decode 88.9–99.7%; fast next-token readouts still fail 68–104 vs table 13.9–17.4 — P1 boundary analysis in Paper D §3) |
+| Paper D P5 | done (PAPER_D.tex drafted, 14 pp, zero warnings; P1 theorem, reference fairness, M5 negative, oracle, related-work section integrated) |
+| Paper C | done (PAPER_C.tex finalized, elsarticle preprint, 14 pp; LLM extension integrated into §6) |
 
-## Open items
+## Submission status
 
-- Author information (Yaming Hu, ORCID 0009-0003-1406-0485, Independent
-  Researcher Guiyang, 64687555@qq.com) is filled in all four papers
-  (A/B/C/D); the remaining placeholder-free check is the journal-template
-  swap below.
-- Swap journal document classes at submission (ws-ijbc / revtex4-2 for A;
-  elsarticle for B).
-- Paper C: `paper_c/PAPER_C.tex` drafted (elsarticle preprint, 14 pp, zero
-  warnings). Venue decided: Neurocomputing / Neural Networks short paper.
-  The LLM §7 PoC (s18) is DONE: A3 routing transfers (forgetting −28%,
-  ppl −1.07 at τ_m=200), A2 gate falsified; results in
-  `paper_c/LLM_EXTENSION.md` §7.7. Remaining before submission: cover
-  letter.
-- Paper D: `paper_d/PAPER_D.tex` drafted (14 pp, zero warnings). Open:
-  title RESOLVED 2026-02-19 (revised to "A State-Space Architecture ...";
-  "Foundation Model" dropped as overclaiming for the toy prototype),
-  optional related-work paragraph +
-  per-mechanism ablation table, cover letter.
-- Paper B wording: revised (2026-02-17) - §4.3/§4.5/§4.6 and abstract use
-  the controlled s15/s5b adaptation measurements (factor 1.3-2.4 instead
-  of the artifact "9-20x").
+All four papers are finalized (each PDF compiles with zero errors and zero
+overfull/underfull warnings) and reserved as Zenodo preprints; see the DOI
+table in the root [`README.md`](README.md). Journal-template swaps
+(ws-ijbc / revtex4-2 for A, elsarticle for B) happen at submission time.

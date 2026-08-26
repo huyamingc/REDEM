@@ -43,8 +43,6 @@ are native rather than retrofitted, motivated by C's boundary result.
   *Neural Networks* short paper)
   → [`paper_c/PAPER_C.pdf`](paper_c/PAPER_C.pdf) |
   [`paper_c/PAPER_C.tex`](paper_c/PAPER_C.tex) |
-  [`paper_c/DERIVATION.md`](paper_c/DERIVATION.md) |
-  [`paper_c/PAPER_C_sketch.md`](paper_c/PAPER_C_sketch.md) |
   Zenodo [10.5281/zenodo.22110619](https://doi.org/10.5281/zenodo.22110619)
 
 - **Paper D — Architecture**: *"REDEM-SSM: A State-Space Architecture with
@@ -54,8 +52,6 @@ are native rather than retrofitted, motivated by C's boundary result.
   NeurIPS/ICML stretch; arXiv + workshop first)
   → [`paper_d/PAPER_D.pdf`](paper_d/PAPER_D.pdf) |
   [`paper_d/PAPER_D.tex`](paper_d/PAPER_D.tex) |
-  [`paper_d/README.md`](paper_d/README.md) |
-  [`paper_d/PAPER_D_sketch.md`](paper_d/PAPER_D_sketch.md) |
   Zenodo [10.5281/zenodo.22110624](https://doi.org/10.5281/zenodo.22110624)
 
 ## What each paper contributes to the series
@@ -115,29 +111,23 @@ Data and figures live in `data/` and `figures/`.
 
 - `README_REDEM.md` — detailed technical README: architecture, headline
   results (S1–S10), script inventory, reproduction commands.
-- `NEW_ALGORITHM_PLAN.md` — the authoritative S0–S10 research plan and
-  changelog.
 
 ## Repository layout
 
 ```
-├── paper_a/     Paper A: substrate characterization (PDF, LaTeX, drafts, submission README)
-├── paper_b/     Paper B: REDEM online learning architecture (PDF, LaTeX, drafts, submission README)
-├── paper_c/     Paper C: three-mechanism disentanglement (PDF, LaTeX, derivation, sketch, README)
-├── paper_d/     Paper D: native REDEM-SSM architecture (PDF, LaTeX, README, design doc)
+├── paper_a/     Paper A: substrate characterization (PDF, LaTeX)
+├── paper_b/     Paper B: REDEM online learning architecture (PDF, LaTeX)
+├── paper_c/     Paper C: three-mechanism disentanglement (PDF, LaTeX)
+├── paper_d/     Paper D: native REDEM-SSM architecture (PDF, LaTeX)
 ├── scripts/     Shared simulation code (CORE substrate, tasks, readouts, figure scripts)
 ├── data/        All experiment results (CSV + JSON, 10-seed means)
 ├── figures/     All publication figures (vector PDF; no raster twins)
-└── *.md         Overview, technical README, research plan, coding standards (CLAUDE.md)
+└── *.md         Overview and technical README
 ```
-
-Each paper folder contains its own `README.md` with the submission checklist
-(author placeholder, journal template swap, figures/tables inventory, cover
-letter points).
 
 ## Scripts
 
-All 55 committed scripts in `scripts/`, typed per `CLAUDE.md`
+All 55 committed scripts in `scripts/`, typed
 (ML > CORE > PAPER > FIG > EXPLORE). The **Paper** column marks which paper
 each script serves (A / B / C / D; shared = library or figure used by more
 than one paper). Two legacy scripts from the prior Si₃N₄-pulse-encoding
@@ -205,8 +195,7 @@ never modified. `README_REDEM.md` holds the full headline-results registry
 
 Each FIG script emits a single vector `.pdf` (journal submission); the papers
 include the extension-less basename so `pdflatex` picks the vector file
-automatically. Reproduction commands are in `README_REDEM.md` (S1–s18) and
-`paper_d/README.md` (s19–s23).
+automatically. Reproduction commands (S1–s35) are in `README_REDEM.md`.
 
 ## Code availability
 
