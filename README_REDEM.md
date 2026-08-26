@@ -190,6 +190,8 @@ All experiments use fixed, per-run seeds (`run_idx * scale + offset`), paired
 draws across compared configs, CSV+JSON dual output, and unbuffered progress
 logging. Multiprocessing `Pool` is used for Monte-Carlo trials
 (Windows spawn; requires the process sandbox to allow named pipes).
+Per-paper scoped reproduction commands (paper-relative paths) are in each
+`paper_*/README.md`.
 
 ## Compiling the papers
 
@@ -216,12 +218,15 @@ ws-ijbc.cls / revtex4-2 for Paper A (IJBC/Chaos), elsarticle.cls for Paper B
   Physics are Non-Substitutable". The three-mechanism disentanglement thesis
   is locked on s14/s16/s16b/s15/s5b; `paper_c/PAPER_C.tex` is drafted in
   elsarticle preprint format (14 pp, zero warnings) for Neurocomputing /
-  Neural Networks short paper.
+  Neural Networks short paper. Per-paper overview, data anchors, and
+  scoped reproduction commands: `paper_c/README.md`.
 - `paper_d/` — Paper D "REDEM-SSM": the SSM instantiation
   of the three mechanisms (M1 per-token RLS readout, M3 fast-channel EMA
   routing, M4 soft routing, M5 state-norm homeostat). P1–P5 DONE;
   `paper_d/PAPER_D.tex` drafted in elsarticle preprint format (14 pp, zero
   warnings; P1 theorem, reference fairness, M5 negative, oracle integrated).
+  Per-paper overview, data anchors, and scoped reproduction commands:
+  `paper_d/README.md`.
 
 ## Roadmap status
 

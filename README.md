@@ -27,6 +27,7 @@ are native rather than retrofitted, motivated by C's boundary result.
   *International Journal of Bifurcation and Chaos* / *Chaos*)
   → [`paper_a/PAPER_A.pdf`](paper_a/PAPER_A.pdf) |
   [`paper_a/PAPER_A.tex`](paper_a/PAPER_A.tex) |
+  [`paper_a/README.md`](paper_a/README.md) |
   Zenodo [10.5281/zenodo.22109665](https://doi.org/10.5281/zenodo.22109665)
 
 - **Paper B — Algorithm**: *"REDEM: Online Learning with Meta-Adaptation and
@@ -34,6 +35,7 @@ are native rather than retrofitted, motivated by C's boundary result.
   — the online learning architecture (target: *Neural Networks*)
   → [`paper_b/PAPER_B.pdf`](paper_b/PAPER_B.pdf) |
   [`paper_b/PAPER_B.tex`](paper_b/PAPER_B.tex) |
+  [`paper_b/README.md`](paper_b/README.md) |
   Zenodo [10.5281/zenodo.22110607](https://doi.org/10.5281/zenodo.22110607)
 
 - **Paper C — Dissection**: *"Dissecting Online Learning Mechanisms:
@@ -43,6 +45,7 @@ are native rather than retrofitted, motivated by C's boundary result.
   *Neural Networks* short paper)
   → [`paper_c/PAPER_C.pdf`](paper_c/PAPER_C.pdf) |
   [`paper_c/PAPER_C.tex`](paper_c/PAPER_C.tex) |
+  [`paper_c/README.md`](paper_c/README.md) |
   Zenodo [10.5281/zenodo.22110619](https://doi.org/10.5281/zenodo.22110619)
 
 - **Paper D — Architecture**: *"REDEM-SSM: A State-Space Architecture with
@@ -52,6 +55,7 @@ are native rather than retrofitted, motivated by C's boundary result.
   NeurIPS/ICML stretch; arXiv + workshop first)
   → [`paper_d/PAPER_D.pdf`](paper_d/PAPER_D.pdf) |
   [`paper_d/PAPER_D.tex`](paper_d/PAPER_D.tex) |
+  [`paper_d/README.md`](paper_d/README.md) |
   Zenodo [10.5281/zenodo.22110624](https://doi.org/10.5281/zenodo.22110624)
 
 ## What each paper contributes to the series
@@ -115,15 +119,20 @@ Data and figures live in `data/` and `figures/`.
 ## Repository layout
 
 ```
-├── paper_a/     Paper A: substrate characterization (PDF, LaTeX)
-├── paper_b/     Paper B: REDEM online learning architecture (PDF, LaTeX)
-├── paper_c/     Paper C: three-mechanism disentanglement (PDF, LaTeX)
-├── paper_d/     Paper D: native REDEM-SSM architecture (PDF, LaTeX)
+├── paper_a/     Paper A: substrate characterization (PDF, LaTeX, README)
+├── paper_b/     Paper B: REDEM online learning architecture (PDF, LaTeX, README)
+├── paper_c/     Paper C: three-mechanism disentanglement (PDF, LaTeX, README)
+├── paper_d/     Paper D: native REDEM-SSM architecture (PDF, LaTeX, README)
 ├── scripts/     Shared simulation code (CORE substrate, tasks, readouts, figure scripts)
 ├── data/        All experiment results (CSV + JSON, 10-seed means)
 ├── figures/     All publication figures (vector PDF; no raster twins)
 └── *.md         Overview and technical README
 ```
+
+Each paper folder contains its own `README.md` (key results, figures and
+data anchors, compile instructions, and the reproduction commands scoped
+to that paper), so a paper can be read and reproduced independently of the
+series.
 
 ## Scripts
 
