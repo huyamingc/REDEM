@@ -39,8 +39,8 @@ three mechanisms of a reservoir-based online learner: a slow-trace
 statistical memory (M3), a homeostatic chaos regulator (M5), and the raw
 physics of the substrate itself. A falsifying transfer experiment (an
 echo-state network with and without the metadata under a sequential
-disturbance chain, 10 seeds) shows that the previously reported $+32\%$
-sequential-recovery gain is produced by the homeostat, not by the
+disturbance chain, 10 seeds) shows that the $+32\%$ sequential-recovery
+gain of the substrate system is produced by the homeostat, not by the
 metadata, and that the metadata does not transfer memory-capacity
 robustness to an ESN at any tested metadata timescale
 ($\tau_m \in \{200,500,1000,2000\}$; paired differences $-0.68$ to
@@ -49,9 +49,9 @@ narrower and precisely located: it denoises \emph{state}-level corruption
 (gap $-0.69 \rightarrow -0.04$ to $-0.01$ when noise enters before the
 slow trace, at every tested $\tau_m$)
 and accelerates boundary adaptation by a controlled-measured factor of
-1.3--2.4 on the substrate and $\sim$10 pulses on the ESN (the larger
-``$9$--$20\times$'' ratios obtained with a window-position metric
-are artifacts). Raw
+1.3--2.4 on the substrate and $\sim$10 pulses on the ESN (window-position
+metrics inflate this factor to $9$--$20\times$; those numbers are
+artifacts). Raw
 memory capacity remains a substrate property (MC 10.19 vs.\ 6.17). Three
 mechanisms, three roles --- and none is transferable to another's job.
 A controlled proof of concept on a Transformer substrate with low-rank
@@ -338,8 +338,9 @@ metadata is a factor 1.3--2.4 on the substrate ($T_{200}$: fast
 264.8--303.9 vs.\ dual/slow 202--211 pulses) and $\sim$10 pulses on the
 ESN ($T_{40}$ 49.9$\rightarrow$40.6; p90 76.5$\rightarrow$42.0), with
 overall accuracy reproducing the original runs exactly
-(Table~\ref{tab:adapt}). The ``$9$--$20\times$'' ratios reported earlier were
-window-position metric artifacts.
+(Table~\ref{tab:adapt}). A window-position metric yields inflated
+$9$--$20\times$ ratios; those numbers are artifacts of the metric, not
+adaptation speedups.
 
 \begin{table}[t]
 \centering

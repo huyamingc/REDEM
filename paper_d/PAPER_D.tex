@@ -190,7 +190,7 @@ dimension $F = N+1$, not $O(P^2)$ in a parameter count
 estimate of the conditional distribution, so perplexity is evaluated as
 $\mathrm{CE} = -\ln\,\mathrm{clip}(\hat{y}_t[e_t], 10^{-12}, 1)$
 \emph{without} a softmax (a softmax double-normalizes the estimate
-toward uniform; we found and fixed this metric bug during development).
+toward uniform).
 The fraction of clipped ($\le 0$) predictions is reported as a
 diagnostic.
 
@@ -213,7 +213,7 @@ with $\tau_m \in \{200,500,1000,2000\}$. The fast channels (which
 converge in a few tokens) are a stationary domain statistic; the full
 state is not --- its slow channels accumulate over the whole stream, so
 an EMA of the full state drifts away from any fixed per-domain reference
-and the detector never flips (found and fixed during development).
+and the detector never flips.
 Fixed per-domain references are the mean fast-channel state over
 1500-token reference streams generated per domain.
 
