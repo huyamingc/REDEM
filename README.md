@@ -1,62 +1,71 @@
 # REDEM — Physics-Grounded Online Learning Architecture
 
-This repository contains the complete code, data, and figures for three
-companion papers (plus a fourth in development):
+This repository contains the complete code, data, and figures for **four
+companion preprints** that form one research program on online learning in
+physics-constrained systems. The four papers share a single simulation
+pipeline and data set, cite each other as companions, and are designed to
+be read in order (**A → B → C → D**):
 
-- **Paper A**: *"Memory and chaos in a physics-constrained relaxation
-  substrate: phase diagram, multi-timescale forgetting, and disturbance
-  robustness"* — substrate characterization (target: *International Journal of
-  Bifurcation and Chaos* / *Chaos*)
-  → See [`paper_a/PAPER_A.pdf`](paper_a/PAPER_A.pdf) and
-  [`paper_a/PAPER_A.tex`](paper_a/PAPER_A.tex)
+| Paper | Role | Core question | Preprint |
+| :--- | :--- | :--- | :--- |
+| **A** | Physics | What does the substrate compute? (memory–chaos phase diagram, forgetting kernel, homeostat) | Zenodo [10.5281/zenodo.22109665](https://doi.org/10.5281/zenodo.22109665) |
+| **B** | Algorithm | How do you learn on top of it? (REDEM: RLS readout, meta-adaptation, structural plasticity) | Zenodo [10.5281/zenodo.22110607](https://doi.org/10.5281/zenodo.22110607) |
+| **C** | Dissection | Which mechanism does which job? (statistical memory ≠ robustness recovery) | Zenodo [10.5281/zenodo.22110619](https://doi.org/10.5281/zenodo.22110619) |
+| **D** | Architecture | What host makes these mechanisms native? (state-space-native REDEM) | Zenodo [10.5281/zenodo.22110624](https://doi.org/10.5281/zenodo.22110624) |
 
-- **Paper B**: *"REDEM: Online Learning with Meta-Adaptation and Structural
-  Plasticity for Non-Stationary Environments"*
+In one sentence each: **Paper A** establishes the physics (what the
+substrate computes); **Paper B** builds the learning architecture on that
+physics; **Paper C** dissects the mechanisms by falsifying transfers and
+locates the host boundary; **Paper D** redesigns the host so the mechanisms
+are native rather than retrofitted, motivated by C's boundary result.
+
+## Papers
+
+- **Paper A — Physics**: *"Memory and chaos in a physics-constrained
+  relaxation substrate: phase diagram, multi-timescale forgetting, and
+  disturbance robustness"* — substrate characterization (target:
+  *International Journal of Bifurcation and Chaos* / *Chaos*)
+  → [`paper_a/PAPER_A.pdf`](paper_a/PAPER_A.pdf) |
+  [`paper_a/PAPER_A.tex`](paper_a/PAPER_A.tex) |
+  Zenodo [10.5281/zenodo.22109665](https://doi.org/10.5281/zenodo.22109665)
+
+- **Paper B — Algorithm**: *"REDEM: Online Learning with Meta-Adaptation and
+  Structural Plasticity for Non-Stationary Environments"*
   — the online learning architecture (target: *Neural Networks*)
-  → See [`paper_b/PAPER_B.pdf`](paper_b/PAPER_B.pdf) and
-  [`paper_b/PAPER_B.tex`](paper_b/PAPER_B.tex)
+  → [`paper_b/PAPER_B.pdf`](paper_b/PAPER_B.pdf) |
+  [`paper_b/PAPER_B.tex`](paper_b/PAPER_B.tex) |
+  Zenodo [10.5281/zenodo.22110607](https://doi.org/10.5281/zenodo.22110607)
 
-- **Paper C (in development)**: *"Dissecting Online Learning Mechanisms:
+- **Paper C — Dissection**: *"Dissecting Online Learning Mechanisms:
   Statistical Memory, Homeostatic Recovery, and Substrate Physics are
-  Non-Substitutable"* — three-mechanism disentanglement built on a falsifying
-  experiment (s14: metadata does not transfer disturbance robustness to an
-  ESN; s16: robust across τ_m ∈ [200, 2000]); §6 LLM extension written
-  (s18: routing transfers, gating-only falsified, Fig 3); §7 conclusion
-  point (6): host-boundary statement (the full framework needs a stateful
-  host); drafted for Neurocomputing / Neural Networks short paper
-  → See [`paper_c/PAPER_C.pdf`](paper_c/PAPER_C.pdf),
-  [`paper_c/PAPER_C.tex`](paper_c/PAPER_C.tex),
-  [`paper_c/DERIVATION.md`](paper_c/DERIVATION.md) and
-  [`paper_c/PAPER_C_sketch.md`](paper_c/PAPER_C_sketch.md)
+  Non-Substitutable"* — three-mechanism disentanglement built on a
+  falsifying transfer experiment (target: *Neurocomputing* /
+  *Neural Networks* short paper)
+  → [`paper_c/PAPER_C.pdf`](paper_c/PAPER_C.pdf) |
+  [`paper_c/PAPER_C.tex`](paper_c/PAPER_C.tex) |
+  [`paper_c/DERIVATION.md`](paper_c/DERIVATION.md) |
+  [`paper_c/PAPER_C_sketch.md`](paper_c/PAPER_C_sketch.md) |
+  Zenodo [10.5281/zenodo.22110619](https://doi.org/10.5281/zenodo.22110619)
 
-- **Paper D (in development)**: *"REDEM-SSM: A State-Space Architecture with
-  Native Online Learning, Meta-Adaptation, and Structural
-  Plasticity"* — a native SSM-hosted architecture instantiating
-  M1/M3/M4/M5 from the ground up, motivated by Paper C's host-boundary
-  result. P1–P4 (S19–S22) DONE: P1/P3a falsified with mechanisms isolated
-  (exact token recovery is a deconvolution impossibility (Prop. 1); the
-  pooled state readout fails out of sample (ppl 58–116), 0/10, while M1 on
-  the additive input path works 10/10 — boundary analysis (s35) scopes the
-  failure: the current token IS linearly decodable from the state's fast
-  channels (88.9–99.7% out-of-sample), the in-sample oracle is
-  window-dependent and nested-violating, so the failure is a
-  pooled-readout/metric property, not missing linear information); P2 M3
-  routing transfers (forgetting −2.05, 10/10)
-  while gating-only inverts on RLS readouts (readout-dynamics-dependent);
-  P3 both supported (soft routing beats abrupt −1.81, 10/10; dormant
-  covariance refresh flips the soft-routing stream result to −3.54; M5
-  homeostat bounds the state
-  and restores the full-state EMA detector 5/5); P4 benchmark (4-domain
-  irregular switches) both hypotheses 10/10 (REDEM vs bare −2.25 stream,
-  −4.47 forget; vs TF-A1 −9.28/−10.08) + real-text transfer (two Gutenberg
-  books, REDEM vs bare −1.27, vs TF-A1 −5.23, 10/10). P5: PAPER_D.tex
-  draft (14 pp, zero warnings; author info filled; P1 theorem, reference
-  fairness, M5 negative and oracle integrated; P1 corollary revised with
-  s35 boundary probes; related-work section added). (Target: NeurIPS/ICML
-  stretch; arXiv + workshop first)
-  → See [`paper_d/README.md`](paper_d/README.md),
-  [`paper_d/PAPER_D_sketch.md`](paper_d/PAPER_D_sketch.md) and
-  [`paper_d/PAPER_D.tex`](paper_d/PAPER_D.tex)
+- **Paper D — Architecture**: *"REDEM-SSM: A State-Space Architecture with
+  Native Online Learning, Meta-Adaptation, and Structural Plasticity"* —
+  a native SSM-hosted architecture instantiating M1/M3/M4/M5 from the
+  ground up, motivated by Paper C's host-boundary result (target:
+  NeurIPS/ICML stretch; arXiv + workshop first)
+  → [`paper_d/PAPER_D.pdf`](paper_d/PAPER_D.pdf) |
+  [`paper_d/PAPER_D.tex`](paper_d/PAPER_D.tex) |
+  [`paper_d/README.md`](paper_d/README.md) |
+  [`paper_d/PAPER_D_sketch.md`](paper_d/PAPER_D_sketch.md) |
+  Zenodo [10.5281/zenodo.22110624](https://doi.org/10.5281/zenodo.22110624)
+
+## What each paper contributes to the series
+
+| | Paper A | Paper B | Paper C | Paper D |
+| :--- | :--- | :--- | :--- | :--- |
+| **Question** | What can this substrate compute? | How do you learn on it? | Which mechanism does what? | What host makes it native? |
+| **Core result** | κ*∈(25,30); held-out MC +24–53% just before it; forgetting kernel r=0.97; λ-homeostat +8–18% | 0.996 vs 0.973 (p<0.0001; N=1024: 0.9970 vs 0.9753); tracks drift where frozen learners never recover | the +32% sequential-recovery gain is the homeostat's, not the metadata's; metadata robustness transfer falsified (0/10 seeds at every τ_m); routing transfers, gating-only falsified | input-path readout beats the pooled state readout (10/10); soft routing beats abrupt (−1.81, 10/10); full stack beats TF+LoRA (−9.28/−10.08, 10/10) |
+| **Target venue** | IJBC / Chaos | Neural Networks | Neurocomputing / NN short | NeurIPS/ICML stretch; arXiv + workshop first |
+| **Preprint DOI** | [10.5281/zenodo.22109665](https://doi.org/10.5281/zenodo.22109665) | [10.5281/zenodo.22110607](https://doi.org/10.5281/zenodo.22110607) | [10.5281/zenodo.22110619](https://doi.org/10.5281/zenodo.22110619) | [10.5281/zenodo.22110624](https://doi.org/10.5281/zenodo.22110624) |
 
 ## Provenance: prior Si₃N₄ pulse-encoding paper
 
@@ -114,8 +123,8 @@ Data and figures live in `data/` and `figures/`.
 ```
 ├── paper_a/     Paper A: substrate characterization (PDF, LaTeX, drafts, submission README)
 ├── paper_b/     Paper B: REDEM online learning architecture (PDF, LaTeX, drafts, submission README)
-├── paper_c/     Paper C (in development): three-mechanism disentanglement (derivation, sketch, README)
-├── paper_d/     Paper D (sketch): native REDEM-SSM architecture (README, design doc)
+├── paper_c/     Paper C: three-mechanism disentanglement (PDF, LaTeX, derivation, sketch, README)
+├── paper_d/     Paper D: native REDEM-SSM architecture (PDF, LaTeX, README, design doc)
 ├── scripts/     Shared simulation code (CORE substrate, tasks, readouts, figure scripts)
 ├── data/        All experiment results (CSV + JSON, 10-seed means)
 ├── figures/     All publication figures (vector PDF; no raster twins)

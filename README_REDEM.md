@@ -122,9 +122,9 @@ their figures are reproduced from `paper_d/README.md`.
   `figures/paperB_fig1_redem.pdf`, `figures/paperB_fig3_metadata.pdf`,
   `figures/paperB_fig5_ablation.pdf`, `figures/paperB_fig6_showdown.pdf`,
   `figures/paperC_fig1_kernel.pdf`, `figures/paperC_fig2_recovery.pdf`,
-  `figures/paperC_fig3_llm.pdf` (Paper C, in development),
+  `figures/paperC_fig3_llm.pdf` (Paper C),
   `figures/paperD_fig1_p1_arms.pdf`, `figures/paperD_fig2_routing.pdf`,
-  `figures/paperD_fig3_benchmark.pdf` (Paper D, in development)
+  `figures/paperD_fig3_benchmark.pdf` (Paper D)
   (vector PDF only; the papers include the extension-less basename so
   `pdflatex` picks the vector version).
 
@@ -220,14 +220,14 @@ ws-ijbc.cls / revtex4-2 for Paper A (IJBC/Chaos), elsarticle.cls for Paper B
   swap in elsarticle.cls at submission.
 - `PAPER_A_sketch.md` / `PAPER_B_sketch.md` — outlines, figure/table
   inventories, key-number tables.
-- `paper_c/` (in development) — Paper C "Dissecting Online Learning
+- `paper_c/` — Paper C "Dissecting Online Learning
   Mechanisms: Statistical Memory, Homeostatic Recovery, and Substrate
   Physics are Non-Substitutable". The three-mechanism disentanglement thesis
   is locked on s14/s16/s16b/s15/s5b; `paper_c/PAPER_C.tex` is drafted in
   elsarticle preprint format (14 pp, zero warnings) for Neurocomputing /
   Neural Networks short paper. See `paper_c/DERIVATION.md` and
   `paper_c/PAPER_C_sketch.md`.
-- `paper_d/` (in development) — Paper D "REDEM-SSM": the SSM instantiation
+- `paper_d/` — Paper D "REDEM-SSM": the SSM instantiation
   of the three mechanisms (M1 per-token RLS readout, M3 fast-channel EMA
   routing, M4 soft routing, M5 state-norm homeostat). P1–P5 DONE;
   `paper_d/PAPER_D.tex` drafted in elsarticle preprint format (14 pp, zero
