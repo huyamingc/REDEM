@@ -60,31 +60,43 @@ pdflatex PAPER_B.tex    # run twice for cross-references
 
 ## Reproduce
 
-CPU-only; uses the project virtual environment (`../.venv`).
+CPU-only; uses the project virtual environment (`../.venv`). Run from this
+directory:
 
 ```powershell
-& ..\.venv\Scripts\python.exe ..\scripts\online_readout_streaming.py
-& ..\.venv\Scripts\python.exe ..\scripts\three_factor_online_readout.py
-& ..\.venv\Scripts\python.exe ..\scripts\intrinsic_reward_experiment.py
-& ..\.venv\Scripts\python.exe ..\scripts\dual_timescale_metadata.py
-& ..\.venv\Scripts\python.exe ..\scripts\chaos_regulator.py
-& ..\.venv\Scripts\python.exe ..\scripts\structure_plasticity.py
-& ..\.venv\Scripts\python.exe ..\scripts\integrated_benchmark.py
-& ..\.venv\Scripts\python.exe ..\scripts\baseline_showdown.py
-& ..\.venv\Scripts\python.exe ..\scripts\esn_metadata_comparison.py
-& ..\.venv\Scripts\python.exe ..\scripts\s5b_controlled_adaptation.py --sequential
-& ..\.venv\Scripts\python.exe ..\scripts\s24_homeo_plasticity_coupling.py
-& ..\.venv\Scripts\python.exe ..\scripts\s25_reward_gated_plasticity.py
-& ..\.venv\Scripts\python.exe ..\scripts\s28_causal_audit_chain.py
-& ..\.venv\Scripts\python.exe ..\scripts\s30_integrated_1024.py --workers 4
-& ..\.venv\Scripts\python.exe ..\scripts\s34_leak_sensitivity.py
-& ..\.venv\Scripts\python.exe ..\scripts\gen_architecture_schematic.py
-& ..\.venv\Scripts\python.exe ..\scripts\gen_s2_curves.py
-& ..\.venv\Scripts\python.exe ..\scripts\gen_paper_figures.py
+& ..\.venv\Scripts\python.exe ..\scripts\<script> [flags]
 ```
 
-Every script accepts `--quick` for a smoke run. Full pipeline and seed
-discipline: [`../README_REDEM.md`](../README_REDEM.md).
+Experiment scripts accept `--quick` (reduced smoke run); `--sequential`
+(where listed) disables the multiprocessing `Pool`, `--workers N` caps it.
+Each run regenerates the committed `../data/` files; the key values below
+are what the committed data and the paper report.
+
+| Script | Writes | Expected key values (paper anchor) |
+|---|---|---|
+| `online_readout_streaming.py` | `../data/s2_online_readout_v1.{csv,json}` | acc 0.974–0.982; inversion recovery 225–616 pulses; Mackey–Glass NMSE 0.0018 (Fig. 2, Table 2) |
+| `three_factor_online_readout.py` | `../data/s3_three_factor_v1.{csv,json}` | reward-only post-inversion accuracy 0.06–0.10 (Table 1) |
+| `intrinsic_reward_experiment.py` | `../data/s4_intrinsic_reward_v1.{csv,json}` | stream mean ≤ 0.514 — intrinsic reward never rescues |
+| `dual_timescale_metadata.py` | `../data/s5_dual_timescale_v1.{csv,json}` | +1.3–2.1 pp (p < 0.0001) (Fig. 3) |
+| `chaos_regulator.py` | `../data/s6_chaos_regulator_v1.{csv,json}` | held-out MC +8–18% post-disturbance (Fig. 4) |
+| `structure_plasticity.py` | `../data/s7_structure_plasticity_v1.{csv,json}` | gentle 5% churn +7.8% (ring) / +11.3% (prune repair); aggressive 20% churn −23% |
+| `integrated_benchmark.py` | `../data/s8_integrated_v1.{csv,json}` | full system 0.996 vs bare baseline 0.973 (p < 0.0001) (Table 1) |
+| `baseline_showdown.py` | `../data/s9_baseline_showdown_v1.{csv,json}` | REDEM 0.991 vs ESN 1.000 / GRU 0.394 / transformer 0.351 (Table 2, Fig. 6) |
+| `esn_metadata_comparison.py` | `../data/s10_esn_metadata_v1.{csv,json}` | equalization: ESN+meta 0.998 ≈ ESN 0.996 ≈ REDEM 0.994 (Fig. 6) |
+| `s11_disturbance_chain.py` | `../data/s11_disturbance_chain_v1.{csv,json}` | regulated r3 MC 8.47 vs fixed 6.41 (+32%) — the sequential-disturbance anchor |
+| `s13_causal_audit.py` | `../data/s13_causal_audit_v1.{csv,json}` | all leak arms ≤ 0.02 pp (0.9964–0.9962 vs 0.9963) |
+| `s5b_controlled_adaptation.py --sequential` | `../data/s5b_controlled_adaptation_v1.{csv,json}` | controlled adaptation factor 1.28–1.44 (T200), 1.79–2.40 (T40) |
+| `s24_homeo_plasticity_coupling.py` | `../data/s24_homeo_plasticity_coupling_v1.{csv,json}` | homeostat alone r3 MC 8.47 vs coupled 5.27 (0/10) — rewiring during disturbance is harmful |
+| `s25_reward_gated_plasticity.py` | `../data/s25_reward_gated_plasticity_v1.{csv,json}` | novelty-gated 14.59 vs correlation-guided 12.43 (t = 4.5, 10/10) |
+| `s28_causal_audit_chain.py` | `../data/s28_causal_audit_chain_v1.{csv,json}` | no leak arm improves recovery; the no-plasticity arm reproduces the 8.47 anchor exactly |
+| `s30_integrated_1024.py --workers 4` | `../data/s30_integrated_1024_v1.{csv,json}` | full 0.9970 vs baseline 0.9753 (paired t = 15.3, 10/10) |
+| `s34_leak_sensitivity.py` | `../data/s34_leak_sensitivity_v1.{csv,json}` | 10× FTLE leak still NS (+0.21); 30% plasticity-correlation leak +0.57 (7/10, 95% CI includes 0) |
+| `gen_architecture_schematic.py` | `../figures/paperA_fig1_substrate.pdf`, `../figures/paperB_fig1_redem.pdf` | Figs. 1 (shared with Paper A) |
+| `gen_s2_curves.py` | `../figures/s2_online_readout_v1.pdf` | Fig. 2 |
+| `gen_paper_figures.py` | `../figures/paperA_fig4_robustness.pdf`, `../figures/paperB_fig3_metadata.pdf`, `../figures/paperB_fig5_ablation.pdf`, `../figures/paperB_fig6_showdown.pdf` | Figs. 3–6 |
+
+Seed discipline and the full S1–s35 pipeline:
+[`../README_REDEM.md`](../README_REDEM.md).
 
 ## Companion papers
 

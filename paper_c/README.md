@@ -57,30 +57,41 @@ pdflatex PAPER_C.tex    # run three times for cross-references (elsarticle)
 | S15 controlled adaptation | — | `../data/s15_controlled_adaptation_v1.*` |
 | S5b substrate arms controlled | — | `../data/s5b_controlled_adaptation_v1.*` |
 | S16 τ_m pressure test | — | `../data/s16_tau_m_pressure_test_v1.*` |
-| S16b falsification stress test | — | `../data/s16b_falsification_stress_test_v1.*` |
+| S16b falsification stress test | — | `../data/s16b_falsification_stress_test_v2.*` |
 | S17 substrate stress | — | `../data/s17_substrate_stress_v1.*` |
 | S18 LLM drift gate | — | `../data/s18_llm_drift_gate_v1.*` |
 
 ## Reproduce
 
-CPU-only; uses the project virtual environment (`../.venv`).
+CPU-only; uses the project virtual environment (`../.venv`). Run from this
+directory:
 
 ```powershell
-& ..\.venv\Scripts\python.exe ..\scripts\esn_metadata_comparison.py
-& ..\.venv\Scripts\python.exe ..\scripts\s14_esn_disturbance_chain.py --sequential
-& ..\.venv\Scripts\python.exe ..\scripts\s15_controlled_adaptation.py --sequential
-& ..\.venv\Scripts\python.exe ..\scripts\s16_tau_m_pressure_test.py --sequential
-& ..\.venv\Scripts\python.exe ..\scripts\s16b_falsification_stress_test.py --sequential
-& ..\.venv\Scripts\python.exe ..\scripts\s17_substrate_stress.py --sequential
-& ..\.venv\Scripts\python.exe ..\scripts\s18_llm_drift_gate.py --sequential
-& ..\.venv\Scripts\python.exe ..\scripts\s5b_controlled_adaptation.py --sequential
-& ..\.venv\Scripts\python.exe ..\scripts\gen_paperC_fig1_kernel.py
-& ..\.venv\Scripts\python.exe ..\scripts\gen_paperC_fig2_recovery.py
-& ..\.venv\Scripts\python.exe ..\scripts\gen_paperC_fig3_llm.py
+& ..\.venv\Scripts\python.exe ..\scripts\<script> [flags]
 ```
 
-Every script accepts `--quick` for a smoke run. Full pipeline and seed
-discipline: [`../README_REDEM.md`](../README_REDEM.md).
+Experiment scripts accept `--quick` (reduced smoke run); `--sequential`
+(where listed) disables the multiprocessing `Pool`. Each run regenerates
+the committed `../data/` files; the key values below are what the committed
+data and the paper report.
+
+| Script | Writes | Expected key values (paper anchor) |
+|---|---|---|
+| `esn_metadata_comparison.py` | `../data/s10_esn_metadata_v1.{csv,json}` | equalization: ESN+meta 0.998 ≈ ESN 0.996, closing the gap to REDEM 0.994 (Table 1) |
+| `s11_disturbance_chain.py` | `../data/s11_disturbance_chain_v1.{csv,json}` | substrate anchor: regulated r3 MC 8.47 ± 0.39 vs fixed 6.41 ± 0.41 |
+| `s14_esn_disturbance_chain.py --sequential` | `../data/s14_esn_disturbance_chain_v1.{csv,json}` | paired differences −0.78/−0.76/−0.69 at r1/r2/r3; 0/10 seeds positive — metadata robustness transfer falsified |
+| `s15_controlled_adaptation.py --sequential` | `../data/s15_controlled_adaptation_v1.{csv,json}` | true boundary effect ~10 pulses; variance collapse p90 76.5 → 42 |
+| `s16_tau_m_pressure_test.py --sequential` | `../data/s16_tau_m_pressure_test_v1.{csv,json}` | paired differences −0.701/−0.693/−0.682/−0.678 across τ_m ∈ {200,500,1000,2000}; 0/10 seeds positive (Fig. 2) |
+| `s16b_falsification_stress_test.py --sequential` | `../data/s16b_falsification_stress_test_v2.{csv,json}` | probe-protocol gap −0.69 (V0) → −0.04/−0.01 (V2) across τ_m (Table 4) |
+| `s17_substrate_stress.py --sequential` | `../data/s17_substrate_stress_v1.{csv,json}` | equalizer gain positive at all 6 ESN configs (+0.1 to +1.0 pp) — the bottleneck is timescale coverage, not substrate physics |
+| `s18_llm_drift_gate.py --sequential` | `../data/s18_llm_drift_gate_v1.{csv,json}` | A3 routing transfers: forgetting −2.51 ppl (−28%) at τ_m = 200, stream −1.07 (10/10); A2 gating-only falsified, 0/10 (Fig. 3, Table 6) |
+| `s5b_controlled_adaptation.py --sequential` | `../data/s5b_controlled_adaptation_v1.{csv,json}` | substrate arms: controlled adaptation factor 1.3–2.4 |
+| `gen_paperC_fig1_kernel.py` | `../figures/paperC_fig1_kernel.pdf` | Fig. 1 |
+| `gen_paperC_fig2_recovery.py` | `../figures/paperC_fig2_recovery.pdf` | Fig. 2 |
+| `gen_paperC_fig3_llm.py` | `../figures/paperC_fig3_llm.pdf` | Fig. 3 |
+
+Seed discipline and the full S1–s35 pipeline:
+[`../README_REDEM.md`](../README_REDEM.md).
 
 ## Companion papers
 

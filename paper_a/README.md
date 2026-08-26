@@ -53,22 +53,32 @@ pdflatex PAPER_A.tex    # run twice for cross-references
 
 ## Reproduce
 
-CPU-only; uses the project virtual environment (`../.venv`).
+CPU-only; uses the project virtual environment (`../.venv`). Run from this
+directory:
 
 ```powershell
-& ..\.venv\Scripts\python.exe ..\scripts\substrate_recurrence_characterization.py
-& ..\.venv\Scripts\python.exe ..\scripts\forgetting_curve_theory.py
-& ..\.venv\Scripts\python.exe ..\scripts\kernel_coupling_shape.py
-& ..\.venv\Scripts\python.exe ..\scripts\cv_sweep.py
-& ..\.venv\Scripts\python.exe ..\scripts\s12_lambda_target_sweep.py --sequential
-& ..\.venv\Scripts\python.exe ..\scripts\s27_clip_kappa_fine.py
-& ..\.venv\Scripts\python.exe ..\scripts\s32_ftle_noise_robustness.py
-& ..\.venv\Scripts\python.exe ..\scripts\gen_substrate_phase_diagram.py
-& ..\.venv\Scripts\python.exe ..\scripts\gen_paperA_supp_figures.py
+& ..\.venv\Scripts\python.exe ..\scripts\<script> [flags]
 ```
 
-Every script accepts `--quick` for a smoke run. Full pipeline and seed
-discipline: [`../README_REDEM.md`](../README_REDEM.md).
+Experiment scripts accept `--quick` (reduced smoke run); `--sequential`
+(where listed) disables the multiprocessing `Pool`. Each run regenerates
+the committed `../data/` files; the key values below are what the committed
+data and the paper report.
+
+| Script | Writes | Expected key values (paper anchor) |
+|---|---|---|
+| `substrate_recurrence_characterization.py` | `../data/substrate_phase_diagram_v2.{csv,json}` | κ\* ∈ (25, 30); held-out MC +24–53% at the edge of chaos (Fig. 2, Table 2) |
+| `forgetting_curve_theory.py` | `../data/forgetting_curve_theory_overlay_v1.json` | measured MC follows M(t), Pearson r = 0.97; 1/e horizon ≈ 16 pulses (Fig. 3) |
+| `kernel_coupling_shape.py` | `../data/kernel_coupling_shape_v1.{csv,json}` | physical-kernel Pearson r = 0.91–0.99 over κ 15–30 |
+| `cv_sweep.py` | `../data/s10_cv_sweep_v1.{csv,json}` | uncoupled MC +33% with CV; coupled near-critical falls (Supp. Note 1, Fig. S1) |
+| `s12_lambda_target_sweep.py` | `../data/s12_lambda_target_sweep_v1.{csv,json}` | λ_target = 0 optimal: +25%/+19%/+5% MC |
+| `s27_clip_kappa_fine.py` | `../data/s27_clip_kappa_fine_v1.{csv,json}` | κ\* = 25.3/27.4/27.9 across topologies; clip-widening invariant except ring_bidir (+3.4) |
+| `s32_ftle_noise_robustness.py` | `../data/s32_ftle_noise_v1.{csv,json}` | no significant MC degradation up to σ = 0.10 FTLE-estimate noise |
+| `gen_substrate_phase_diagram.py` | `../figures/substrate_phase_diagram_v2.pdf` | Fig. 2 |
+| `gen_paperA_supp_figures.py` | `../figures/paperA_figS1_cv_sweep.pdf` | Fig. S1 |
+
+Seed discipline and the full S1–s35 pipeline:
+[`../README_REDEM.md`](../README_REDEM.md).
 
 ## Companion papers
 

@@ -71,24 +71,34 @@ pdflatex PAPER_D.tex    # run three times for cross-references (elsarticle)
 ## Reproduce
 
 CPU-only (torch CPU); uses the project virtual environment (`../.venv`).
+Run from this directory:
 
 ```powershell
-& ..\.venv\Scripts\python.exe ..\scripts\s19_ssm_rls_readout.py --sequential
-& ..\.venv\Scripts\python.exe ..\scripts\s20_ssm_m3_routing.py --sequential
-& ..\.venv\Scripts\python.exe ..\scripts\s21_ssm_m4_m5.py --sequential
-& ..\.venv\Scripts\python.exe ..\scripts\s22_ssm_p4_benchmark.py --sequential
-& ..\.venv\Scripts\python.exe ..\scripts\s23_ssm_p4_realtext.py --sequential
-& ..\.venv\Scripts\python.exe ..\scripts\s26_ssm_p4_fair_tf.py
-& ..\.venv\Scripts\python.exe ..\scripts\s31_char_bigram_oracle.py
-& ..\.venv\Scripts\python.exe ..\scripts\s33_ssm_p4_m5.py
-& ..\.venv\Scripts\python.exe ..\scripts\s35_readout_boundary_probe.py --workers 4
-& ..\.venv\Scripts\python.exe ..\scripts\gen_paperD_fig1_p1_arms.py
-& ..\.venv\Scripts\python.exe ..\scripts\gen_paperD_fig2_routing.py
-& ..\.venv\Scripts\python.exe ..\scripts\gen_paperD_fig3_benchmark.py
+& ..\.venv\Scripts\python.exe ..\scripts\<script> [flags]
 ```
 
-Every script accepts `--quick` for a smoke run. Full pipeline and seed
-discipline: [`../README_REDEM.md`](../README_REDEM.md).
+Experiment scripts accept `--quick` (reduced smoke run); `--sequential`
+(where listed) disables the multiprocessing `Pool`, `--workers N` caps it.
+Each run regenerates the committed `../data/` files; the key values below
+are what the committed data and the paper report.
+
+| Script | Writes | Expected key values (paper anchor) |
+|---|---|---|
+| `s19_ssm_rls_readout.py --sequential` | `../data/s19_ssm_rls_readout_v1.{csv,json}` | state-mixture arms 58.5–115.9 ppl (0/10) vs input-path 11.75 (d −3.26, 10/10); oracle 7.25 (Fig. 1) |
+| `s20_ssm_m3_routing.py --sequential` | `../data/s20_ssm_m3_routing_v1.{csv,json}` | A2 stream −1.52…−2.45 (10/10); A3 forgetting −2.05/−1.87/−1.20 at τ_m ≤ 1000 (10/10) (Fig. 2) |
+| `s21_ssm_m4_m5.py --sequential` | `../data/s21_ssm_m4_m5_v1.{csv,json}` | soft routing 8.22 vs abrupt 10.03 (−1.81 ppl, 10/10); M5 restores the EMA detector 5/5, state norm 11.3 vs 50.2 |
+| `s22_ssm_p4_benchmark.py --sequential` | `../data/s22_ssm_p4_benchmark_v1.{csv,json}` | REDEM-SSM vs bare host −2.25 stream / −4.47 forgetting; vs TF+LoRA −9.28 / −10.08 (10/10) (Fig. 3, Table 2) |
+| `s23_ssm_p4_realtext.py --sequential` | `../data/s23_ssm_p4_realtext_v1.{csv,json}` | vs bare −1.27 (10/10); vs TF −5.23 (10/10) on the two-book real-text protocol |
+| `s26_ssm_p4_fair_tf.py` | `../data/s26_ssm_p4_fair_tf_v1.{csv,json}` | tuned TF: stream gap −1.68 (0/10) with retention collapse to 62.2; TF-A3 forgetting −8.17 (10/10) without fixing stream |
+| `s31_char_bigram_oracle.py` | `../data/s31_char_bigram_oracle_v1.{csv,json}` | first-order ceiling 10.97 ± 0.18 ppl; REDEM-SSM 12.07 (within ~1.1 ppl) |
+| `s33_ssm_p4_m5.py` | `../data/s33_ssm_p4_m5_v1.{csv,json}` | M5 in the P4 stack is worse: stream +1.53 / forgetting +2.90 (10/10) — honest negative |
+| `s35_readout_boundary_probe.py --workers 4` | `../data/s35_readout_boundary_probe_v1.{csv,json}` | full-window oracle 31.2 vs half-window 17.3 (window-dependent); skip 18.0 > proj 7.25 (10/10); current-token decode 88.9–99.7% from fast channels; fast-channel next-token readouts 68–104 vs static-table 13.9–17.4 |
+| `gen_paperD_fig1_p1_arms.py` | `../figures/paperD_fig1_p1_arms.pdf` | Fig. 1 |
+| `gen_paperD_fig2_routing.py` | `../figures/paperD_fig2_routing.pdf` | Fig. 2 |
+| `gen_paperD_fig3_benchmark.py` | `../figures/paperD_fig3_benchmark.pdf` | Fig. 3 |
+
+Seed discipline and the full S1–s35 pipeline:
+[`../README_REDEM.md`](../README_REDEM.md).
 
 ## Companion papers
 
