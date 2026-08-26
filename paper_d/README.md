@@ -79,23 +79,24 @@ Run from this directory:
 
 Experiment scripts accept `--quick` (reduced smoke run); `--sequential`
 (where listed) disables the multiprocessing `Pool`, `--workers N` caps it.
-Each run regenerates the committed `../data/` files; the key values below
-are what the committed data and the paper report.
+Each run regenerates the committed `../data/` files. The table below is the
+experiment index: what each script does, what it writes, and the finding it
+establishes (with the paper location).
 
-| Script | Writes | Expected key values (paper anchor) |
-|---|---|---|
-| `s19_ssm_rls_readout.py --sequential` | `../data/s19_ssm_rls_readout_v1.{csv,json}` | state-mixture arms 58.5–115.9 ppl (0/10) vs input-path 11.75 (d −3.26, 10/10); oracle 7.25 (Fig. 1) |
-| `s20_ssm_m3_routing.py --sequential` | `../data/s20_ssm_m3_routing_v1.{csv,json}` | A2 stream −1.52…−2.45 (10/10); A3 forgetting −2.05/−1.87/−1.20 at τ_m ≤ 1000 (10/10) (Fig. 2) |
-| `s21_ssm_m4_m5.py --sequential` | `../data/s21_ssm_m4_m5_v1.{csv,json}` | soft routing 8.22 vs abrupt 10.03 (−1.81 ppl, 10/10); M5 restores the EMA detector 5/5, state norm 11.3 vs 50.2 |
-| `s22_ssm_p4_benchmark.py --sequential` | `../data/s22_ssm_p4_benchmark_v1.{csv,json}` | REDEM-SSM vs bare host −2.25 stream / −4.47 forgetting; vs TF+LoRA −9.28 / −10.08 (10/10) (Fig. 3, Table 2) |
-| `s23_ssm_p4_realtext.py --sequential` | `../data/s23_ssm_p4_realtext_v1.{csv,json}` | vs bare −1.27 (10/10); vs TF −5.23 (10/10) on the two-book real-text protocol |
-| `s26_ssm_p4_fair_tf.py` | `../data/s26_ssm_p4_fair_tf_v1.{csv,json}` | tuned TF: stream gap −1.68 (0/10) with retention collapse to 62.2; TF-A3 forgetting −8.17 (10/10) without fixing stream |
-| `s31_char_bigram_oracle.py` | `../data/s31_char_bigram_oracle_v1.{csv,json}` | first-order ceiling 10.97 ± 0.18 ppl; REDEM-SSM 12.07 (within ~1.1 ppl) |
-| `s33_ssm_p4_m5.py` | `../data/s33_ssm_p4_m5_v1.{csv,json}` | M5 in the P4 stack is worse: stream +1.53 / forgetting +2.90 (10/10) — honest negative |
-| `s35_readout_boundary_probe.py --workers 4` | `../data/s35_readout_boundary_probe_v1.{csv,json}` | full-window oracle 31.2 vs half-window 17.3 (window-dependent); skip 18.0 > proj 7.25 (10/10); current-token decode 88.9–99.7% from fast channels; fast-channel next-token readouts 68–104 vs static-table 13.9–17.4 |
-| `gen_paperD_fig1_p1_arms.py` | `../figures/paperD_fig1_p1_arms.pdf` | Fig. 1 |
-| `gen_paperD_fig2_routing.py` | `../figures/paperD_fig2_routing.pdf` | Fig. 2 |
-| `gen_paperD_fig3_benchmark.py` | `../figures/paperD_fig3_benchmark.pdf` | Fig. 3 |
+| Script | What it does | Writes | Finding (paper anchor) |
+|---|---|---|---|
+| `s19_ssm_rls_readout.py --sequential` | P1/P3a: per-token RLS readout on a hand-rolled diagonal SSM — state-mixture readouts vs. the additive input path (7 arms, 10 seeds) | `../data/s19_ssm_rls_readout_v1.{csv,json}` | State-mixture arms 58.5–115.9 ppl (0/10) vs. input-path 11.75 (d −3.26, 10/10); oracle 7.25 — the readout must use the input path; a squared-loss state readout cannot deconvolve the decay (Fig. 1) |
+| `s20_ssm_m3_routing.py --sequential` | P2: M3 fast-channel EMA + drift detection + routing policies (A1/A2/A3 × τ_m, 90 runs) | `../data/s20_ssm_m3_routing_v1.{csv,json}` | A2 stream −1.52…−2.45 (10/10); A3 forgetting −2.05/−1.87/−1.20 at τ_m ≤ 1000 (10/10) — the state's role is statistical metadata for routing, not the readout (Fig. 2) |
+| `s21_ssm_m4_m5.py --sequential` | P3: M4 soft vs. abrupt routing + M5 state-norm homeostat (E1/E2, 70 runs) | `../data/s21_ssm_m4_m5_v1.{csv,json}` | Soft routing 8.22 vs. abrupt 10.03 (−1.81 ppl, 10/10); M5 restores the EMA detector 5/5, state norm 11.3 vs. 50.2 — gentle beats abrupt; the homeostat makes the full-state EMA a valid statistic |
+| `s22_ssm_p4_benchmark.py --sequential` | P4: four-domain irregular-switch benchmark — bare SSM vs. REDEM-SSM vs. TF+LoRA (3 arms, 10 seeds) | `../data/s22_ssm_p4_benchmark_v1.{csv,json}` | REDEM-SSM vs. bare −2.25 stream / −4.47 forgetting; vs. TF+LoRA −9.28 / −10.08 (10/10) — the full stack wins on both axes (Fig. 3, Table 2) |
+| `s23_ssm_p4_realtext.py --sequential` | Real-text transfer: Alice vs. Dickens, 32-symbol char vocab (3 arms, 10 seeds) | `../data/s23_ssm_p4_realtext_v1.{csv,json}` | vs. bare −1.27 (10/10); vs. TF −5.23 (10/10) — the result generalizes from synthetic streams to real text |
+| `s26_ssm_p4_fair_tf.py` | Fair Transformer references: tuned A1 grid (4 lr × 2 ranks) + 4-adapter A3 routing (9 arms, 10 seeds) | `../data/s26_ssm_p4_fair_tf_v1.{csv,json}` | Tuning cuts the stream gap to −1.68 (0/10) but collapses retention to 62.2; TF-A3 forgetting −8.17 (10/10) without fixing stream — mechanisms are host-agnostic, stream performance is not |
+| `s31_char_bigram_oracle.py` | Char-bigram oracle on the real-text protocol (full-book vs. ref-window fits, 10 seeds) | `../data/s31_char_bigram_oracle_v1.{csv,json}` | First-order ceiling 10.97 ± 0.18 ppl; REDEM-SSM 12.07 within ~1.1 ppl — the "first-order regime" boundary is quantitative |
+| `s33_ssm_p4_m5.py` | M5 state-norm homeostat added to the P4 stack (2 arms, 10 seeds) | `../data/s33_ssm_p4_m5_v1.{csv,json}` | M5 is significantly worse in P4: stream +1.53 / forgetting +2.90 (10/10) — honest negative; Δt modulation breaks the Δt=1 whitening, validating S22's exclusion of M5 |
+| `s35_readout_boundary_probe.py --workers 4` | P1 boundary probes on the s19 host (10 seeds): full/half-window oracle, skip-vs-proj nested check, token decoding, fast-channel next-token readouts | `../data/s35_readout_boundary_probe_v1.{csv,json}` | Full-window oracle 31.2 vs. half-window 17.3 (window-dependent); skip 18.0 > proj 7.25 (nested violation, 10/10); current token decodable from fast channels at 88.9–99.7%, yet fast-channel-only next-token readouts fail (68–104 vs. 13.9–17.4) — the P1 failure is a pooled-readout/metric property, not missing linear information (§3) |
+| `gen_paperD_fig1_p1_arms.py` | FIG: P1/P3a state-readout falsification + input-path control | `../figures/paperD_fig1_p1_arms.pdf` | Fig. 1 |
+| `gen_paperD_fig2_routing.py` | FIG: P2 routing retention + P3 soft vs. abrupt | `../figures/paperD_fig2_routing.pdf` | Fig. 2 |
+| `gen_paperD_fig3_benchmark.py` | FIG: P4 benchmark bars | `../figures/paperD_fig3_benchmark.pdf` | Fig. 3 |
 
 Seed discipline and the full S1–s35 pipeline:
 [`../README_REDEM.md`](../README_REDEM.md).
