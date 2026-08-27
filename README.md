@@ -82,8 +82,9 @@ What the prior paper contributes to this repository:
   ν = 10¹³ s⁻¹, T = 300 K), α = 0.02, τ-spread CV = 0.20: the parameter
   set every Paper A–D simulation inherits, bit-for-bit.
 - **Two legacy scripts** — `shallow_trap_array_simulator.py` and
-  `fair_esn_comparison.py` are frozen from the prior project, imported by
-  the current code, and never modified.
+  `fair_esn_comparison.py` are frozen from the prior project
+  ([github.com/huyamingc/Si3N4-Pulse-Encoding](https://github.com/huyamingc/Si3N4-Pulse-Encoding)),
+  imported by the current code, and never modified.
 - **Scope split** — the prior paper studies a *parallel array of
   independent devices* (quasi-static block coupling, offline Ridge/MLP
   readout); Papers A–D study the *per-pulse coupled recurrent* substrate
