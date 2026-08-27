@@ -7,6 +7,7 @@ kernel, and the λ-homeostat that restores memory after disturbances.
 
 - PDF: [`PAPER_A.pdf`](PAPER_A.pdf) | LaTeX: [`PAPER_A.tex`](PAPER_A.tex)
 - Preprint: [doi:10.5281/zenodo.22109665](https://doi.org/10.5281/zenodo.22109665)
+- Target: *Chaos, Solitons & Fractals* (Elsevier)
 - Series overview and reading order (A → B → C → D):
   [`../README.md`](../README.md)
 

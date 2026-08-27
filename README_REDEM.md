@@ -195,36 +195,40 @@ Per-paper scoped reproduction commands (paper-relative paths) are in each
 
 ## Compiling the papers
 
-Both `.tex` files compile standalone with the article class (MiKTeX verified):
-`pdflatex PAPER_A.tex` twice, `pdflatex PAPER_B.tex` twice (or `latexmk` if
-Perl is installed). At submission, swap in the journal class:
-ws-ijbc.cls / revtex4-2 for Paper A (IJBC/Chaos), elsarticle.cls for Paper B
-(Neural Networks).
+All four `.tex` files compile standalone (MiKTeX verified): run `pdflatex`
+twice per paper (or `latexmk -pdf`). Papers A/B use the standard article
+class; Paper C uses elsarticle (preprint mode); Paper D uses REVTeX 4.2
+(aps, preprint) for PRX Intelligence. At submission, A/B/C keep the
+Elsevier "Your Paper Your Way" format (elsarticle final layout at
+acceptance); D submits the REVTeX source as-is (APS: a PDF alone is
+sufficient for peer review).
 
 ## Papers (finalized, S10)
 
 - `PAPER_A.tex` — substrate characterization: phase
   diagram, forgetting kernel theory (full derivations in Appendix A),
   λ-homeostat robustness; task-level CV sweep in Supplementary Note 1 /
-  Fig. S1. Target: *International Journal of Bifurcation and Chaos* or *Chaos*.
-  Compiles standalone (latexmk -pdf) with the article class;
-  swap in ws-ijbc.cls (IJBC) or revtex4-2 (Chaos) at submission.
+  Fig. S1. Target: *Chaos, Solitons & Fractals* (Elsevier).
+  Compiles standalone (latexmk -pdf) with the article class (14 pp, zero
+  warnings); elsarticle final layout at acceptance.
 - `PAPER_B.tex` — REDEM architecture, mechanisms,
   ablations, baselines. Target: *Neural Networks* (Elsevier).
-  `PAPER_B.tex` compiles standalone;
-  swap in elsarticle.cls at submission.
+  `PAPER_B.tex` compiles standalone (11 pp, zero warnings);
+  elsarticle final layout at acceptance.
 - `paper_c/` — Paper C "Dissecting Online Learning
   Mechanisms: Statistical Memory, Homeostatic Recovery, and Substrate
   Physics are Non-Substitutable". The three-mechanism disentanglement thesis
   is locked on s14/s16/s16b/s15/s5b; `paper_c/PAPER_C.tex` is drafted in
-  elsarticle preprint format (14 pp, zero warnings) for Neurocomputing /
-  Neural Networks short paper. Per-paper overview, data anchors, and
+  elsarticle preprint format (14 pp, zero warnings) for *Neurocomputing*.
+  Per-paper overview, data anchors, and
   scoped reproduction commands: `paper_c/README.md`.
 - `paper_d/` — Paper D "REDEM-SSM": the SSM instantiation
   of the three mechanisms (M1 per-token RLS readout, M3 fast-channel EMA
   routing, M4 soft routing, M5 state-norm homeostat). P1–P5 DONE;
-  `paper_d/PAPER_D.tex` drafted in elsarticle preprint format (14 pp, zero
-  warnings; P1 theorem, reference fairness, M5 negative, oracle integrated).
+  `paper_d/PAPER_D.tex` drafted in REVTeX 4.2 (aps, preprint) format
+  (15 pp, zero errors) for *PRX Intelligence* (APS; APC waived for 2026
+  submissions; P1 theorem, reference fairness, M5 negative, oracle
+  integrated).
   Per-paper overview, data anchors, and scoped reproduction commands:
   `paper_d/README.md`.
 
@@ -271,12 +275,15 @@ ws-ijbc.cls / revtex4-2 for Paper A (IJBC/Chaos), elsarticle.cls for Paper B
 | kernel-coupling shape | done (physical-kernel r = 0.91–0.99 over κ 15–30 of the mode-1 topologies, 0.98 at random_graph κ=25; effective-median dilation reported qualitatively) |
 | forgetting-curve overlay | done (theory M(t) evaluated at t = k pulses; Pearson r = 0.97 committed in `data/forgetting_curve_theory_overlay_v1.json`) |
 | s35 readout boundary probes | done (10 seeds; oracle window-dependence 31.2 vs 17.3, nested violation 10/10, fast-channel decode 88.9–99.7%; fast next-token readouts still fail 68–104 vs table 13.9–17.4 — P1 boundary analysis in Paper D §3) |
-| Paper D P5 | done (PAPER_D.tex drafted, 14 pp, zero warnings; P1 theorem, reference fairness, M5 negative, oracle, related-work section integrated) |
+| Paper D P5 | done (PAPER_D.tex drafted, REVTeX 4.2 aps preprint, 15 pp, zero errors; P1 theorem, reference fairness, M5 negative, oracle, related-work section integrated) |
 | Paper C | done (PAPER_C.tex finalized, elsarticle preprint, 14 pp; LLM extension integrated into §6) |
 
 ## Submission status
 
 All four papers are finalized (each PDF compiles with zero errors and zero
 overfull/underfull warnings) and reserved as Zenodo preprints; see the DOI
-table in the root [`README.md`](README.md). Journal-template swaps
-(ws-ijbc / revtex4-2 for A, elsarticle for B) happen at submission time.
+table in the root [`README.md`](README.md). Targets: A → *Chaos, Solitons
+& Fractals*, B → *Neural Networks*, C → *Neurocomputing* (Elsevier; all
+submit in the current "Your Paper Your Way" format), D → *PRX
+Intelligence* (APS; REVTeX source, APC waived for 2026 submissions).
+Journal-specific formatting happens at submission time.

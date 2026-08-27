@@ -8,6 +8,7 @@ every learning signal local and derived from live inference.
 
 - PDF: [`PAPER_B.pdf`](PAPER_B.pdf) | LaTeX: [`PAPER_B.tex`](PAPER_B.tex)
 - Preprint: [doi:10.5281/zenodo.22110607](https://doi.org/10.5281/zenodo.22110607)
+- Target: *Neural Networks* (Elsevier)
 - Series overview and reading order (A → B → C → D):
   [`../README.md`](../README.md)
 

@@ -24,7 +24,7 @@ are native rather than retrofitted, motivated by C's boundary result.
 - **Paper A — Physics**: *"Memory and chaos in a physics-constrained
   relaxation substrate: phase diagram, multi-timescale forgetting, and
   disturbance robustness"* — substrate characterization (target:
-  *International Journal of Bifurcation and Chaos* / *Chaos*)
+  *Chaos, Solitons & Fractals*)
   → [`paper_a/PAPER_A.pdf`](paper_a/PAPER_A.pdf) |
   [`paper_a/PAPER_A.tex`](paper_a/PAPER_A.tex) |
   [`paper_a/README.md`](paper_a/README.md) |
@@ -41,8 +41,7 @@ are native rather than retrofitted, motivated by C's boundary result.
 - **Paper C — Dissection**: *"Dissecting Online Learning Mechanisms:
   Statistical Memory, Homeostatic Recovery, and Substrate Physics are
   Non-Substitutable"* — three-mechanism disentanglement built on a
-  falsifying transfer experiment (target: *Neurocomputing* /
-  *Neural Networks* short paper)
+  falsifying transfer experiment (target: *Neurocomputing*)
   → [`paper_c/PAPER_C.pdf`](paper_c/PAPER_C.pdf) |
   [`paper_c/PAPER_C.tex`](paper_c/PAPER_C.tex) |
   [`paper_c/README.md`](paper_c/README.md) |
@@ -52,7 +51,7 @@ are native rather than retrofitted, motivated by C's boundary result.
   Native Online Learning, Meta-Adaptation, and Structural Plasticity"* —
   a native SSM-hosted architecture instantiating M1/M3/M4/M5 from the
   ground up, motivated by Paper C's host-boundary result (target:
-  NeurIPS/ICML stretch; arXiv + workshop first)
+  *PRX Intelligence*)
   → [`paper_d/PAPER_D.pdf`](paper_d/PAPER_D.pdf) |
   [`paper_d/PAPER_D.tex`](paper_d/PAPER_D.tex) |
   [`paper_d/README.md`](paper_d/README.md) |
@@ -64,7 +63,7 @@ are native rather than retrofitted, motivated by C's boundary result.
 | :--- | :--- | :--- | :--- | :--- |
 | **Question** | What can this substrate compute? | How do you learn on it? | Which mechanism does what? | What host makes it native? |
 | **Core result** | κ*∈(25,30); held-out MC +24–53% just before it; forgetting kernel r=0.97; λ-homeostat +8–18% | 0.996 vs 0.973 (p<0.0001; N=1024: 0.9970 vs 0.9753); tracks drift where frozen learners never recover | the +32% sequential-recovery gain is the homeostat's, not the metadata's; metadata robustness transfer falsified (0/10 seeds at every τ_m); routing transfers, gating-only falsified | input-path readout beats the pooled state readout (10/10); soft routing beats abrupt (−1.81, 10/10); full stack beats TF+LoRA (−9.28/−10.08, 10/10) |
-| **Target venue** | IJBC / Chaos | Neural Networks | Neurocomputing / NN short | NeurIPS/ICML stretch; arXiv + workshop first |
+| **Target venue** | Chaos, Solitons & Fractals | Neural Networks | Neurocomputing | PRX Intelligence |
 | **Preprint DOI** | [10.5281/zenodo.22109665](https://doi.org/10.5281/zenodo.22109665) | [10.5281/zenodo.22110607](https://doi.org/10.5281/zenodo.22110607) | [10.5281/zenodo.22110619](https://doi.org/10.5281/zenodo.22110619) | [10.5281/zenodo.22110624](https://doi.org/10.5281/zenodo.22110624) |
 
 ## Provenance: prior Si₃N₄ pulse-encoding paper
@@ -106,7 +105,7 @@ simulation code and data but ask different questions:
 | **Question** | What can this physical substrate compute? | How do you learn on top of it? |
 | **Content** | Dynamics theory: memory–chaos phase diagram, forgetting kernel, λ-homeostat robustness (full derivations in Appendix A) | Learning algorithm + benchmarks: online RLS readout, dual-timescale metadata, chaos homeostat, structure plasticity, ablations |
 | **Key results** | Order–chaos transition at κ*∈(25,30); held-out memory +24–53% just before it; forgetting kernel M(t)=∫p(τ)e^{−t/τ}dτ matches the measured memory curve (r=0.97); λ-homeostat restores 8–18% after disturbances; edge of chaos (λ_target=0) identified as optimal target (+25%) | Tracks drift where frozen batch learners (GRU, transformer) fail permanently; integrated system matches or beats every ablation and the bare baseline (0.996 vs 0.988/0.994/0.973; N=1024, 10 seeds: 0.9970 vs 0.9753); metadata is substrate-agnostic — its statistical-memory benefit transfers to a matched ESN (robustness transfer falsified in Paper C); +32% memory after three sequential disturbances; causal audit confirms all mechanisms are causally clean |
-| **Target journal** | IJBC / Chaos | Neural Networks |
+| **Target journal** | Chaos, Solitons & Fractals | Neural Networks |
 | **Relationship** | Substrate theory; cites the prior Si₃N₄ pulse-encoding paper for device calibration | Builds on Paper A's substrate theory (cited as the companion in §2) |
 
 All experiments are CPU-only and fully reproducible via the scripts in
