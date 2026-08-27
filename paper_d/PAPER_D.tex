@@ -2,37 +2,52 @@
 % Paper D — REDEM-SSM: A State-Space Architecture with Native Online
 %   Learning, Meta-Adaptation, and Structural Plasticity
 % ============================================================================
-% Target: NeurIPS/ICML (stretch); arXiv + workshop first; mechanism-oriented
-%   journal fallback.
-% Class: elsarticle preprint; switch to two-column at acceptance.
+% Target: PRX Intelligence (APS; 2026-submission APC waiver). Preprint-first
+%   via the reserved Zenodo DOI 10.5281/zenodo.22110624.
+% Class: REVTeX 4.2 (aps, preprint) — APS journal submissions.
 % Compile: pdflatex PAPER_D.tex (run twice for cross-refs).
 % Figures resolve via ../figures/ (extension-less basenames).
 % ============================================================================
-\documentclass[preprint,12pt]{elsarticle}
+\documentclass[aps,preprint]{revtex4-2}
 
 \usepackage{amsmath,amssymb}
-\usepackage{amsthm}
 \usepackage{booktabs}
 \usepackage{graphicx}
 \graphicspath{{../figures/}}
 \usepackage[expansion=false]{microtype}
 \usepackage{url}
 \emergencystretch=2em
+% The long abstract plus the author footnotes on its page overflow \textheight
+% by 2.48pt in 12pt preprint mode; a slightly tighter footnote skip absorbs it.
+\addtolength{\skip\footins}{-4pt}
 
-\newtheorem{proposition}{Proposition}[section]
-\newtheorem{lemma}{Lemma}[section]
+% Custom theorem environments: REVTeX's native headers are set as rigid
+% hboxes, which makes the long proposition note leave the first line
+% underfull; these flowing-text variants keep the same numbering (IV.1).
+\newcounter{proposition}[section]
+\renewcommand{\theproposition}{\Roman{section}.\arabic{proposition}}
+\newenvironment{proposition}[1][]{%
+  \refstepcounter{proposition}%
+  \par\noindent\textbf{Proposition \theproposition} (#1)\ \itshape\ignorespaces
+}{\par}
+\newcounter{lemma}[section]
+\renewcommand{\thelemma}{\Roman{section}.\arabic{lemma}}
+\newenvironment{lemma}[1][]{%
+  \refstepcounter{lemma}%
+  \par\noindent\textbf{Lemma \thelemma} (#1)\ \itshape\ignorespaces
+}{\par}
+\newenvironment{proof}{\noindent\itshape Proof.}{\hfill$\square$\par\medskip}
 
 \begin{document}
-
-\begin{frontmatter}
+\raggedbottom
 
 \title{REDEM-SSM: A State-Space Architecture with Native Online
 Learning, Meta-Adaptation, and Structural Plasticity}
 
-\author{Yaming Hu\thanks{ORCID: 0009-0003-1406-0485}}
-\affiliation[1]{organization={Independent Researcher},
-city={Guiyang}, country={China}}
-\ead{64687555@qq.com}
+\author{Yaming Hu}
+\email{64687555@qq.com}
+\affiliation{Independent Researcher, Guiyang, Guizhou, China}
+\thanks{ORCID: 0009-0003-1406-0485}
 
 \begin{abstract}
 We instantiate the REDEM mechanisms --- an online readout (M1), a
@@ -67,12 +82,11 @@ $-10.08$, 10/10). All results are CPU-scale proofs of concept; we make
 no scaling claims.
 \end{abstract}
 
-\begin{keyword}
-online learning \sep state-space models \sep continual learning
-\sep timescale coverage \sep homeostatic regulation
-\end{keyword}
+\maketitle
 
-\end{frontmatter}
+% Keywords are not typeset in the manuscript body (APS convention); they are
+% entered in the submission-system metadata: online learning; state-space
+% models; continual learning; timescale coverage; homeostatic regulation.
 
 \section{Introduction}
 
@@ -289,13 +303,13 @@ corollary below scopes the measured failure.
 
 \begin{proposition}[Deconvolution impossibility for the linear state
 readout]
-\label{prop:p1}
 Let the host be $h_t = \Lambda h_{t-1} + B e_{t-1}$ with
 $\Lambda = \operatorname{diag}(\lambda_1,\dots,\lambda_N)$,
 $0 < \lambda_i < 1$ distinct, and $B \in \mathbb{R}^{N\times V}$ with
 i.i.d.\ continuous entries. For almost every such $(\Lambda, B)$, no
 affine-linear readout $\hat e_t = U h_t + b$ recovers the most recent
 input exactly ($\hat e_t = e_{t-1}$ for all token histories).
+\label{prop:p1}
 \end{proposition}
 
 \begin{proof}
@@ -315,7 +329,7 @@ $S = \Lambda\,\operatorname{span}\{\Lambda^j B\}_{j\ge0} =
 $U = 0$, contradicting $U B = I_V$. Whitening replaces $h_t$ by
 $D h_t$ with a positive diagonal $D$, i.e.\ $U' \mapsto U' D$; the
 argument is unchanged, so the contamination is structural, not a scale
-artifact. \qed
+artifact.
 \end{proof}
 
 The empirical corollary of Proposition~\ref{prop:p1} is the measured
@@ -616,6 +630,17 @@ full stack beats the bare host and the Transformer+LoRA reference on a
 four-domain irregular-switch benchmark on every seed. The next steps are
 real-text evaluation, learned selectivity, and scaling --- each with the
 same falsification discipline.
+
+\section*{Declaration of competing interest}
+
+The author declares no known competing financial interests or personal
+relationships that could have appeared to influence the work reported in
+this paper.
+
+\section*{Funding}
+
+This research did not receive any specific grant from funding agencies in
+the public, commercial, or not-for-profit sectors.
 
 \section*{Code and data availability}
 

@@ -44,15 +44,15 @@ concept; no scaling claims are made.
 
 | File | Purpose |
 |---|---|
-| `PAPER_D.tex` | LaTeX source (elsarticle preprint class) |
-| `PAPER_D.pdf` | Compiled PDF (14 pages) |
+| `PAPER_D.tex` | LaTeX source (REVTeX 4.2, aps preprint class) |
+| `PAPER_D.pdf` | Compiled PDF (15 pages) |
 
 ## Compile
 
 From this directory (figures resolve via `../figures/`):
 
 ```powershell
-pdflatex PAPER_D.tex    # run three times for cross-references (elsarticle)
+pdflatex PAPER_D.tex    # run twice for cross-references (REVTeX 4.2)
 ```
 
 ## Figures and data anchors
