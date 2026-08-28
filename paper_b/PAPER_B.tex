@@ -41,39 +41,36 @@ Researcher, Guiyang, Guizhou Province, China. E-mail:
 \maketitle
 
 \begin{abstract}
-Classical deep learning separates training from inference and freezes after
-batch backpropagation; continuous adaptation under distribution drift remains
-an open problem, and the backpropagation-through-time gradient is unavailable
-to low-power neuromorphic substrates. We present REDEM, a
-training-inference-unified online learning architecture in which every learning
-signal is local and derived from live inference: an error-driven
-recursive-least-squares readout updates at every pulse; a slow metadata trace
-extends the readout's memory to long-horizon statistics; a chaos homeostat
-estimates the finite-time Lyapunov exponent online and self-regulates the
-recurrent substrate near its memory-optimal operating point; and slow,
-functional-connectivity-guided rewiring adapts the substrate's structure.
+Classical deep learning freezes after batch backpropagation; continuous
+adaptation under distribution drift remains open, and
+backpropagation-through-time is unavailable on low-power neuromorphic
+substrates. We present REDEM, a training-inference-unified online learning
+architecture whose learning signals are local, derived from live inference:
+an error-driven recursive-least-squares readout updates every pulse; a slow
+metadata trace extends the readout's memory to long-horizon statistics; a
+chaos homeostat holds the substrate near its memory optimum via online
+finite-time Lyapunov estimates; and functional-connectivity-guided rewiring
+adapts the structure.
 
-On a drifting two-class task, REDEM tracks an abrupt class-interval inversion
-within 225--616 pulses, whereas frozen batch learners (GRU, tiny transformer),
-near-perfect before the drift, become systematically wrong afterwards and never
-recover. The dual-timescale memory speeds regime adaptation by a factor of
-1.3--2.4 (switch-relative controlled measurement); the chaos homeostat restores
-8--18\% of post-disturbance substrate memory (up to $+25\%$ at the edge of
-chaos, $+32\%$ after three sequential disturbances); and the integrated system
-matches or beats every single-mechanism ablation and the bare baseline
-(0.996 vs.\ 0.988/0.994/0.973, $p<0.0001$; the homeostat-removal ties at
-0.996 --- its value is in disturbed scenarios), persisting at $N=1024$. The
-substrate is a physically motivated relaxation memory whose log-normal
-time-constant
-spectrum is set by shallow-trap device physics (companion Paper~A), and the slow
-metadata trace is shown to be a substrate-agnostic mechanism that transfers its
-statistical-memory benefit to a matched echo-state network;
-disturbance-robustness transfer is falsified in companion Paper~C. On standard
-benchmarks REDEM is competitive with a well-tuned ESN (drift accuracy 0.991
-vs.\ 1.000; Mackey--Glass NMSE 0.0018 vs.\ $3.6\times10^{-5}$); its
-differentiated value is the mechanism set --- self-regulation, disturbance
-robustness, local sparse coupling, and a material-set multi-timescale memory
---- rather than raw benchmark supremacy.
+On a drifting task, REDEM tracks an abrupt class-interval inversion within
+225--616 pulses, whereas frozen batch learners (GRU, tiny transformer),
+near-perfect before the drift, never recover. The dual-timescale memory
+speeds regime adaptation 1.3--2.4$\times$ (controlled measurement); the
+chaos homeostat restores 8--18\% of post-disturbance substrate memory (up
+to $+25\%$ at the edge of chaos, $+32\%$ after three sequential
+disturbances); and the integrated system matches or beats every ablation
+and the bare baseline (0.996 vs.\ 0.988/0.994/0.973, $p<0.0001$; homeostat
+removal ties --- valuable only in disturbed scenarios), persisting at
+$N=1024$. The substrate is a relaxation memory whose log-normal
+time-constant spectrum follows shallow-trap device physics (companion
+Paper~A); the slow metadata trace is substrate-agnostic, transferring its
+statistical-memory benefit to a matched echo-state network, while
+disturbance-robustness transfer is falsified (companion Paper~C). On
+standard benchmarks REDEM is competitive with a well-tuned ESN (drift
+accuracy 0.991 vs.\ 1.000; Mackey--Glass NMSE 0.0018 vs.\
+$3.6\times10^{-5}$); its value is the mechanism set --- self-regulation,
+disturbance robustness, local sparse coupling, and multi-timescale material
+memory --- rather than raw benchmark supremacy.
 \end{abstract}
 
 \noindent\textbf{Keywords:} online learning; continual learning; reservoir

@@ -33,26 +33,26 @@ city={Guiyang}, country={China}}
 
 \begin{abstract}
 Online learning systems couple several adaptive mechanisms, but which
-mechanism is responsible for which capability --- and whether any of them
-can be transplanted to another substrate --- is rarely tested. We dissect
+is responsible for which capability --- and whether any can
+be transplanted to another substrate --- is rarely tested. We dissect
 three mechanisms of a reservoir-based online learner: a slow-trace
 statistical memory (M3), a homeostatic chaos regulator (M5), and the raw
-physics of the substrate itself. A falsifying transfer experiment (an
+physics of the substrate. A falsifying transfer experiment (an
 echo-state network with and without the metadata under a sequential
 disturbance chain, 10 seeds) shows that the $+32\%$ sequential-recovery
-gain of the substrate system is produced by the homeostat, not by the
-metadata. The metadata does not transfer memory-capacity robustness to an
-ESN at any tested metadata timescale ($\tau_m \in \{200,500,1000,2000\}$;
+gain of the substrate system is the homeostat's, not the metadata's. The
+metadata does not transfer memory-capacity robustness to an
+ESN at any tested timescale ($\tau_m \in \{200,500,1000,2000\}$;
 paired differences $-0.68$ to $-0.70$, 0/10 seeds positive). Its
 transferable value is narrower and precisely located: it denoises
 \emph{state}-level corruption (gap $-0.69 \rightarrow -0.04$ to $-0.01$
 when noise enters before the slow trace, at every tested $\tau_m$) and
-accelerates boundary adaptation by a controlled-measured factor of 1.3--2.4
-on the substrate and $\sim$10 pulses on the ESN (window-position metrics
-inflate this factor to $9$--$20\times$; those numbers are artifacts). Raw
+accelerates boundary adaptation by a controlled-measured 1.3--2.4$\times$
+on the substrate and $\sim$10 pulses on the ESN (a window-position metric
+artifact: $9$--$20\times$). Raw
 memory capacity remains a substrate property (MC 10.19 vs.\ 6.17). Three
-mechanisms, three roles --- and none is transferable to another's job.
-A controlled proof of concept on a Transformer substrate with low-rank
+mechanisms, three roles --- none transferable to another's job.
+A controlled proof of concept on a Transformer with low-rank
 adapters confirms the boundary on a second substrate: slow-trace domain
 routing transfers (forgetting up to $-28\%$, stream perplexity $-1.07$ at
 $\tau_m{=}200$; 10/10 seeds) while a gating-only variant is falsified at
