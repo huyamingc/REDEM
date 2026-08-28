@@ -41,25 +41,23 @@ physics of the substrate itself. A falsifying transfer experiment (an
 echo-state network with and without the metadata under a sequential
 disturbance chain, 10 seeds) shows that the $+32\%$ sequential-recovery
 gain of the substrate system is produced by the homeostat, not by the
-metadata, and that the metadata does not transfer memory-capacity
-robustness to an ESN at any tested metadata timescale
-($\tau_m \in \{200,500,1000,2000\}$; paired differences $-0.68$ to
-$-0.70$, 0/10 seeds positive). The metadata's transferable value is
-narrower and precisely located: it denoises \emph{state}-level corruption
-(gap $-0.69 \rightarrow -0.04$ to $-0.01$ when noise enters before the
-slow trace, at every tested $\tau_m$)
-and accelerates boundary adaptation by a controlled-measured factor of
-1.3--2.4 on the substrate and $\sim$10 pulses on the ESN (window-position
-metrics inflate this factor to $9$--$20\times$; those numbers are
-artifacts). Raw
+metadata. The metadata does not transfer memory-capacity robustness to an
+ESN at any tested metadata timescale ($\tau_m \in \{200,500,1000,2000\}$;
+paired differences $-0.68$ to $-0.70$, 0/10 seeds positive). Its
+transferable value is narrower and precisely located: it denoises
+\emph{state}-level corruption (gap $-0.69 \rightarrow -0.04$ to $-0.01$
+when noise enters before the slow trace, at every tested $\tau_m$) and
+accelerates boundary adaptation by a controlled-measured factor of 1.3--2.4
+on the substrate and $\sim$10 pulses on the ESN (window-position metrics
+inflate this factor to $9$--$20\times$; those numbers are artifacts). Raw
 memory capacity remains a substrate property (MC 10.19 vs.\ 6.17). Three
 mechanisms, three roles --- and none is transferable to another's job.
 A controlled proof of concept on a Transformer substrate with low-rank
 adapters confirms the boundary on a second substrate: slow-trace domain
 routing transfers (forgetting up to $-28\%$, stream perplexity $-1.07$ at
 $\tau_m{=}200$; 10/10 seeds) while a gating-only variant is falsified at
-every $\tau_m$ (0/10 seeds) --- detection without continuous correction
-is insufficient.
+every tested $\tau_m$ (0/10 seeds) --- detection without continuous
+correction is insufficient.
 \end{abstract}
 
 \begin{keyword}
@@ -266,11 +264,11 @@ comparison of the text.}
 Does any $\tau_m$ let the metadata close the MC gap? No: at
 $\tau_m\in\{200,500,1000,2000\}$, the dual arm's $r_3$ MC is
 1.04/1.05/1.06/1.06 vs.\ 1.74 for fast, with paired differences
-$-0.701$/$-0.693$/$-0.682$/$-0.678$ and 0/10 seeds positive at every
+$-0.701$/$-0.693$/$-0.682$/$-0.678$ and 0/10 seeds positive at every tested
 timescale (Table~\ref{tab:s16}, Fig.~\ref{fig:recovery}, left panel). There is no
 sensitive interval; the weak upward trend (1.04$\rightarrow$1.06) does not
 approach the baseline. Meanwhile the readout-noise attenuation transfers
-at every $\tau_m$ (mean-level; per-seed 10/10 at $\tau_m\ge500$, 9/10 at
+at every tested $\tau_m$ (mean-level; per-seed 10/10 at $\tau_m\ge500$, 9/10 at
 $\tau_m{=}200$; $r_3$ NMSE 0.0235--0.0254 vs.\ 0.0277;
 Fig.~\ref{fig:recovery}, right panel).\par}
 
@@ -305,7 +303,7 @@ data/s16b\_falsification\_stress\_test\_v2.csv extends the original
 $\{500,2000\}$ pair to all four timescales). Its \emph{magnitude} is
 protocol-dependent and informative: under readout-noise semantics (V0,
 the reference definition) the gap is $-0.69$; under state-noise
-semantics (V2) the metadata's EMA denoising nearly closes it at every
+semantics (V2) the metadata's EMA denoising nearly closes it at every tested
 $\tau_m$ ($-0.04$ to $-0.01$). This locates the metadata's transferable
 value precisely: it denoises \emph{state}-level corruption, not
 readout-level noise.\par}
@@ -462,11 +460,11 @@ switches, 20-token window, $1.5\times$ steady-state threshold).
 \subsection{Results: routing transfers, gating does not}
 
 Table~\ref{tab:s18} and Fig.~\ref{fig:llm}. A3 (routing) transfers:
-forgetting improves at \emph{every} $\tau_m$ (9--10/10 seeds, up to
+forgetting improves at \emph{every} tested $\tau_m$ (9--10/10 seeds, up to
 $-2.51$ ppl, $-28\%$ at $\tau_m{=}200$), and stream perplexity improves
 when the trace is fast ($\tau_m\in\{200,500\}$: $-1.07$/$-0.43$, 10/10
 seeds). A2 (gating-only) is falsified: stream perplexity is worse than
-A1 at every $\tau_m$ (paired differences $+1.25$ to $+2.29$, 0/10 seeds
+A1 at every tested $\tau_m$ (paired differences $+1.25$ to $+2.29$, 0/10 seeds
 positive) and forgetting never improves (0/10). The stream-ppl benefit
 of A3 is timescale-sensitive: at $\tau_m\ge1000$ its sign flips --- the
 same sensitive interval reported for the reservoir
@@ -499,8 +497,8 @@ A3 route & 2000 & 16.07 & $+1.06$ (0/10) & 8.41 & $-0.53$ (9/10) \\
 \caption{Transformer drift-gate proof of concept (10 seeds, 90 runs):
 stream and forgetting perplexity vs.\ metadata timescale $\tau_m$; paired
 per-seed differences vs.\ A1 with $n_{\mathrm{pos}}/10$ seeds. A3 domain
-routing transfers (forgetting at every $\tau_m$, stream perplexity at
-$\tau_m\le500$); A2 gating-only is falsified (0/10 at every $\tau_m$).}
+routing transfers (forgetting at every tested $\tau_m$, stream perplexity at
+$\tau_m\le500$); A2 gating-only is falsified (0/10 at every tested $\tau_m$).}
 \label{tab:s18}
 \end{table}
 
@@ -543,7 +541,7 @@ state-noise denoising), homeostat (sequential recovery), substrate physics
 (5)~The decomposition survives on a Transformer substrate with
 low-rank adapters: slow-trace domain routing transfers (forgetting up to
 $-28\%$, stream perplexity $-1.07$ at $\tau_m{=}200$; 10/10 seeds) while
-a gating-only variant is falsified at every $\tau_m$ (0/10 seeds) ---
+a gating-only variant is falsified at every tested $\tau_m$ (0/10 seeds) ---
 detection without continuous correction is insufficient.
 (6)~That boundary is a property of the \emph{host}, not of the
 mechanisms: routing transfers on a Transformer substrate (point~5), and
@@ -592,10 +590,10 @@ is fixed by physics (1/e $\sim$16 pulses).}
 \centering
 \includegraphics[width=0.85\linewidth]{paperC_fig2_recovery}
 \caption{Post-disturbance recovery vs.\ metadata timescale (10 seeds).
-Left: $r_3$ MC --- esn-dual stays 0.68--0.70 below esn-fast at every
+Left: $r_3$ MC --- esn-dual stays 0.68--0.70 below esn-fast at every tested
 $\tau_m$, while the homeostat-regulated substrate (redem-reg, no metadata)
 sits at 8.47. Right: $r_3$ NMSE --- the readout-noise attenuation
-transfers at every $\tau_m$.}
+transfers at every tested $\tau_m$.}
 \label{fig:recovery}
 \end{figure}
 
@@ -606,7 +604,7 @@ transfers at every $\tau_m$.}
 perplexity vs.\ metadata timescale $\tau_m$ (log scale) --- A1 (bare
 online LoRA) as a horizontal band; A2 (gating-only) never improves;
 A3 (domain routing) improves at $\tau_m\in\{200,500\}$. Right: forgetting
-perplexity on the previous domain --- A3 improves at every $\tau_m$ (up
+perplexity on the previous domain --- A3 improves at every tested $\tau_m$ (up
 to $-28\%$); A2 does not.}
 \label{fig:llm}
 \end{figure}

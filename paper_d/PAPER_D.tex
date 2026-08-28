@@ -10,6 +10,11 @@
 % ============================================================================
 \documentclass[aps,preprint]{revtex4-2}
 
+% Journal note: REVTeX 4.2 has no PRX Intelligence-specific option (its
+% `prx' option is Phys. Rev. X); at submission the journal is selected in the
+% APS submission system, so the benign "No journal specified" class warning is
+% left as-is for the preprint.
+
 \usepackage{amsmath,amssymb}
 \usepackage{booktabs}
 \usepackage{graphicx}
@@ -60,7 +65,7 @@ three host requirements with mechanism-level evidence. (1) A linear
 readout on a linearly-decayed state mixture cannot recover the current
 token exactly (a deconvolution impossibility), and the pooled state
 readout fails out of sample (0/10 seeds; stream perplexity 58--116 vs.\
-15.0 for a Transformer+LoRA reference); the readout must use the
+15.0 for a Transformer+LoRA reference). The readout must instead use the
 additive input path $B e_{t-1}$, which beats the reference 10/10.
 
 Fixed Mamba-style multiplicative gates do not repair the state readout
@@ -102,7 +107,7 @@ A companion study \cite{redemc} showed that this framework does not
 instantiate on a frozen-feedforward host: on a Transformer substrate with
 low-rank adapters, slow-trace domain routing transferred (forgetting
 $-28\%$, 10/10 seeds) while a gating-only variant was falsified at every
-metadata timescale (0/10), and the paper concluded that the \emph{full}
+tested metadata timescale (0/10), and the paper concluded that the \emph{full}
 framework requires a persistent stateful host rather than a retrofit onto
 a static architecture.
 
@@ -404,7 +409,7 @@ at 2000 ($-0.007$, 5/10) --- the ``routing transfers'' lesson of
 frozen-covariance variant ($+0.38$ to $+4.08$) is removed by
 dormant-covariance refresh (Section~\ref{sec:m4}, Section~\ref{sec:p3}).
 
-The gating-only arm (A2) \emph{improves} stream perplexity at every
+The gating-only arm (A2) \emph{improves} stream perplexity at every tested
 $\tau_m$ ($-1.52$ to $-2.45$, 10/10), the opposite of the companion's
 A2 falsification (0/10). Two differences must be stated honestly: the
 companion's A2 paused its LoRA \emph{plasticity} while keeping the head
@@ -443,7 +448,7 @@ A3 route & 2000 & 15.83 & $+4.08$ (0/10) & 8.38 & $-0.01$ (5/10) \\
 specialists (forgetting improves at $\tau_m \le 1000$, 10/10) at a
 frozen-covariance stream cost that dormant-covariance refresh removes
 (Section~\ref{sec:p3}); gating-only (A2) improves stream perplexity
-10/10 at every $\tau_m$ --- the readout-dynamics dependence.}
+10/10 at every tested $\tau_m$ --- the readout-dynamics dependence.}
 \label{tab:p2}
 \end{table}
 

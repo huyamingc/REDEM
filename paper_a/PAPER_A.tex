@@ -47,14 +47,15 @@ CV $=0.20$) coupled through a per-pulse, topology-dependent modulation of the
 injection coefficient. Sweeping the coupling strength $\kappa$ across five
 topology families and measuring the finite-time Lyapunov exponent $\lambda$, the
 held-out Jaeger memory capacity, and input separation, we find a sharp
-order--chaos transition at $\kappa^\ast \in (25,30)$, with the held-out memory
-capacity peaking 24--53\% above the uncoupled baseline just before the
-transition, and deep chaos destroying memory. The decay of linear memory
-follows an analytically derived forgetting kernel $M(t)=\int p(\tau)e^{-t/\tau}
-\,d\tau$ over the log-normal trap spectrum (Pearson $r=0.97$ against the
-measured memory-capacity curve): the $1/e$ horizon is pinned near
-$\tau_0/\bar{\Delta t}\approx 16$ pulses regardless of spectrum width, while the
-width CV controls the tail weight. Finally, a homeostatic regulator that
+order--chaos transition at $\kappa^\ast \in (25,30)$: the held-out memory
+capacity peaks 24--53\% above the uncoupled baseline just before the
+transition, and deep chaos destroys memory. The decay of linear memory follows
+an analytically derived forgetting kernel $M(t)=\int p(\tau)e^{-t/\tau}\,d\tau$
+over the log-normal trap spectrum (Pearson $r=0.97$ against the measured
+memory-capacity curve). The $1/e$ horizon stays near
+$\tau_0/\bar{\Delta t}\approx 16$ pulses as the spectrum widens (measured
+12--16 pulses for CV $\in[0.02,1.0]$), while the width CV controls the tail
+weight. Finally, a homeostatic regulator that
 estimates $\lambda$ online and adjusts $\kappa$ to a near-critical target
 improves post-disturbance held-out memory by 8--18\% under temperature drift,
 edge damage, and readout noise.
@@ -459,9 +460,9 @@ difference at any noise level (data/s32\_ftle\_noise\_v1.csv) --- the
 clipped proportional feedback integrates over the estimation error.
 A systematic $\lambda_{\mathrm{target}}$ sweep
 ($\lambda_{\mathrm{target}}\in\{-0.05,-0.02,-0.005,0\}\times\mathrm{CV}\in\{0.1,0.2,0.4\}$,
-5 seeds; companion paper Table~2) identifies $\lambda_{\mathrm{target}}{=}0$
+5 seeds; companion Paper~B, Table~2) identifies $\lambda_{\mathrm{target}}{=}0$
 (the edge of chaos) as optimal: post-disturbance MC peaks near the edge of
-chaos at every CV ($\lambda_{\mathrm{target}}{=}0$ optimal at CV=0.1 and 0.4;
+chaos at every tested CV ($\lambda_{\mathrm{target}}{=}0$ optimal at CV=0.1 and 0.4;
 the $-0.005$ setting marginally ahead at CV=0.2), with gains of $+25\%$
 (CV=0.1), $+19\%$ (CV=0.2), $+5\%$ (CV=0.4) over fixed coupling --- updating
 the manually tuned $-0.02$ used in the main results.
@@ -497,9 +498,9 @@ sweep (Section~\ref{sec:clipablation}) shows that $\kappa^\ast$ is invariant
 to a five-fold widening of the clip for the memory-relevant topologies, so the
 threshold is a genuine property of the coupling dynamics rather than a clip
 artifact; the clip's role is secondary and topology-dependent. For the
-neuromorphic-design question ``what can this device compute'', the answer is: a
-bounded but substantial region of the memory--chaos plane, fully characterized
-here.
+neuromorphic-design question of what this device can compute, the answer
+is a bounded but substantial region of the memory--chaos plane, fully
+characterized here.
 
 \textbf{Separation without linear memory.} The positive-feedback family reaches
 true criticality ($|\lambda|\approx0$) with maximal separation yet zero held-out
