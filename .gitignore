@@ -33,6 +33,10 @@ README.zip
 *.bak.py
 *.bak.tex
 
+# LTSpice MCP server local config and runtime job state
+ltspice-mcp.toml
+.ltspice-mcp/
+
 # Internal working documents — kept locally, excluded from the published repository
 **/COVER_LETTER.md
 **/PAPER_*_draft.md
