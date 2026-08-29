@@ -75,6 +75,9 @@ def main():
     ax.set_xscale('log')
     ax.set_xticks(TAUS)
     ax.set_xticklabels([f"{int(t)}" for t in TAUS], fontsize=8)
+    # log axis spans one decade, so matplotlib would auto-label minor
+    # ticks (3e2, 4e2, ...) on top of the explicit major labels
+    ax.minorticks_off()
     ax.set_xlabel(r'$\tau_m$', fontsize=9)
     ax.set_ylabel('forgetting perplexity', fontsize=9)
     ax.set_title('P2: routing retains domain specialists', fontsize=9)

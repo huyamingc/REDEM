@@ -58,6 +58,10 @@ def main():
 
     fig, axes = plt.subplots(1, 2, figsize=(9.2, 3.6))
 
+    # arm labels must match the paper caption: A2 = gating-only policy,
+    # A3 = domain routing (a shared generic label misdescribes both arms)
+    ARM_LABELS = {'A2': 'A2 (gating-only)', 'A3': 'A3 (domain routing)'}
+
     for ax, field, ylab, title in [
             (axes[0], 'stream_ppl', 'stream perplexity',
              'Online PPL (lower better)'),
@@ -68,12 +72,15 @@ def main():
             ys = [mean_std(rows, arm, tm, field)[0] for tm in TAUS]
             err = [mean_std(rows, arm, tm, field)[1] for tm in TAUS]
             ax.errorbar(TAUS, ys, yerr=err, fmt=mk + '-', capsize=3,
-                        color=color, label=f'{arm} (slow-trace arm)')
+                        color=color, label=ARM_LABELS[arm])
         ax.axhline(base, color='#ff7f0e', linestyle='--', linewidth=1.3,
                    label=f'A1 bare LoRA ({base:.2f})')
         ax.set_xscale('log')
         ax.set_xticks(TAUS)
         ax.set_xticklabels([f'{int(t)}' for t in TAUS])
+        # log axis spans one decade, so matplotlib would auto-label minor
+        # ticks (3e2, 4e2, ...) on top of the explicit major labels
+        ax.minorticks_off()
         ax.set_xlabel('metadata timescale tau_m (tokens)')
         ax.set_ylabel(ylab)
         ax.set_title(title, fontsize=10)

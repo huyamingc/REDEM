@@ -114,12 +114,12 @@ def main():
             handles.append(plt.Line2D([], [], marker=st.get('marker', ''),
                                       color=st['color'], ls=st.get('ls', '-'),
                                       label=st['label']))
-    fig.legend(handles=handles, loc='upper center', ncol=4, fontsize=9,
-               frameon=False)
+    fig.legend(handles=handles, loc='upper center', bbox_to_anchor=(0.5, 0.965),
+               ncol=4, fontsize=9, frameon=False)
     fig.suptitle('Substrate phase diagram v2: N=256, CV=0.20, '
                  'dt~U[2us,20us], 10 seeds per config',
-                 fontsize=12)
-    fig.tight_layout(rect=[0, 0, 1, 0.93])
+                 fontsize=12, y=0.995)
+    fig.tight_layout(rect=[0, 0, 1, 0.895])
 
     os.makedirs(os.path.dirname(out), exist_ok=True)
     fig.savefig(out)  # vector PDF for journal submission

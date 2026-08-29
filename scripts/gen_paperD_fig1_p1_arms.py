@@ -47,11 +47,14 @@ def main():
     bars[-1].set_color('#c44e52')          # B-proj control highlighted
 
     ax.axhline(15.01, color='black', linestyle='--', linewidth=1.0)
-    ax.text(len(ORDER) - 0.4, 15.6, 'A1 (transformer+LoRA) = 15.01',
-            ha='right', fontsize=8)
     ax.axhline(7.34, color='gray', linestyle=':', linewidth=1.0)
-    ax.text(len(ORDER) - 0.4, 7.8, 'pooled-table ceiling 7.34',
-            ha='right', fontsize=8, color='gray')
+    # white backing boxes: both labels sit on top of tall bars and would
+    # otherwise be illegible where they cross the bar bodies
+    ann_bbox = dict(boxstyle='round,pad=0.15', fc='white', ec='none', alpha=0.85)
+    ax.text(len(ORDER) - 0.4, 16.4, 'A1 (transformer+LoRA) = 15.01',
+            ha='right', fontsize=8, zorder=5, bbox=ann_bbox)
+    ax.text(len(ORDER) - 0.4, 8.0, 'pooled-table ceiling 7.34',
+            ha='right', fontsize=8, color='gray', zorder=5, bbox=ann_bbox)
 
     ax.set_xticks(x)
     ax.set_xticklabels(LABELS, fontsize=8)

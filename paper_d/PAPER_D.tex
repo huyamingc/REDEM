@@ -22,9 +22,30 @@
 \usepackage[expansion=false]{microtype}
 \usepackage{url}
 \emergencystretch=2em
-% The long abstract plus the author footnotes on its page overflow \textheight
-% by 2.48pt in 12pt preprint mode; a slightly tighter footnote skip absorbs it.
-\addtolength{\skip\footins}{-4pt}
+
+% REVTeX preprint inserts a 200pt-plus-fil breakpoint before the abstract
+% that pushes even a fitting abstract to a fresh page; use the plain
+% (reprint-style) spacing so title and abstract share page 1. The abstract
+% material itself stays freely breakable if it ever outgrows the page.
+\makeatletter
+\def\frontmatter@abstract@produce{%
+  \par
+  \addvspace{\frontmatter@preabstractspace}%
+  \begingroup
+    \dimen@\baselineskip
+    \setbox\z@\vtop{\unvcopy\absbox}%
+    \advance\dimen@-\ht\z@\advance\dimen@-\prevdepth
+    \@ifdim{\dimen@>\z@}{\vskip\dimen@}{}%
+  \endgroup
+  \begingroup
+    \prep@absbox
+    \unvbox\absbox
+    \post@absbox
+  \endgroup
+  \@ifx{\@empty\mini@notes}{}{\mini@notes\par}%
+  \addvspace\frontmatter@postabstractspace
+}
+\makeatother
 
 % Custom theorem environments: REVTeX's native headers are set as rigid
 % hboxes, which makes the long proposition note leave the first line
@@ -61,25 +82,24 @@ stability homeostat (M5) --- natively on a state-space host (a diagonal
 linear recurrence with a log-uniform timescale spectrum), instead of
 retrofitting them onto a frozen-feedforward Transformer. A falsifying
 development sequence (10-seed paired discipline throughout) isolates
-three host requirements with mechanism-level evidence. (1) A linear
-readout on a linearly-decayed state mixture cannot recover the current
-token exactly (a deconvolution impossibility), and the pooled state
-readout fails out of sample (0/10 seeds; stream perplexity 58--116 vs.\
-15.0 for a Transformer+LoRA reference). The readout must instead use the
-additive input path $B e_{t-1}$, which beats the reference 10/10.
+three host requirements. (1) A linear readout on a linearly-decayed
+state mixture cannot recover the current token (a deconvolution
+impossibility), and the pooled state readout fails out of sample (0/10
+seeds; stream perplexity 58--116 vs.\ 15.0 for a Transformer+LoRA
+reference); the readout must instead consume the additive input path
+$B e_{t-1}$, which beats the reference 10/10. Fixed Mamba-style
+multiplicative gates do not repair the state readout (0/10), so input
+selectivity must be learned --- a design boundary we flag rather than
+cross.
 
-Fixed Mamba-style multiplicative gates do not repair the state readout
-(0/10 seeds at either tested sharpness), so input selectivity must be
-learned --- a design boundary we flag rather than cross. (2) The state's role is
-statistical metadata, not the readout: a fast-channel state EMA tracks
-domain switches, and soft routing retains per-domain specialists
-(forgetting $-2.05$ to $-1.20$ ppl, 10/10 seeds at $\tau_m \le 1000$); the
-pause-learning (gating-only) policy \emph{improves} stream perplexity on
-this near-batch RLS readout (10/10), opposite to its effect on the
-Adam/LoRA readout of the companion study --- the policy lesson is
-readout-dynamics-dependent. (3) Gentle (soft) routing beats abrupt
-switching ($-1.81$ ppl, 10/10) and a state-norm homeostat bounds the
-state and restores the full-state EMA as a valid domain statistic (5/5
+(2) The state's role is statistical metadata, not the readout: a
+fast-channel state EMA tracks domain switches, and soft routing
+retains per-domain specialists (forgetting $-2.05$ to $-1.20$ ppl,
+10/10 at $\tau_m \le 1000$); the pause-learning (gating-only) policy
+\emph{improves} stream perplexity on this near-batch RLS readout
+(10/10) --- the policy lesson is readout-dynamics-dependent. (3) Soft
+routing beats abrupt switching ($-1.81$ ppl, 10/10), and a state-norm
+homeostat restores the full-state EMA as a valid domain statistic (5/5
 switch detections vs.\ 0.6/5). On a four-domain irregular-switch
 benchmark the full stack beats the bare host ($-2.25$ stream, $-4.47$
 forgetting, 10/10) and the Transformer+LoRA reference ($-9.28$,
@@ -279,8 +299,8 @@ non-stationary statistic.
 {\sloppy
 \textbf{Two-domain protocol (s18)}: two biased-bigram Markov domains
 (shift-1 / shift-7 with disjoint bias sets), alternating every 3000
-tokens (known switch instants), 6 segments, 18k tokens. \textbf{Four
--domain benchmark}: four domains (shifts 1/3/7/11, disjoint 4-symbol
+tokens (known switch instants), 6 segments, 18k tokens. \textbf{Four-domain
+benchmark}: four domains (shifts 1/3/7/11, disjoint 4-symbol
 bias sets) on a cycling schedule with \emph{irregular} switch intervals
 (Uniform 2500--3500), 8 segments, $\sim$24k tokens. All seed rules and
 metrics (stream perplexity, forgetting perplexity on held-out previous

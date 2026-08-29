@@ -97,9 +97,11 @@ def main():
     print('saved figures/paperA_fig1_substrate.pdf')
 
     # ================= Paper B Fig 1: REDEM =================
-    fig, ax = plt.subplots(figsize=(12, 6.4))
+    fig, ax = plt.subplots(figsize=(12, 6.3))
     ax.set_xlim(0, 12)
-    ax.set_ylim(0, 6.4)
+    # header text band above y=6.4 keeps the title block clear of the
+    # substrate box (top edge at y=6.2) and its internal labels
+    ax.set_ylim(1.3, 7.6)
     ax.axis('off')
 
     box(ax, 0.3, 3.6, 2.6, 1.5, 'input pulses\n(dt_t)', fc='#fff3e0', ec='#b5651d')
@@ -159,21 +161,22 @@ def main():
     # readout
     arrow(ax, 7.0, 4.85, 9.6, 4.85, color='#555', ls='-')
     arrow(ax, 9.6, 4.85, 9.6, 3.3, color='#555', ls='-')
-    ax.text(8.35, 4.93, 'features [f, m]', fontsize=6.5, color='#555',
-            ha='center', va='bottom')
+    ax.text(8.35, 4.78, 'features [f, m]', fontsize=6.5, color='#555',
+            ha='center', va='top')
     box(ax, 9.6, 1.9, 2.1, 1.4, 'RLS readout\n(predict-before-update)',
         fc='#fff3e0', ec='#b5651d', bold=True)
-    ax.text(10.0, 3.05, 'error e = y - yhat\nupdates W online', ha='center',
-            fontsize=6.5, color='#b5651d')
+    ax.text(10.65, 1.72, 'error e = y - yhat\nupdates W online', ha='center',
+            va='top', fontsize=6.5, color='#b5651d')
     # output
     arrow(ax, 11.2, 3.3, 11.2, 4.9, color='#555')
     box(ax, 10.6, 4.9, 1.2, 1.0, 'output\nyhat(t)', fc='#e8f0fe', ec='#3b6ea5')
-    ax.text(0.3, 6.15, 'Fig 1 (Paper B): REDEM — training == inference',
-            fontsize=11, fontweight='bold', color='#333')
-    ax.text(0.3, 5.85, 'inference activity feeds every learning signal; no BPTT, no separate training phase',
-            fontsize=8, color='#666', style='italic')
-    ax.text(0.3, 5.55, 'dashed loops: M5 regulates kappa; M4 rewires edges (slow); dotted loop: M4 <-> M5 coupling',
-            fontsize=7.5, color='#666', style='italic')
+    # header block sits in its own band above the diagram (diagram top = 6.2)
+    ax.text(0.3, 7.35, 'Fig 1 (Paper B): REDEM — training == inference',
+            fontsize=11, fontweight='bold', color='#333', va='top')
+    ax.text(0.3, 7.05, 'inference activity feeds every learning signal; no BPTT, no separate training phase',
+            fontsize=8, color='#666', style='italic', va='top')
+    ax.text(0.3, 6.72, 'dashed loops: M5 regulates kappa; M4 rewires edges (slow); dotted loop: M4 <-> M5 coupling',
+            fontsize=7.5, color='#666', style='italic', va='top')
     fig.tight_layout()
     fig.savefig(os.path.join(FIG_DIR, 'paperB_fig1_redem.pdf'))
     print('saved figures/paperB_fig1_redem.pdf')

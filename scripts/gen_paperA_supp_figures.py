@@ -47,11 +47,16 @@ def main():
         data = json.load(f)
 
     fig, ax = plt.subplots(figsize=(6, 4.2))
+    seen = set()
     for agg in data['aggregates']:
         cfg = agg['config']
+        # one legend entry per config even though each config has several
+        # CV points (a repeated label would duplicate the legend entry)
+        label = LABELS[cfg] if cfg not in seen else None
+        seen.add(cfg)
         ax.errorbar(agg['cv'], agg['mc_mean'], yerr=agg['mc_std'],
                     marker='o', capsize=4, lw=1.6, color=COLORS[cfg],
-                    label=LABELS[cfg])
+                    label=label)
 
     ax.set_xlabel('spectrum width CV')
     ax.set_ylabel('held-out MC total')
