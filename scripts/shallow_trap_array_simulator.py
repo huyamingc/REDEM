@@ -60,7 +60,7 @@ def adjust_intervals(T, dt_low_ref, dt_high_ref, k_comp, tau_ref=tau0, T_ref=T0,
 def gen_tau_vec(N, cv, median_tau, seed):
     """Generate tau distribution with independent RandomState."""
     rng = np.random.RandomState(seed)
-    sigma = np.sqrt(np.log(1 + cv**2))  # FIX: correct sigma-CV relation
+    sigma = np.sqrt(np.log(1 + cv**2))  # log-normal sigma-CV relation
     mu = np.log(median_tau) - 0.5 * sigma**2
     return rng.lognormal(mu, sigma, N)
 
@@ -180,7 +180,7 @@ def generate_dataset_vec(tau, alpha, dt_low, dt_high, col_noise_rms,
                                               noise_rng, k, n_samples=n_te_half)
     yte[n_te_half:] = 1
 
-    # FIX: use stratified split instead of sequential slicing
+    # stratified split (not sequential slicing)
     X_all = np.vstack([Xtr, Xte])
     y_all = np.concatenate([ytr, yte])
     Xtr, Xte, ytr, yte = train_test_split(X_all, y_all, train_size=n_train, test_size=n_test,

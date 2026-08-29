@@ -21,7 +21,8 @@ Experiment:     Two open questions about the sharp order-chaos transition at
       (the paper's "physics knob" claim weakens); if kappa* is invariant
       -> coupling-driven chaos (claim strengthens).
 
-  Protocol: identical to the v2 phase diagram (paired tau draws per seed,
+  Protocol: identical to the phase-diagram protocol
+  (data/substrate_phase_diagram_v2.csv; paired tau draws per seed,
   fixed topology structure TOPO_SEED, Benettin FTLE, held-out Jaeger MC);
   only the kappa grid and alpha_max differ. 10 seeds per cell.
 
@@ -233,8 +234,9 @@ def main():
     params = {
         'experiment': 'clip-range ablation x fine kappa grid (Paper A '
                       'phase-diagram follow-up)',
-        'protocol': 'identical to v2 phase diagram (paired tau draws per '
-                    'seed, TOPO_SEED fixed structure, Benettin FTLE, '
+        'protocol': 'identical to the phase-diagram protocol, '
+                    'data/substrate_phase_diagram_v2.csv (paired tau draws '
+                    'per seed, TOPO_SEED fixed structure, Benettin FTLE, '
                     'held-out Jaeger MC); only kappa grid and alpha_max '
                     'differ',
         'topologies': TOPOLOGIES,

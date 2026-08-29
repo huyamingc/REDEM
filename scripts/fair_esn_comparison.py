@@ -160,7 +160,7 @@ def esn_run(seed, intervals_list, n_reservoir=40, spectral_radius=0.9,
               seed=seed + 999)
     Xtr, ytr = esn_gen(esn, intervals_list, N_TRAIN // n_class, noise_rng)
     Xte, yte = esn_gen(esn, intervals_list, N_TEST // n_class, noise_rng)
-    # FIX: use stratified split instead of sequential slicing
+    # stratified split (not sequential slicing)
     from sklearn.model_selection import train_test_split
     X_all = np.vstack([Xtr, Xte])
     y_all = np.concatenate([ytr, yte])

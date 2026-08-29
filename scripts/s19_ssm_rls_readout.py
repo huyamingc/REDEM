@@ -14,13 +14,14 @@ Host (native REDEM-SSM):
   predict-before-update. No metadata (M3), no plasticity (M4), no
   regulation (M5): P1 is the bare M1 prototype.
 
-P1 v1 (naive spec, LN-raw) was falsified by its own diagnostics: the
+The un-whitened log-normal host (LN-raw) is falsified by its own
+diagnostics: the
 log-normal tau spectrum centered at tau0=174 tokens has NO fast channels,
 so the previous-token identity is drowned in the decayed history mixture,
 and slow channels accumulate state magnitude while RLS P grows as
 (1/lambda)^t in unexcited directions (W norm ~ 1.7e4, P trace ~ 9e8,
-catastrophic held-out ppl). P1 v2 (this script) applies the
-evidence-driven host revision: spectrum-whitening
+catastrophic held-out ppl). This script's adopted host applies the
+evidence-driven revision: spectrum-whitening
 (h_t * sqrt(N*(1 - A_i^2)), steady-state channel normalization),
 timescale-coverage spectrum (log-uniform tau in [1, 3000] tokens - the
 Paper C "timescale coverage" thesis applied to the host), and RLS
@@ -30,22 +31,22 @@ Metric note: the RLS readout minimizes squared error on one-hot
 targets, so its output y_hat = W phi is a LINEAR ESTIMATE OF THE
 CONDITIONAL DISTRIBUTION (linear MMSE), NOT a softmax logit vector.
 Applying softmax to it double-normalizes and squashes the estimate toward
-uniform (a bug found in v1: all arms showed ppl ~ 26-31 ~ uniform while
+uniform (all arms then show ppl ~ 26-31 ~ uniform while
 the MLE table ceiling is 7.34). The correct evaluation is CE =
 -ln(clip(y_hat[target], eps, 1)) with W initialized so the bias predicts
 the uniform distribution (eps = 1e-12).
 
 Arms (isolate the two factors + the M1 control):
   LN-raw     : log-normal tau (tau0=174, CV=0.20, Paper A params), no
-               whitening, the P1 v1 spec - kept as the documented pitfall
+               whitening - the un-whitened P1 failure case
   LN-whiten  : same spectrum + whitening (conditioning factor alone)
   CV-whiten  : log-uniform tau in [1,3000] + whitening (coverage factor on
                top; the proposed P1 host)
   B-proj     : control - RLS on the CURRENT-TOKEN projection B e_{t-1}
                (no state): shows M1 itself converges to the pooled table
                ceiling (~12 ppl vs oracle 7.34)
-  CV-skip    : whitened state + current-token projection (the fix
-               direction preview: linear readout on state only is the
+  CV-skip    : whitened state + current-token projection (both paths
+               combined: linear readout on state only is the
                failure; giving it the current token restores tracking)
   CV-gate    : P3a - input-gated state features, y = W (h_w *
                sigmoid(C x + b)) with x = B e_{t-1}, C fixed random
@@ -217,7 +218,7 @@ def ce_readout(y_hat, target):
     (= W phi, a linear MMSE estimate of the one-hot conditional mean) vs
     the target token: CE = -ln(clip(y_hat[target], eps, 1)). NO softmax:
     the squared-loss readout output is already a distribution estimate
-    (double-normalizing it squashes toward uniform - the v1 metric bug)."""
+    (double-normalizing it squashes toward uniform)."""
     p = float(y_hat[target].clamp(min=1e-12, max=1.0))
     return -np.log(p)
 
@@ -432,7 +433,7 @@ def main():
 
     arm_desc = {
         'LN-raw': 'log-normal tau (tau0=174, CV=0.20, Paper A params), no '
-                  'whitening, P1 v1 naive spec (documented pitfall)',
+                  'whitening (the P1 failure case)',
         'LN-whiten': 'log-normal tau + spectrum whitening (conditioning '
                      'factor alone)',
         'CV-whiten': 'log-uniform tau in [1,3000] + whitening (coverage '
@@ -440,8 +441,8 @@ def main():
         'B-proj': 'control: RLS on the current-token projection B e_{t-1} '
                   '(no state) - M1 converges toward the pooled-table '
                   'ceiling (oracle 7.34)',
-        'CV-skip': 'whitened state + current-token projection (fix '
-                   'direction preview)',
+        'CV-skip': 'whitened state + current-token projection (both paths '
+                   'combined)',
         'CV-gate': 'P3a: input-gated state, y = W (h_w * sigmoid(C x + b)), '
                    'x = B e_{t-1}, C fixed random per seed - the Mamba-'
                    'style multiplicative gate at the feature level',
@@ -488,18 +489,19 @@ def main():
                                  'on the linear MMSE output y_hat = W phi '
                                  '(no softmax)'},
         'arms': arm_desc,
-        'p1_v1_pitfall': 'Naive v1 spec failed on two counts: (1) host '
+        'p1_failure_analysis': 'The un-whitened host fails for two reasons: '
+                         '(1) host '
                          'conditioning - the log-normal tau spectrum '
                          '(tau0=174, CV=0.20) has no fast channels, slow '
                          'channels accumulate state magnitude while RLS P '
                          'grows as (1/lambda)^t in unexcited directions '
                          '(W norm ~1.7e4, P trace ~9e8, catastrophic '
-                         'held-out ppl); (2) metric bug - the squared-loss '
+                         'held-out ppl); (2) the squared-loss '
                          'readout output is a linear MMSE distribution '
                          'estimate, and softmaxing it (as if it were '
-                         'logits) squashed all arms toward uniform '
+                         'logits) squashes all arms toward uniform '
                          '(ppl ~26-31 vs the 7.34 MLE-table ceiling). '
-                         'Both addressed by the revised host (whitening + '
+                         'Both are resolved by the adopted host (whitening + '
                          'coverage '
                          'spectrum + lambda=0.9999; direct CE with '
                          'eps-clipping).',

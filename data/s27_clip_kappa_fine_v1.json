@@ -1,7 +1,7 @@
 {
   "params": {
     "experiment": "clip-range ablation x fine kappa grid (Paper A phase-diagram follow-up)",
-    "protocol": "identical to v2 phase diagram (paired tau draws per seed, TOPO_SEED fixed structure, Benettin FTLE, held-out Jaeger MC); only kappa grid and alpha_max differ",
+    "protocol": "identical to the phase-diagram protocol, data/substrate_phase_diagram_v2.csv (paired tau draws per seed, TOPO_SEED fixed structure, Benettin FTLE, held-out Jaeger MC); only kappa grid and alpha_max differ",
     "topologies": [
       "ring_bidir",
       "lateral_ring",

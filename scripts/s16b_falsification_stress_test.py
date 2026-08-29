@@ -307,9 +307,9 @@ def main():
         'disturb_times': DISTURB_TIMES, 'disturb_types': DISTURB_TYPES,
         'judgment': 'paired r3_mc(dual)-r3_mc(fast); <=1 positive seed per '
                     '(tau_m, variant) -> falsification robust to probe protocol',
-        'version_note': 'v2: every variant at every tau_m in {200,500,1000,'
-                        '2000} (v1 covered V1/V2 at {500,2000} only); v1 data '
-                        'file kept for the original Table 3',
+        'grid_note': 'every variant at every tau_m in {200,500,1000,'
+                     '2000}; the {500,2000} subset replicates the original '
+                     'grid (data/s16_tau_m_pressure_test_v1.csv)',
         'n_seeds': n_seeds, 'quick': bool(quick),
     }
     out_json = JSON_PATH if not quick else JSON_PATH.replace('.json', '_quick.json')
