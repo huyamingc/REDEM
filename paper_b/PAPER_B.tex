@@ -31,7 +31,7 @@
 Plasticity for Non-Stationary Environments}
 
 \author{Yaming Hu\thanks{ORCID: 0009-0003-1406-0485. Independent
-Researcher, Guiyang, Guizhou Province, China. E-mail:
+Researcher, Guiyang, Guizhou, China. E-mail:
 \texttt{64687555@qq.com}.}}
 
 \date{\today}
@@ -174,7 +174,7 @@ m_i(t) = \big(1-\tfrac{1}{\tau_m}\big)m_i(t-1) + \tfrac{1}{\tau_m} f_i(t),
 \label{eq:metadata}
 \end{equation}
 with the readout features $[f, m]$ concatenated. The metadata is the slow end
-of the same log-normal forgetting spectrum (companion paper): a physical
+of the same log-normal forgetting spectrum (companion paper~\cite{companionA}): a physical
 ``synaptic consolidation'' trace \cite{benna2016}.
 
 \textbf{Chaos homeostat (M5).} Every 1000 pulses, a 400-pulse Benettin pair
@@ -294,7 +294,8 @@ harder condition.}
 \subsection{Dual-timescale metadata (M3)}
 \label{sec:metadata}
 
-On regime\_switch (where fast memory is provably insufficient), the
+On regime\_switch (where fast memory is provably insufficient;
+Fig.~\ref{fig:meta}), the
 dual-timescale readout (fast + metadata, $\tau_m\in\{200,1000\}$) outperforms
 the fast-only readout by +1.3~pp on the uncoupled substrate (paired $t=19.6$,
 $p<0.0001$) and +2.1~pp on the near-critical substrate ($t=20.2$, $p<0.0001$),
@@ -311,10 +312,11 @@ information lives in the slow state.
 \label{sec:homeo}
 
 \textbf{Homeostat.} Under the three disturbances of the companion paper's
-robustness study ($\tau$-drift, edge damage, readout noise), the
+robustness study~\cite{companionA} ($\tau$-drift, edge damage, readout noise), the
 $\lambda$-homeostat settles at $\kappa \approx 26$--27 and improves
 post-disturbance held-out memory by $+18\%$/$+7.9\%$/$+11.8\%$ over
-fixed coupling ($+7.6\%$ in the undisturbed control), at broadly
+fixed coupling ($+7.6\%$ in the undisturbed control;
+Fig.~\ref{fig:rob}), at broadly
 comparable task-level NMSE (regulated up to $2\times$ worse on the gain
 arms, better under readout noise). The homeostat is the substrate-level
 counterpart of the readout's RLS: both are online regulators of the
@@ -427,7 +429,7 @@ $\mathbf{0}$ & $\mathbf{11.79}$ & $\mathbf{10.30}$ & $\mathbf{7.94}$ & $\mathbf{
 \subsection{Integration and baselines}
 \label{sec:baselines}
 
-\textbf{Ablation matrix.} On regime\_switch, the full system (0.996;
+\textbf{Ablation matrix.} On regime\_switch (Fig.~\ref{fig:ablation}), the full system (0.996;
 boundary adaptation $\sim$202 pulses after the switch)
 matches or beats every single-mechanism ablation:
 removing the metadata drops to 0.988 (adaptation $\sim$235 pulses --- the
@@ -448,7 +450,8 @@ and never recover. On Mackey--Glass: REDEM NMSE 0.0018 and ESN $3.6\times10^{-5}
 forecast well; the frozen GRU (1.56) and transformer (0.71) are worse than the mean
 predictor. The ESN --- 256 units, heterogeneous leak rates matched to the
 $\tau$ distribution, the same RLS readout --- is the strongest standard-task
-baseline and beats REDEM on both tasks (Table~\ref{tab:bench}). We report this
+baseline and beats REDEM on both tasks (Table~\ref{tab:bench};
+Fig.~\ref{fig:showdown}). We report this
 honestly: the value proposition of REDEM is not raw benchmark supremacy but the
 mechanism set --- self-regulation under disturbance, local sparse coupling, and
 physical plausibility --- at competitive standard-task performance. The frozen
@@ -510,7 +513,7 @@ whose multi-timescale memory is set by material parameters rather than
 hyperparameters. The metadata-transfer result (Section~\ref{sec:baselines})
 shows that the long-horizon statistical mechanism is substrate-agnostic and
 transfers its statistical-memory benefit to the ESN; disturbance-robustness
-transfer does not hold (companion Paper~C): recovery is the homeostat's
+transfer does not hold (companion Paper~C~\cite{companionC}): recovery is the homeostat's
 role, not the metadata's. REDEM's differentiation is the mechanism set
 \emph{around} it --- self-regulation, robustness, local coupling --- rather than
 the mechanism alone.
@@ -569,7 +572,7 @@ mechanism to future investigation.
 \begin{figure}[t]
 \centering
 \includegraphics[width=0.95\textwidth]{paperB_fig1_redem}
-\caption{REDEM system schematic (Paper B, Fig.~1): input pulses
+\caption{REDEM system schematic: input pulses
 $\rightarrow$ relaxation substrate $\rightarrow$ [fast state $\rightarrow$ M3
 metadata] $\rightarrow$ RLS readout $\rightarrow$ output. Dashed red loop: M5
 homeostat regulates $\kappa$; dashed purple arrows: M4 rewires edges (slow);
@@ -581,7 +584,7 @@ rewiring; structure feeds the Lyapunov estimate).}
 \begin{figure}[t]
 \centering
 \includegraphics[width=0.85\textwidth]{s2_online_readout_v1}
-\caption{Online vs.\ frozen on drift\_binary (Paper B, Fig.~2): the online RLS
+\caption{Online vs.\ frozen on drift\_binary: the online RLS
 readout tracks the class-interval swap; the frozen offline ridge inverts and
 never recovers.}
 \label{fig:drift}
@@ -590,7 +593,7 @@ never recovers.}
 \begin{figure}[t]
 \centering
 \includegraphics[width=0.85\textwidth]{paperB_fig3_metadata}
-\caption{Dual-timescale metadata on regime\_switch (Paper B, Fig.~3): fast vs.\
+\caption{Dual-timescale metadata on regime\_switch: fast vs.\
 dual vs.\ slow readouts, accuracy and adaptation time.}
 \label{fig:meta}
 \end{figure}
@@ -598,15 +601,16 @@ dual vs.\ slow readouts, accuracy and adaptation time.}
 \begin{figure}[t]
 \centering
 \includegraphics[width=0.7\textwidth]{paperA_fig4_robustness}
-\caption{Chaos homeostat robustness (Paper B, Fig.~4): post-disturbance
-held-out memory gains over fixed coupling.}
+\caption{Chaos homeostat robustness: post-disturbance
+held-out memory gains over fixed coupling (reproduced from companion
+Paper~A~\cite{companionA}).}
 \label{fig:rob}
 \end{figure}
 
 \begin{figure}[t]
 \centering
 \includegraphics[width=0.85\textwidth]{paperB_fig5_ablation}
-\caption{Ablation matrix on regime\_switch (Paper B, Fig.~5): full system vs.\
+\caption{Ablation matrix on regime\_switch: full system vs.\
 single-mechanism removals and the bare baseline.}
 \label{fig:ablation}
 \end{figure}
@@ -614,7 +618,7 @@ single-mechanism removals and the bare baseline.}
 \begin{figure}[t]
 \centering
 \includegraphics[width=0.85\textwidth]{paperB_fig6_showdown}
-\caption{Baseline showdown (Paper B, Fig.~6): REDEM, matched online ESN, and
+\caption{Baseline showdown: REDEM, matched online ESN, and
 frozen GRU / tiny transformer on drift\_binary and Mackey--Glass.}
 \label{fig:showdown}
 \end{figure}

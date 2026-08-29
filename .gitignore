@@ -24,6 +24,7 @@ __pycache__/
 
 # Process / agent working files (not part of the deliverables)
 review_workspace/
+.workbuddy/
 .zcode/
 .uploads/
 .trae-html-share-packages/

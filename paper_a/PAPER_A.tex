@@ -28,7 +28,7 @@
 phase diagram, multi-timescale forgetting, and disturbance robustness}
 
 \author{Yaming Hu\thanks{ORCID: 0009-0003-1406-0485. Independent
-Researcher, Guiyang, Guizhou Province, China. E-mail:
+Researcher, Guiyang, Guizhou, China. E-mail:
 \texttt{64687555@qq.com}.}}
 
 \date{\today}
@@ -53,7 +53,7 @@ transition, and deep chaos destroys memory. The decay of linear memory follows
 an analytically derived forgetting kernel $M(t)=\int p(\tau)e^{-t/\tau}\,d\tau$
 over the log-normal trap spectrum (Pearson $r=0.97$ against the measured
 memory-capacity curve). The $1/e$ horizon stays near
-$\tau_0/\bar{\Delta t}\approx 16$ pulses as the spectrum widens (measured
+$\tau_0/\bar{\Delta t}\approx 16$ pulses as the spectrum widens (numerically
 12--16 pulses for CV $\in[0.02,1.0]$), while the width CV controls the tail
 weight. Finally, a homeostatic regulator that
 estimates $\lambda$ online and adjusts $\kappa$ to a near-critical target
@@ -175,6 +175,9 @@ $x_i \mathrel{+}= \kappa\,\bar{x}_{\mathcal{N}(i)}$ after the standard update
 (contrasts from the pre-update state, then all units updated), making the step
 order-independent (Appendix~\ref{app:update}). At $\kappa=0$ the model reduces exactly to
 the parallel array of \cite{prior} (verified to machine precision).
+Fig.~\ref{fig:schematicA} summarizes the full pipeline: the pulse stream, the
+relaxation array with its log-normal $\tau$ spectrum, the per-pulse contrast
+coupling, and the linear readout probe.
 
 Five topologies over the $N=256$ units are used: \textbf{ring\_bidir} (each
 unit watches its two neighbors), \textbf{ring\_unidir} (each unit watches its
@@ -220,9 +223,11 @@ current ratio over a 200-pulse window (used in the homeostat analysis).
 \label{sec:phasediagram}
 
 All quantities below are means over 10 independent seeds (paired $\tau$ draws
-across $\kappa$); the full table is in Supplementary Table~S1
-(data/substrate\_phase\_diagram\_v2.csv). Table~\ref{tab:phase} summarizes the
-per-topology behavior.
+across $\kappa$); the full table is committed as
+data/substrate\_phase\_diagram\_v2.csv. Table~\ref{tab:phase} summarizes the
+per-topology behavior, and Fig.~\ref{fig:phasediagram} traces the full
+$\kappa$-dependence of the finite-time Lyapunov exponent, the held-out and
+in-sample MC, and the clip fraction across the topology families.
 
 \begin{table}[t]
 \centering
@@ -390,7 +395,7 @@ operating-regime-dependent --- uncoupled operation follows the theory (wider
 CV, heavier tail, more retained memory), while coupled near-critical operation
 prefers narrow spectra. The full sweep (CV $\in\{0.1,0.2,0.4\}$ $\times$
 \{uncoupled, random\_graph $\kappa=25$, ring\_bidir $\kappa=20$\}, 10 seeds) is
-given in Supplementary Note~1 (Fig.~S1); the kernel-level stability across
+given in Supplementary Note~1 (Fig.~\ref{fig:supp1}); the kernel-level stability across
 CV $\in[0.02,1.0]$ is in Fig.~\ref{fig:forgetting} and
 Appendix~\ref{app:quadrature}.
 
@@ -444,7 +449,8 @@ the slightly-ordered side of the transition where held-out MC peaks
 (Section~\ref{sec:negfb}). The regulated system settles at $\kappa \approx
 26$--27 under all conditions and achieves post-disturbance held-out MC gains of
 $+7.6\%$ (none), $+18\%$ ($\tau$-drift), $+7.9\%$ (edge-prune), $+11.8\%$
-(noise) over the fixed coupling (Table~\ref{tab:homeostat}), at broadly
+(noise) over the fixed coupling (Table~\ref{tab:homeostat};
+Fig.~\ref{fig:robustness}), at broadly
 comparable task-level NMSE (regulated up to $2\times$ worse on the gain arms,
 better under readout noise; the RLS readout absorbs task-level differences,
 and the substrate-level memory improvement is revealed by the
@@ -460,7 +466,7 @@ difference at any noise level (data/s32\_ftle\_noise\_v1.csv) --- the
 clipped proportional feedback integrates over the estimation error.
 A systematic $\lambda_{\mathrm{target}}$ sweep
 ($\lambda_{\mathrm{target}}\in\{-0.05,-0.02,-0.005,0\}\times\mathrm{CV}\in\{0.1,0.2,0.4\}$,
-5 seeds; companion Paper~B, Table~2) identifies $\lambda_{\mathrm{target}}{=}0$
+5 seeds; companion Paper~B, Table~2~\cite{companionB}) identifies $\lambda_{\mathrm{target}}{=}0$
 (the edge of chaos) as optimal: post-disturbance MC peaks near the edge of
 chaos at every tested CV ($\lambda_{\mathrm{target}}{=}0$ optimal at CV=0.1 and 0.4;
 the $-0.005$ setting marginally ahead at CV=0.2), with gains of $+25\%$
@@ -507,7 +513,7 @@ true criticality ($|\lambda|\approx0$) with maximal separation yet zero held-out
 linear memory. This is a caution for the common practice of tuning reservoirs to
 the edge of chaos: at criticality the \emph{linear} readout loses the input
 trace, and the separation must be exploited nonlinearly (a companion work
-develops structure plasticity from functional connectivity). For linear readouts, the
+develops structure plasticity from functional connectivity~\cite{companionB}). For linear readouts, the
 optimal operating point is the \emph{last ordered configuration before the
 transition} --- a slightly-subcritical target ($\kappa = 20$--25,
 $\lambda \approx -0.05$), consistent with where the homeostat parks the
@@ -521,15 +527,15 @@ quantitative, not metaphorical.
 
 \textbf{Spectrum knobs: location versus width.} Across the companion
 papers three single-parameter spectrum knobs appear --- the material
-CV here, the algorithmic EMA timescale $\tau_m$ (companion~C), and the
-log-uniform coverage range of the state-space host (companion~D). They
+CV here, the algorithmic EMA timescale $\tau_m$ (companion Paper~C~\cite{companionC}), and the
+log-uniform coverage range of the state-space host (companion Paper~D~\cite{companionD}). They
 are not interchangeable, and the distinction is quantitative: for a
 log-normal spectrum the $1/e$ horizon is set by the \emph{location}
 (median $\tau_0$: $M(\tau_0)\approx e^{-1}$ --- within a few percent for
-CV $\le 0.5$, within $\sim$25\% at CV $=1.0$; measured
+CV $\le 0.5$, within $\sim$25\% at CV $=1.0$; numerically
 12--16 pulses over CV $\in[0.02,1.0]$) while the tail weight is set by
-the \emph{width} (measured log-log slope $-60.6$ at CV $0.2$ vs.\ $-7.1$
-at CV $1.0$). The companion's $\tau_m$ is a location knob (the
+the \emph{width} (log-log slope $-60.6$ at CV $0.2$ vs.\ $-7.1$
+at CV $1.0$). Paper~C's $\tau_m$ is a location knob (the
 synthesized kernel's horizon scales with $\tau_m$, tail shape fixed),
 and the log-uniform range is a width knob of a different family. The
 practical corollary: specifying both a horizon and a tail requires two
@@ -562,7 +568,7 @@ online-learning architecture (companion paper \cite{companionB}).
 \begin{figure}[t]
 \centering
 \includegraphics[width=0.92\textwidth]{paperA_fig1_substrate}
-\caption{Substrate schematic (Paper A, Fig.~1): pulse stream, $N=256$
+\caption{Substrate schematic: pulse stream, $N=256$
 relaxation units with log-normal $\tau$ spectrum, per-pulse contrast coupling
 (red arrows, $\kappa$), and the readout probe.}
 \label{fig:schematicA}
@@ -571,7 +577,7 @@ relaxation units with log-normal $\tau$ spectrum, per-pulse contrast coupling
 \begin{figure}[t]
 \centering
 \includegraphics[width=0.92\textwidth]{substrate_phase_diagram_v2}
-\caption{Phase diagram (Paper A, Fig.~2): $\kappa$ vs.\ finite-time Lyapunov
+\caption{Phase diagram: $\kappa$ vs.\ finite-time Lyapunov
 exponent, held-out and in-sample MC, and clip fraction across topology
 families.}
 \label{fig:phasediagram}
@@ -580,7 +586,7 @@ families.}
 \begin{figure}[t]
 \centering
 \includegraphics[width=0.92\textwidth]{forgetting_curve_theory}
-\caption{Forgetting kernel (Paper A, Fig.~3): $M(t)$ curves over CV, tail
+\caption{Forgetting kernel: $M(t)$ curves over CV, tail
 slopes, and the overlay of the measured $\sqrt{\MCI(k)}$ on $M(k\bar{\Dt})$
 (Pearson $r=0.97$).}
 \label{fig:forgetting}
@@ -589,7 +595,7 @@ slopes, and the overlay of the measured $\sqrt{\MCI(k)}$ on $M(k\bar{\Dt})$
 \begin{figure}[t]
 \centering
 \includegraphics[width=0.75\textwidth]{paperA_fig4_robustness}
-\caption{$\lambda$-homeostat robustness (Paper A, Fig.~4): post-disturbance
+\caption{$\lambda$-homeostat robustness: post-disturbance
 held-out MC gains over fixed coupling (Table~\ref{tab:homeostat}).}
 \label{fig:robustness}
 \end{figure}
@@ -748,7 +754,10 @@ the linear limit.
 \section*{Supplementary Material}
 \label{sec:supp}
 
-\textbf{Supplementary Note 1. Task-level CV sweep (Fig.~S1).} At the task level
+\setcounter{figure}{0}
+\renewcommand{\thefigure}{S\arabic{figure}}
+
+\textbf{Supplementary Note 1. Task-level CV sweep (Fig.~\ref{fig:supp1}).} At the task level
 (held-out MC at the memory-optimal operating points, CV
 $\in\{0.1,0.2,0.4\}$, 10 seeds), the uncoupled substrate follows the
 single-unit kernel theory: MC rises 2.54 $\to$ 3.37 ($+33\%$) as CV widens from
@@ -765,7 +774,7 @@ operation.
 \begin{figure}[t]
 \centering
 \includegraphics[width=0.6\textwidth]{paperA_figS1_cv_sweep}
-\caption{Supplementary Fig.~S1: task-level CV sweep (held-out MC vs.\ CV, 10
+\caption{Task-level CV sweep (held-out MC vs.\ CV, 10
 seeds; data/s10\_cv\_sweep\_v1.csv).}
 \label{fig:supp1}
 \end{figure}
@@ -787,7 +796,7 @@ All simulation scripts and generated data are available at
 \url{https://github.com/huyamingc/REDEM} (private during review; released on
 acceptance).
 
-\begin{thebibliography}{12}
+\begin{thebibliography}{14}
 
 \bibitem{maass2002} Maass, W., Natschläger, T. \& Markram, H. Real-time
 computing without stable states: a new framework for neural computation based
@@ -841,6 +850,18 @@ with Meta-Adaptation and Structural Plasticity for Non-Stationary
 Environments (online learning architecture),
 \emph{companion preprint} (2026),
 \url{https://doi.org/10.5281/zenodo.22110607}.
+
+\bibitem{companionC} Author's companion Paper C: Dissecting Online
+Learning Mechanisms: Statistical Memory, Homeostatic Recovery, and
+Substrate Physics are Non-Substitutable (three-mechanism
+disentanglement), \emph{companion preprint} (2026),
+\url{https://doi.org/10.5281/zenodo.22110619}.
+
+\bibitem{companionD} Author's companion Paper D: REDEM-SSM: A State-Space
+Architecture with Native Online Learning, Meta-Adaptation, and Structural
+Plasticity (state-space architecture),
+\emph{companion preprint} (2026),
+\url{https://doi.org/10.5281/zenodo.22110624}.
 
 \end{thebibliography}
 
