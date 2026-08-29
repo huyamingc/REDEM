@@ -140,6 +140,18 @@ rewiring rate, and rewiring changes the structure that feeds the Lyapunov
 estimate (dotted loop in Fig.~\ref{fig:redem}); the coupling loop is tested
 in Section~\ref{sec:homeo}.
 
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.95\textwidth]{paperB_fig1_redem}
+\caption{REDEM system schematic: input pulses
+$\rightarrow$ relaxation substrate $\rightarrow$ [fast state $\rightarrow$ M3
+metadata] $\rightarrow$ RLS readout $\rightarrow$ output. Dashed red loop: M5
+homeostat regulates $\kappa$; dashed purple arrows: M4 rewires edges (slow);
+dotted purple loop: the M4 $\leftrightarrow$ M5 coupling ($\kappa$ gates
+rewiring; structure feeds the Lyapunov estimate).}
+\label{fig:redem}
+\end{figure}
+
 The substrate follows the model of the companion theory paper
 \cite{companionA} (Paper A, Section~2), with the $\tau$-spectrum, the
 coupling topologies, and the
@@ -241,6 +253,15 @@ substrate's coupling also matters at the task level: near-critical coupling
 ($\kappa=25$) improves Mackey--Glass forecasting $50\times$ over the uncoupled
 substrate (NMSE 0.0018 vs.\ 0.090) and NARMA-10 by 21\% (0.431 vs.\ 0.549).
 
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.85\textwidth]{s2_online_readout_v1}
+\caption{Online vs.\ frozen on drift\_binary: the online RLS
+readout tracks the class-interval swap; the frozen offline ridge inverts and
+never recovers.}
+\label{fig:drift}
+\end{figure}
+
 \subsection{Negative results: rewards without an error channel}
 \label{sec:neg}
 
@@ -308,6 +329,14 @@ transition. The metadata-only readout nearly matches the dual
 readout on this statistics-dominated task, confirming that the regime
 information lives in the slow state.
 
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.85\textwidth]{paperB_fig3_metadata}
+\caption{Dual-timescale metadata on regime\_switch: fast vs.\
+dual vs.\ slow readouts, accuracy and adaptation time.}
+\label{fig:meta}
+\end{figure}
+
 \subsection{Chaos homeostat (M5) and structure plasticity (M4)}
 \label{sec:homeo}
 
@@ -321,6 +350,15 @@ comparable task-level NMSE (regulated up to $2\times$ worse on the gain
 arms, better under readout noise). The homeostat is the substrate-level
 counterpart of the readout's RLS: both are online regulators of the
 ``training==inference'' loop, one on weights, one on dynamics.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.7\textwidth]{paperA_fig4_robustness}
+\caption{Chaos homeostat robustness: post-disturbance
+held-out memory gains over fixed coupling (reproduced from companion
+Paper~A~\cite{companionA}).}
+\label{fig:rob}
+\end{figure}
 
 \textbf{Sequential disturbance recovery.} Beyond the single-disturbance tests
 above, we evaluate cumulative robustness: three sequential disturbances
@@ -443,6 +481,14 @@ $N=1024$ the full system beats the baseline on all 10 seeds
 ($0.9970\pm0.0007$ vs.\ $0.9753\pm0.0044$, $+2.2$~pp, paired
 $t=15.3$; data/s30\_integrated\_1024\_v1.csv).
 
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.85\textwidth]{paperB_fig5_ablation}
+\caption{Ablation matrix on regime\_switch: full system vs.\
+single-mechanism removals and the bare baseline.}
+\label{fig:ablation}
+\end{figure}
+
 \textbf{Batch baselines.} On drift\_binary: REDEM 0.991 and a matched online
 ESN 1.000 track the drift; the frozen GRU (0.394; pre 0.860 $\rightarrow$ post
 0.145) and tiny transformer (0.351; pre 1.000 $\rightarrow$ post 0.000) invert
@@ -458,6 +504,14 @@ physical plausibility --- at competitive standard-task performance. The frozen
 baselines use small, untuned hyperparameters (Table~\ref{tab:bench}); the
 comparison targets the online-vs-frozen dichotomy, not each architecture's
 full capability.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.85\textwidth]{paperB_fig6_showdown}
+\caption{Baseline showdown: REDEM, matched online ESN, and
+frozen GRU / tiny transformer on drift\_binary and Mackey--Glass.}
+\label{fig:showdown}
+\end{figure}
 
 \begin{table}[t]
 \centering
@@ -568,60 +622,6 @@ stationary knowledge retention while preserving the system's responsiveness
 to drift, but it would also introduce a consolidation-vs-overwrite trade-off
 that lies beyond the scope of the present work. We leave this consolidation
 mechanism to future investigation.
-
-\begin{figure}[t]
-\centering
-\includegraphics[width=0.95\textwidth]{paperB_fig1_redem}
-\caption{REDEM system schematic: input pulses
-$\rightarrow$ relaxation substrate $\rightarrow$ [fast state $\rightarrow$ M3
-metadata] $\rightarrow$ RLS readout $\rightarrow$ output. Dashed red loop: M5
-homeostat regulates $\kappa$; dashed purple arrows: M4 rewires edges (slow);
-dotted purple loop: the M4 $\leftrightarrow$ M5 coupling ($\kappa$ gates
-rewiring; structure feeds the Lyapunov estimate).}
-\label{fig:redem}
-\end{figure}
-
-\begin{figure}[t]
-\centering
-\includegraphics[width=0.85\textwidth]{s2_online_readout_v1}
-\caption{Online vs.\ frozen on drift\_binary: the online RLS
-readout tracks the class-interval swap; the frozen offline ridge inverts and
-never recovers.}
-\label{fig:drift}
-\end{figure}
-
-\begin{figure}[t]
-\centering
-\includegraphics[width=0.85\textwidth]{paperB_fig3_metadata}
-\caption{Dual-timescale metadata on regime\_switch: fast vs.\
-dual vs.\ slow readouts, accuracy and adaptation time.}
-\label{fig:meta}
-\end{figure}
-
-\begin{figure}[t]
-\centering
-\includegraphics[width=0.7\textwidth]{paperA_fig4_robustness}
-\caption{Chaos homeostat robustness: post-disturbance
-held-out memory gains over fixed coupling (reproduced from companion
-Paper~A~\cite{companionA}).}
-\label{fig:rob}
-\end{figure}
-
-\begin{figure}[t]
-\centering
-\includegraphics[width=0.85\textwidth]{paperB_fig5_ablation}
-\caption{Ablation matrix on regime\_switch: full system vs.\
-single-mechanism removals and the bare baseline.}
-\label{fig:ablation}
-\end{figure}
-
-\begin{figure}[t]
-\centering
-\includegraphics[width=0.85\textwidth]{paperB_fig6_showdown}
-\caption{Baseline showdown: REDEM, matched online ESN, and
-frozen GRU / tiny transformer on drift\_binary and Mackey--Glass.}
-\label{fig:showdown}
-\end{figure}
 
 \section*{Declaration of competing interest}
 

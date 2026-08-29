@@ -179,6 +179,15 @@ Fig.~\ref{fig:schematicA} summarizes the full pipeline: the pulse stream, the
 relaxation array with its log-normal $\tau$ spectrum, the per-pulse contrast
 coupling, and the linear readout probe.
 
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.92\textwidth]{paperA_fig1_substrate}
+\caption{Substrate schematic: pulse stream, $N=256$
+relaxation units with log-normal $\tau$ spectrum, per-pulse contrast coupling
+(red arrows, $\kappa$), and the readout probe.}
+\label{fig:schematicA}
+\end{figure}
+
 Five topologies over the $N=256$ units are used: \textbf{ring\_bidir} (each
 unit watches its two neighbors), \textbf{ring\_unidir} (each unit watches its
 predecessor), \textbf{hub\_star} (satellites watch a fixed hub),
@@ -228,6 +237,15 @@ data/substrate\_phase\_diagram\_v2.csv. Table~\ref{tab:phase} summarizes the
 per-topology behavior, and Fig.~\ref{fig:phasediagram} traces the full
 $\kappa$-dependence of the finite-time Lyapunov exponent, the held-out and
 in-sample MC, and the clip fraction across the topology families.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.92\textwidth]{substrate_phase_diagram_v2}
+\caption{Phase diagram: $\kappa$ vs.\ finite-time Lyapunov
+exponent, held-out and in-sample MC, and clip fraction across topology
+families.}
+\label{fig:phasediagram}
+\end{figure}
 
 \begin{table}[t]
 \centering
@@ -374,6 +392,15 @@ physical substrate therefore occupies a specific point in the forgetting design
 space set by CV.
 \end{enumerate}
 
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.92\textwidth]{forgetting_curve_theory}
+\caption{Forgetting kernel: $M(t)$ curves over CV, tail
+slopes, and the overlay of the measured $\sqrt{\MCI(k)}$ on $M(k\bar{\Dt})$
+(Pearson $r=0.97$).}
+\label{fig:forgetting}
+\end{figure}
+
 \subsection{Validation against the measured memory capacity}
 
 The measured parallel-substrate curve $\sqrt{\MCI(k)}$ (held-out) tracks
@@ -473,6 +500,14 @@ the $-0.005$ setting marginally ahead at CV=0.2), with gains of $+25\%$
 (CV=0.1), $+19\%$ (CV=0.2), $+5\%$ (CV=0.4) over fixed coupling --- updating
 the manually tuned $-0.02$ used in the main results.
 
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.75\textwidth]{paperA_fig4_robustness}
+\caption{$\lambda$-homeostat robustness: post-disturbance
+held-out MC gains over fixed coupling (Table~\ref{tab:homeostat}).}
+\label{fig:robustness}
+\end{figure}
+
 \begin{table}[t]
 \centering
 \caption{Post-disturbance held-out MC gains of the $\lambda$-homeostat over
@@ -564,41 +599,6 @@ fabrication-tunable tail. A $\lambda$-homeostat restores 8--18\% of memory
 after disturbances. These results turn a device-physics spread parameter into a
 computational design knob and provide the substrate-level theory for the REDEM
 online-learning architecture (companion paper \cite{companionB}).
-
-\begin{figure}[t]
-\centering
-\includegraphics[width=0.92\textwidth]{paperA_fig1_substrate}
-\caption{Substrate schematic: pulse stream, $N=256$
-relaxation units with log-normal $\tau$ spectrum, per-pulse contrast coupling
-(red arrows, $\kappa$), and the readout probe.}
-\label{fig:schematicA}
-\end{figure}
-
-\begin{figure}[t]
-\centering
-\includegraphics[width=0.92\textwidth]{substrate_phase_diagram_v2}
-\caption{Phase diagram: $\kappa$ vs.\ finite-time Lyapunov
-exponent, held-out and in-sample MC, and clip fraction across topology
-families.}
-\label{fig:phasediagram}
-\end{figure}
-
-\begin{figure}[t]
-\centering
-\includegraphics[width=0.92\textwidth]{forgetting_curve_theory}
-\caption{Forgetting kernel: $M(t)$ curves over CV, tail
-slopes, and the overlay of the measured $\sqrt{\MCI(k)}$ on $M(k\bar{\Dt})$
-(Pearson $r=0.97$).}
-\label{fig:forgetting}
-\end{figure}
-
-\begin{figure}[t]
-\centering
-\includegraphics[width=0.75\textwidth]{paperA_fig4_robustness}
-\caption{$\lambda$-homeostat robustness: post-disturbance
-held-out MC gains over fixed coupling (Table~\ref{tab:homeostat}).}
-\label{fig:robustness}
-\end{figure}
 
 \appendix
 \counterwithin{equation}{section}
