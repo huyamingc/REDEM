@@ -8,7 +8,7 @@ recurrence with a log-uniform timescale spectrum), instead of retrofitting
 them onto a frozen-feedforward Transformer.
 
 - PDF: [`PAPER_D.pdf`](PAPER_D.pdf) | LaTeX: [`PAPER_D.tex`](PAPER_D.tex)
-- Preprint: [doi:10.5281/zenodo.22110624](https://doi.org/10.5281/zenodo.22110624)
+- Preprint: [doi:10.5281/zenodo.22110623](https://doi.org/10.5281/zenodo.22110623)
 - Target: *PRX Intelligence* (APS; APC waived for 2026 submissions)
 - Series overview and reading order (A → B → C → D):
   [`../README.md`](../README.md)

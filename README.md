@@ -8,10 +8,10 @@ be read in order (**A → B → C → D**):
 
 | Paper | Role | Core question | Preprint |
 | :--- | :--- | :--- | :--- |
-| **A** | Physics | What does the substrate compute? (memory–chaos phase diagram, forgetting kernel, homeostat) | Zenodo [10.5281/zenodo.22109665](https://doi.org/10.5281/zenodo.22109665) |
-| **B** | Algorithm | How do you learn on top of it? (REDEM: RLS readout, meta-adaptation, structural plasticity) | Zenodo [10.5281/zenodo.22110607](https://doi.org/10.5281/zenodo.22110607) |
-| **C** | Dissection | Which mechanism does which job? (statistical memory ≠ robustness recovery) | Zenodo [10.5281/zenodo.22110619](https://doi.org/10.5281/zenodo.22110619) |
-| **D** | Architecture | What host makes these mechanisms native? (state-space-native REDEM) | Zenodo [10.5281/zenodo.22110624](https://doi.org/10.5281/zenodo.22110624) |
+| **A** | Physics | What does the substrate compute? (memory–chaos phase diagram, forgetting kernel, homeostat) | Zenodo [10.5281/zenodo.22109664](https://doi.org/10.5281/zenodo.22109664) |
+| **B** | Algorithm | How do you learn on top of it? (REDEM: RLS readout, meta-adaptation, structural plasticity) | Zenodo [10.5281/zenodo.22110606](https://doi.org/10.5281/zenodo.22110606) |
+| **C** | Dissection | Which mechanism does which job? (statistical memory ≠ robustness recovery) | Zenodo [10.5281/zenodo.22110618](https://doi.org/10.5281/zenodo.22110618) |
+| **D** | Architecture | What host makes these mechanisms native? (state-space-native REDEM) | Zenodo [10.5281/zenodo.22110623](https://doi.org/10.5281/zenodo.22110623) |
 
 In one sentence each: **Paper A** establishes the physics (what the
 substrate computes); **Paper B** builds the learning architecture on that
@@ -28,7 +28,7 @@ are native rather than retrofitted, motivated by C's boundary result.
   → [`paper_a/PAPER_A.pdf`](paper_a/PAPER_A.pdf) |
   [`paper_a/PAPER_A.tex`](paper_a/PAPER_A.tex) |
   [`paper_a/README.md`](paper_a/README.md) |
-  Zenodo [10.5281/zenodo.22109665](https://doi.org/10.5281/zenodo.22109665)
+  Zenodo [10.5281/zenodo.22109664](https://doi.org/10.5281/zenodo.22109664)
 
 - **Paper B — Algorithm**: *"REDEM: Online Learning with Meta-Adaptation and
   Structural Plasticity for Non-Stationary Environments"*
@@ -36,7 +36,7 @@ are native rather than retrofitted, motivated by C's boundary result.
   → [`paper_b/PAPER_B.pdf`](paper_b/PAPER_B.pdf) |
   [`paper_b/PAPER_B.tex`](paper_b/PAPER_B.tex) |
   [`paper_b/README.md`](paper_b/README.md) |
-  Zenodo [10.5281/zenodo.22110607](https://doi.org/10.5281/zenodo.22110607)
+  Zenodo [10.5281/zenodo.22110606](https://doi.org/10.5281/zenodo.22110606)
 
 - **Paper C — Dissection**: *"Dissecting Online Learning Mechanisms:
   Statistical Memory, Homeostatic Recovery, and Substrate Physics are
@@ -45,7 +45,7 @@ are native rather than retrofitted, motivated by C's boundary result.
   → [`paper_c/PAPER_C.pdf`](paper_c/PAPER_C.pdf) |
   [`paper_c/PAPER_C.tex`](paper_c/PAPER_C.tex) |
   [`paper_c/README.md`](paper_c/README.md) |
-  Zenodo [10.5281/zenodo.22110619](https://doi.org/10.5281/zenodo.22110619)
+  Zenodo [10.5281/zenodo.22110618](https://doi.org/10.5281/zenodo.22110618)
 
 - **Paper D — Architecture**: *"REDEM-SSM: A State-Space Architecture with
   Native Online Learning, Meta-Adaptation, and Structural Plasticity"* —
@@ -55,7 +55,7 @@ are native rather than retrofitted, motivated by C's boundary result.
   → [`paper_d/PAPER_D.pdf`](paper_d/PAPER_D.pdf) |
   [`paper_d/PAPER_D.tex`](paper_d/PAPER_D.tex) |
   [`paper_d/README.md`](paper_d/README.md) |
-  Zenodo [10.5281/zenodo.22110624](https://doi.org/10.5281/zenodo.22110624)
+  Zenodo [10.5281/zenodo.22110623](https://doi.org/10.5281/zenodo.22110623)
 
 ## What each paper contributes to the series
 
@@ -64,7 +64,7 @@ are native rather than retrofitted, motivated by C's boundary result.
 | **Question** | What can this substrate compute? | How do you learn on it? | Which mechanism does what? | What host makes it native? |
 | **Core result** | κ*∈(25,30); held-out MC +24–53% just before it; forgetting kernel r=0.97; λ-homeostat +8–18% | 0.996 vs 0.973 (p<0.0001; N=1024: 0.9970 vs 0.9753); tracks drift where frozen learners never recover | the +32% sequential-recovery gain is the homeostat's, not the metadata's; metadata robustness transfer falsified (0/10 seeds at every τ_m); routing transfers, gating-only falsified | input-path readout beats the pooled state readout (10/10); soft routing beats abrupt (−1.81, 10/10); full stack beats TF+LoRA (−9.28/−10.08, 10/10) |
 | **Target venue** | Chaos, Solitons & Fractals | Neural Networks | Neurocomputing | PRX Intelligence |
-| **Preprint DOI** | [10.5281/zenodo.22109665](https://doi.org/10.5281/zenodo.22109665) | [10.5281/zenodo.22110607](https://doi.org/10.5281/zenodo.22110607) | [10.5281/zenodo.22110619](https://doi.org/10.5281/zenodo.22110619) | [10.5281/zenodo.22110624](https://doi.org/10.5281/zenodo.22110624) |
+| **Preprint DOI** | [10.5281/zenodo.22109664](https://doi.org/10.5281/zenodo.22109664) | [10.5281/zenodo.22110606](https://doi.org/10.5281/zenodo.22110606) | [10.5281/zenodo.22110618](https://doi.org/10.5281/zenodo.22110618) | [10.5281/zenodo.22110623](https://doi.org/10.5281/zenodo.22110623) |
 
 ## Provenance: prior Si₃N₄ pulse-encoding paper
 

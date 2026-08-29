@@ -7,7 +7,7 @@ and uses falsifying transfer experiments to establish which mechanism is
 responsible for which capability, and where each one stops.
 
 - PDF: [`PAPER_C.pdf`](PAPER_C.pdf) | LaTeX: [`PAPER_C.tex`](PAPER_C.tex)
-- Preprint: [doi:10.5281/zenodo.22110619](https://doi.org/10.5281/zenodo.22110619)
+- Preprint: [doi:10.5281/zenodo.22110618](https://doi.org/10.5281/zenodo.22110618)
 - Target: *Neurocomputing* (Elsevier)
 - Series overview and reading order (A → B → C → D):
   [`../README.md`](../README.md)
