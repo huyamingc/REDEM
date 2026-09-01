@@ -1,14 +1,13 @@
 #!/usr/bin/env python3
 """
-Falsification stress test: MC probe protocol robustness (Paper C S16b, v2).
+Falsification stress test: MC probe protocol robustness (Paper C S16b).
 =============================================================================
 Type:           PAPER
 Experiment:     Does the S14/S16 falsification - the slow trace does not
                 transfer MC robustness to an ESN (esn_dual r3_mc <= esn_fast
                 at every tau_m) - survive probe-protocol choices? Tests three
-                MC probe variants at tau_m in {200, 500, 1000, 2000}, 10 seeds
-                (v2: every variant at every tau_m; v1 covered V1/V2 at
-                {500, 2000} only and is superseded):
+                MC probe variants at tau_m in {200, 500, 1000, 2000}, every
+                variant at every tau_m, 10 seeds:
 
   V0 raw-slow    : slow = EMA of raw states; noise added after slow
                    (the S14/S16 reference semantics)
@@ -308,7 +307,7 @@ def main():
         'judgment': 'paired r3_mc(dual)-r3_mc(fast); <=1 positive seed per '
                     '(tau_m, variant) -> falsification robust to probe protocol',
         'grid_note': 'every variant at every tau_m in {200,500,1000,'
-                     '2000}; the {500,2000} subset replicates the original '
+                     '2000}; the {500,2000} subset replicates the S16 '
                      'grid (data/s16_tau_m_pressure_test_v1.csv)',
         'n_seeds': n_seeds, 'quick': bool(quick),
     }

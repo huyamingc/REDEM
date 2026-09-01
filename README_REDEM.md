@@ -53,7 +53,7 @@ the structure level (M4).
 | s14 | ESN+metadata under the S11 disturbance chain (3 arms × 10 seeds): the slow trace does NOT transfer MC robustness to the ESN (paired diffs −0.78/−0.76/−0.69, 0/10 seeds positive) — the S11 +32% recovery is homeostat-driven; metadata still attenuates readout noise (r3 NMSE −9.6%, 10/10 seeds at τ_m≥500, 9/10 at 200); redem_reg reproduces the S11 anchor exactly |
 | s16 | τ_m pressure test (τ_m ∈ {200,500,1000,2000} × 10 seeds): the falsification is robust — esn_dual r3 MC ≤ esn_fast at every τ_m (0/10 seeds positive, ~5σ), no sensitive interval; noise-attenuation transfer holds at all τ_m. Paper C adopts the strong claim |
 | s15 | Controlled adaptation (10 seeds × 5 switches, known switch instants): T40 40.6 (dual) vs 49.9 (fast) vs 52.7 (redem); T40 p90 42 vs 76.5 — the true metadata adaptation effect is ~10 pulses + variance collapse; the "47×"/"9–20×" ratios are metric artifacts |
-| s16b | Probe-protocol stress test (10 seeds × 4 τ_m × 3 variants, v2): falsification robust in sign (≤1/10 positive in every cell; 0/10 in 11 of 12); magnitude protocol-dependent — V0 (readout noise) −0.69, V1 (std-slow) −0.66, V2 (state noise) −0.04…−0.01 across τ_m (EMA denoising nearly closes the gap at every timescale) |
+| s16b | Probe-protocol stress test (10 seeds × 4 τ_m × 3 variants): falsification robust in sign (≤1/10 positive in every cell; 0/10 in 11 of 12); magnitude protocol-dependent — V0 (readout noise) −0.69, V1 (std-slow) −0.66, V2 (state noise) −0.04…−0.01 across τ_m (EMA denoising nearly closes the gap at every timescale) |
 | s5b | S5 three-arm controlled re-measurement (2 substrates × 5 arm configs × 10 seeds): T200 fast 264.8–303.9 vs dual/slow 202–211 pulses (factor 1.28–1.44; T40 factor 1.79–2.40); overall acc reproduces S5 exactly — Paper B §4.3/abstract revised |
 | s17 | Substrate stress (3 spectral radii × 2 hetero × 10 seeds): equalizer gain positive at all 6 ESN configs (+0.1 to +1.0 pp), magnitude tracks the fast channel's timescale starvation; heterogeneity irrelevant |
 | s18 | LLM drift-gate PoC (tiny transformer + LoRA, 90 runs): A3 domain routing transfers — forgetting −2.5 ppl (10/10 seeds, τ_m=200), stream ppl −1.07 (10/10) at τ_m≤500; A2 gate falsified (0/10); τ_m≥1000 sensitive interval reported |
@@ -73,7 +73,7 @@ the structure level (M4).
 | s33 | M5 in the P4 benchmark (2 arms × 10 seeds): REDEM-SSM+M5 is significantly worse (stream +1.53, forgetting +2.90, t=−22.8/−26.5, 10/10) — Δt modulation breaks the Δt=1-calibrated per-channel whitening on an already well-conditioned stream; S22's exclusion of M5 is validated (M5 stays a spike-regime safeguard, P3 E2) |
 | s34 | Leak sensitivity scan on the S28 audit (7 leak configs × 10 seeds): 10× larger FTLE leaks stay NS at every tested horizon (+0.13/+0.39/+0.21 at horizons 50/200/400, CIs include 0); the plasticity channel shows a dose-response — 30% future correlation improves recovery (+0.57 mean, 7/10; paired t=2.04, 95% CI [−0.06,+1.20]), 50% reverses it — "causally clean" is scoped to the operational leak magnitudes |
 | s35 | P1 readout boundary probes (10 seeds, s19 host verbatim): full-window oracle 31.2 (matches s19, max diff 0.00) vs half-window 17.3; skip 18.0 > proj 7.25 (nested violation 10/10); token linearly decodable from fast channels (τ≤8) at 88.9–99.7% out-of-sample (chance 3.1%), slow channels at chance; fast-channel direct/two-stage next-token readouts still fail out-of-sample (ppl 68–104 vs static table 13.9–17.4) — the in-sample oracle is window-dependent and metric-pathological, so the P1 0/10 failure is a pooled-readout/metric property, not missing linear information (boundary analysis in Paper D §3) |
-| s36 | Random-graph instance variability (9 Erdős–Rényi instances × 11 κ × 10 substrate seeds, 990 runs; S1 v2 random_graph sweep per-instance): peak held-out MC 13.47 ± 0.57 (range 12.80–14.35), +48.5% ± 6.3% over uncoupled; peak at κ*=25 (7/9 instances) or 30 (2/9); the fixed instance of Table 1 (13.91, +53%) lies inside the envelope — graph-sample noise bounded (Paper A §4.1) |
+| s36 | Random-graph instance variability (9 Erdős–Rényi instances × 11 κ × 10 substrate seeds, 990 runs; S1 random_graph sweep per-instance): peak held-out MC 13.47 ± 0.57 (range 12.80–14.35), +48.5% ± 6.3% over uncoupled; peak at κ*=25 (7/9 instances) or 30 (2/9); the fixed instance of Table 1 (13.91, +53%) lies inside the envelope — graph-sample noise bounded (Paper A §4.1) |
 
 ## Scripts (56 committed)
 
@@ -95,7 +95,7 @@ kept in sync with `git ls-files scripts/`).
   `data/s11_disturbance_chain_v1.*`, `data/s12_lambda_target_sweep_v1.*`,
   `data/s13_causal_audit_v1.*`, `data/s14_esn_disturbance_chain_v1.*`,
   `data/s16_tau_m_pressure_test_v1.*`, `data/s15_controlled_adaptation_v1.*`,
-  `data/s16b_falsification_stress_test_v1.*`, `data/s5b_controlled_adaptation_v1.*`,
+  `data/s5b_controlled_adaptation_v1.*`,
   `data/s17_substrate_stress_v1.*`, `data/s18_llm_drift_gate_v1.*`,
   `data/s24_homeo_plasticity_coupling_v1.*`,
   `data/s25_reward_gated_plasticity_v1.*`,
@@ -106,8 +106,8 @@ kept in sync with `git ls-files scripts/`).
   `data/s35_readout_boundary_probe_v1.*`,
   `data/s36_topo_instance_variability_v1.*`,
   `data/kernel_coupling_shape_v1.*` (Paper A kernel-coupling r_phys),
-  `data/s16b_falsification_stress_test_v2.*` (v2: all variants at all
-  four τ_m; v1 kept for the original table)
+  `data/s16b_falsification_stress_test_v2.*` (all variants at all
+  four τ_m)
   (CSV per run + JSON with params and per-cell aggregates).
   Paper D: `data/s19_ssm_rls_readout_v1.*`, `data/s20_ssm_m3_routing_v1.*`,
   `data/s21_ssm_m4_m5_v1.*`, `data/s22_ssm_p4_benchmark_v1.*`,
@@ -258,7 +258,7 @@ sufficient for peer review).
 | s14 ESN disturbance chain | done (10 seeds × 3 arms; metadata does not transfer MC robustness; +32% is homeostat) |
 | s16 τ_m pressure test | done (10 seeds × 4 τ_m; falsification robust, strong claim adopted) |
 | s15 controlled adaptation | done (10 seeds × 5 switches; true effect ~10 pulses + variance collapse; "47×" is a metric artifact) |
-| s16b probe stress test | done (v2: 10 seeds × 4 τ_m × 3 variants; sign robust ≤1/10 in every cell, V0 −0.69 → V2 −0.04…−0.01) |
+| s16b probe stress test | done (10 seeds × 4 τ_m × 3 variants; sign robust ≤1/10 in every cell, V0 −0.69 → V2 −0.04…−0.01) |
 | s5b S5 controlled re-measurement | done (100 runs; T200 factor 1.28–1.44, T40 1.79–2.40; Paper B revised) |
 | s17 substrate stress | done (120 runs; equalizer gain positive at all ESN configs) |
 | s18 LLM drift gate | done (90 runs; A3 routing transfers, A2 gate falsified; results in PAPER_C.tex §6) |

@@ -33,7 +33,7 @@
       "noise"
     ],
     "judgment": "paired r3_mc(dual)-r3_mc(fast); <=1 positive seed per (tau_m, variant) -> falsification robust to probe protocol",
-    "grid_note": "every variant at every tau_m in {200,500,1000,2000}; the {500,2000} subset replicates the original grid (data/s16_tau_m_pressure_test_v1.csv)",
+    "grid_note": "every variant at every tau_m in {200,500,1000,2000}; the {500,2000} subset replicates the S16 grid (data/s16_tau_m_pressure_test_v1.csv)",
     "n_seeds": 10,
     "quick": false
   },

@@ -12,7 +12,7 @@ Experiment:     Table 1's random_graph peak (13.91 held-out MC at kappa=25,
                 graph-to-graph variability of the peak held-out MC and of
                 the peak location kappa*.
 
-Protocol (per instance): the S1 v2 protocol verbatim -- random_graph,
+Protocol (per instance): the S1 protocol verbatim -- random_graph,
 COUPLING_CONTRAST_SELF, kappa in KAPPA_CONTRAST_MODE1, 10 paired substrate
 seeds, N=256, T=1200, washout=200, k_max=50. Reuses
 substrate_recurrence_characterization.run_single with the module-level
@@ -71,7 +71,7 @@ def run_wrapped(args):
 
 
 def uncoupled_baseline():
-    """Uncoupled (parallel, kappa=0) held-out MC mean from the S1 v2 CSV."""
+    """Uncoupled (parallel, kappa=0) held-out MC mean from the S1 CSV."""
     vals = []
     with open(PHASE_CSV, 'r') as f:
         for r in csv.DictReader(f):
@@ -136,7 +136,7 @@ def main():
     print("\n" + "=" * 100)
     print("S36 RESULTS (Paper A follow-up): random-graph instance variability")
     print("=" * 100)
-    print(f"  uncoupled baseline (S1 v2 parallel, held-out MC): {baseline:.2f}")
+    print(f"  uncoupled baseline (S1 parallel, held-out MC): {baseline:.2f}")
     print(f" {'topo_seed':>9} | {'peak_mc_test':>12} {'kappa*':>7} | "
           f"{'enh_vs_base':>11}")
     peaks = []
@@ -166,7 +166,7 @@ def main():
               f" +/- {enh_mean.std(ddof=1):.1f}%")
 
     params = {
-        'experiment': 'random-graph instance variability on the S1 v2 '
+        'experiment': 'random-graph instance variability on the S1 '
                       'protocol (Paper A Table 1 follow-up)',
         'mechanism': 'src.run_single reused; module-level TOPO_SEED set '
                      'per task in the worker (chunksize=1)',

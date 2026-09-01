@@ -26,12 +26,12 @@ Protocol (fixed seeds, fully reproducible):
   * The random-graph structure is FIXED across the whole sweep (TOPO_SEED),
     so topology is the treatment and kappa the dose.
 
-Sweep grid (v2, refined after v1 bracketing):
+Sweep grid:
   parallel                     : kappa = 0                  (baseline)
   ring_bidir / lateral_ring /
   random_graph   (mode 1)      : kappa in KAPPA_CONTRAST_MODE1 (bisects the
-                                 v1 10->30 chaos bracket: 15/20/25)
-  ring_unidir (mode 2)         : kappa in KAPPA_RING_UNIDIR (bisects v1's
+                                 10->30 chaos bracket: 15/20/25)
+  ring_unidir (mode 2)         : kappa in KAPPA_RING_UNIDIR (bisects the
                                  near-edge window around kappa ~ 1-3)
   hub_star (mode 2)            : kappa in KAPPA_HUB
   add_ring_bidir / add_random_graph (mode 3): kappa in KAPPA_ADDITIVE
@@ -313,8 +313,8 @@ def print_phase_table(agg):
 
 def run_sweep(quick=False):
     t_start = time.time()
-    print(f"[{time.strftime('%H:%M:%S')}] START substrate phase diagram v2 "
-          f"(quick={quick})")
+    print(f"[{time.strftime('%H:%M:%S')}] START substrate phase diagram "
+          f"sweep (quick={quick})")
 
     # numba warmup in the parent process (populates the disk cache that
     # spawned Pool workers reuse)

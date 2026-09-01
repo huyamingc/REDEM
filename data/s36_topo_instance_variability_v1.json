@@ -1,6 +1,6 @@
 {
   "params": {
-    "experiment": "random-graph instance variability on the S1 v2 protocol (Paper A Table 1 follow-up)",
+    "experiment": "random-graph instance variability on the S1 protocol (Paper A Table 1 follow-up)",
     "mechanism": "src.run_single reused; module-level TOPO_SEED set per task in the worker (chunksize=1)",
     "topo_seeds": [
       777,
