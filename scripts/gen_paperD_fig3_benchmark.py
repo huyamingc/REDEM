@@ -50,9 +50,13 @@ def main():
         bars = ax.bar(x, vals, yerr=stds, capsize=3, width=0.55,
                       color=['#8c8c8c', '#c44e52', '#4c72b0'],
                       edgecolor='black', linewidth=0.6)
-        for b, v in zip(bars, vals):
-            ax.text(b.get_x() + b.get_width() / 2, v + 0.3, f"{v:.2f}",
-                    ha='center', fontsize=8)
+        # label above the whisker top so the text never overlaps the
+        # error bar; explicit ylim headroom keeps the labels unclipped
+        tops = [v + s for v, s in zip(vals, stds)]
+        ax.set_ylim(0, max(tops) * 1.18 + 1.0)
+        for b, v, s in zip(bars, vals, stds):
+            ax.text(b.get_x() + b.get_width() / 2, v + s + 0.35, f"{v:.2f}",
+                    ha='center', va='bottom', fontsize=8)
         ax.set_xticks(x)
         ax.set_xticklabels(LABELS, fontsize=7)
         ax.set_ylabel(ylab, fontsize=9)

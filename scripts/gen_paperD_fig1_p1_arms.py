@@ -32,13 +32,21 @@ LABELS = ['LN-raw', 'LN-whit', 'CV-whit', 'CV-gate', 'CV-gate-g5',
 
 def main():
     data = {}
+    oracle = {}
     with open(CSV, 'r') as f:
         import csv
         for row in csv.DictReader(f):
             data.setdefault(row['arm'], []).append(float(row['stream_ppl']))
+            if row.get('oracle_ppl'):
+                oracle.setdefault(row['arm'], []).append(
+                    float(row['oracle_ppl']))
 
     means = [float(np.mean(data[a])) for a in ORDER]
     stds = [float(np.std(data[a])) for a in ORDER]
+
+    # pooled-table ceiling: 10-seed mean of the oracle projection readout
+    # on the B-proj (pooled-table) arm
+    ceiling = float(np.mean(oracle['B-proj']))
 
     fig, ax = plt.subplots(figsize=(6.2, 3.4))
     x = np.arange(len(ORDER))
@@ -46,15 +54,13 @@ def main():
                   edgecolor='black', linewidth=0.6, width=0.62)
     bars[-1].set_color('#c44e52')          # B-proj control highlighted
 
-    ax.axhline(15.01, color='black', linestyle='--', linewidth=1.0)
-    ax.axhline(7.34, color='gray', linestyle=':', linewidth=1.0)
-    # white backing boxes: both labels sit on top of tall bars and would
-    # otherwise be illegible where they cross the bar bodies
-    ann_bbox = dict(boxstyle='round,pad=0.15', fc='white', ec='none', alpha=0.85)
-    ax.text(len(ORDER) - 0.4, 16.4, 'A1 (transformer+LoRA) = 15.01',
-            ha='right', fontsize=8, zorder=5, bbox=ann_bbox)
-    ax.text(len(ORDER) - 0.4, 8.0, 'pooled-table ceiling 7.34',
-            ha='right', fontsize=8, color='gray', zorder=5, bbox=ann_bbox)
+    ax.axhline(15.01, color='black', linestyle='--', linewidth=1.0,
+               label='TF-A1 (transformer+LoRA) = 15.01')
+    ax.axhline(ceiling, color='gray', linestyle=':', linewidth=1.0,
+               label=f'pooled-table ceiling = {ceiling:.2f}')
+    # upper-right region is bar-free (CV-skip tops out at 58): a legend
+    # there keeps the line labels clear of the bars and the dashed lines
+    ax.legend(loc='upper right', fontsize=8, framealpha=0.9)
 
     ax.set_xticks(x)
     ax.set_xticklabels(LABELS, fontsize=8)

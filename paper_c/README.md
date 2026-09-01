@@ -1,4 +1,4 @@
-# Paper C — Dissecting Online Learning Mechanisms: Statistical Memory, Homeostatic Recovery, and Substrate Physics are Non-Substitutable
+# Paper C — Dissecting Online Learning Mechanisms: Statistical Memory, Homeostatic Recovery, and Substrate Physics are Non-Substitutable in the Directions and Conditions Tested
 
 Paper C of the four-paper REDEM series (**role: dissection**). It dissects
 the online learner into three mechanisms — the slow-trace statistical memory
@@ -24,18 +24,19 @@ responsible for which capability, and where each one stops.
 - The metadata's transferable value is narrower and precisely located: it
   denoises state-level corruption (gap −0.69 → −0.04…−0.01 at every tested
   τ_m) and accelerates boundary adaptation by a controlled-measured factor
-  of 1.3–2.4 on the substrate and ~10 pulses on the ESN.
+  of 1.25–2.7 on the substrate and ~10 pulses on the ESN.
 - Raw memory capacity remains a substrate property (MC 10.19 vs. 6.17).
 - Transformer proof of concept: slow-trace domain routing transfers
-  (forgetting up to −28%, 10/10 seeds) while a gating-only variant is
-  falsified at every τ_m (0/10 seeds).
+  (forgetting up to −28%, 10/10 seeds; its stream-perplexity benefit holds
+  at τ_m ≤ 500 and reverses sign at τ_m ≥ 1000) while a gating-only variant
+  is falsified at every τ_m (0/10 seeds).
 
 ## Contents
 
 | File | Purpose |
 |---|---|
 | `PAPER_C.tex` | LaTeX source (elsarticle preprint class) |
-| `PAPER_C.pdf` | Compiled PDF (14 pages) |
+| `PAPER_C.pdf` | Compiled PDF (18 pages) |
 
 ## Compile
 
@@ -86,12 +87,12 @@ establishes (with the paper location).
 | `s16b_falsification_stress_test.py --sequential` | Probe-protocol stress test of the falsification (V0/V1/V2 noise placements × 4 τ_m, 10 seeds) | `../data/s16b_falsification_stress_test_v2.{csv,json}` | Gap −0.69 (V0) → −0.04/−0.01 (V2) across τ_m — the metadata DOES denoise state-level corruption entering before the slow trace (Table 4): narrower, precisely located value |
 | `s17_substrate_stress.py --sequential` | ESN substrate stress: 6 reservoir configs, metadata on/off (120 runs) | `../data/s17_substrate_stress_v1.{csv,json}` | Equalizer gain positive at all 6 configs (+0.1 to +1.0 pp) — the bottleneck is timescale coverage, not substrate physics |
 | `s18_llm_drift_gate.py --sequential` | Transformer PoC: tiny transformer + LoRA, routing (A3) vs. gating-only (A2) slow-trace policies (90 runs, torch CPU) | `../data/s18_llm_drift_gate_v1.{csv,json}` | A3 routing transfers: forgetting −2.51 ppl (−28%) at τ_m = 200, stream −1.07 (10/10); A2 gating falsified at every τ_m (0/10) — detection without continuous correction is insufficient (Fig. 3, Table 6) |
-| `s5b_controlled_adaptation.py --sequential` | Substrate arms of the controlled adaptation re-measurement (10 seeds) | `../data/s5b_controlled_adaptation_v1.{csv,json}` | Substrate adaptation factor 1.3–2.4 — matches the ESN boundary-acceleration scale |
+| `s5b_controlled_adaptation.py --sequential` | Substrate arms of the controlled adaptation re-measurement (10 seeds) | `../data/s5b_controlled_adaptation_v1.{csv,json}` | Substrate adaptation factor 1.25–2.7 (table-endpoint ratios) — matches the ESN boundary-acceleration scale |
 | `gen_paperC_fig1_kernel.py` | FIG: slow-trace kernel vs. material forgetting kernel | `../figures/paperC_fig1_kernel.pdf` | Fig. 1 |
 | `gen_paperC_fig2_recovery.py` | FIG: post-disturbance MC recovery vs. τ_m | `../figures/paperC_fig2_recovery.pdf` | Fig. 2 |
 | `gen_paperC_fig3_llm.py` | FIG: LLM drift-gate results | `../figures/paperC_fig3_llm.pdf` | Fig. 3 |
 
-Seed discipline and the full S1–s35 pipeline:
+Seed discipline and the full S1–s36 pipeline:
 [`../README_REDEM.md`](../README_REDEM.md).
 
 ## Companion papers

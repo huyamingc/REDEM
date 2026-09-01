@@ -39,16 +39,16 @@ the structure level (M4).
 | S1 | Order–chaos transition at κ* ∈ (25,30); held-out memory +24–53% just before it; chaos destroys memory |
 | S2 | Online RLS tracks class-inversion drift (mean acc 0.974–0.982, recover 225–616 pulses); frozen offline inverts and never recovers; near-critical coupling → Mackey-Glass NMSE 0.0018 (50× vs uncoupled) |
 | S3/S4 | Reward-only three-factor fails at inversion (post 0.06–0.10); novelty intrinsic never rescues (stream mean ≤ 0.514) — negative results that fix the design |
-| S5 | Dual-timescale metadata: regime task +1.3–2.1 pp (p<0.0001); adaptation re-measured by s5b (controlled switch-relative): T200 265–304 (fast) vs 202–211 (dual), factor 1.3–2.4 (the earlier "9–20× faster" ratio was a window-position metric artifact) |
-| S6 | λ-homeostat: post-disturbance held-out memory +8–18% (τ-drift +18%) |
+| S5 | Dual-timescale metadata: regime task +1.3–2.1 pp (p<0.0001); adaptation re-measured by s5b (controlled switch-relative): T200 265–304 (fast) vs 202–211 (dual/slow), table-endpoint factor 1.25–2.7 (the earlier "9–20× faster" ratio was a window-position metric artifact) |
+| S6 | λ-homeostat: post-disturbance held-out memory +7.9–18% (τ-drift +18%) |
 | S7 | Gentle (5%) correlation-guided rewiring +8–11%; aggressive (20%) −23%; pruning redundancy helps (de-homogenization) |
-| S8 | Integrated system beats every ablation: 0.996 vs 0.973 (p<0.0001); persists at N=1024 (s30, 10 seeds: 0.9970 vs 0.9753) |
-| S9 | Online (REDEM 0.991, ESN 1.000) vs frozen batch (GRU 0.394, transformer 0.351, inverted post-swap); MG NMSE REDEM 0.0018 vs ESN 3.6e-5 vs GRU 1.56 vs TF 0.71; ESN edge on standard tasks reported honestly (fairness protocol: z-scored ESN features, per-trial torch seed, causal transformer mask) |
+| S8 | Integrated system beats the bare baseline 0.996 vs 0.973 (p<0.0001) and matches every ablation (homeostat removal ties exactly); persists at N=1024 (s30, 10 seeds: 0.9970 vs 0.9753) |
+| S9 | Online (REDEM 0.991, ESN 1.000) vs frozen batch (untuned GRU 0.371, transformer 0.353, inverted post-swap); MG NMSE REDEM 0.0018 vs ESN 3.6e-5 vs GRU 1.80 vs TF 0.77; ESN edge on standard tasks reported honestly (fairness protocol: z-scored ESN features, per-trial torch seed preceding weight init, causal transformer mask) |
 | Theory | Forgetting kernel M(t)=∫p(τ)e^{−t/τ}dτ: 1/e horizon ≈16 pulses (median-pinned); tail steepness set by CV; measured MC curve follows it with r = 0.97 |
 | S10-CV | Task-level CV sweep: uncoupled MC rises with CV (+33%, kernel theory); coupled near-critical MC falls (narrow CV best) — operating-regime-dependent knob |
 | S10-ESN | Metadata transfer: ESN+meta 0.998 ≈ ESN 0.996 ≈ REDEM-full 0.994 on regime task — the mechanism equalizes the systems (adapt 11.22→0.24 in the S10 metric; controlled s15 shows the true effect is ~10 pulses + variance collapse) |
-| E3 | Sequential disturbance chain (3 rounds: τ-drift → edge-prune → noise, 10 seeds): regulated arm maintains MC 8.47 vs fixed 6.41 (+32%) after all three; κ drifts 26.2→28.5 (active compensation) |
-| E4 | λ_target sweep (4 values × 3 CV × 5 seeds): λ_target=0 (edge of chaos) is optimal — +25%/+19%/+5% MC gain over fixed at CV=0.1/0.2/0.4 (λ_target=0 optimal at CV=0.1/0.4; the −0.005 setting marginally ahead at CV=0.2) |
+| E3 | Sequential disturbance chain (3 rounds: τ-drift → edge-prune → noise, 10 seeds): regulated arm maintains MC 8.47 vs fixed 6.41 (+32%) after all three; κ drifts 25.3 (r0) → 28.5 (r3) (active compensation) |
+| E4 | λ_target sweep (4 values × 3 CV × 5 seeds): λ_target=0 (edge of chaos) is the best-supported target — +25%/+19%/+5% MC gain over fixed at CV=0.1/0.2/0.4 (optimal at CV=0.1/0.4; the −0.005 setting marginally ahead at CV=0.2; the main experiments retain the conservative −0.02) |
 | O4 | Causal audit (7 arms × 10 seeds, re-run with the plasticity-correlation leak implemented): all adaptive mechanisms are causally clean — largest leak-arm deviation 0.012 pp (RLS target), plasticity leak −0.01 pp; causal-split protocol 0.9963 vs normal 0.9963 |
 | s14 | ESN+metadata under the S11 disturbance chain (3 arms × 10 seeds): the slow trace does NOT transfer MC robustness to the ESN (paired diffs −0.78/−0.76/−0.69, 0/10 seeds positive) — the S11 +32% recovery is homeostat-driven; metadata still attenuates readout noise (r3 NMSE −9.6%, 10/10 seeds at τ_m≥500, 9/10 at 200); redem_reg reproduces the S11 anchor exactly |
 | s16 | τ_m pressure test (τ_m ∈ {200,500,1000,2000} × 10 seeds): the falsification is robust — esn_dual r3 MC ≤ esn_fast at every τ_m (0/10 seeds positive, ~5σ), no sensitive interval; noise-attenuation transfer holds at all τ_m. Paper C adopts the strong claim |
@@ -71,10 +71,11 @@ the structure level (M4).
 | s31 | Char-bigram oracle on the real-text protocol (full-book vs ref-window fits, 10 seeds): true first-order ceiling ppl 10.97 ± 0.18; REDEM-SSM 12.07 sits within ~1.1 ppl of its structural ceiling — the "first-order regime" boundary is now quantitative |
 | s32 | FTLE-noise robustness of the homeostat (5 noise levels × 10 seeds, S11 chain): no significant r3 MC degradation up to σ=0.10 (~100% of the estimate scale; paired CIs include 0), settled κ 28.5–28.7 — the clipped proportional feedback integrates out estimation error |
 | s33 | M5 in the P4 benchmark (2 arms × 10 seeds): REDEM-SSM+M5 is significantly worse (stream +1.53, forgetting +2.90, t=−22.8/−26.5, 10/10) — Δt modulation breaks the Δt=1-calibrated per-channel whitening on an already well-conditioned stream; S22's exclusion of M5 is validated (M5 stays a spike-regime safeguard, P3 E2) |
-| s34 | Leak sensitivity scan on the S28 audit (6 leak configs × 10 seeds): 10× larger FTLE leaks stay NS (+0.21); the plasticity channel shows a dose-response — 30% future correlation improves recovery (+0.57 mean, 7/10; paired t=2.04, 95% CI [−0.06,+1.20]), 50% reverses it — "causally clean" is scoped to the operational leak magnitudes |
+| s34 | Leak sensitivity scan on the S28 audit (7 leak configs × 10 seeds): 10× larger FTLE leaks stay NS at every tested horizon (+0.13/+0.39/+0.21 at horizons 50/200/400, CIs include 0); the plasticity channel shows a dose-response — 30% future correlation improves recovery (+0.57 mean, 7/10; paired t=2.04, 95% CI [−0.06,+1.20]), 50% reverses it — "causally clean" is scoped to the operational leak magnitudes |
 | s35 | P1 readout boundary probes (10 seeds, s19 host verbatim): full-window oracle 31.2 (matches s19, max diff 0.00) vs half-window 17.3; skip 18.0 > proj 7.25 (nested violation 10/10); token linearly decodable from fast channels (τ≤8) at 88.9–99.7% out-of-sample (chance 3.1%), slow channels at chance; fast-channel direct/two-stage next-token readouts still fail out-of-sample (ppl 68–104 vs static table 13.9–17.4) — the in-sample oracle is window-dependent and metric-pathological, so the P1 0/10 failure is a pooled-readout/metric property, not missing linear information (boundary analysis in Paper D §3) |
+| s36 | Random-graph instance variability (9 Erdős–Rényi instances × 11 κ × 10 substrate seeds, 990 runs; S1 v2 random_graph sweep per-instance): peak held-out MC 13.47 ± 0.57 (range 12.80–14.35), +48.5% ± 6.3% over uncoupled; peak at κ*=25 (7/9 instances) or 30 (2/9); the fixed instance of Table 1 (13.91, +53%) lies inside the envelope — graph-sample noise bounded (Paper A §4.1) |
 
-## Scripts (55 committed)
+## Scripts (56 committed)
 
 The authoritative script inventory — every script with its type,
 **paper attribution (A/B/C/D/shared)**, purpose, and key result — is the
@@ -103,6 +104,7 @@ kept in sync with `git ls-files scripts/`).
   `data/s31_char_bigram_oracle_v1.*`, `data/s32_ftle_noise_v1.*`,
   `data/s33_ssm_p4_m5_v1.*`, `data/s34_leak_sensitivity_v1.*`,
   `data/s35_readout_boundary_probe_v1.*`,
+  `data/s36_topo_instance_variability_v1.*`,
   `data/kernel_coupling_shape_v1.*` (Paper A kernel-coupling r_phys),
   `data/s16b_falsification_stress_test_v2.*` (v2: all variants at all
   four τ_m; v1 kept for the original table)
@@ -146,6 +148,8 @@ scipy, matplotlib, torch (CPU) for S9 only.
 & .venv\Scripts\python.exe scripts\kernel_coupling_shape.py
 & .venv\Scripts\python.exe scripts\esn_metadata_comparison.py
 & .venv\Scripts\python.exe scripts\cv_sweep.py
+# Paper A follow-up: random-graph instance variability (s36)
+& .venv\Scripts\python.exe scripts\s36_random_graph_instance_variability.py
 # supplementary experiments (E3, E4, O4)
 & .venv\Scripts\python.exe scripts\s11_disturbance_chain.py --sequential
 & .venv\Scripts\python.exe scripts\s12_lambda_target_sweep.py --sequential
@@ -209,24 +213,25 @@ sufficient for peer review).
   diagram, forgetting kernel theory (full derivations in Appendix A),
   λ-homeostat robustness; task-level CV sweep in Supplementary Note 1 /
   Fig. S1. Target: *Chaos, Solitons & Fractals* (Elsevier).
-  Compiles standalone (latexmk -pdf) with the article class (14 pp, zero
+  Compiles standalone (latexmk -pdf) with the article class (17 pp, zero
   warnings); elsarticle final layout at acceptance.
 - `PAPER_B.tex` — REDEM architecture, mechanisms,
   ablations, baselines. Target: *Neural Networks* (Elsevier).
-  `PAPER_B.tex` compiles standalone (11 pp, zero warnings);
+  `PAPER_B.tex` compiles standalone (14 pp, zero warnings);
   elsarticle final layout at acceptance.
 - `paper_c/` — Paper C "Dissecting Online Learning
   Mechanisms: Statistical Memory, Homeostatic Recovery, and Substrate
-  Physics are Non-Substitutable". The three-mechanism disentanglement thesis
+  Physics are Non-Substitutable in the Directions and Conditions Tested".
+  The three-mechanism disentanglement thesis
   is locked on s14/s16/s16b/s15/s5b; `paper_c/PAPER_C.tex` is drafted in
-  elsarticle preprint format (14 pp, zero warnings) for *Neurocomputing*.
+  elsarticle preprint format (18 pp, zero warnings) for *Neurocomputing*.
   Per-paper overview, data anchors, and
   scoped reproduction commands: `paper_c/README.md`.
 - `paper_d/` — Paper D "REDEM-SSM": the SSM instantiation
   of the three mechanisms (M1 per-token RLS readout, M3 fast-channel EMA
   routing, M4 soft routing, M5 state-norm homeostat). P1–P5 DONE;
   `paper_d/PAPER_D.tex` drafted in REVTeX 4.2 (aps, preprint) format
-  (15 pp, zero errors) for *PRX Intelligence* (APS; APC waived for 2026
+  (18 pp, zero errors) for *PRX Intelligence* (APS; APC waived for 2026
   submissions; P1 theorem, reference fairness, M5 negative, oracle
   integrated).
   Per-paper overview, data anchors, and scoped reproduction commands:
@@ -271,12 +276,13 @@ sufficient for peer review).
 | s31 char-bigram oracle | done (10 seeds; first-order ceiling ppl 10.97 ± 0.18) |
 | s32 FTLE-noise robustness | done (50 runs; no significant degradation to σ=0.10) |
 | s33 M5 in P4 | done (20 runs; honest negative 10/10 — M5 breaks Δt=1 whitening) |
-| s34 leak sensitivity | done (60 runs; FTLE 10× NS; plasticity 30% +0.57 mean on 7/10 — paired t=2.04, CI includes 0 — audit resolution bounded) |
+| s34 leak sensitivity | done (70 runs; 7 leak configs × 10 seeds; FTLE 10× NS at every tested horizon +0.13/+0.39/+0.21 (50/200/400, CIs include 0); plasticity 30% +0.57 mean on 7/10 — paired t=2.04, CI includes 0 — audit resolution bounded) |
+| s35 readout boundary probes | done (10 seeds; oracle window-dependence 31.2 vs 17.3, nested violation 10/10, fast-channel decode 88.9–99.7%; fast next-token readouts still fail 68–104 vs table 13.9–17.4 — P1 boundary analysis in Paper D §3) |
+| s36 random-graph instance variability | done (990 runs; 9 Erdős–Rényi instances × 11 κ × 10 seeds; peak held-out MC 13.47±0.57, +48.5%±6.3% over uncoupled; κ*=25 (7/9) or 30 (2/9); fixed instance 13.91 (+53%) inside the envelope — graph-sample noise bounded, Paper A §4.1) |
 | kernel-coupling shape | done (physical-kernel r = 0.91–0.99 over κ 15–30 of the mode-1 topologies, 0.98 at random_graph κ=25; effective-median dilation reported qualitatively) |
 | forgetting-curve overlay | done (theory M(t) evaluated at t = k pulses; Pearson r = 0.97 committed in `data/forgetting_curve_theory_overlay_v1.json`) |
-| s35 readout boundary probes | done (10 seeds; oracle window-dependence 31.2 vs 17.3, nested violation 10/10, fast-channel decode 88.9–99.7%; fast next-token readouts still fail 68–104 vs table 13.9–17.4 — P1 boundary analysis in Paper D §3) |
-| Paper D P5 | done (PAPER_D.tex drafted, REVTeX 4.2 aps preprint, 15 pp, zero errors; P1 theorem, reference fairness, M5 negative, oracle, related-work section integrated) |
-| Paper C | done (PAPER_C.tex finalized, elsarticle preprint, 14 pp; LLM extension integrated into §6) |
+| Paper D P5 | done (PAPER_D.tex drafted, REVTeX 4.2 aps preprint, 18 pp, zero errors; P1 theorem, reference fairness, M5 negative, oracle, related-work section integrated) |
+| Paper C | done (PAPER_C.tex finalized, elsarticle preprint, 18 pp; LLM extension integrated into §6) |
 
 ## Submission status
 

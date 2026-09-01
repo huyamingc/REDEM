@@ -26,19 +26,19 @@
       "pre_swap_acc_std": 0.0,
       "post_swap_acc_mean": 1.0,
       "post_swap_acc_std": 0.0,
-      "mean_acc_mean": 0.999657847792769,
+      "mean_acc_mean": 0.9996578477927691,
       "mean_acc_std": 0.0001767597653221823
     },
     {
       "task": "drift_binary",
       "system": "gru",
       "n_runs": 10,
-      "pre_swap_acc_mean": 0.8604999999999998,
-      "pre_swap_acc_std": 0.16990364916622597,
-      "post_swap_acc_mean": 0.14525,
-      "post_swap_acc_std": 0.18034844745658335,
-      "mean_acc_mean": 0.39355238561845174,
-      "mean_acc_std": 0.05058823585448875
+      "pre_swap_acc_mean": 0.9254999999999999,
+      "pre_swap_acc_std": 0.03157926534927625,
+      "post_swap_acc_mean": 0.07149999999999998,
+      "post_swap_acc_std": 0.026367593746870418,
+      "mean_acc_mean": 0.3706912389135951,
+      "mean_acc_std": 0.002885145492077482
     },
     {
       "task": "drift_binary",
@@ -55,12 +55,12 @@
       "task": "drift_binary",
       "system": "trans",
       "n_runs": 10,
-      "pre_swap_acc_mean": 1.0,
-      "pre_swap_acc_std": 0.0,
+      "pre_swap_acc_mean": 0.994,
+      "pre_swap_acc_std": 0.018000000000000016,
       "post_swap_acc_mean": 0.0,
       "post_swap_acc_std": 0.0,
-      "mean_acc_mean": 0.3508134217733223,
-      "mean_acc_std": 0.0043778805359589446
+      "mean_acc_mean": 0.35315846335519213,
+      "mean_acc_std": 0.006577811577259761
     },
     {
       "task": "mackey_glass",
@@ -73,8 +73,8 @@
       "task": "mackey_glass",
       "system": "gru",
       "n_runs": 10,
-      "nmse_final30_mean": 1.5598930192023908,
-      "nmse_final30_std": 0.7485820597271311
+      "nmse_final30_mean": 1.7979585194732632,
+      "nmse_final30_std": 1.0713775603166527
     },
     {
       "task": "mackey_glass",
@@ -87,8 +87,8 @@
       "task": "mackey_glass",
       "system": "trans",
       "n_runs": 10,
-      "nmse_final30_mean": 0.7089108562169022,
-      "nmse_final30_std": 0.2749233525675347
+      "nmse_final30_mean": 0.7731619318243398,
+      "nmse_final30_std": 0.29709172188737143
     }
   ]
 }

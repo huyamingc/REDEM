@@ -20,15 +20,15 @@ kernel, and the λ-homeostat that restores memory after disturbances.
   M(t) = ∫ p(τ) e^(−t/τ) dτ over the log-normal trap spectrum
   (Pearson r = 0.97); the 1/e horizon is pinned near τ0/⟨Δt⟩ ≈ 16 pulses
   regardless of spectrum width.
-- The λ-homeostat restores 8–18% of post-disturbance held-out memory under
-  temperature drift, edge damage, and readout noise.
+- The λ-homeostat restores 7.9–18% of post-disturbance held-out memory under
+  temperature drift, edge pruning, and readout noise.
 
 ## Contents
 
 | File | Purpose |
 |---|---|
 | `PAPER_A.tex` | LaTeX source (compiles standalone with the `article` class) |
-| `PAPER_A.pdf` | Compiled PDF (14 pages) |
+| `PAPER_A.pdf` | Compiled PDF (17 pages) |
 
 ## Compile
 
@@ -75,10 +75,11 @@ establishes (with the paper location).
 | `s12_lambda_target_sweep.py` | E4: homeostat set-point λ_target × CV optimization sweep (5 seeds) | `../data/s12_lambda_target_sweep_v1.{csv,json}` | λ_target = 0 (edge of chaos) is optimal: +25%/+19%/+5% MC |
 | `s27_clip_kappa_fine.py` | Clip-range ablation × fine κ grid (3 topologies × 3 α_max × 13 κ × 10 seeds) | `../data/s27_clip_kappa_fine_v1.{csv,json}` | κ\* = 25.3/27.4/27.9; invariant to 5× clip widening for lateral_ring/random_graph — chaos is coupling-driven, not clip-driven (ring_bidir shifts +3.4) |
 | `s32_ftle_noise_robustness.py` | Homeostat with Gaussian noise injected on every FTLE estimate (5 levels × 10 seeds) | `../data/s32_ftle_noise_v1.{csv,json}` | No significant MC degradation up to σ = 0.10 — clipped proportional feedback integrates out estimation noise |
+| `s36_random_graph_instance_variability.py` | Random-graph instance variability: the S1 random_graph sweep repeated on 9 Erdős–Rényi instances (8 fresh + original 777), 10 substrate seeds each (990 runs) | `../data/s36_topo_instance_variability_v1.{csv,json}` | Peak held-out MC 13.47 ± 0.57 (range 12.80–14.35), +48.5% ± 6.3% over uncoupled; κ\* = 25 (7/9) or 30 (2/9); original instance 13.91 (+53%) inside the envelope (§4.1) |
 | `gen_substrate_phase_diagram.py` | FIG: render the κ–λ phase diagram | `../figures/substrate_phase_diagram_v2.pdf` | Fig. 2 |
 | `gen_paperA_supp_figures.py` | FIG: render the supplementary CV-sweep figure | `../figures/paperA_figS1_cv_sweep.pdf` | Fig. S1 |
 
-Seed discipline and the full S1–s35 pipeline:
+Seed discipline and the full S1–s36 pipeline:
 [`../README_REDEM.md`](../README_REDEM.md).
 
 ## Companion papers

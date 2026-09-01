@@ -132,9 +132,10 @@ def causal_mask(size):
 
 def train_offline(model, u_tr, y_tr, is_class, seed_idx):
     """Train on the first 30% of the stream (torch, CPU). Returns model.
-    torch init seeded per trial (seed_idx*101+17, the repo rule) so the
-    NN baselines do not share one global initialization across seeds."""
-    torch.manual_seed(seed_idx * 101 + 17)
+    Model initialization is seeded in run_single BEFORE construction
+    (seed_idx*101+17, the repo rule) so each trial gets its own
+    reproducible init; batch composition here is deterministic via
+    np.random.RandomState(epoch)."""
     opt = torch.optim.Adam(model.parameters(), lr=LR)
     n = u_tr.shape[0]
     if is_class:
@@ -239,6 +240,9 @@ def run_single(args):
         n_train = int(TRAIN_FRAC * T)
         u_tr = u_norm[:n_train]
         y_tr = target[:n_train]
+        # Seed BEFORE construction so each trial's weight init is its own
+        # per-seed draw (fairness protocol for the frozen deep baselines)
+        torch.manual_seed(seed_idx * 101 + 17)
         if system == 'gru':
             model = GRUModel(out_dim=n_classes)
         else:

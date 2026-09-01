@@ -1,7 +1,7 @@
 % ============================================================================
 % Paper C — Dissecting Online Learning Mechanisms:
 %   Statistical Memory, Homeostatic Recovery, and Substrate Physics
-%   are Non-Substitutable
+%   are Non-Substitutable in the Directions and Conditions Tested
 % ============================================================================
 % Target: Neurocomputing (Elsevier).
 % Class: elsarticle preprint (initial-submission format); switch to
@@ -19,14 +19,25 @@
 \usepackage{url}
 \emergencystretch=2em
 
+% ---------------------------------------------------------------------------
+% Highlights (Neurocomputing: 3-5 bullets, each <= 85 characters including
+% spaces). To be submitted as a separate file / via the submission system:
+%   - Metadata transfers accuracy and denoising, not memory capacity (0/10).
+%   - Sequential recovery after disturbance belongs to the homeostat.
+%   - Raw memory capacity is a substrate property no tested algorithm closes.
+%   - Domain routing transfers to a Transformer; abrupt gating fails (0/10).
+%   - Mechanism roles are non-substitutable in every tested direction.
+% ---------------------------------------------------------------------------
 \begin{document}
 
 \begin{frontmatter}
 
 \title{Dissecting Online Learning Mechanisms: Statistical Memory,
-Homeostatic Recovery, and Substrate Physics are Non-Substitutable}
+Homeostatic Recovery, and Substrate Physics are Non-Substitutable
+in the Directions and Conditions Tested}
 
-\author{Yaming Hu\thanks{ORCID: 0009-0003-1406-0485}}
+\author{Yaming Hu\fnref{orcid}}
+\fntext[orcid]{ORCID: 0009-0003-1406-0485}
 \affiliation[1]{organization={Independent Researcher},
 city={Guiyang}, country={China}}
 \ead{64687555@qq.com}
@@ -43,19 +54,20 @@ disturbance chain, 10 seeds) shows that the $+32\%$ sequential-recovery
 gain of the substrate system is the homeostat's, not the metadata's. The
 metadata does not transfer memory-capacity robustness to an
 ESN at any tested timescale ($\tau_m \in \{200,500,1000,2000\}$;
-paired differences $-0.68$ to $-0.70$, 0/10 seeds positive). Its
+paired differences $-0.68$ to $-0.70$ across $\tau_m$, 0/10 seeds positive). Its
 transferable value is narrower and precisely located: it denoises
 \emph{state}-level corruption (gap $-0.69 \rightarrow -0.04$ to $-0.01$
 when noise enters before the slow trace, at every tested $\tau_m$) and
-accelerates boundary adaptation by a controlled-measured 1.3--2.4$\times$
-on the substrate and $\sim$10 pulses on the ESN (a window-position metric
-artifact: $9$--$20\times$). Raw
+accelerates boundary adaptation by a controlled-measured 1.25--2.7$\times$
+on the substrate and $\sim$10 pulses on the ESN. Raw
 memory capacity remains a substrate property (MC 10.19 vs.\ 6.17). Three
-mechanisms, three roles --- none transferable to another's job.
+mechanisms, three roles --- none transferable to another's job in the
+directions and conditions tested.
 A controlled proof of concept on a Transformer with low-rank
 adapters confirms the boundary on a second substrate: slow-trace domain
 routing transfers (forgetting up to $-28\%$, stream perplexity $-1.07$ at
-$\tau_m{=}200$; 10/10 seeds) while a gating-only variant is falsified at
+$\tau_m{=}200$; 10/10 seeds; the stream-perplexity benefit holds only at
+$\tau_m\le500$ and reverses sign at $\tau_m\ge1000$) while a gating-only variant is falsified at
 every tested $\tau_m$ (0/10 seeds) --- detection without continuous
 correction is insufficient.
 \end{abstract}
@@ -78,7 +90,8 @@ to post-deployment reality without expensive retraining
 but their readouts face a timescale gap on long-horizon statistical tasks:
 fast reservoir states decorrelate far more quickly than the task
 statistics, so the readout must re-integrate after every change. Our
-companion work introduces a continuously active RLS readout (M1), a slow
+companion work introduces a continuously active recursive-least-squares
+(RLS) readout (M1), a slow
 exponential trace of the reservoir states (metadata, M3), a homeostatic
 regulator that keeps the substrate near the edge of chaos (M5), and slow
 structure plasticity (M4); the integrated
@@ -96,7 +109,7 @@ we argue, informative: the metadata is a substrate-agnostic
 \emph{state-noise denoising}, but not \emph{memory-capacity robustness}
 under readout-level disturbance; sequential recovery is the homeostat's
 job; raw memory capacity is the substrate's physics. Three mechanisms,
-three roles --- none substitutable. Section~\ref{sec:llm} tests whether
+three roles --- none substitutable in the directions tested. Section~\ref{sec:llm} tests whether
 this decomposition survives on a structurally different substrate --- a
 Transformer with low-rank adapters --- and reports one transferable
 instantiation (routing) and one falsified one (gating-only).
@@ -104,17 +117,30 @@ instantiation (routing) and one falsified one (gating-only).
 \section{Setup}
 \label{sec:setup}
 
-\textbf{Reservoir family.} We compare (i)~an ESN-256 with heterogeneous
-leak rates matched to a log-normal spectrum ($\mathrm{CV}=0.20$, spectral
-radius 0.9) and (ii)~a Si$_3$N$_4$-style relaxation substrate whose
+\textbf{Reservoir family.} We compare (i)~an ESN-256
+\cite{lukosevicius2012} with heterogeneous
+leak rates matched to a log-normal spectrum (coefficient of variation
+$\mathrm{CV}=0.20$, spectral
+radius 0.9, within the echo-state regime \cite{yildiz2012}) and (ii)~a Si$_3$N$_4$-style relaxation substrate whose
 per-unit time constants are log-normal (median $\tau_0\approx174\,\mu$s,
 $\mathrm{CV}=0.20$), driven in per-pulse contrast-coupled dynamics with
-coupling $\kappa$ (companion Paper~A) \cite{companionA}. Both produce a
+coupling $\kappa$ (initialized at $\kappa_0=25.3$; the homeostat
+regulates $\kappa$ on a finite-time Lyapunov exponent (FTLE) criterion,
+with the regulation law and threshold specified in companion Paper~A)
+\cite{companionA}. Both produce a
 fast state
-$x(t)\in\mathbb{R}^{256}$ per pulse.
+$x(t)\in\mathbb{R}^{256}$ per pulse. All algorithmic timescales
+($\tau_m$, $\tau_f$, the regime length $L$) are expressed in pulses:
+both substrates are driven and compared on this common per-pulse clock,
+and the physical-time interpretation of the substrate pulse (median
+per-unit $\tau_0\approx174\,\mu$s) is given in companion Paper~A. A
+spectral-radius sensitivity scan (0.7/0.9/0.99; 120 runs) exists in the
+released scripts but is not tabulated in this paper; the reported
+results are conditional on the chosen configuration (radius 0.9,
+$\mathrm{CV}=0.20$).
 
 \textbf{Slow trace (M3).} The metadata is a per-unit exponential moving
-average
+average (EMA)
 \begin{equation}
 m(t) = \left(1-\frac{1}{\tau_m}\right) m(t-1)
      + \frac{1}{\tau_m}\, x(t),
@@ -135,13 +161,17 @@ $L=1500$ pulses; single pulses are almost indistinguishable across regimes
 prediction} under a sequential disturbance chain. Metrics: overall
 accuracy; switch-relative adaptation time $T_{\mathrm{adapt}}$ (pulses
 after a \emph{known} switch to reach a 200- or 40-pulse window accuracy of
-0.98/0.95); and the Jaeger held-out memory capacity (MC) probe.
+0.98/0.95); the normalized mean-squared error (NMSE); and the Jaeger
+held-out memory capacity (MC) probe \cite{jaeger2002mc,white2004}.
 
 \textbf{Sequential disturbance chain (substrate-agnostic).} Three
 cumulative disturbances at $t=7$k/14k/21k pulses: (1)~timescale drift
 (substrate $\tau \times 1.5$; ESN leaking rate $/1.5$), (2)~structure
 prune (40\% of connections), (3)~readout noise ($\sigma=0.1$ on the
-features). Per-round MC is probed at the settled physics.
+features). Per-round MC is probed at the settled physics. Initialization,
+warm-up, and run-exclusion conventions are those of the released scripts
+(Code and data availability); per-seed paired statistics are reported
+throughout so that robustness can be checked directly.
 
 \section{Theory: the slow trace is a synthesized forgetting kernel}
 \label{sec:theory}
@@ -179,9 +209,12 @@ is fixed by physics (1/e $\sim$16 pulses).}
 \textbf{Proposition 2 (timescale coverage).} On the statistical task the
 bottleneck is missing slow modes, not substrate physics. Both fast channels
 decorrelate at $\tau_{\mathrm{eff}} \ll L$; the slow trace supplies the
-missing timescale to either substrate, so accuracy and adaptation converge
+missing timescale to each substrate, so accuracy and adaptation converge
 to a common band. Measured (10 seeds): esn-fast 0.9955, esn-dual
 0.9979, REDEM 0.9942; steady accuracy 1.000 for all (Table~\ref{tab:s10}).
+The substrate-side fast-readout (metadata-free) comparison is not
+re-tabulated in this table; it is reported in the companion papers, so
+the substrate-side half of this claim rests on that evidence.
 
 {\sloppy
 \textbf{Proposition 3 (feature stationarity).} Post-switch adaptation is
@@ -190,20 +223,28 @@ eff}$) and weight re-integration ($\sim \tau_f$). The slow trace makes
 recovery feature-limited rather than weight-limited. Under a controlled
 switch-relative protocol, the true effect is modest but real: on the
 substrate the fast readout needs $T_{200}=265$--$304$ pulses to
-re-stabilize vs.\ $202$--$211$ for dual (factor 1.3--1.4 on $T_{200}$,
-1.79--2.40 on $T_{40}$); on the ESN, $T_{40}$ drops from 49.9 to 40.6 with
+re-stabilize vs.\ $202$--$211$ for dual (factor 1.25--1.50 on $T_{200}$,
+1.54--2.73 on $T_{40}$, as ratios of the Table~\ref{tab:adapt} endpoints);
+on the ESN, $T_{40}$ drops from 49.9 to 40.6 with
 the p90 collapsing from 76.5 to 42.0 (Table~\ref{tab:adapt}). The
-published earlier ``$9$--$20\times$'' ratios were ratios of window positions with
-near-zero denominators (metric artifacts), not pulse times.\par}
+``$9$--$20\times$'' ratios published in companion Paper~B were ratios of
+window positions with near-zero denominators (metric artifacts), not
+pulse times.\par}
 
 \textbf{Proposition 4 (noise geometry).} The EMA is a first-order low-pass
 filter, $|H(\omega)|^2 = 1/(1+(\omega\tau_m)^2)$. Short fast-channel
 transients are attenuated in the metadata channel. The transferable value
 of this is \emph{denoising of state-level corruption}: when the noise
-enters the states before the slow trace is computed, the metadata nearly
-neutralizes it (variant V2 of Section~\ref{sec:s16b}). It does \emph{not}
-protect against readout-level noise that hits the metadata channel equally
-(variant V0).
+enters the states before the slow trace is computed, the metadata strongly
+attenuates it in our experiments (variant V2 of Section~\ref{sec:s16b});
+we do not characterize the bandwidth of the injected state noise, so the
+low-pass magnitude predicts the \emph{direction} of this effect but not
+its exact size. It does \emph{not} protect the memory-capacity probe
+against readout-level noise that hits the metadata channel equally
+(variant V0); the prediction-error (NMSE) attenuation of readout noise,
+by contrast, does transfer (Section~\ref{sec:s16}) --- a metric-level
+distinction we make explicit to avoid conflating the two readout-noise
+notions.
 
 \section{Experiments}
 \label{sec:exp}
@@ -212,9 +253,13 @@ protect against readout-level noise that hits the metadata channel equally
 \label{sec:s10}
 
 Table~\ref{tab:s10} reproduces the equalization result: the same slow
-trace ($\tau_m=500$) closes the accuracy gap between the ESN and the
-substrate and collapses adaptation variance. All arms sit in the
-$[0.994,\,0.998]$ band with steady accuracy 1.000.
+trace ($\tau_m=500$) brings the ESN and the substrate into a common
+high-accuracy band and collapses adaptation variance. All arms sit in the
+$[0.994,\,0.998]$ band with steady accuracy 1.000; arm-level differences
+are comparable to the reported $\pm$ ranges, and no metadata-free
+substrate arm is tabulated here (that comparison is carried by the
+companion papers), so we state equalization as band convergence rather
+than gap closure.
 
 \begin{table}[t]
 \centering
@@ -239,7 +284,8 @@ protocol.}
 
 Under the sequential disturbance chain, the substrate regulated by the
 homeostat (M5) recovers: $r_3$ MC $8.47\pm0.39$ vs.\ $6.41\pm0.41$ for the
-fixed arm ($+32\%$), with $\kappa$ drifting $25.3\rightarrow28.5$
+fixed arm ($+32\%$), with $\kappa$ drifting from its initial value
+$\kappa_0=25.3$ to $28.5$
 (Table~\ref{tab:s14}; the features are fast-state only --- the recovery is
 purely homeostatic). The ESN with the same metadata does \emph{not}
 recover: paired per-seed differences
@@ -276,7 +322,12 @@ Does any $\tau_m$ let the metadata close the MC gap? No: at
 $\tau_m\in\{200,500,1000,2000\}$, the dual arm's $r_3$ MC is
 1.04/1.05/1.06/1.06 vs.\ 1.74 for fast, with paired differences
 $-0.701$/$-0.693$/$-0.682$/$-0.678$ and 0/10 seeds positive at every tested
-timescale (Table~\ref{tab:s16}, Fig.~\ref{fig:recovery}, left panel). There is no
+timescale (Table~\ref{tab:s16}, Fig.~\ref{fig:recovery}, left panel). Two pairing
+conventions appear in this paper: Table~\ref{tab:s16} pairs per seed at
+each $\tau_m$ (the timescale sweep), whereas Section~\ref{sec:s14} pairs
+per disturbance round at the default $\tau_m=500$
+($-0.78/-0.76/-0.69$); the conventions agree at their overlap ($r_3$ at
+$\tau_m{=}500$: $-0.69$ here vs.\ $-0.693$ in the sweep). There is no
 sensitive interval; the weak upward trend (1.04$\rightarrow$1.06) does not
 approach the baseline. Meanwhile the readout-noise attenuation transfers
 at every tested $\tau_m$ (mean-level; per-seed 10/10 at $\tau_m\ge500$, 9/10 at
@@ -328,7 +379,11 @@ the reference definition) the gap is $-0.69$; under state-noise
 semantics (V2) the metadata's EMA denoising nearly closes it at every tested
 $\tau_m$ ($-0.04$ to $-0.01$). This locates the metadata's transferable
 value precisely: it denoises \emph{state}-level corruption, not
-readout-level noise.\par}
+readout-level noise. One caveat on this mechanism reading: the fast
+baseline under V2 semantics was not re-measured (it is fixed at 1.74
+throughout), so a metadata-free per-seed control under state-noise
+injection is missing; the EMA-denoising attribution is consistent with
+the data but not uniquely established by it.\par}
 
 \begin{table}[t]
 \centering
@@ -354,13 +409,14 @@ V2-200 at 1/10).}
 \label{sec:adapt}
 
 With known switch instants, the honest adaptation advantage of the
-metadata is a factor 1.3--2.4 on the substrate ($T_{200}$: fast
-264.8--303.9 vs.\ dual/slow 202--211 pulses) and $\sim$10 pulses on the
+metadata is a factor 1.25--2.7 on the substrate ($T_{200}$: fast
+264.8--303.9 vs.\ dual/slow 202--211 pulses, ratio 1.25--1.50; $T_{40}$:
+83.7--123.4 vs.\ 45.2--54.3, ratio 1.54--2.73; Table~\ref{tab:adapt})
+and $\sim$10 pulses on the
 ESN ($T_{40}$ 49.9$\rightarrow$40.6; p90 76.5$\rightarrow$42.0), with
-overall accuracy reproducing the original runs exactly
-(Table~\ref{tab:adapt}). A window-position metric yields inflated
-$9$--$20\times$ ratios; those numbers are artifacts of the metric, not
-adaptation speedups.
+overall accuracy reproducing the original runs exactly.
+The inflated $9$--$20\times$ ratios of a window-position metric
+(Prop.~3) are artifacts of the metric, not adaptation speedups.
 
 \begin{table}[t]
 \centering
@@ -395,39 +451,65 @@ disturbance recovery}: the $+32\%$ sequential recovery and the $+18\%$
 $r_1\!\to\!r_3$ gain are produced by $\kappa$-regulation alone; the
 metadata is not involved. (iii)~\emph{Substrate physics = raw memory}: the
 MC probe puts the substrate at 10.19 vs.\ $\sim$6.17 for either ESN arm;
-no algorithm in this work closes that lead.
+no algorithm in this work closes that lead. This decomposition is
+established for the transfer directions tested here
+(metadata$\to$ESN, routing$\to$Transformer); the reverse substitutions
+--- the homeostat or the substrate physics taking over the metadata's
+job, or vice versa --- were not tested.
 
 \textbf{Why non-transferability is informative.} Each mechanism has a
 precisely located job, and swapping them fails in a measurable way. This
 delineates the boundary conditions of ``metadata transfer'' claims in the
 online-reservoir literature: transfer holds for accuracy and
 state-noise denoising, and does not hold for disturbance recovery or
-episodic memory. The same boundary reproduces on a Transformer substrate
+episodic memory. A related boundary reproduces on a Transformer substrate
 with low-rank adapters (Section~\ref{sec:llm}): routing transfers,
-gating does not.
+gating does not. The reproduction is qualitative, not pointwise: the
+reservoir MC gap is flat in $\tau_m$, whereas the Transformer
+stream-perplexity benefit reverses sign at $\tau_m\ge1000$.
 
-\textbf{Related work.} The slow trace is the linear slow-feature operator
-on reservoir states (cf.\ slow feature analysis \cite{wiskott2002}); the
+\textbf{Related work.} The slow trace is a fixed first-order low-pass
+operator on reservoir states; its goal --- extracting slowly varying
+structure --- is in the spirit of slow feature analysis \cite{wiskott2002},
+although, unlike SFA, it involves no learned whitening or optimization
+step. The Jaeger held-out MC probe used throughout follows the
+short-term-memory line of reservoir research
+\cite{jaeger2002mc,white2004,hermans2010,verstraeten2007}, and the
 fast/slow pair is a two-timescale memory hierarchy echoing complementary
-learning systems \cite{mcclelland1995} and synaptic consolidation
-\cite{benna2016}; the readout computes a fading-memory functional
-\cite{boyd1985} whose horizon the metadata extends without touching the
-substrate. In the continual-learning setting \cite{parisi2019}, this work
-supplies causal evidence about \emph{which} component must carry each
-capability.
+learning systems \cite{mcclelland1995}, synaptic consolidation
+\cite{benna2016}, and gated multi-timescale architectures
+\cite{hochreiter1997,pascanu2013}; the readout computes a fading-memory
+functional \cite{boyd1985} whose horizon the metadata extends without
+touching the substrate, in the broader tradition of echo-state online
+readouts \cite{lukosevicius2012,yildiz2012,sussillo2009} and physical
+reservoir computing \cite{appeltant2011,larger2012,tanaka2019}. We use
+``metadata'' for the slow trace's stored running statistics (a per-unit
+EMA), not for meta-learning in the learning-to-learn sense
+\cite{thrun1998,finn2017,hospedales2022}: nothing about the metadata's
+update rule is itself learned here. In the continual-learning setting
+\cite{parisi2019,kirkpatrick2017,hadsell2020,wang2024cl,dohare2024,ke2023cpt},
+this work supplies causal evidence about \emph{which} component must carry
+each capability.
 
 \textbf{Limitations.} The slow trace's attenuation covers fast-channel
 (readout or state) corruption; direct corruption of the metadata memory
 itself is out of scope. $\tau_m$ remains a hyperparameter tuned to the
 task timescale. The substrate's homeostat requires a Lyapunov estimate
-(FTLE) that we do not provide for the ESN.
+(FTLE) that we do not provide for the ESN. Statistically, the core
+falsification results rest on paired sign tests at $n=10$ seeds: they
+are robust as far as they go (0/10 seeds positive in every tested cell)
+but coarse --- at this sample size only large standardized effects (of
+order $d\approx0.9$) are reliably detectable, and no formal effect
+sizes, confidence intervals, or power analysis are reported; the
+non-transferability claims should therefore be read as ``at every
+tested configuration'' rather than as population-level universals.
 
 \textbf{Future work.} Consolidating stable, repeatedly encountered
 knowledge into the structural connectivity would create a hierarchy
 between fast tracking and slow accumulation, but introduces a
 consolidation-vs-overwrite trade-off beyond the present scope. Second,
 Section~\ref{sec:llm} instantiates the same online readout on a
-Transformer substrate through low-rank (LoRA-style) adapters; there the
+Transformer substrate through low-rank adaptation (LoRA-style) adapters; there the
 recursive-least-squares update cost is $O(F^2)$ in the readout
 \emph{feature} dimension $F$ --- the model width (thousands) or an
 adapter rank (tens) --- not $O(P^2)$ in the total parameter count (tens
@@ -442,10 +524,13 @@ tested here.
 The three mechanisms are formulated substrate-agnostically, but all
 evidence so far comes from reservoirs. We ask whether the decomposition
 survives on a structurally different substrate --- a Transformer with
-low-rank adapters \cite{hu2022lora} --- under the same falsification
+low-rank adaptation (LoRA) adapters \cite{hu2022lora} --- under the same falsification
 discipline (10 seeds, paired per-seed differences, sign consistency). The
 scope claim is deliberately narrow: the \emph{principles} instantiate on
-a Transformer substrate; we make no benchmark or SOTA claims. The model
+a Transformer substrate; we make no benchmark or state-of-the-art (SOTA)
+claims. Accordingly, every host-boundary statement in this paper is
+confined to the two stateful substrates tested here; we draw no
+conclusions about frozen or feed-forward hosts. The model
 is tiny by design --- sized to run 90 seeded trials on CPU, not to
 compete with large models.
 
@@ -461,8 +546,8 @@ are nearly indistinguishable across domains --- only bigram statistics
 discriminate (the analogue of the timescale gap of
 Section~\ref{sec:setup}). Embeddings, positions, and layer norms are
 frozen; the output head is a trainable readout; two low-rank (rank-16)
-adapters on the QKV, output, and FFN projections carry the trainable
-plasticity.
+adapters on the query/key/value (QKV), output, and feed-forward
+(FFN) projections carry the trainable plasticity.
 
 \textbf{Arms.} \emph{A1 (bare online LoRA):} both adapters update every
 batch at a fixed learning rate --- the online-readout analogue with M1
@@ -474,7 +559,7 @@ routing):} the same slow-trace estimate selects the active adapter, and
 only the active one updates --- the ``which adapter to adapt'' claim.
 $\tau_m\in\{200,500,1000,2000\}$.
 
-\textbf{Metrics.} Stream perplexity (overall); forgetting perplexity
+\textbf{Metrics.} Stream perplexity (ppl, overall); forgetting perplexity
 (perplexity on the previous domain after switching away --- the
 episodic-memory probe); post-switch adaptation time in tokens (known
 switches, 20-token window, $1.5\times$ steady-state threshold).
@@ -488,15 +573,21 @@ when the trace is fast ($\tau_m\in\{200,500\}$: $-1.07$/$-0.43$, 10/10
 seeds). A2 (gating-only) is falsified: stream perplexity is worse than
 A1 at every tested $\tau_m$ (paired differences $+1.25$ to $+2.29$, 0/10 seeds
 positive) and forgetting never improves (0/10). The stream-ppl benefit
-of A3 is timescale-sensitive: at $\tau_m\ge1000$ its sign flips --- the
-same sensitive interval reported for the reservoir
-(Section~\ref{sec:s16}). $T_{\mathrm{adapt}}$ floors at the 20-token
+of A3 is timescale-sensitive: at $\tau_m\ge1000$ its sign flips. This is
+\emph{not} the reservoir result restated: the reservoir MC gap was
+\emph{insensitive} to $\tau_m$ at every tested timescale, with no
+sensitive interval (Section~\ref{sec:s16}). The two findings differ in
+metric (stream perplexity vs.\ memory capacity), in the compared
+quantity (paired difference vs.\ A1 vs.\ gap to a fixed baseline) and in
+mechanism, and must not be read as one shared interval. $T_{\mathrm{adapt}}$ floors at the 20-token
 window for every arm: the task transition is learnable within one chunk,
 so adaptation is too fast to resolve --- reported at the floor, not as
-ratios (the Section~\ref{sec:adapt} lesson). The gate detector itself is
-functional: it tracks the five known switches of the protocol,
-so the A2 failure is a failure of the update \emph{policy}, not of the
-detector.
+ratios (the Section~\ref{sec:adapt} lesson). The gate detector is
+designed to track the five known switches of the protocol, and we read
+the A2 failure as a failure of the update \emph{policy} rather than of
+the detector; however, detector output was never compared against
+switch ground truth (no detection-latency or miss statistics are
+reported), so this attribution is plausible but not directly evidenced.
 
 \begin{figure}[t]
 \centering
@@ -556,7 +647,13 @@ transferable instantiation precisely: the slow trace's value lies in
 \emph{selecting which plasticity is active}, not in \emph{deciding when
 to pause learning}. The readout cost is feature-bound ($O(F^2)$ in model
 width or adapter rank, not $O(P^2)$ in total parameters;
-Section~\ref{sec:disc}).
+Section~\ref{sec:disc}). A protocol caveat: the arms differ in how many
+adapter updates they take by construction (A2 suppresses updates within
+a domain, A3 updates only the active adapter), and gradient-step budgets
+were not explicitly matched to A1, so A2's failure could partly reflect
+reduced update counts; the sign consistency of the paired differences
+across all tested $\tau_m$ and both metrics makes a pure training-budget
+artifact unlikely, but a budget-matched control was not run.
 
 \section{Conclusion}
 \label{sec:concl}
@@ -564,32 +661,46 @@ Section~\ref{sec:disc}).
 (1)~A slow exponential trace of reservoir states is a synthesized
 forgetting kernel with a controllable horizon (Prop.~1). (2)~On
 long-horizon statistical tasks the bottleneck is timescale coverage, not
-substrate physics; the same trace equalizes ESN and substrate accuracy and
-accelerates adaptation by a controlled-measured factor 1.3--2.4
+substrate physics; the same trace brings ESN and substrate accuracy into
+a common band and
+accelerates adaptation by a controlled-measured factor 1.25--2.7
 (Props.~2--3). (3)~The trace is a \emph{statistical} memory, not an
 episodic one: it adds no raw memory capacity and does not transfer
 disturbance robustness at any tested $\tau_m$ (0/10 seeds positive; Prop.~4).
+
 (4)~Three mechanisms, three roles --- metadata (statistical memory and
 state-noise denoising), homeostat (sequential recovery), substrate physics
-(raw memory) --- and none is substitutable for another's job.
+(raw memory) --- and none is substitutable for another's job in the
+directions tested.
+
 (5)~The decomposition survives on a Transformer substrate with
 low-rank adapters: slow-trace domain routing transfers (forgetting up to
-$-28\%$, stream perplexity $-1.07$ at $\tau_m{=}200$; 10/10 seeds) while
+$-28\%$, stream perplexity $-1.07$ at $\tau_m{=}200$; 10/10 seeds; the
+stream-perplexity benefit holds only at $\tau_m\le500$ and reverses sign
+at $\tau_m\ge1000$) while
 a gating-only variant is falsified at every tested $\tau_m$ (0/10 seeds) ---
 detection without continuous correction is insufficient.
 (6)~That boundary is a property of the \emph{host}, not of the
 mechanisms: routing transfers on a Transformer substrate (point~5), and
-the failure of abrupt gating is attributable to its update policy ---
+the failure of abrupt gating is plausibly attributable to its update
+policy (Section~6.3 offers this as an interpretation, not a directly
+evidenced result) ---
 removing the continuously active readout (M1) and replacing gradual
-structural switching (M4) with an abrupt one. The full framework
-therefore does not instantiate on a frozen-feedforward host: its
-requirements --- a continuously active online readout, a slowly
-integrating statistical memory, and gradually applied structural
-switches --- are native operations of a persistent stateful substrate,
-not retrofits onto a static architecture. This suggests that future
-work should design foundation models from the ground up with these
-mechanisms natively embedded in a stateful host, rather than
-retrofitting them onto static architectures.
+structural switching (M4) with an abrupt one. The reach of this claim is
+bounded by what we tested: both hosts examined are stateful (a recurrent
+reservoir; a Transformer with trainable adapters and a persistent
+hidden-state trace), and the one successful transfer (A3) succeeds
+precisely on the host that keeps its readout continuously active. We
+therefore do \emph{not} claim a general host boundary: the reading that
+the full framework ``does not instantiate on a frozen-feedforward host''
+extrapolated beyond the evidence, since no frozen or feed-forward host
+was tested here. The supported conclusion is narrower --- on the tested
+stateful hosts, and under the abrupt-gating update policy, the
+mechanism set does not transfer as-is --- and whether the requirements
+(a continuously active online readout, a slowly integrating statistical
+memory, gradually applied structural switches) can be met by frozen or
+feed-forward architectures is an open question that we leave to future
+work.
 
 \section*{Declaration of competing interest}
 
@@ -607,10 +718,21 @@ the public, commercial, or not-for-profit sectors.
 All simulation scripts and generated data are available at
 \url{https://github.com/huyamingc/REDEM} (private during review; released
 on acceptance). All reported figures are means over 10 seeds with
-per-seed paired analysis; data files are listed in the repository.\par}
+per-seed paired analysis; data files are listed in the repository.
+Point values in the tables are seed means (with $\pm$ ranges where
+reported); full per-seed dispersion --- standard deviations, paired
+differences, and sign counts --- can be recomputed directly from the
+released per-seed files, which serve as the record of variability for
+the figures.\par}
+
+\section*{CRediT authorship contribution statement}
+
+Yaming Hu: Conceptualization, Methodology, Software, Validation, Formal
+analysis, Investigation, Data curation, Writing -- original draft,
+Writing -- review \& editing, Visualization, Project administration.
 
 \begingroup\hbadness=2500
-\begin{thebibliography}{12}
+\begin{thebibliography}{32}
 
 \bibitem{parisi2019} Parisi, G. I., Kemker, R., Part, J. L., Kanan, C.,
 Wermter, S. Continual lifelong learning with neural networks: a review.
@@ -650,6 +772,92 @@ language models. \emph{ICLR} (2022).
 \bibitem{vaswani2017} Vaswani, A., Shazeer, N., Parmar, N., Uszkoreit,
 J., Jones, L., Gomez, A. N., Kaiser, L., Polosukhin, I. Attention is all
 you need. \emph{NeurIPS} \textbf{30}, 5998--6008 (2017).
+
+\bibitem{jaeger2002mc} Jaeger, H. Short term memory in echo state
+networks. GMD Report 152, German National Research Center for
+Information Technology (2002).
+
+\bibitem{white2004} White, O. L., Lee, D. D., Sompolinsky, H.
+Short-term memory in orthogonal neural networks. \emph{Physical Review
+E} \textbf{69}, 056116 (2004).
+
+\bibitem{yildiz2012} Yildiz, I. B., Jaeger, H., Kiebel, S. J.
+Re-visiting the echo state property. \emph{Neural Networks}
+\textbf{35}, 1--9 (2012).
+
+\bibitem{lukosevicius2012} Lukoševičius, M. A practical guide to
+applying echo state networks. In: \emph{Neural Networks: Tricks of the
+Trade} (2nd ed.), Lecture Notes in Computer Science \textbf{7700},
+659--686, Springer (2012).
+
+\bibitem{verstraeten2007} Verstraeten, D., Schrauwen, B., D'Haene, M.,
+Stroobandt, D. An experimental unification of reservoir computing
+methods. \emph{Neural Networks} \textbf{20}(3), 391--403 (2007).
+
+\bibitem{hermans2010} Hermans, M., Schrauwen, B. Memory in linear
+recurrent neural networks in continuous time. \emph{Neural Networks}
+\textbf{23}(4), 523--528 (2010).
+
+\bibitem{appeltant2011} Appeltant, L., Soriano, M. C., Van der Sande,
+G., Danckaert, J., Massar, S., Dambre, J., Schrauwen, B., Mirasso, C.
+R., Fischer, I. Information processing using a single dynamical node as
+complex system. \emph{Nature Communications} \textbf{2}, 468 (2011).
+
+\bibitem{larger2012} Larger, L., Soriano, M. C., Brunner, D.,
+Appeltant, L., Gutiérrez, J. M., Pesquera, L., Mirasso, C. R., Fischer,
+I. Photonic information processing beyond Turing: an optoelectronic
+implementation of reservoir computing. \emph{Optics Express}
+\textbf{20}(3), 3241--3249 (2012).
+
+\bibitem{tanaka2019} Tanaka, G., Yamane, T., Héroux, J. B., Nakane, R.,
+Kanazawa, N., Takeda, S., Lu, H., Li, J., Hirokawa, K., Kitano, K.
+Recent advances in physical reservoir computing: a review.
+\emph{Neural Networks} \textbf{115}, 100--123 (2019).
+
+\bibitem{sussillo2009} Sussillo, D., Abbott, L. F. Generating coherent
+patterns of activity from chaotic neural networks. \emph{Neuron}
+\textbf{63}(4), 544--557 (2009).
+
+\bibitem{hochreiter1997} Hochreiter, S., Schmidhuber, J. Long
+short-term memory. \emph{Neural Computation} \textbf{9}(8), 1735--1780
+(1997).
+
+\bibitem{pascanu2013} Pascanu, R., Mikolov, T., Bengio, Y. On the
+difficulty of training recurrent neural networks. \emph{ICML},
+1310--1318 (2013).
+
+\bibitem{kirkpatrick2017} Kirkpatrick, J., Pascanu, R., Rabinowitz, N.,
+Veness, J., Desjardins, G., Rusu, A. A., Milan, K., Quan, J., Ramalho,
+T., Grabska-Barwinska, A., et al. Overcoming catastrophic forgetting in
+neural networks. \emph{PNAS} \textbf{114}(13), 3521--3526 (2017).
+
+\bibitem{thrun1998} Thrun, S., Pratt, L. (Eds.). \emph{Learning to
+Learn}. Kluwer Academic Publishers (1998).
+
+\bibitem{finn2017} Finn, C., Abbeel, P., Levine, S. Model-agnostic
+meta-learning for fast adaptation of deep networks. \emph{ICML},
+1126--1135 (2017).
+
+\bibitem{hospedales2022} Hospedales, T., Antoniou, A., Micaelli, P.,
+Storkey, A. Meta-learning in neural networks: a survey. \emph{IEEE
+Transactions on Pattern Analysis and Machine Intelligence}
+\textbf{44}(9), 5149--5169 (2022).
+
+\bibitem{hadsell2020} Hadsell, R., Rao, D., Rusu, A. A., Pascanu, R.
+Embracing change: continuous learning in AI in the real world.
+\emph{Neuron} \textbf{108}(6), 966--984 (2020).
+
+\bibitem{ke2023cpt} Ke, Z., Shao, Y., Lin, H., Hu, Y., Dong, Y., Tang,
+J. Continual pre-training of language models. \emph{ICLR} (2023).
+
+\bibitem{wang2024cl} Wang, L., Zhang, X., Su, H., Zhu, J. A
+comprehensive survey of continual learning: theory, method and
+application. \emph{IEEE Transactions on Pattern Analysis and Machine
+Intelligence} \textbf{46}(8), 5362--5383 (2024).
+
+\bibitem{dohare2024} Dohare, S., Hernandez-Garcia, J. F., Lan, Q.,
+Rahman, P., Mahmood, A. R., Sutton, R. S. Loss of plasticity in deep
+continual learning. \emph{Nature} \textbf{632}, 768--774 (2024).
 
 \bibitem{companionA} Author's companion Paper A: Memory and chaos in a
 physics-constrained relaxation substrate: phase diagram, multi-timescale

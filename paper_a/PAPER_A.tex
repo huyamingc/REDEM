@@ -43,9 +43,10 @@ yet the memory--chaos trade-off is usually studied on abstract recurrent network
 with hand-tuned leak rates. We characterize a physics-constrained relaxation
 substrate inspired by Si$_3$N$_4$ shallow-trap charge storage: $N$ units with a
 log-normal time-constant spectrum (median $\tau_0 \approx 174\,\mu$s,
-CV $=0.20$) coupled through a per-pulse, topology-dependent modulation of the
+coefficient of variation CV $=0.20$) coupled through a per-pulse, topology-dependent modulation of the
 injection coefficient. Sweeping the coupling strength $\kappa$ across five
-topology families and measuring the finite-time Lyapunov exponent $\lambda$, the
+topology families (three negative-feedback families undergo the transition
+described below) and measuring the finite-time Lyapunov exponent $\lambda$, the
 held-out Jaeger memory capacity, and input separation, we find a sharp
 order--chaos transition at $\kappa^\ast \in (25,30)$: the held-out memory
 capacity peaks 24--53\% above the uncoupled baseline just before the
@@ -57,13 +58,12 @@ $\tau_0/\bar{\Delta t}\approx 16$ pulses as the spectrum widens (numerically
 12--16 pulses for CV $\in[0.02,1.0]$), while the width CV controls the tail
 weight. Finally, a homeostatic regulator that
 estimates $\lambda$ online and adjusts $\kappa$ to a near-critical target
-improves post-disturbance held-out memory by 8--18\% under temperature drift,
-edge damage, and readout noise.
+improves post-disturbance held-out memory by 7.9--18\% under temperature drift,
+edge pruning, and readout noise.
 \end{abstract}
 
 \noindent\textbf{Keywords:} chaos; reservoir computing; memory capacity;
-forgetting kernel; homeostasis; relaxation substrate; finite-time Lyapunov
-exponent.
+forgetting kernel; homeostasis; relaxation substrate.
 
 \section{Introduction}
 \label{sec:intro}
@@ -72,14 +72,21 @@ Physical reservoir computing proposes that a complex dynamical substrate --- a
 spiking neural microcircuit \cite{maass2002}, an optoelectronic system
 \cite{larger2012}, a memristive array \cite{du2017}, or a charge-trap device
 \cite{prior} --- can serve as a nonlinear, fading-memory kernel whose
-instantaneous state is linearly read out by a trained network. The theoretical
+instantaneous state is linearly read out by a trained network. Physical
+implementations now span optoelectronic delay systems
+\cite{larger2012,paquot2012}, photonic integrated circuits \cite{brunner2013},
+a single nonlinear node under time multiplexing \cite{appeltant2011}, and
+neuromorphic device platforms \cite{grollier2020,markovic2020}; see
+\cite{verstraeten2007,schrauwen2007,tanaka2019} for reviews. The theoretical
 foundations are well established: the fading-memory property dates to the
 Volterra/Wiener system-identification literature \cite{boyd1985}, and echo
-state networks \cite{jaeger2001} and
+state networks \cite{jaeger2001,lukosevicius2009} and
 liquid state machines \cite{maass2002} rely on the \emph{echo state property}
 (contracting, input-forgetting dynamics), and the \emph{edge of chaos}
 maximizes the computational capability of driven recurrent systems
-\cite{bertschinger2004}. Dambre et al.\ \cite{dambre2012} formalized the total
+\cite{langton1990,bertschinger2004,legenstein2007}, building on the earlier
+characterization of the onset of chaos in random recurrent networks
+\cite{sompolinsky1988}. Dambre et al.\ \cite{dambre2012} formalized the total
 information-processing capacity of dynamical systems, showing a universal
 trade-off between linear memory and nonlinear processing. On the memory side,
 multi-timescale synaptic models \cite{fusi2005,benna2016} show that memory
@@ -94,7 +101,9 @@ of trap time constants; our prior work \cite{prior} established that this
 substrate encodes pulse-interval patterns through exponential relaxation with
 $\tau_0 \approx 174\,\mu$s at 300~K and a device-to-device spread of CV $=0.20$,
 achieving 79.6\% four-class hybrid encoding accuracy in a purely numerical
-(Digital-Model) setting. That work, however, treated the substrate as a
+setting (Digital-Model: the calibrated device simulator, with no fabricated
+hardware in the loop; all experiments in this paper are at this same fidelity
+level). That work, however, treated the substrate as a
 \emph{parallel} array of independent devices; the coupling between devices ---
 the element that could push the substrate toward richer, near-critical dynamics
 --- was only implemented as a quasi-static modulation of the effective injection
@@ -110,7 +119,7 @@ dynamical system with a physical chaos knob $\kappa$. Our contributions are:
 relaxation substrate: the finite-time Lyapunov exponent $\lambda$, the held-out
 Jaeger memory capacity, and the input separation, all as functions of the
 coupling strength $\kappa$, across five topology families (bidirectional ring,
-unidirectional ring, hub-and-spoke, lateral-inhibition ring, random graph) and
+unidirectional ring, hub\_star, lateral-inhibition ring, random graph) and
 two coupling sign conventions (negative- and positive-feedback contrast), with
 an additive state-coupling control.
 \item \textbf{An analytic forgetting kernel} $M(t)=\int p(\tau)e^{-t/\tau}
@@ -119,8 +128,8 @@ memory-capacity curve (Pearson $r=0.97$), which turns the device-physics spread
 CV into a \emph{design knob for the forgetting curve}.
 \item \textbf{A homeostatic chaos regulator} that estimates $\lambda$ online
 from Benettin twin trajectories and adjusts $\kappa$ to a near-critical target,
-restoring 8--18\% of held-out memory after environmental disturbances
-(temperature drift, edge damage, readout noise) where fixed coupling cannot.
+restoring 7.9--18\% of held-out memory after environmental disturbances
+(temperature drift, edge pruning, readout noise) where fixed coupling cannot.
 \end{enumerate}
 
 Throughout, we use a \emph{held-out} memory-capacity protocol: ridge fits are
@@ -134,7 +143,9 @@ is a methodological caution for the field.
 
 \subsection{Single-unit relaxation}
 
-Each unit models a Si$_3$N$_4$ shallow-trap population with effective trap
+Each unit models a Si$_3$N$_4$ shallow-trap population --- trap-controlled
+charge transport of this kind is documented independently in SiN$_x$
+memristors \cite{gismatulin2019} --- with effective trap
 occupancy $x_i \in [0,1]$. A write pulse of width $p_w=1\,\mu$s injects charge
 with coefficient $\alpha$; the occupancy then relaxes exponentially with the
 unit's trap time constant $\tau_i$ both during the pulse width and during the
@@ -193,9 +204,13 @@ unit watches its two neighbors), \textbf{ring\_unidir} (each unit watches its
 predecessor), \textbf{hub\_star} (satellites watch a fixed hub),
 \textbf{lateral\_ring} (distance-decayed neighbors within radius 4), and
 \textbf{random\_graph} (Erd\H{o}s--R\'enyi, mean degree 8, fixed structure
-across the sweep). The drive is an i.i.d.\ uniform interval stream
+across the sweep; graph-to-graph variability of this fixed-instance choice
+is quantified in Section~\ref{sec:negfb}). The drive is an i.i.d.\ uniform interval stream
 $\Dt_t \sim U[2,20]\,\mu$s, the fast-drive regime in which the nominal memory
-window is $N_{\mathrm{eff}} = \tau_0/\bar{\Dt} \approx 16$ pulses.
+window is $N_{\mathrm{eff}} = \tau_0/\bar{\Dt} \approx 16$ pulses. This i.i.d.\
+drive differs from the prior parallel-array benchmark protocol, which keyed
+class information into two \emph{fixed} intervals (20 and 200~$\mu$s)
+\cite{prior}; the interval notation of the two protocols is unrelated.
 
 \section{Characterization methods}
 \label{sec:methods}
@@ -203,14 +218,16 @@ window is $N_{\mathrm{eff}} = \tau_0/\bar{\Dt} \approx 16$ pulses.
 \textbf{Finite-time Lyapunov exponent.} For a driven system the relevant
 quantity is sensitivity to initial conditions under identical drive. We evolve
 a twin trajectory perturbed by $\epsilon=10^{-8}$ per unit, renormalize the
-separation to $\epsilon\sqrt{N}$ every 10 pulses (Benettin scheme), and report
+separation to $\epsilon\sqrt{N}$ every 10 pulses (Benettin scheme
+\cite{benettin1980}), and report
 $\lambda = \langle \ln(d/\epsilon\sqrt{N})\rangle$ per pulse, averaged over
 the full stream (detailed iteration steps in Appendix~\ref{app:benettin}).
 
 \textbf{Held-out memory capacity.} Following Jaeger, the linear memory of lag
 $k$ is the squared Pearson correlation between the ridge-decoded value of the
 driving interval $\Dt_{t-k}$ and its true value, decoded from the current-ratio
-observables at time $t$. We fit the ridge readout (regularization
+observables at time $t$. We fit the ridge readout \cite{hoerl1970}
+(regularization
 $\lambda_r=1$, features standardized with training-segment statistics) on the
 first 70\% of the collected stream, hold out a $k_{\max}=50$-step leakage
 buffer, and evaluate on the last 30\%; $\MCI_{\mathrm{total}} = \sum_{k=1}^{50}
@@ -226,7 +243,31 @@ averaged over the collected window --- a proxy for how far different input
 histories push the state.
 
 \textbf{Activity proxy.} The running standard deviation of the population-mean
-current ratio over a 200-pulse window (used in the homeostat analysis).
+current ratio over a 200-pulse window. It is not reported as a result below;
+it enters only as the quantity on which the fixed-activity-target baseline of
+Section~\ref{sec:homeostat} is expressed.
+
+\textbf{Reproducibility details.} All phase-diagram runs use $N=256$ units,
+CV $=0.20$, and 10 independent seeds; the $\tau$ draws are \emph{paired}
+across $\kappa$ within a topology (the same seed index maps to the same
+$\tau$ vector at every $\kappa$, so $\kappa$ acts as the dose and the
+substrate draw as the paired block), and the random-graph structure is fixed
+across the entire sweep. Every trajectory starts from $x_i=0$ and is
+\emph{preprogrammed} with 50 write pulses (width 1\,$\mu$s, interval
+2\,$\mu$s) at the base injection coefficient $\alpha_0=0.02$, which sets the
+initial occupancy distribution; the first 200 pulses of each 1200-pulse
+trajectory are discarded as washout before any statistics are collected. The
+FTLE twin uses $\epsilon=10^{-8}$ per unit with renormalization every 10
+pulses. The disturbance experiments of Section~\ref{sec:homeostat} use the
+same substrate (10 seeds) driven by a discretized Mackey--Glass series
+($x_{t+1}=(1-b)x_t + a\,x_{t-\tau}/(1+x_{t-\tau}^{10})$ with $a=0.2$,
+$b=0.1$, $\tau_{\mathrm{MG}}=17$ steps; 300-step warmup discarded; values
+normalized and mapped monotonically onto intervals in $[2,20]\,\mu$s; the
+target is the next series value), read out by an online recursive least
+squares rule (forgetting factor 0.999, initial covariance 1, regularization
+$10^{-4}$, $N+1$ features). The homeostat updates every 1000 pulses from a
+400-pulse Benettin pair, with feedback gain $\eta=3$ and regulatory bounds
+$\kappa\in[1,60]$.
 
 \section{Phase diagram}
 \label{sec:phasediagram}
@@ -249,16 +290,17 @@ families.}
 
 \begin{table}[t]
 \centering
-\caption{Per-topology summary of the $\kappa$ sweep (held-out MC, 10 seeds).
-Peak gains are relative to the uncoupled baseline MC $=9.07$.
+\caption{Per-topology summary of the $\kappa$ sweep (held-out MC; mean $\pm$
+s.d.\ over 10 seeds).
+Peak gains are relative to the uncoupled baseline MC $=9.07\pm1.65$.
 }\label{tab:phase}
 \begin{tabular}{@{}llp{6.2cm}p{3.4cm}@{}}
 \toprule
 Topology & Mode & Transition / behavior & Peak MC (vs.\ 9.07) \\
 \midrule
-ring\_bidir      & negative & order--chaos at $\kappa^\ast\in(25,30)$ & 11.88 ($+30\%$) at $\kappa=20$ \\
-lateral\_ring    & negative & order--chaos at $\kappa^\ast\in(25,30)$ & 11.29 ($+24\%$) at $\kappa=20$ \\
-random\_graph    & negative & order--chaos at $\kappa^\ast\in(25,30)$ & 13.91 ($+53\%$) at $\kappa=25$ \\
+ring\_bidir      & negative & order--chaos at $\kappa^\ast\in(25,30)$ & $11.88\pm0.84$ ($+30\%$) at $\kappa=20$ \\
+lateral\_ring    & negative & order--chaos at $\kappa^\ast\in(25,30)$ & $11.29\pm0.70$ ($+24\%$) at $\kappa=20$ \\
+random\_graph    & negative & order--chaos at $\kappa^\ast\in(25,30)$ & $13.91\pm1.22$ ($+53\%$) at $\kappa=25$ \\
 ring\_unidir     & positive & self-limited criticality ($\lambda\approx-0.002$), $\kappa\in[1,5]$ & 0.12--0.39$^{\ast}$ \\
 hub\_star        & positive & frozen (clip fraction 1.0) & none \\
 \bottomrule
@@ -281,9 +323,19 @@ sharp order--chaos transition ($\lambda$ jumps from $\approx -0.05$ to $>0$)
 for all three mode-1 topologies; the transition is accompanied by the onset of
 $\alpha_{\mathrm{eff}}$ clipping (clip fraction 0.3--0.6), i.e., the physical
 bounds start to bind. \textbf{The held-out memory capacity peaks in the last
-ordered configuration before the transition}: random\_graph at $\kappa=25$
+ordered configuration before the transition} (peak positions are quoted at
+the coarse grid resolution $\Delta\kappa=5$; the fine sweep of
+Section~\ref{sec:clipablation} confirms that each peak precedes its
+topology's crossing): random\_graph at $\kappa=25$
 reaches MC $=13.91$ vs.\ $9.07$ uncoupled ($+53\%$), ring\_bidir at $\kappa=20$
-$+30\%$, lateral\_ring at $\kappa=20$ $+24\%$.
+$+30\%$, lateral\_ring at $\kappa=20$ $+24\%$. The fixed-instance design
+keeps graph-sample noise out of the topology comparison; a follow-up
+sweep over 9 independent Erd\H{o}s--R\'enyi instances
+(data/s36\_topo\_instance\_variability\_v1.csv) bounds it: peak held-out
+MC $13.47\pm0.57$ (range $12.80$--$14.35$), i.e.\ $+48.5\%\pm6.3\%$ over
+uncoupled, with the peak at $\kappa=25$ (7/9 instances) or $\kappa=30$
+(2/9); the fixed instance of Table~\ref{tab:phase} ($13.91$, $+53\%$)
+lies inside this envelope.
 
 \subsection{Transition mechanism: coupling versus the physical clip}
 \label{sec:clipablation}
@@ -327,7 +379,7 @@ linear memory (MC $0.12$--$0.39$, despite in-sample MC of 18--20). The
 exponential current nonlinearity makes the saturated critical states
 information-rich but linearly undecodable --- a clean demonstration of the
 separation--memory trade-off: separation-rich critical states require nonlinear
-readout to be exploited. The \textbf{hub-and-spoke} topology freezes instead:
+readout to be exploited. The \textbf{hub\_star} topology freezes instead:
 with no feedback loop through the hub, satellites saturate into bistable
 above/below-hub states (clip fraction 1.0) and memory never exceeds the
 baseline.
@@ -337,7 +389,8 @@ baseline.
 
 In the chaotic regime ($\kappa=50,100$), the held-out MC collapses to 1.85--4.4
 (a 3--7$\times$ drop from the peak) --- a sharp contrast to the successful
-reservoir prediction of externally driven chaotic systems \cite{pathak2018},
+reservoir prediction of externally driven chaotic systems \cite{jaeger2004,
+pathak2018},
 where the drive, not the internal dynamics, supplies the input trace. The in-sample (train-segment) MC, by
 contrast, \emph{explodes} to 30--35 --- an overfitting artifact of ridge
 decoding the huge-amplitude chaotic state; the held-out protocol reveals the
@@ -355,6 +408,19 @@ dynamics). Its held-out MC never exceeds the uncoupled baseline meaningfully
 physics-constrained contrast coupling, by contrast, remains well-behaved across
 three decades of $\kappa$ and achieves the memory gains above --- the physical
 clip acts as a built-in stability regulator.
+
+\textbf{Validity domain of $\kappa$.} The phase structure above is
+established on the swept grids --- $\kappa\in[0.1,100]$ for the
+contrast-coupled families and $\kappa\in[0.01,0.2]$ for the additive control
+--- at a single clip range $[\alpha_{\min},\alpha_{\max}]=[0.001,0.10]$ and
+CV $=0.20$; the clip-ablation sweep of Section~\ref{sec:clipablation}
+additionally covers $\kappa\in[20,30]$ at unit resolution for
+$\alpha_{\max}\in\{0.1,0.2,0.5\}$, and the regulator of
+Section~\ref{sec:homeostat} operates within the regulatory bounds
+$\kappa\in[1,60]$. Between coarse grid points the transition location is
+resolved only to its bracketing interval, and outside the swept or clipped
+ranges --- or for spectrum parameters other than those swept in
+Supplementary Note~1 --- the diagram should not be extrapolated.
 
 \section{Multi-timescale forgetting theory}
 \label{sec:kernel}
@@ -380,7 +446,9 @@ $\in[0.02,1.0]$, in agreement with the nominal window $N_{\mathrm{eff}}\approx
 16$. The \emph{median} time constant sets where memory is; the width sets how
 it decays.
 \item \textbf{The tail steepens with narrowing spectrum.} The log-log slope
-$d\ln M/d\ln t$ at long lags is $-60.6$ at CV $=0.2$ and rises to $-7.1$ at
+$d\ln M/d\ln t$, fitted over the long-lag window $t\in[5{,}000,\,20{,}000]$
+pulses (Appendix~\ref{app:quadrature}), is $-60.6$ at CV $=0.2$ and rises to
+$-7.1$ at
 CV $=1.0$ (and $-\infty$ in the CV$\to0$ single-exponential limit). A wider
 trap spread yields a heavier tail --- slower forgetting of old information.
 \item \textbf{Comparison to cascade ideals.} The log-Gaussian tail
@@ -408,8 +476,17 @@ $M(k\cdot\bar{\Dt})$ at CV $=0.20$ with \textbf{Pearson $r=0.97$}
 (data/forgetting\_curve\_theory\_overlay\_v1.json); at lag 10
 the two agree almost exactly (0.520 vs.\ 0.523), with systematic damping at
 short lags (readout regression attenuation for a random drive). The
+committed per-lag curves quantify the residuals: the measured curve sits
+$\approx$20\% below the kernel for lags $k\le9$ (the readout damping), crosses
+it at $k\approx10$, and sits above it at long lags (measured 0.36--0.42
+vs.\ kernel 0.04--0.10 for $k=36$--$50$), so the tail of the driven,
+readout-limited curve is heavier than the single-unit kernel and the kernel
+should be read as the bulk, not the extreme tail, of the memory.
+The
 device-physics spectrum thus predicts the substrate's empirical memory curve
-from first principles.
+within the model: the kernel and the measured curve share the same
+log-normal spectrum assumption, so this is a model-internal consistency
+check rather than a prediction against independent measurement.
 
 \textbf{Implication.} CV --- a fabrication-controllable spread parameter --- is
 a \emph{design knob for the forgetting curve}. This is the quantitative basis
@@ -449,15 +526,24 @@ renormalization map.
 
 We subject the random-graph substrate ($\kappa=25$, the nominal optimum) to
 three abrupt disturbances at $t=10$k in an online Mackey--Glass forecasting
-task (RLS readout): \textbf{temperature drift} (all $\tau$ scaled by 1.5),
-\textbf{edge damage} (40\% of coupling edges removed), and \textbf{readout
+task \cite{mackeyglass1977} (recursive least squares, RLS, readout):
+\textbf{temperature drift} (all $\tau$ scaled by 1.5, i.e.\ a cooling drift $\approx 300\to294$\,K under the Arrhenius model; heating would shorten $\tau$),
+\textbf{edge pruning} (40\% of coupling edges removed), and \textbf{readout
 noise} ($\sigma=0.1\times$ feature std). The held-out MC--$\kappa$ landscape
-shifts with the disturbance: noise reduces memory everywhere (peak 10.05 vs.\
-13.98 nominal), edge damage \emph{improves} memory (16.53 --- removing
+shifts with the disturbance (means $\pm$ s.d.\ over 10 seeds): noise reduces memory everywhere (peak $10.05\pm0.81$ vs.\
+$13.98\pm2.05$ nominal), edge pruning \emph{improves} memory ($16.53\pm2.22$
+--- removing
 homogenizing edges), and temperature drift flattens the landscape, retaining
-substantial memory at larger $\kappa$ (11.01 at $\kappa=40$ vs.\ 6.95 nominal).
-Consequently, any regulator anchored to a \emph{fixed activity
-target} (a common homeostatic design) fails: the target's optimum is not
+substantial memory at larger $\kappa$ ($11.01\pm1.76$ at $\kappa=40$ vs.\
+$6.95\pm0.91$ nominal).
+(The nominal 13.98 is the disturbance-free peak under this section's online
+task protocol; it is distinct from the phase-diagram peak 13.91 of
+Table~\ref{tab:phase}, which uses the offline ridge protocol of
+Section~\ref{sec:methods} on the i.i.d.\ drive --- the 0.5\% offset between
+the two lies well within the seed-level spread of either estimate.)
+Consequently, any regulator anchored to a \emph{fixed target on the activity
+proxy of Section~\ref{sec:methods}}
+(a common homeostatic design) fails: the target's optimum is not
 disturbance-invariant (this negative design result motivated the
 $\lambda$-homeostat).
 
@@ -473,32 +559,59 @@ and steps
 \label{eq:homeostat}
 \end{equation}
 the slightly-ordered side of the transition where held-out MC peaks
-(Section~\ref{sec:negfb}). The regulated system settles at $\kappa \approx
+(Section~\ref{sec:negfb}). We retain $\lambda_{\mathrm{target}}=-0.02$ in the
+main results as a deliberately conservative, manually tuned choice made
+\emph{before} the systematic sweep below; the sweep identifies
+$\lambda_{\mathrm{target}}=0$ as optimal, so the main-result gains should be
+read as a lower bound on what a retuned target achieves. The regulated system settles at $\kappa \approx
 26$--27 under all conditions and achieves post-disturbance held-out MC gains of
-$+7.6\%$ (none), $+18\%$ ($\tau$-drift), $+7.9\%$ (edge-prune), $+11.8\%$
+$+7.6\%$ (none), $+18\%$ ($\tau$-drift), $+7.9\%$ (edge pruning), $+11.8\%$
 (noise) over the fixed coupling (Table~\ref{tab:homeostat};
 Fig.~\ref{fig:robustness}), at broadly
-comparable task-level NMSE (regulated up to $2\times$ worse on the gain arms,
+comparable task-level normalized mean squared error (NMSE; regulated up to $2\times$ worse on the gain arms,
 better under readout noise; the RLS readout absorbs task-level differences,
 and the substrate-level memory improvement is revealed by the
 readout-independent MC probe). The
 $\lambda$-homeostat is disturbance-type-agnostic because it tracks the
 dynamical quantity itself rather than a proxy whose optimum shifts.
+
 The estimate is also robust to its own noise: injecting Gaussian error
 of up to $\sigma_\lambda = 0.10$ (the typical estimate magnitude is
 $0.05$--$0.1$) into every Benettin estimate leaves the settled coupling
-essentially unchanged (r3 $\kappa$ 28.5--28.7) and the post-disturbance
+essentially unchanged (settled $\kappa$ at the third disturbance round r3:
+28.5--28.7, under the S11-chain protocol, which differs from the Mackey--Glass
+task values of Table~\ref{tab:homeostat}) and the post-disturbance
 r3 MC within $0.16$ of the noiseless value with no significant paired
-difference at any noise level (data/s32\_ftle\_noise\_v1.csv) --- the
-clipped proportional feedback integrates over the estimation error.
+difference at any noise level (two-sided paired $t$-test across seeds,
+$\alpha=0.05$; data/s32\_ftle\_noise\_v1.csv) --- the
+clipped proportional feedback averages out the estimation error over the
+1000-pulse interval between updates.
+
 A systematic $\lambda_{\mathrm{target}}$ sweep
-($\lambda_{\mathrm{target}}\in\{-0.05,-0.02,-0.005,0\}\times\mathrm{CV}\in\{0.1,0.2,0.4\}$,
-5 seeds; companion Paper~B, Table~2~\cite{companionB}) identifies $\lambda_{\mathrm{target}}{=}0$
+($\lambda_{\mathrm{target}}\in\{-0.05,-0.02,-0.005,0\}\times\mathrm{CV}\in\{0.1,0.2,0.4\}$;
+5 seeds, trading per-cell precision for coverage of the 12-cell grid,
+whereas the single-configuration runs elsewhere in this paper use 10 seeds)
+was executed under the companion Paper~B protocol and is reported as its
+Table~2~\cite{companionB} --- the values are quoted from that work and are
+not re-collected under this paper's phase-diagram protocol. The sweep
+identifies $\lambda_{\mathrm{target}}{=}0$
 (the edge of chaos) as optimal: post-disturbance MC peaks near the edge of
 chaos at every tested CV ($\lambda_{\mathrm{target}}{=}0$ optimal at CV=0.1 and 0.4;
 the $-0.005$ setting marginally ahead at CV=0.2), with gains of $+25\%$
 (CV=0.1), $+19\%$ (CV=0.2), $+5\%$ (CV=0.4) over fixed coupling --- updating
 the manually tuned $-0.02$ used in the main results.
+
+\textbf{Hyperparameter provenance.} The parameters that enter these
+experiments are of three kinds: measured material properties ($\tau_0$, CV);
+quantities swept in this paper ($\kappa$ across three decades,
+Section~\ref{sec:phasediagram}; the clip range,
+Section~\ref{sec:clipablation}; the task-level CV, Supplementary Note~1); or
+fixed protocol values inherited from the calibrated prior substrate and the
+readout conventions ($\alpha_0$, the clip range, the preprogramming
+protocol; ridge $\lambda_r=1$ and the 70/30 split; $\eta=3$ and the
+1000-pulse update period of the homeostat, whose robustness to estimate
+noise is verified above). No readout or regulator hyperparameter was tuned
+per condition.
 
 \begin{figure}[t]
 \centering
@@ -510,17 +623,18 @@ held-out MC gains over fixed coupling (Table~\ref{tab:homeostat}).}
 
 \begin{table}[t]
 \centering
-\caption{Post-disturbance held-out MC gains of the $\lambda$-homeostat over
-fixed coupling (random\_graph substrate, Mackey--Glass online task, 10 seeds).
+\caption{Post-disturbance held-out MC of the $\lambda$-homeostat (random\_graph
+substrate, Mackey--Glass online task; mean $\pm$ s.d.\ over 10 seeds). Fixed:
+regulator disabled, $\kappa=25$; regulated: settled $\kappa$ (26--27).
 }\label{tab:homeostat}
-\begin{tabular}{lcc}
+\begin{tabular}{lccc}
 \toprule
-Disturbance & MC gain vs.\ fixed $\kappa$ & Settled $\kappa$ \\
+Disturbance & Fixed MC & Regulated MC & Gain \\
 \midrule
-none         & $+7.6\%$ & 26--27 \\
-$\tau$-drift & $+18\%$  & 26--27 \\
-edge-prune   & $+7.9\%$ & 26--27 \\
-readout noise & $+11.8\%$ & 26--27 \\
+none         & $14.87\pm2.43$ & $16.01\pm2.38$ & $+7.6\%$ \\
+$\tau$-drift & $12.46\pm1.74$ & $14.73\pm1.88$ & $+18\%$  \\
+edge pruning & $16.87\pm1.54$ & $18.21\pm1.29$ & $+7.9\%$ \\
+readout noise & $10.45\pm0.99$ & $11.68\pm1.12$ & $+11.8\%$ \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -536,9 +650,12 @@ the coupling threshold $\kappa^\ast$ (which separates the memory-rich ordered
 side from the memory-destructive chaotic side), and the trap spectrum (which
 fixes both the $1/e$ memory horizon and the forgetting tail). A clip-ablation
 sweep (Section~\ref{sec:clipablation}) shows that $\kappa^\ast$ is invariant
-to a five-fold widening of the clip for the memory-relevant topologies, so the
+to a five-fold widening of the clip for the two highest-gain topologies
+(random graph and lateral ring), so the
 threshold is a genuine property of the coupling dynamics rather than a clip
-artifact; the clip's role is secondary and topology-dependent. For the
+artifact; the exception is the bidirectional ring, whose transition shifts by
+$+3.4$ under clip widening (Section~\ref{sec:clipablation}), so the clip's
+role is secondary and topology-dependent. For the
 neuromorphic-design question of what this device can compute, the answer
 is a bounded but substantial region of the memory--chaos plane, fully
 characterized here.
@@ -554,7 +671,8 @@ transition} --- a slightly-subcritical target ($\kappa = 20$--25,
 $\lambda \approx -0.05$), consistent with where the homeostat parks the
 system ($\kappa \approx 26$--27).
 
-\textbf{The forgetting kernel as design language.} $M(t)$ connects device
+\textbf{The forgetting kernel as a bridge between device physics and
+state-space models.} $M(t)$ connects device
 physics to the state-space-model literature: the substrate is a
 hardware-realizable structured state-space kernel whose decay spectrum is set
 by fabrication (CV). The $r=0.97$ validation shows the connection is
@@ -570,7 +688,9 @@ log-normal spectrum the $1/e$ horizon is set by the \emph{location}
 CV $\le 0.5$, within $\sim$25\% at CV $=1.0$; numerically
 12--16 pulses over CV $\in[0.02,1.0]$) while the tail weight is set by
 the \emph{width} (log-log slope $-60.6$ at CV $0.2$ vs.\ $-7.1$
-at CV $1.0$). Paper~C's $\tau_m$ is a location knob (the
+at CV $1.0$).
+
+Paper~C's $\tau_m$ is a location knob (the
 synthesized kernel's horizon scales with $\tau_m$, tail shape fixed),
 and the log-uniform range is a width knob of a different family. The
 practical corollary: specifying both a horizon and a tail requires two
@@ -595,7 +715,7 @@ coupling buys 24--53\% more held-out memory up to a sharp transition,
 positive-feedback coupling self-limits at criticality with maximal separation,
 chaos destroys linear memory, and the log-normal trap spectrum fixes a
 forgetting kernel that predicts the measured memory curve ($r=0.97$) with a
-fabrication-tunable tail. A $\lambda$-homeostat restores 8--18\% of memory
+fabrication-tunable tail. A $\lambda$-homeostat restores 7.9--18\% of memory
 after disturbances. These results turn a device-physics spread parameter into a
 computational design knob and provide the substrate-level theory for the REDEM
 online-learning architecture (companion paper \cite{companionB}).
@@ -738,13 +858,18 @@ small): $x_{t+1}=A x_t+b u_{t+1}$ with $u_t=\Dt_t$ and $A$ contractive. Then
 $x_t=\sum_{j\ge0}A^j b\,u_{t-j}$; the input at lag $k$ contributes the
 component $A^{k}b\,u_{t-k}$, whose covariance with $x_t$ is
 $c_k=A^{k}b\,\mathrm{Var}(u)$. The best linear predictor achieves the
-multiple correlation
+squared multiple correlation
 \begin{equation}
-\MCI(k)=c_k^\top\,\Sigma_x^{-1}\,c_k,\qquad
+\MCI(k)=\frac{c_k^\top\,\Sigma_x^{-1}\,c_k}{\mathrm{Var}(u)},\qquad
 \Sigma_x=\mathrm{Var}(x_t)=\sum_{j\ge0}A^j bb^\top(A^\top)^j\,\mathrm{Var}(u),
 \label{eq:mc}
 \end{equation}
-and Dambre et al.\ \cite{dambre2012} show the total linear capacity of an
+where the division by the target variance $\mathrm{Var}(u)=\mathrm{Var}(y_k)$
+is required for dimensional consistency: $c_k$ carries the units of
+$x\,u$, so $c_k^\top\Sigma_x^{-1}c_k$ alone is the \emph{explained variance}
+in units of $u^2$, and only after normalization by $\mathrm{Var}(u)$ does
+$\MCI(k)$ become the dimensionless squared correlation used throughout.
+Dambre et al.\ \cite{dambre2012} show the total linear capacity of an
 $N$-dimensional linear system is bounded by the state dimension:
 $\sum_k \MCI(k)\le N$, with equality attained by orthogonally normalized
 dynamics. The measured nonlinear-substrate curve is estimated with the held-out
@@ -760,11 +885,13 @@ the linear limit.
 \textbf{Supplementary Note 1. Task-level CV sweep (Fig.~\ref{fig:supp1}).} At the task level
 (held-out MC at the memory-optimal operating points, CV
 $\in\{0.1,0.2,0.4\}$, 10 seeds), the uncoupled substrate follows the
-single-unit kernel theory: MC rises 2.54 $\to$ 3.37 ($+33\%$) as CV widens from
+single-unit kernel theory: MC rises $2.54\pm0.26$ $\to$ $3.37\pm0.33$
+($+33\%$) as CV widens from
 0.1 to 0.4 --- the heavier tail retains more old lags. The coupled substrate at
 the near-critical optimum behaves \emph{oppositely}: random\_graph
-$\kappa=25$ MC falls 12.93 $\to$ 7.33 as CV widens (narrow spectrum best), and
-ring\_bidir $\kappa=20$ falls 9.55 $\to$ 7.86. The collective near-critical
+$\kappa=25$ MC falls $12.93\pm0.62$ $\to$ $7.33\pm1.33$ as CV widens (narrow
+spectrum best), and
+ring\_bidir $\kappa=20$ falls $9.55\pm0.60$ $\to$ $7.86\pm1.85$. The collective near-critical
 state prefers homogeneous timescales --- heterogeneous relaxation rates disrupt
 the synchronization of the contrast-feedback loop. The CV knob's direction
 therefore depends on the operating regime: wide spectra for parallel
@@ -785,6 +912,12 @@ The author declares no known competing financial interests or personal
 relationships that could have appeared to influence the work reported in
 this paper.
 
+\section*{Author contributions (CRediT)}
+
+\textbf{Yaming Hu}: Conceptualization, Methodology, Software,
+Validation, Formal analysis, Investigation, Data curation, Writing --
+original draft, Writing -- review \& editing, Visualization.
+
 \section*{Funding}
 
 This research did not receive any specific grant from funding agencies in
@@ -796,7 +929,7 @@ All simulation scripts and generated data are available at
 \url{https://github.com/huyamingc/REDEM} (private during review; released on
 acceptance).
 
-\begin{thebibliography}{14}
+\begin{thebibliography}{31}
 
 \bibitem{maass2002} Maass, W., Natschläger, T. \& Markram, H. Real-time
 computing without stable states: a new framework for neural computation based
@@ -816,14 +949,66 @@ pattern encoding: a systematic design-space analysis. Zenodo preprint,
 \url{https://doi.org/10.5281/zenodo.21753791} (2026); substrate
 calibration source for this work.
 
+\bibitem{paquot2012} Paquot, Y. \emph{et al.} Optoelectronic reservoir
+computing. \emph{Scientific Reports} \textbf{2}, 287 (2012).
+
+\bibitem{brunner2013} Brunner, D., Soriano, M. C., Mirasso, C. R. \& Fischer,
+I. Parallel photonic information processing at gigabyte per second data rates
+using transient states. \emph{Nature Communications} \textbf{4}, 1364 (2013).
+
+\bibitem{appeltant2011} Appeltant, L. \emph{et al.} Information processing
+using a single dynamical node as complex system. \emph{Nature Communications}
+\textbf{2}, 468 (2011).
+
+\bibitem{grollier2020} Grollier, J., Querlioz, D., Camsari, K. Y.,
+Everschor-Sitte, K., Fukami, S. \& Hayashi, M. Neuromorphic spintronics.
+\emph{Nature Electronics} \textbf{3}(7), 360--370 (2020).
+
+\bibitem{markovic2020} Markovi\'c, D., Mizrahi, A., Querlioz, D. \& Grollier,
+J. Physics for neuromorphic computing. \emph{Nature Reviews Physics}
+\textbf{2}(9), 499--510 (2020). \url{https://doi.org/10.1038/s42254-020-0208-2}
+
+\bibitem{verstraeten2007} Verstraeten, D., Schrauwen, B., d'Haene, M. \&
+Stroobandt, D. An experimental unification of reservoir computing methods.
+\emph{Neural Networks} \textbf{20}(3), 391--403 (2007).
+
+\bibitem{schrauwen2007} Schrauwen, B., Verstraeten, D. \& Van Campenhout, J.
+An overview of reservoir computing: theory, applications and implementations.
+In \emph{Proc.\ 15th European Symposium on Artificial Neural Networks
+(ESANN)}, 471--482 (2007).
+
+\bibitem{tanaka2019} Tanaka, G. \emph{et al.} Recent advances in physical
+reservoir computing: a review. \emph{Neural Networks} \textbf{115}, 100--123
+(2019). \url{https://doi.org/10.1016/j.neunet.2019.03.005}
+
+\bibitem{boyd1985} Boyd, S. \& Chua, L. O. Fading memory and the problem of
+approximating nonlinear operators with Volterra series.
+\emph{IEEE Trans.\ Circuits Syst.} \textbf{32}(11), 1151--1161 (1985).
+
 \bibitem{jaeger2001} Jaeger, H. The ``echo state'' approach to analysing and
 training recurrent neural networks. GMD Report 148 (2001).
 \url{https://www.ai.rug.nl/minds/uploads/EchoStatesTechRep.pdf}
+
+\bibitem{lukosevicius2009} Luko\v{s}evi\v{c}ius, M. \& Jaeger, H. Reservoir
+computing approaches to recurrent neural network training. \emph{Computer
+Science Review} \textbf{3}(3), 127--149 (2009).
+
+\bibitem{langton1990} Langton, C. G. Computation at the edge of chaos: phase
+transitions and emergent computation. \emph{Physica D} \textbf{42}(1--3),
+12--37 (1990).
 
 \bibitem{bertschinger2004} Bertschinger, N. \& Natschläger, T. Real-time
 computation at the edge of chaos in recurrent neural networks.
 \emph{Neural Computation} \textbf{16}(7), 1413--1436 (2004).
 \url{https://doi.org/10.1162/089976604323057443}
+
+\bibitem{legenstein2007} Legenstein, R. \& Maass, W. Edge of chaos and
+prediction of computational performance for neural circuit models.
+\emph{Neural Networks} \textbf{20}(3), 323--334 (2007).
+
+\bibitem{sompolinsky1988} Sompolinsky, H., Crisanti, A. \& Sommers, H. J.
+Chaos in random neural networks. \emph{Phys.\ Rev.\ Lett.} \textbf{61}(3),
+259--262 (1988).
 
 \bibitem{dambre2012} Dambre, J., Verstraeten, D., Schrauwen, B. \& Massar, S.
 Information processing capacity of dynamical systems.
@@ -836,14 +1021,32 @@ synaptically stored memories. \emph{Neuron} \textbf{46}(4), 599--609 (2005).
 synaptic memory consolidation. \emph{Nature Neuroscience} \textbf{19}(12),
 1697--1706 (2016). \url{https://doi.org/10.1038/nn.4401}
 
-\bibitem{boyd1985} Boyd, S. \& Chua, L. O. Fading memory and the problem of
-approximating nonlinear operators with Volterra series.
-\emph{IEEE Trans.\ Circuits Syst.} \textbf{32}(11), 1151--1161 (1985).
+\bibitem{gismatulin2019} Gismatulin, A. A., Gritsenko, V. A., Yen, T.-J. \&
+Chin, A. Charge transport mechanism in SiN$_x$-based memristor.
+\emph{Appl.\ Phys.\ Lett.} \textbf{115}(25), 253502 (2019).
+\url{https://doi.org/10.1063/1.5127039}
+
+\bibitem{benettin1980} Benettin, G., Galgani, L., Giorgilli, A. \& Strelcyn,
+J.-M. Lyapunov characteristic exponents for smooth dynamical systems and for
+Hamiltonian systems; a method for computing all of them. Part I: Theory.
+\emph{Meccanica} \textbf{15}(1), 9--20 (1980).
+
+\bibitem{hoerl1970} Hoerl, A. E. \& Kennard, R. W. Ridge regression: biased
+estimation for nonorthogonal problems. \emph{Technometrics} \textbf{12}(1),
+55--67 (1970).
+
+\bibitem{jaeger2004} Jaeger, H. \& Haas, H. Harnessing nonlinearity: predicting
+chaotic systems and saving energy in wireless communication. \emph{Science}
+\textbf{304}(5667), 78--80 (2004).
 
 \bibitem{pathak2018} Pathak, J., Hunt, B., Girvan, M., Lu, Z. \& Ott, E.
 Model-free prediction of large spatiotemporally chaotic systems from data: a
 reservoir computing approach. \emph{Phys.\ Rev.\ Lett.} \textbf{120}, 024102
 (2018). \url{https://doi.org/10.1103/PhysRevLett.120.024102}
+
+\bibitem{mackeyglass1977} Mackey, M. C. \& Glass, L. Oscillation and chaos in
+physiological control systems. \emph{Science} \textbf{197}(4300), 287--289
+(1977).
 
 \bibitem{companionB} Author's companion Paper B: REDEM: Online Learning
 with Meta-Adaptation and Structural Plasticity for Non-Stationary
@@ -853,8 +1056,9 @@ Environments (online learning architecture),
 
 \bibitem{companionC} Author's companion Paper C: Dissecting Online
 Learning Mechanisms: Statistical Memory, Homeostatic Recovery, and
-Substrate Physics are Non-Substitutable (three-mechanism
-disentanglement), \emph{companion preprint} (2026),
+Substrate Physics are Non-Substitutable in the Directions and
+Conditions Tested (three-mechanism disentanglement), \emph{companion
+preprint} (2026),
 \url{https://doi.org/10.5281/zenodo.22110618}.
 
 \bibitem{companionD} Author's companion Paper D: REDEM-SSM: A State-Space

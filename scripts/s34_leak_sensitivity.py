@@ -12,8 +12,12 @@ Experiment:     The S28 chain-protocol audit found no significant benefit
                 actually resolve.
 
 Arms (10 seeds; the S28 protocol verbatim, leaks parameterized):
-  leak_ftle     : frac x k in {(0.01,50) [S28 baseline], (0.10,50),
-                               (0.10,200)}
+  leak_ftle       : frac x FTLE-leak horizon in
+                    {(0.01, 400) [S28 baseline], (0.10, 400),
+                     (0.10, 200), (0.10, 50)}
+                    run_wrapped sets s28.LEAK_FTLE_AHEAD = k for leak_ftle
+                    arms, making the horizon a genuine scan dimension
+                    (s28 hard-codes LEAK_FTLE_AHEAD=400).
   leak_plasticity : frac in {0.10 [S28 baseline], 0.30, 0.50}
 
 Verdict rule: if r3 MC or r3 NMSE improves over the S28 'normal' arm
@@ -54,10 +58,13 @@ from s28_causal_audit_chain import run_single as s28_run_single
 N_SEEDS = 10
 
 # (arm, leak_frac, leak_k, leak_frac_plasticity)
+# For leak_ftle arms leak_k IS the FTLE leak horizon (s28.LEAK_FTLE_AHEAD);
+# for other arms it is the unused metadata/RLS lookahead placeholder.
 ARMS = [
-    ('leak_ftle', 0.01, 50, 0.10),     # S28 baseline
-    ('leak_ftle', 0.10, 50, 0.10),
-    ('leak_ftle', 0.10, 200, 0.10),
+    ('leak_ftle', 0.01, 400, 0.10),    # S28 baseline (frac=0.01, horizon=400)
+    ('leak_ftle', 0.10, 400, 0.10),    # 10x leak, S28 horizon
+    ('leak_ftle', 0.10, 200, 0.10),    # 10x leak, shorter horizon
+    ('leak_ftle', 0.10, 50, 0.10),     # 10x leak, shortest horizon
     ('leak_plasticity', 0.01, 50, 0.10),  # S28 baseline
     ('leak_plasticity', 0.01, 50, 0.30),
     ('leak_plasticity', 0.01, 50, 0.50),
@@ -78,6 +85,8 @@ def run_wrapped(args):
     s28m.LEAK_FRAC = frac
     s28m.LEAK_K = k
     s28m.LEAK_FRAC_PLASTICITY = pfrac
+    if arm == 'leak_ftle':
+        s28m.LEAK_FTLE_AHEAD = k   # leak_k now drives the FTLE horizon
     row = s28_run_single((arm, seed))
     row['leak_frac'] = float(frac)
     row['leak_k'] = int(k)

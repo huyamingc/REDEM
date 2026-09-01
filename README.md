@@ -40,7 +40,7 @@ are native rather than retrofitted, motivated by C's boundary result.
 
 - **Paper C — Dissection**: *"Dissecting Online Learning Mechanisms:
   Statistical Memory, Homeostatic Recovery, and Substrate Physics are
-  Non-Substitutable"* — three-mechanism disentanglement built on a
+  Non-Substitutable in the Directions and Conditions Tested"* — three-mechanism disentanglement built on a
   falsifying transfer experiment (target: *Neurocomputing*)
   → [`paper_c/PAPER_C.pdf`](paper_c/PAPER_C.pdf) |
   [`paper_c/PAPER_C.tex`](paper_c/PAPER_C.tex) |
@@ -62,7 +62,7 @@ are native rather than retrofitted, motivated by C's boundary result.
 | | Paper A | Paper B | Paper C | Paper D |
 | :--- | :--- | :--- | :--- | :--- |
 | **Question** | What can this substrate compute? | How do you learn on it? | Which mechanism does what? | What host makes it native? |
-| **Core result** | κ*∈(25,30); held-out MC +24–53% just before it; forgetting kernel r=0.97; λ-homeostat +8–18% | 0.996 vs 0.973 (p<0.0001; N=1024: 0.9970 vs 0.9753); tracks drift where frozen learners never recover | the +32% sequential-recovery gain is the homeostat's, not the metadata's; metadata robustness transfer falsified (0/10 seeds at every τ_m); routing transfers, gating-only falsified | input-path readout beats the pooled state readout (10/10); soft routing beats abrupt (−1.81, 10/10); full stack beats TF+LoRA (−9.28/−10.08, 10/10) |
+| **Core result** | κ*∈(25,30); held-out MC +24–53% just before it; forgetting kernel r=0.97; λ-homeostat +7.9–18% | 0.996 vs 0.973 (p<0.0001; N=1024: 0.9970 vs 0.9753); tracks drift where frozen learners never recover | the +32% sequential-recovery gain is the homeostat's, not the metadata's; metadata robustness transfer falsified (0/10 seeds at every τ_m); routing transfers, gating-only falsified | input-path readout beats the pooled state readout (10/10); soft routing beats abrupt at the tested τ_m=500 (−1.81, 10/10); full stack beats TF+LoRA (−9.28/−10.08, 10/10; untuned reference) |
 | **Target venue** | Chaos, Solitons & Fractals | Neural Networks | Neurocomputing | PRX Intelligence |
 | **Preprint DOI** | [10.5281/zenodo.22109664](https://doi.org/10.5281/zenodo.22109664) | [10.5281/zenodo.22110606](https://doi.org/10.5281/zenodo.22110606) | [10.5281/zenodo.22110618](https://doi.org/10.5281/zenodo.22110618) | [10.5281/zenodo.22110623](https://doi.org/10.5281/zenodo.22110623) |
 
@@ -105,7 +105,7 @@ simulation code and data but ask different questions:
 |---|---|---|
 | **Question** | What can this physical substrate compute? | How do you learn on top of it? |
 | **Content** | Dynamics theory: memory–chaos phase diagram, forgetting kernel, λ-homeostat robustness (full derivations in Appendix A) | Learning algorithm + benchmarks: online RLS readout, dual-timescale metadata, chaos homeostat, structure plasticity, ablations |
-| **Key results** | Order–chaos transition at κ*∈(25,30); held-out memory +24–53% just before it; forgetting kernel M(t)=∫p(τ)e^{−t/τ}dτ matches the measured memory curve (r=0.97); λ-homeostat restores 8–18% after disturbances; edge of chaos (λ_target=0) identified as optimal target (+25%) | Tracks drift where frozen batch learners (GRU, transformer) fail permanently; integrated system matches or beats every ablation and the bare baseline (0.996 vs 0.988/0.994/0.973; N=1024, 10 seeds: 0.9970 vs 0.9753); metadata is substrate-agnostic — its statistical-memory benefit transfers to a matched ESN (robustness transfer falsified in Paper C); +32% memory after three sequential disturbances; causal audit confirms all mechanisms are causally clean |
+| **Key results** | Order–chaos transition at κ*∈(25,30); held-out memory +24–53% just before it; forgetting kernel M(t)=∫p(τ)e^{−t/τ}dτ matches the measured memory curve (r=0.97); λ-homeostat restores 7.9–18% after disturbances; edge of chaos (λ_target=0) identified as the best-supported target (+25%; main results run at the conservative −0.02) | Tracks drift where frozen batch learners (GRU, transformer) fail permanently; integrated system beats the bare baseline (0.996 vs 0.973, p<0.0001) and matches every ablation (homeostat removal ties; N=1024, 10 seeds: 0.9970 vs 0.9753); metadata is substrate-agnostic — its statistical-memory benefit transfers to a matched ESN (robustness transfer falsified in Paper C); +32% memory after three sequential disturbances; causal audit confirms all mechanisms are causally clean at the operational leak magnitudes tested |
 | **Target journal** | Chaos, Solitons & Fractals | Neural Networks |
 | **Relationship** | Substrate theory; cites the prior Si₃N₄ pulse-encoding paper for device calibration | Builds on Paper A's substrate theory (cited as the companion in §2) |
 
@@ -136,13 +136,13 @@ series.
 
 ## Scripts
 
-All 55 committed scripts in `scripts/`, typed
+All 56 committed scripts in `scripts/`, typed
 (ML > CORE > PAPER > FIG > EXPLORE). The **Paper** column marks which paper
 each script serves (A / B / C / D; shared = library or figure used by more
 than one paper). Two legacy scripts from the prior Si₃N₄-pulse-encoding
 project are kept as shared dependencies (imported by the new code) and are
 never modified. `README_REDEM.md` holds the full headline-results registry
-(S1–s35) and reproduction commands.
+(S1–s36) and reproduction commands.
 
 | Script | Type | Paper | Purpose | Key result |
 |---|---|---|---|---|
@@ -156,10 +156,10 @@ never modified. `README_REDEM.md` holds the full headline-results registry
 | `three_factor_online_readout.py` | PAPER | B | S3: reward-modulated Hebbian vs error-gated vs RLS (negative result) | reward-only post-inversion 0.06–0.10 |
 | `intrinsic_reward_experiment.py` | PAPER | B | S4: novelty intrinsic reward ablation (negative result) | stream mean ≤ 0.514; never rescues |
 | `dual_timescale_metadata.py` | PAPER | B | S5: fast/dual/slow metadata on regime-switch | +1.3–2.1 pp (p < 0.0001) |
-| `chaos_regulator.py` | PAPER | B | S6: λ-homeostat under disturbances | held-out MC +8–18% |
+| `chaos_regulator.py` | PAPER | B | S6: λ-homeostat under disturbances | held-out MC +7.9–18% |
 | `structure_plasticity.py` | PAPER | B | S7: correlation-guided rewiring | gentle (5%) +8–11%; aggressive (20%) −23% |
 | `integrated_benchmark.py` | PAPER | B | S8: full system vs ablations; N=1024 confirmation | 0.996 vs 0.973 (p<0.0001); N=1024 (s30, 10 seeds) 0.9970 vs 0.9753 |
-| `baseline_showdown.py` | ML | B | S9: vs matched ESN / GRU / tiny transformer (torch CPU) | REDEM 0.991 vs GRU 0.394 / TF 0.351 (ESN 1.000, honest; z-scored features) |
+| `baseline_showdown.py` | ML | B | S9: vs matched ESN / GRU / tiny transformer (torch CPU); fairness protocol: per-trial torch seeding precedes weight init | REDEM 0.991 vs GRU 0.371 / TF 0.353 (ESN 1.000, honest; z-scored features); MG NMSE GRU 1.80 / TF 0.77 |
 | `forgetting_curve_theory.py` | EXPLORE | A | S10: forgetting-kernel theory M(t), Gauss–Hermite validation | measured MC follows M(t), r = 0.97 |
 | `esn_metadata_comparison.py` | PAPER | B | S10: metadata transfer to a matched ESN | equalizes: ESN+meta 0.998 ≈ ESN 0.996 ≈ REDEM 0.994 |
 | `cv_sweep.py` | PAPER | A | S10: task-level CV sweep (Paper A Supp. Note 1) | uncoupled MC +33% with CV; coupled near-critical falls |
@@ -170,12 +170,12 @@ never modified. `README_REDEM.md` holds the full headline-results registry
 | `s16_tau_m_pressure_test.py` | PAPER | C | τ_m ∈ {200,500,1000,2000} stress test — falsification robust across metadata timescales (10 seeds) | 0/10 seeds positive at every τ_m (~5σ) |
 | `s15_controlled_adaptation.py` | PAPER | C | controlled adaptation protocol with known switch instants (10 seeds) | true effect ~10 pulses + variance collapse (p90 76.5→42) |
 | `s16b_falsification_stress_test.py` | PAPER | C | probe-protocol stress test (V0/V1/V2, 4 τ_m, 10 seeds; v2 output) | sign robust ≤1/10 everywhere; magnitude V0 −0.69 → V2 −0.04/−0.01 across τ_m |
-| `s5b_controlled_adaptation.py` | PAPER | B | S5 three-arm controlled adaptation re-measurement (2 substrates, 10 seeds) | T200 factor 1.28–1.44, T40 1.79–2.40 (Paper B §4.3 revised) |
+| `s5b_controlled_adaptation.py` | PAPER | B | S5 three-arm controlled adaptation re-measurement (2 substrates, 10 seeds) | table-endpoint factor 1.25–2.7 (T200 1.25–1.50, T40 1.54–2.73; Paper B §4.3) |
 | `s17_substrate_stress.py` | PAPER | C | ESN substrate stress — equalizer gain at all configs (120 runs) | gain positive at all 6 ESN configs (+0.1 to +1.0 pp) |
 | `s18_llm_drift_gate.py` | ML | C | §7 PoC: LLM drift gate (tiny transformer + LoRA, 90 runs, torch CPU) | A3 routing transfers −2.5 ppl (10/10); A2 gate falsified (0/10) |
 | `s19_ssm_rls_readout.py` | ML | D | P1/P3a: per-token RLS readout on a hand-rolled diagonal SSM (7 arms, 70 runs, torch CPU) | state arms 58.5–115.9 (0/10) vs B-proj 11.75 (d −3.26, 10/10); oracle 7.25 |
 | `s20_ssm_m3_routing.py` | ML | D | P2: M3 EMA metadata + drift detection + routing on the SSM host (A1/A2/A3, 90 runs, torch CPU) | A2 stream −1.52…−2.45 (10/10); A3 forget −2.05/−1.87/−1.20 (10/10, τ_m≤1000) |
-| `s21_ssm_m4_m5.py` | ML | D | P3: M4 soft vs abrupt routing + M5 state-norm homeostat (E1/E2, 70 runs, torch CPU) | soft 8.22 vs abrupt 10.03 (−1.82, 10/10); M5 restores EMA detector 5/5, norm 11.3 vs 50.2 |
+| `s21_ssm_m4_m5.py` | ML | D | P3: M4 soft vs abrupt routing + M5 state-norm homeostat (E1/E2, 70 runs, torch CPU) | soft 8.22 vs abrupt 10.03 (−1.81, 10/10); M5 restores EMA detector 5/5, norm 11.3 vs 50.2 |
 | `s22_ssm_p4_benchmark.py` | ML | D | P4: 4-domain irregular-switch benchmark (SSM-bare / SSM-REDEM / TF-A1, 30 runs, torch CPU) | REDEM-SSM vs bare −2.25/−4.47, vs TF −9.28/−10.08 (10/10) |
 | `s23_ssm_p4_realtext.py` | ML | D | real-text benchmark: two Gutenberg books (Alice vs Dickens), 32-symbol char vocab (30 runs, torch CPU) | REDEM-SSM vs bare −1.27 (10/10), vs TF −5.23 (10/10) |
 | `s24_homeo_plasticity_coupling.py` | PAPER | B | M4-M5 coupling loop under the S11 disturbance chain (4 arms, 10 seeds) | coupling does not help: homeostat alone r3 MC 8.47 vs +fixed-churn 6.45 (t=−9.6, 0/10) / +coupled 5.27 (0/10) — rewiring during disturbance is harmful |
@@ -188,9 +188,10 @@ never modified. `README_REDEM.md` holds the full headline-results registry
 | `s31_char_bigram_oracle.py` | PAPER | D | char-bigram oracle on the real-text protocol (full-book vs ref-window fits, 10 seeds) | true first-order ceiling ppl 10.97±0.18; REDEM-SSM 12.07 sits within ~1.1 ppl of it — the "first-order regime" boundary is now quantitative |
 | `s32_ftle_noise_robustness.py` | PAPER | A | homeostat with Gaussian noise on every FTLE estimate (5 levels × 10 seeds, S11 chain) | no significant MC degradation up to σ=0.10 (≈100% of estimate scale); settled κ 28.5–28.7 — clipped proportional feedback integrates out estimation noise |
 | `s33_ssm_p4_m5.py` | ML | D | M5 state-norm homeostat added to the P4 stack (2 arms, 10 seeds) | M5 is significantly worse (stream +1.53, forgetting +2.90, t=−22.8/−26.5, 10/10) — Δt modulation breaks the Δt=1-calibrated whitening; S22's exclusion of M5 validated |
-| `s34_leak_sensitivity.py` | PAPER | B | leak sensitivity scan on the S28 audit (6 leak configs, 10 seeds) | 10× FTLE leak still NS (+0.21); plasticity 30% future correlation +0.57 mean (7/10; paired t=2.04, 95% CI [−0.06,+1.20]) — audit resolution is bounded, "causally clean" scoped to operational leaks |
+| `s34_leak_sensitivity.py` | PAPER | B | leak sensitivity scan on the S28 audit (7 leak configs, 10 seeds); leak_k drives the FTLE leak horizon (s28 hard-codes 400) | 10× FTLE leak still NS at every tested horizon (+0.13/+0.39/+0.21 at horizons 50/200/400, CIs include 0); plasticity 30% future correlation +0.57 mean (7/10; paired t=2.04, 95% CI [−0.06,+1.20]) — audit resolution is bounded, "causally clean" scoped to operational leaks |
 | `s35_readout_boundary_probe.py` | PAPER | D | P1 readout boundary probes (10 seeds, s19 host verbatim): full/half-window oracle, skip-vs-proj nested check, fast/slow token decoding, fast-channel next-token readouts vs static-table reference | full-window oracle 31.2 (matches s19, max diff 0.00) vs half-window 17.3 — oracle is window-dependent; skip 18.0 > proj 7.25 (nested violation, 10/10); token linearly decodable from fast channels (τ≤8) at 88.9–99.7% out-of-sample (chance 3.1%), slow channels at chance; yet fast-channel-only direct and two-stage next-token readouts still fail out-of-sample (ppl 68–104 vs static table 13.9–17.4) — "no useful linear map" is false, and no closed-form squared-loss state readout yields calibrated next-token probabilities; the P1 failure is a pooled-readout/metric property, not missing linear information |
-| `gen_paperD_fig1_p1_arms.py` | FIG | D | Paper D Fig. 1: P1/P3a state-readout falsification + input-path control | `figures/paperD_fig1_p1_arms.pdf` |
+| `s36_random_graph_instance_variability.py` | PAPER | A | random-graph instance variability: S1 v2 random_graph sweep repeated on 9 Erdős–Rényi instances (8 fresh + original 777), 10 substrate seeds each (990 runs); reuses substrate_recurrence_characterization.run_single with per-task TOPO_SEED | peak held-out MC 13.47±0.57 (range 12.80–14.35), +48.5%±6.3% over uncoupled; κ*=25 (7/9) or 30 (2/9); original instance 13.91 (+53%) inside the envelope |
+| `gen_paperD_fig1_p1_arms.py` | FIG | D | Paper D Fig. 1: P1/P3a state-readout falsification + input-path control; pooled-table ceiling computed from s19 `oracle_ppl` 10-seed mean 7.25 | `figures/paperD_fig1_p1_arms.pdf` |
 | `gen_paperD_fig2_routing.py` | FIG | D | Paper D Fig. 2: P2 routing retention + P3 soft vs abrupt | `figures/paperD_fig2_routing.pdf` |
 | `gen_paperD_fig3_benchmark.py` | FIG | D | Paper D Fig. 3: P4 benchmark bars | `figures/paperD_fig3_benchmark.pdf` |
 | `gen_architecture_schematic.py` | FIG | shared | Paper Fig. 1 schematics (substrate / REDEM, M4↔M5 loop) | `figures/paperA_fig1_substrate.pdf`, `figures/paperB_fig1_redem.pdf` |
@@ -204,7 +205,7 @@ never modified. `README_REDEM.md` holds the full headline-results registry
 
 Each FIG script emits a single vector `.pdf` (journal submission); the papers
 include the extension-less basename so `pdflatex` picks the vector file
-automatically. Reproduction commands (S1–s35) are in `README_REDEM.md`.
+automatically. Reproduction commands (S1–s36) are in `README_REDEM.md`.
 
 ## Code availability
 

@@ -24,21 +24,25 @@ isolates three host requirements:
    of sample (0/10 seeds; stream perplexity 58–116 vs. 15.0 for a
    Transformer+LoRA reference); the input-path readout beats the reference
    10/10. Fixed Mamba-style multiplicative gates do not repair the state
-   readout (0/10 at either tested sharpness), so input selectivity must be
-   learned.
+   readout (0/10 in the tested γ ∈ {1, 5} settings), so input selectivity
+   must be learned in this architecture.
 2. **The state's role is statistical metadata, not the readout.** A
    fast-channel state EMA tracks domain switches and soft routing retains
    per-domain specialists (forgetting −2.05 to −1.20 ppl, 10/10 seeds at
    τ_m ≤ 1000); the pause-learning (gating-only) policy improves stream
    perplexity on the RLS readout (10/10) — the policy lesson is
    readout-dynamics-dependent.
-3. **Gentle beats abrupt.** Soft routing beats abrupt switching (−1.81 ppl,
-   10/10) and a state-norm homeostat bounds the state and restores the
-   full-state EMA as a valid domain statistic (5/5 switch detections).
+3. **Gentle beats abrupt at the tested point.** At the tested τ_m = 500
+   point, soft routing beats abrupt switching on stream perplexity (−1.81
+   ppl, 10/10; abrupt switching retains purer specialists on forgetting),
+   and a state-norm homeostat bounds the state and restores the full-state
+   EMA as a valid domain statistic (5/5 switch detections).
 
 On a four-domain irregular-switch benchmark the full stack beats the bare
 host (−2.25 stream, −4.47 forgetting, 10/10) and the Transformer+LoRA
-reference (−9.28, −10.08, 10/10). All results are CPU-scale proofs of
+reference (−9.28, −10.08, 10/10; the reference carries the companion's
+untuned hyperparameters — reference tuning narrows the stream margin to
+−1.68 while collapsing its retention). All results are CPU-scale proofs of
 concept; no scaling claims are made.
 
 ## Contents
@@ -46,7 +50,7 @@ concept; no scaling claims are made.
 | File | Purpose |
 |---|---|
 | `PAPER_D.tex` | LaTeX source (REVTeX 4.2, aps preprint class) |
-| `PAPER_D.pdf` | Compiled PDF (15 pages) |
+| `PAPER_D.pdf` | Compiled PDF (18 pages) |
 
 ## Compile
 
@@ -91,7 +95,7 @@ establishes (with the paper location).
 | `s21_ssm_m4_m5.py --sequential` | P3: M4 soft vs. abrupt routing + M5 state-norm homeostat (E1/E2, 70 runs) | `../data/s21_ssm_m4_m5_v1.{csv,json}` | Soft routing 8.22 vs. abrupt 10.03 (−1.81 ppl, 10/10); M5 restores the EMA detector 5/5, state norm 11.3 vs. 50.2 — gentle beats abrupt; the homeostat makes the full-state EMA a valid statistic |
 | `s22_ssm_p4_benchmark.py --sequential` | P4: four-domain irregular-switch benchmark — bare SSM vs. REDEM-SSM vs. TF+LoRA (3 arms, 10 seeds) | `../data/s22_ssm_p4_benchmark_v1.{csv,json}` | REDEM-SSM vs. bare −2.25 stream / −4.47 forgetting; vs. TF+LoRA −9.28 / −10.08 (10/10) — the full stack wins on both axes (Fig. 3, Table 2) |
 | `s23_ssm_p4_realtext.py --sequential` | Real-text transfer: Alice vs. Dickens, 32-symbol char vocab (3 arms, 10 seeds) | `../data/s23_ssm_p4_realtext_v1.{csv,json}` | vs. bare −1.27 (10/10); vs. TF −5.23 (10/10) — the result generalizes from synthetic streams to real text |
-| `s26_ssm_p4_fair_tf.py` | Fair Transformer references: tuned A1 grid (4 lr × 2 ranks) + 4-adapter A3 routing (9 arms, 10 seeds) | `../data/s26_ssm_p4_fair_tf_v1.{csv,json}` | Tuning cuts the stream gap to −1.68 (0/10) but collapses retention to 62.2; TF-A3 forgetting −8.17 (10/10) without fixing stream — mechanisms are host-agnostic, stream performance is not |
+| `s26_ssm_p4_fair_tf.py` | Fair Transformer references: tuned A1 grid (4 lr × 2 ranks) + 4-adapter A3 routing (9 arms, 10 seeds) | `../data/s26_ssm_p4_fair_tf_v1.{csv,json}` | Tuning cuts the stream gap to −1.68 (0/10) but collapses retention to 62.2; TF-A3 forgetting −8.17 (10/10) without fixing stream — the mechanisms transfer across the two hosts tested (with unequally tuned references), and the stream performance is not host-agnostic |
 | `s31_char_bigram_oracle.py` | Char-bigram oracle on the real-text protocol (full-book vs. ref-window fits, 10 seeds) | `../data/s31_char_bigram_oracle_v1.{csv,json}` | First-order ceiling 10.97 ± 0.18 ppl; REDEM-SSM 12.07 within ~1.1 ppl — the "first-order regime" boundary is quantitative |
 | `s33_ssm_p4_m5.py` | M5 state-norm homeostat added to the P4 stack (2 arms, 10 seeds) | `../data/s33_ssm_p4_m5_v1.{csv,json}` | M5 is significantly worse in P4: stream +1.53 / forgetting +2.90 (10/10) — honest negative; Δt modulation breaks the Δt=1 whitening, validating S22's exclusion of M5 |
 | `s35_readout_boundary_probe.py --workers 4` | P1 boundary probes on the s19 host (10 seeds): full/half-window oracle, skip-vs-proj nested check, token decoding, fast-channel next-token readouts | `../data/s35_readout_boundary_probe_v1.{csv,json}` | Full-window oracle 31.2 vs. half-window 17.3 (window-dependent); skip 18.0 > proj 7.25 (nested violation, 10/10); current token decodable from fast channels at 88.9–99.7%, yet fast-channel-only next-token readouts fail (68–104 vs. 13.9–17.4) — the P1 failure is a pooled-readout/metric property, not missing linear information (§3) |
@@ -99,7 +103,7 @@ establishes (with the paper location).
 | `gen_paperD_fig2_routing.py` | FIG: P2 routing retention + P3 soft vs. abrupt | `../figures/paperD_fig2_routing.pdf` | Fig. 2 |
 | `gen_paperD_fig3_benchmark.py` | FIG: P4 benchmark bars | `../figures/paperD_fig3_benchmark.pdf` | Fig. 3 |
 
-Seed discipline and the full S1–s35 pipeline:
+Seed discipline and the full S1–s36 pipeline:
 [`../README_REDEM.md`](../README_REDEM.md).
 
 ## Companion papers
