@@ -2,8 +2,8 @@
 
 > Status: experimental program complete (S1–S9); papers finalized and
 > typeset (S10). This repository lives at
-> github.com/huyamingc/REDEM (private during review; made public on
-> acceptance). The root `README.md` is the repository overview; the Si3N4
+> github.com/huyamingc/REDEM. The root `README.md` is the repository
+> overview; the Si3N4
 > pulse-encoding paper lives in its own repository
 > (github.com/huyamingc/Si3N4-Pulse-Encoding; preprint DOI
 > 10.5281/zenodo.21753791) and is cited as the substrate calibration source

@@ -7,9 +7,14 @@ kernel, and the λ-homeostat that restores memory after disturbances.
 
 - PDF: [`PAPER_A.pdf`](PAPER_A.pdf) | LaTeX: [`PAPER_A.tex`](PAPER_A.tex)
 - Preprint: [doi:10.5281/zenodo.22109664](https://doi.org/10.5281/zenodo.22109664)
+- Code and data: <https://github.com/huyamingc/REDEM>
 - Target: *Chaos, Solitons & Fractals* (Elsevier)
 - Series overview and reading order (A → B → C → D):
   [`../README.md`](../README.md)
+- Prior work (substrate calibration source): *Si₃N₄ Shallow-Trap Relaxation
+  for Temporal Pattern Encoding* — Zenodo preprint
+  [doi:10.5281/zenodo.21753791](https://doi.org/10.5281/zenodo.21753791)
+  (see the Provenance section of the root README)
 
 ## Key results
 

@@ -209,9 +209,8 @@ automatically. Reproduction commands (S1–s36) are in `README_REDEM.md`.
 
 ## Code availability
 
-All simulation code and data required to reproduce the results are available
-at <https://github.com/huyamingc/REDEM> (private during review; made public on
-acceptance).
+All simulation code and data required to reproduce the results are openly
+available at <https://github.com/huyamingc/REDEM>.
 
 ## License
 
