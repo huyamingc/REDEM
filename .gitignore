@@ -51,6 +51,7 @@ preprint_titles_abstracts.txt
 # Journal-submission artifacts (uploaded via editorial systems, not repo content;
 # zips duplicate tracked scripts/data and are rebuilt by review_workspace tooling)
 **/COVER_LETTER.txt
+**/COVER_LETTER.docx
 **/DECLARATION_OF_INTERESTS.docx
 **/Highlights.docx
 **/Supplementary_Material_*.zip
