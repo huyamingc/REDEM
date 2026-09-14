@@ -63,7 +63,7 @@ still needs.
   ground up, motivated by Paper C's host-boundary result (desk-rejected by
   *PRX Intelligence*: scope mismatch — the paper is CS/ML, not
   physics-advancing). Intermediate AI draft kept for rollback; **current
-  submission = Neurocomputing** (`elsarticle`, 25 pp), with P4 M3/M4
+  submission = Neurocomputing** (`elsarticle`, 31 pp), with P4 M3/M4
   factor ablation and a classical ESN+RLS baseline
   → [`paper_d/PAPER_D_NC.pdf`](paper_d/PAPER_D_NC.pdf) |
   [`paper_d/PAPER_D_NC.tex`](paper_d/PAPER_D_NC.tex) |
@@ -84,17 +84,18 @@ still needs.
   repair + 2026-09-13 meta/clean-P0 wording): v3 corrects two false
   significance statements against the committed per-run data (cross-family
   ring gain `t=2.45 > 2.262`, `p≈0.037`; three of four per-segment memory
-  gains significant), rewrites the Introduction positioning, cuts the
-  Abstract to ≤250 words (now 238), adds **EWC**
+  gains significant), rewrites the Introduction positioning, tightens the
+  Abstract (283 words on one counting convention; Neurocomputing states no
+  abstract word limit), adds **EWC**
   (`scripts/s65_ewc_baseline.py`, bit-exact pairing to s52: whole-run
   −0.85±0.70 pp, t=−3.87, 0/10; only redistributes revisit retention,
   while frozen-snapshot memory gains +8.70±2.92 pp with no linear loss),
   and aligns title/abstract/cover letter with the retracted
-  per-dimension-correction claim (uniform sign flip only); 63 pp
+  per-dimension-correction claim (uniform sign flip only); 68 pp
   → [`paper_e/PAPER_E_v3.pdf`](paper_e/PAPER_E_v3.pdf) |
   [`paper_e/PAPER_E_v3.tex`](paper_e/PAPER_E_v3.tex) |
-  [`paper_e/PAPER_E_v2.pdf`](paper_e/PAPER_E_v2.pdf) (v2) |
-  [`paper_e/PAPER_E_v1.pdf`](paper_e/PAPER_E_v1.pdf) (reviewed baseline) |
+  `paper_e/PAPER_E_v2.pdf` (v2, local only — not committed) |
+  `paper_e/PAPER_E_v1.pdf` (reviewed baseline, local only — not committed) |
   [`paper_e/README.md`](paper_e/README.md) |
   [`review_workspace/modification_log_E_v3.md`](review_workspace/modification_log_E_v3.md)
   (v3 change log) |
@@ -116,9 +117,11 @@ still needs.
   asks which selectivity pressure the clean metric still needs (top-k
   gates, expert routing). External Mamba-style selective-SSM baseline
   (s66) loses to Gate-C-topk on the same host/stream/seeds
-  (stream 9.03 vs 7.03, 0/10 external better), despite ~1.34× more
-  trainable parameters than Gate-C-topk. Target: *Neurocomputing* / TMLR
-  (draft, 11 pp)
+  (stream 9.03 vs 7.03, 0/10 external better). The external arm's 24,864
+  host parameters are **frozen at a random init**, so it trains *fewer*
+  parameters than Gate-C-topk (8,224 vs 24,736), not more. Target:
+  *Neurocomputing* / TMLR
+  (draft, 13 pp)
   → [`paper_f/PAPER_F.pdf`](paper_f/PAPER_F.pdf) |
   [`paper_f/PAPER_F.tex`](paper_f/PAPER_F.tex) |
   [`paper_f/README.md`](paper_f/README.md) |
@@ -271,7 +274,7 @@ See [`paper_f/README.md`](paper_f/README.md) and
 | `s20_ssm_m3_routing.py` | ML | D | P2: M3 EMA metadata + drift detection + routing on the SSM host (A1/A2/A3, 90 runs, torch CPU) | A2 stream −1.52…−2.45 (10/10); A3 forget −2.05/−1.87/−1.20 (10/10, τ_m≤1000) |
 | `s21_ssm_m4_m5.py` | ML | D | P3: M4 soft vs abrupt routing + M5 state-norm homeostat (E1/E2, 70 runs, torch CPU) | soft 8.22 vs abrupt 10.03 (−1.81, 10/10); M5 restores EMA detector 5/5, norm 11.3 vs 50.2 |
 | `s22_ssm_p4_benchmark.py` | ML | D | P4: 4-domain irregular-switch benchmark (SSM-bare / SSM-REDEM / TF-A1, 30 runs, torch CPU) | REDEM-SSM vs bare −2.25/−4.47, vs TF −9.28/−10.08 (10/10) |
-| `s23_ssm_p4_realtext.py` | ML | D | real-text benchmark: two Gutenberg books (Alice vs Dickens), 32-symbol char vocab (30 runs, torch CPU) | REDEM-SSM vs bare −1.27 (10/10), vs TF −5.23 (10/10) |
+| `s23_ssm_p4_realtext.py` | ML | D | real-text benchmark: two Gutenberg books (Alice vs Dickens), 32-symbol char vocab (30 runs, torch CPU) | REDEM-SSM vs bare −1.26 (10/10), vs TF −5.23 (10/10) |
 | `s24_homeo_plasticity_coupling.py` | PAPER | B | M4-M5 coupling loop under the S11 disturbance chain (4 arms, 10 seeds) | coupling does not help: homeostat alone r3 MC 8.47 vs +fixed-churn 6.45 (t=−9.6, 0/10) / +coupled 5.27 (0/10) — rewiring during disturbance is harmful |
 | `s25_reward_gated_plasticity.py` | PAPER | B | novelty-reward-gated vs correlation-guided rewiring (4 arms, 10 seeds, S7 protocol) | novelty-guided MC 14.59 vs corr 12.43 (+2.15, t=4.5, 10/10) — intrinsic signals are structure-level tools |
 | `s26_ssm_p4_fair_tf.py` | ML | D | fair Transformer references for P4: tuned A1 grid (lr×rank) + 4-adapter A3 routing (9 arms, 10 seeds) | tuning cuts the stream gap to −1.68 (0/10) but collapses forgetting to 62.2; TF-A3 routing retains specialists (−8.17 forgetting, 10/10) yet stream stays 21.77 — mechanisms transfer, the host does not |

@@ -1,13 +1,19 @@
 #!/usr/bin/env python3
 """
-Paper D Fig 2 - P2/P3 routing: M3 retains domain specialists; gentle
-(soft) routing beats abrupt on stream perplexity.
+Paper D Fig 2 - P2/P3 routing: M3 retains domain specialists; soft vs.
+abrupt routing on stream perplexity (this ranking is floor-sensitive).
 =============================================================================
 Type:           FIG (matplotlib only, reads CSV, no @njit, no Pool)
 Paper §:        Paper D Section 3 (Results: P2/P3)
 Reads:          ../data/s20_ssm_m3_routing_v1.csv
                 ../data/s21_ssm_m4_m5_v1.csv
 Output:         ../figures/paperD_fig2_routing.pdf
+Note:           The right-hand title is deliberately neutral. The paper
+                states at PAPER_D_NC.tex ("we therefore do not claim
+                ``gentle wins'' on stream") that the soft-over-abrupt
+                stream margin reverses once clipped tokens are excluded,
+                so an assertive in-figure title would contradict the
+                text and its own sensitivity table.
 =============================================================================
 """
 import os
@@ -84,7 +90,8 @@ def main():
     ax.legend(fontsize=7, frameon=False)
     ax.grid(alpha=0.3)
 
-    # Right: soft vs abrupt routing stream ppl (P3: gentle wins)
+    # Right: soft vs abrupt routing stream ppl (P3; the ranking is
+    # floor-sensitive and the paper does not claim "gentle wins")
     ax = axes[1]
     names = ['A1 bare', 'A3 abrupt', 'A3 soft']
     vals = [s21['A1'], s21['A3-abrupt'], s21['A3-soft']]
@@ -96,8 +103,8 @@ def main():
                 ha='center', fontsize=8)
     ax.set_ylabel('stream perplexity', fontsize=9)
     ax.set_ylim(0, 15)
-    ax.set_title('P3: soft routing (gentle) beats abrupt, '
-                 r'$\tau_m=500$', fontsize=9)
+    ax.set_title('P3: soft vs. abrupt routing at '
+                 r'$\tau_m=500$ (floor-sensitive)', fontsize=9)
     ax.grid(axis='y', alpha=0.3)
 
     fig.tight_layout()

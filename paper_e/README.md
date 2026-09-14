@@ -287,8 +287,9 @@ README tables or cover letters.
 - [x] Frozen self-contained deps/ (shared core reverted to A–D canonical)
 - [x] v1 review round closed (PAPER_E_v1.tex/.pdf, 23 pp; suffix `_E_v1` in `../review_workspace/`)
 - [x] **v2 deep review round closed** (PAPER_E_v2.tex/.pdf, 60 pp): six-agent + meta-level review, 132 findings (28 P0 + 104 P1) all closed, C-tier scripts edited and re-run, numbers back-filled, six figures re-audited
-- [x] **v3 closed** (PAPER_E_v3.tex/.pdf, 63 pp): significance repairs, EWC baseline, Abstract ≤250, supplementary rebuilt for v3
-- [x] **2026-09-13 meta + clean-P0**: title/abstract/cover letter/Highlights aligned to retracted-claim-safe vocabulary; abstract now 238 words
+- [x] **v3 closed** (PAPER_E_v3.tex/.pdf, 68 pp): significance repairs, EWC baseline, supplementary rebuilt for v3
+- [x] **2026-09-13 meta + clean-P0**: title/abstract/cover letter/Highlights aligned to retracted-claim-safe vocabulary; abstract 283 words
+      (LaTeX and math stripped) — Neurocomputing states no abstract word limit
 - [x] **2026-09-13 autonomy/self expansion**: Discussion gains operational-self formalization, graded negatives (s42/s58c controlled; s47 retracted), host scoping; cover letter/Highlights re-aligned (s47 no longer "honest negative"); supplementary zip manuscript entry refreshed
 - [x] journal targeting / final copy-edit
 

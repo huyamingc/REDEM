@@ -51,8 +51,9 @@ noise control rules out dimension/optimizer imbalance, while a
 $32$-dimensional state slice is stream-positive. Unconstrained
 cross-entropy training of a feature-level gate improves stream form
 but does not sparsify and destroys retention. Hard top-$k$ sparsity
-($k=32$) is the missing pressure: it yields the best stream arm
-($7.03$) at near-baseline retention. Soft routing over two online
+($k=32$) is the missing pressure: it is the best stream arm that keeps
+retention near baseline ($7.03$; a weakly $L_1$-regularised gate edges
+it on stream, $6.99$, at $11.57$ retention). Soft routing over two online
 softmax experts reduces forgetting further ($9.20\to7.79$,
 $10/10$) at stream parity; a hard-routing ablation is slightly better
 on retention ($6.94$) at a small stream tax. The full stack beats the calibrated
@@ -94,7 +95,7 @@ That work established a deconvolution impossibility for recovering the
 current token from a linearly decayed state mixture, identified the
 additive input path as required for calibration, and showed that
 several stream rankings reverse once clipped tokens are excluded.
-Paper~E, on a different substrate, measured the complementary
+Paper~E~\cite{epaper}, on a different substrate, measured the complementary
 ceiling at the decision layer: under a $\pm1$ reward channel,
 autonomy reduces to selection among a human-supplied pair of
 correction laws.
@@ -118,7 +119,8 @@ imbalance are excluded by noise and width-matched controls.
 \item \textbf{C4/C4b (learned sparse selectivity).} Unconstrained
 cross-entropy training of a feature-level gate improves stream form
 but does not sparsify and collapses retention. Hard top-$k$ sparsity
-is the missing pressure: best stream at near-baseline retention.
+is the missing pressure: best stream among the retention-safe gate
+variants.
 \item \textbf{C5 (expert routing).} Soft routing over two online
 softmax experts on the sparse-gated base reduces forgetting by
 $1.41$~ppl ($10/10$) at stream parity.
@@ -178,7 +180,7 @@ a fast-channel EMA domain statistic (Paper~D's M3 metadata), under a
 clean metric, on a sparse-gated state slice. Catastrophic-forgetting
 baselines such as EWC~\cite{kirkpatrick2017} and consolidation accounts
 of multi-timescale memory~\cite{benna2016} are not the focus here
-(Paper~E reports a matched-optimizer negative); we stay inside the
+(Paper~E~\cite{epaper} reports a matched-optimizer negative); we stay inside the
 readout-form question.
 
 \section{Preliminaries: host, metric, and Paper~D's boundary}
@@ -353,7 +355,7 @@ Arm & stream & forget mean/med & notes \\
 Skip-sub & 8.142 & 11.231 / 9.908 & fixed slice \\
 Gate-C & 7.741 & 31.075 / 26.155 & gate $\approx0.72$ open \\
 \textbf{Gate-C-topk} & \textbf{7.033} & \textbf{9.201 / 9.330} & $k=32$ \\
-Gate-C-L1 & 6.994 & 11.574 / 11.136 & $\lambda=0.01$ \\
+Gate-C-L1 & 6.994 & 11.574 / 11.136 & $\lambda{=}0.01$, $6\%$ open \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -362,7 +364,15 @@ Gate-C-topk vs B-softmax: stream better $10/10$ ($-1.62$);
 forget mean $+0.31$ ($3/10$ better) --- near parity. Gate-C-topk vs
 Gate-C: forget better $10/10$ ($-21.9$). Cross-entropy alone does not
 sparsify; hard cardinality is the pressure that turns selectivity into
-a retention-safe mechanism.
+a retention-safe mechanism. The weakly $L_1$-regularised gate
+(Gate-C-L1) does sparsify --- it opens only $6\%$ of the gates above
+$0.5$, against $25\%$ ($=k/N$) for top-$k$ --- and edges top-$k$ on
+stream by $0.04$~ppl, but it pays $2.37$~ppl more on retention
+($11.574$ vs.\ $9.201$) and $1.81$~ppl more on the across-seed median
+($11.136$ vs.\ $9.330$). It is
+therefore reported for completeness and not selected, and every
+``best stream'' statement in this paper means best among the variants
+that keep retention near baseline.
 
 \subsection{C5: expert routing}
 \begin{table}[h]
@@ -484,17 +494,23 @@ matched learning rate; retention collapses; a $4\times$ larger host
 learning rate makes joint training diverge, so the committed
 \texttt{s66} rows pool both rates under one arm name), while F's
 learned top-$k$ gate remains best
-($7.03$, $10/10$ paired seeds vs.\ the frozen external arm). The
-external arm carries $\sim1.34\times$ the trainable parameters of
-F's \emph{Gate-C-topk} arm ($33{,}088$ vs.\ $24{,}736$, from
-\texttt{s66} committed rows: F's gate arm is readout ($8{,}224$) +
-gate ($16{,}512$) $= 24{,}736$; the external arm is readout ($8{,}224$) +
-host ($24{,}864$) $= 33{,}088$, fields
-\texttt{n\_params\_readout}/\texttt{n\_params\_gate}/\texttt{n\_params\_host}),
-so that gate win is not
-a capacity fluke on this comparison; the ratio is not $1.34\times$ F's
-ungated \texttt{B-softmax-sgd} anchor ($4{,}128$), against which the
-external arm is much larger. This closes the earlier
+($7.03$, $10/10$ paired seeds vs.\ the frozen external arm). The two
+arms are \emph{not} capacity-matched, and the mismatch runs in F's
+favour on the axis that matters for training: the frozen external
+arm's $24{,}864$ host parameters are held at their per-seed
+\emph{random} initialisation, so its trained budget is the shared
+readout alone ($8{,}224$), while F's \emph{Gate-C-topk} arm trains
+$24{,}736$ ($8{,}224$ readout $+$ $16{,}512$ gate) --- $3.0\times$
+more (fields \texttt{n\_params\_readout}/\texttt{n\_params\_gate}/
+\texttt{n\_params\_host} of the \texttt{s66} rows). In total parameter
+count the external arm is the larger of the two ($33{,}088$ vs.\
+$24{,}736$), so neither budget comparison is like-for-like and we do
+not claim one: the margin over the frozen arm is a positive result
+against a random selective-SSM feature map at this scale, not against
+a trained modern SSM. Against F's ungated \texttt{B-softmax-sgd}
+anchor ($4{,}128$ trained) the external arm carries $2.0\times$ the
+trained parameters and still loses on both axes. This closes the
+earlier
 ``no external modern-SSM baseline'' gap for the
 \emph{selective-SSM} family only --- one host configuration, one
 protocol family, $N=128$, $10$ seeds, CPU scale; it is not a
@@ -533,8 +549,12 @@ single mechanism: \textbf{put the evaluation instrument inside the
 learned system}, and report the feedback budget next to every
 autonomy claim.
 
-\section*{Data and code}
-CSVs and scripts under \texttt{data/} and \texttt{scripts/} (paired to
+\section*{Code and data availability}
+{\sloppy\emergencystretch=2em
+All simulation scripts and generated data reported here are openly
+available at \url{https://github.com/huyamingc/REDEM}.\par}
+The experiment scripts cited in this paper are CSVs and scripts under
+\texttt{data/} and \texttt{scripts/} (paired to
 Paper~D \texttt{s19}/\texttt{s20}):
 \begin{itemize}
 \item \texttt{s50\_paper\_f\_pilot\_nl\_readout} (C1--C3);
@@ -551,7 +571,41 @@ Paper~D \texttt{s19}/\texttt{s20}):
 Validation, Formal analysis, Investigation, Data curation, Writing --
 original draft, Writing -- review \& editing.
 
-\begin{thebibliography}{9}
+\section*{Declaration of competing interest}
+
+The author declares no known competing financial interests or personal
+relationships that could have appeared to influence the work reported in
+this paper.
+
+\section*{Funding}
+
+This research did not receive any specific grant from funding agencies in
+the public, commercial, or not-for-profit sectors.
+
+\section*{Declaration of generative AI and AI-assisted technologies in
+the writing process}
+
+During the preparation of this work the author used an AI-assisted
+writing and review tool in order to improve readability, check
+consistency and draft editorial text. After using this tool, the author
+reviewed and edited the content as needed and takes full responsibility
+for the content of the publication.
+
+\begin{thebibliography}{10}
+
+\bibitem{dpaper}
+Y.~Hu,
+REDEM-SSM: A State-Space Architecture with Native Online Learning,
+Meta-Adaptation, and Structural Plasticity,
+companion preprint (Paper~D), Zenodo (2026),
+\url{https://doi.org/10.5281/zenodo.22110623}.
+
+\bibitem{epaper}
+Y.~Hu,
+Self-evolution under $\pm1$ reward: sign-flip correction,
+reconstructed-label capacity sensing, and snapshot-gated memory in a
+recurrent relaxation reservoir,
+companion manuscript (Paper~E).
 
 \bibitem{sun2024ttt}
 Y.~Sun, X.~Li, K.~Dalal, J.~Xu, A.~Vikram, G.~Zhang, Y.~Dubois,
@@ -578,51 +632,26 @@ The ``echo state'' approach to analysing and training recurrent neural
 networks,
 GMD Report 148, 2001.
 
-\bibitem{benna2016}
-M.~K. Benna, S.~Fusi,
-Computational principles of synaptic memory consolidation,
-Nature Neuroscience, 2016.
-
-\bibitem{dpaper}
-Y.~Hu,
-REDEM-SSM: A State-Space Architecture with Native Online Learning,
-Meta-Adaptation, and Structural Plasticity,
-companion manuscript (Paper~D).
-
 \bibitem{lukosevicius2009}
-S.~Lukosevicius, H.~Jaeger,
+M.~Luko\v{s}evi\v{c}ius, H.~Jaeger,
 Reservoir computing approaches to recurrent neural network training,
-Computer Science Review, 2009.
-
-\bibitem{kirkpatrick2017}
-J.~Kirkpatrick, et al.,
-Overcoming catastrophic forgetting in neural networks,
-PNAS, 2017.
+Computer Science Review 3 (3) (2009) 127--149.
 
 \bibitem{hu2022lora}
 E.~J.~Hu, et al.,
 LoRA: Low-Rank Adaptation of Large Language Models,
 arXiv:2205.13098, 2022.
 
+\bibitem{kirkpatrick2017}
+J.~Kirkpatrick, et al.,
+Overcoming catastrophic forgetting in neural networks,
+PNAS, 2017.
+
+\bibitem{benna2016}
+M.~K. Benna, S.~Fusi,
+Computational principles of synaptic memory consolidation,
+Nature Neuroscience, 2016.
+
 \end{thebibliography}
-
-\section*{Declaration of competing interest}
-
-The author declares no known competing financial interests or personal
-relationships that could have appeared to influence the work reported in
-this paper.
-
-\section*{Funding}
-
-This research did not receive any specific grant from funding agencies in
-the public, commercial, or not-for-profit sectors.
-
-\section*{Declaration of generative AI and AI-assisted technologies in
-the writing process}
-
-During the preparation of this work the author used language tools only
-for language polish and code formatting. No scientific claims, data, or
-figures were generated by AI. The author reviewed and edited all content
-as needed and takes full responsibility for the paper.
 
 \end{document}

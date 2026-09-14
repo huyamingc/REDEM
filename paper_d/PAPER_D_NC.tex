@@ -77,7 +77,7 @@ soft routing retains per-domain specialists. Under the clipped-linear
 perplexity of this squared-loss RLS readout family, several stream
 comparisons are floor-sensitive and reverse once clipped tokens are
 excluded; forgetting gains and the M5 negative result are robust. A
-companion study \cite{redemf} shows the artifact belongs to the training objective,
+companion study shows the artifact belongs to the training objective,
 not the output range: post-hoc simplex projection removes negative
 mass without repairing stream scores, whereas a trained probabilistic
 readout does. (iii)~A
@@ -361,13 +361,13 @@ w_d = \frac{\exp(-\|m_t - r_d\|/\kappa)}{\sum_{d'}
 \qquad \kappa = 0.5 \times \text{median pairwise }\|r_d - r_{d'}\|,
 \label{eq:soft}
 \end{equation}
-This $\kappa$ is the soft-routing length scale (data-adaptive, of order
-the reference separation), distinct from the substrate coupling strength
-$\kappa$ of the companion substrate paper \cite{redema} (there
-$\kappa^{*}\in[25,30]$) and from the E/I modulation ratio $\kappa$ of the
-silicon-nitride front-end; the three are unrelated quantities.
 with the prediction $\hat{y}_t = \sum_d w_d\, W_d \phi_t$ and
-$W_d, P_d$ updated with error scaled by $w_d$. This instantiates the
+$W_d, P_d$ updated with error scaled by $w_d$. Here $\kappa$ is the
+soft-routing length scale (data-adaptive, of order the reference
+separation), distinct from the substrate coupling strength $\kappa$ of the
+companion substrate paper \cite{redema} (there $\kappa^{*}\in[25,30]$) and
+from the E/I modulation ratio $\kappa$ of the silicon-nitride front-end;
+the three are unrelated quantities. This instantiates the
 gradual-structural-change design of \cite{redemc}; on this host the
 reported soft-over-abrupt stream margin is floor-sensitive and is not
 claimed as primary evidence (Section~\ref{sec:sens}).
@@ -573,8 +573,10 @@ floor-sensitive: see Section~\ref{sec:sens}.}
 
 Table~\ref{tab:p2} and Fig.~\ref{fig:routing} (left). The three host
 arms are A1 (bare: the input-path RLS readout only), A2 (the
-pause-learning policy), and A3 (soft routing over two domain
-specialists). M3 (fast-channel EMA) supplies the domain statistic the
+pause-learning policy), and A3 (hysteresis-gated \emph{hard} routing
+between two domain specialists --- a discrete nearest-reference
+selector, not the soft weighting of M4, Eq.~\ref{eq:soft}). M3
+(fast-channel EMA) supplies the domain statistic the
 gate reads: over the 5 known switches of the two-domain protocol it
 detects a mean of $2.80/5$ at $\tau_m{=}200$, falls to $0.30/5$ at 500,
 and detects none at 1000 and 2000 (per-seed counts in
@@ -595,9 +597,10 @@ forgetting against $-0.98$ for seeds with none. The detector is
 therefore not what makes the routing work --- the gain survives at
 $\tau_m{=}1000$, where it never fires --- but it marks where the gain is
 strongest under the reported metric. A3's stream
-cost in the frozen-covariance variant ($+0.38$ to $+4.08$) is removed
-once the specialist readouts are trained online under soft routing
-(Section~\ref{sec:m4}, Section~\ref{sec:p3}).
+cost in the frozen-covariance variant ($+0.38$ to $+4.08$) disappears in
+the M4 variant that routes softly \emph{and} trains the specialists
+online, which changes the routing rule and the specialist update
+together (Section~\ref{sec:m4}, Section~\ref{sec:p3}).
 
 The pause-learning arm (A2 --- the paused-readout policy, distinct from the
 fixed multiplicative feature gates of Section~\ref{sec:p1})
@@ -646,8 +649,8 @@ A3 route & 2000 & 15.83 & $+4.08$ (0/10) & 8.38 & $-0.01$ (5/10) \\
 \end{tabular}
 \caption{P2 (10 seeds, two-domain protocol): routing (A3) retains domain
 specialists (forgetting improves at $\tau_m \le 1000$, 10/10) at a
-frozen-covariance stream cost that disappears when the specialist readouts
-are trained online under soft routing
+frozen-covariance stream cost that disappears in the M4 variant which
+routes softly and trains the specialists online
 (Section~\ref{sec:p3}). Pause-learning (A2 --- the paused-readout policy,
 not the multiplicative feature gates of Section~\ref{sec:p1}) shows a
 reported stream gain that reverses under the unclipped metric and a
@@ -1445,6 +1448,15 @@ this paper.
 This research did not receive any specific grant from funding agencies in
 the public, commercial, or not-for-profit sectors.
 
+\section*{Declaration of generative AI and AI-assisted technologies in
+the writing process}
+
+During the preparation of this work the author used an AI-assisted
+writing and review tool in order to improve readability, check
+consistency and draft editorial text. After using this tool, the author
+reviewed and edited the content as needed and takes full responsibility
+for the content of the publication.
+
 \section*{Code and data availability}
 
 {\sloppy\emergencystretch=2em
@@ -1452,13 +1464,26 @@ All simulation scripts and generated data are openly available at
 \url{https://github.com/huyamingc/REDEM}.\par}
 
 \begingroup\hbadness=2500
-\begin{thebibliography}{30}
+\begin{thebibliography}{26}
 
-\bibitem{redema}
-Y.~Hu, Memory and chaos in a physics-constrained relaxation substrate:
-phase diagram, multi-timescale forgetting, and disturbance robustness,
-Zenodo (2026). Companion preprint (Paper A),
-\url{https://doi.org/10.5281/zenodo.22109664}.
+\bibitem{gu2022s4}
+A.~Gu, K.~Goel, C.~R\'e, Efficiently modeling long sequences with
+structured state spaces, in: International Conference on Learning
+Representations (ICLR), 2022.
+
+\bibitem{gu2023mamba}
+A.~Gu, T.~Dao, Mamba: Linear-time sequence modeling with selective state
+spaces, arXiv:2312.00752 (2023).
+
+\bibitem{lukosevicius2009}
+M.~Luko\v{s}evi\v{c}ius, H.~Jaeger, Reservoir computing approaches to
+recurrent neural network training, Computer Science Review 3 (3) (2009)
+127--149.
+
+\bibitem{jaeger2001esn}
+H.~Jaeger, The ``echo state'' approach to analysing and training
+recurrent neural networks, GMD Report 148, German National Research
+Center for Information Technology (2001).
 
 \bibitem{redemb}
 Y.~Hu, REDEM: Online learning with meta-adaptation and structural
@@ -1471,19 +1496,18 @@ homeostatic recovery, and substrate physics are non-substitutable in
 the directions and conditions tested, Zenodo (2026). Companion preprint
 (Paper C), \url{https://doi.org/10.5281/zenodo.22110618}.
 
-\bibitem{redemf}
-Y.~Hu, Learning the readout form: objective-level calibration, sparse
-selectivity, and expert routing on a diagonal state-space host,
-companion preprint (Paper F), 2026.
+\bibitem{jaeger2004science}
+H.~Jaeger, H.~Haas, Harnessing nonlinearity: Predicting chaotic systems
+and saving energy in wireless communication, Science 304 (2004) 78--80.
 
-\bibitem{gu2023mamba}
-A.~Gu, T.~Dao, Mamba: Linear-time sequence modeling with selective state
-spaces, arXiv:2312.00752 (2023).
+\bibitem{maass2002lsm}
+W.~Maass, T.~Natschl\"ager, H.~Markram, Real-time computing without
+stable states: A new framework for neural computation based on
+perturbations, Neural Computation 14 (2002) 2539--2560.
 
-\bibitem{gu2022s4}
-A.~Gu, K.~Goel, C.~R\'e, Efficiently modeling long sequences with
-structured state spaces, in: International Conference on Learning
-Representations (ICLR), 2022.
+\bibitem{vaswani2017}
+A.~Vaswani, N.~Shazeer, N.~Parmar, et al., Attention is all you need, in:
+Advances in Neural Information Processing Systems (NeurIPS), 2017.
 
 \bibitem{liu2025longhorn}
 B.~Liu, et al., Longhorn: State space models are amortized online
@@ -1507,52 +1531,34 @@ transformers with the delta rule over sequence length, in: Advances in
 Neural Information Processing Systems (NeurIPS), 2024.
 (arXiv:2406.06484).
 
-\bibitem{hu2022lora}
-E.~Hu, Y.~Shen, P.~Wallis, et al., LoRA: Low-rank adaptation of large
-language models, in: International Conference on Learning
-Representations (ICLR), 2022.
-
-\bibitem{vaswani2017}
-A.~Vaswani, N.~Shazeer, N.~Parmar, et al., Attention is all you need, in:
-Advances in Neural Information Processing Systems (NeurIPS), 2017.
-
-\bibitem{parisi2019}
-G.~Parisi, R.~Kemker, J.~Part, et al., Continual lifelong learning with
-neural networks: A review, Neural Networks 113 (2019) 54--71.
-
-\bibitem{lukosevicius2009}
-M.~Luko\v{s}evi\v{c}ius, H.~Jaeger, Reservoir computing approaches to
-recurrent neural network training, Computer Science Review 3 (3) (2009)
-127--149.
-
-\bibitem{jaeger2001esn}
-H.~Jaeger, The ``echo state'' approach to analysing and training
-recurrent neural networks, GMD Report 148, German National Research
-Center for Information Technology (2001).
-
-\bibitem{jaeger2004science}
-H.~Jaeger, H.~Haas, Harnessing nonlinearity: Predicting chaotic systems
-and saving energy in wireless communication, Science 304 (2004) 78--80.
-
-\bibitem{maass2002lsm}
-W.~Maass, T.~Natschl\"ager, H.~Markram, Real-time computing without
-stable states: A new framework for neural computation based on
-perturbations, Neural Computation 14 (2002) 2539--2560.
+\bibitem{redema}
+Y.~Hu, Memory and chaos in a physics-constrained relaxation substrate:
+phase diagram, multi-timescale forgetting, and disturbance robustness,
+Zenodo (2026). Companion preprint (Paper A),
+\url{https://doi.org/10.5281/zenodo.22109664}.
 
 \bibitem{verstraeten2007}
 D.~Verstraeten, B.~Schrauwen, M.~d'Haene, D.~Stroobandt, An
 experimental unification of reservoir computing methods, Neural
 Networks 20 (2007) 391--403.
 
-\bibitem{hochreiter1997lstm}
-S.~Hochreiter, J.~Schmidhuber, Long short-term memory, Neural
-Computation 9 (1997) 1735--1780.
+\bibitem{parisi2019}
+G.~Parisi, R.~Kemker, J.~Part, et al., Continual lifelong learning with
+neural networks: A review, Neural Networks 113 (2019) 54--71.
 
-\bibitem{shazeer2017moe}
-N.~Shazeer, A.~Mirhoseini, K.~Maziarz, A.~Davis, Q.~Le, G.~Hinton,
-J.~Dean, Outrageously large neural networks: The sparsely-gated
-mixture-of-experts layer, in: International Conference on Learning
-Representations (ICLR), 2017.
+\bibitem{zinkevich2003}
+M.~Zinkevich, Online convex programming and generalized infinitesimal
+gradient ascent, in: International Conference on Machine Learning
+(ICML), 2003, pp.~928--936.
+
+\bibitem{cesabianchi2006}
+N.~Cesa-Bianchi, G.~Lugosi, Prediction, Learning, and Games, Cambridge
+University Press, New York, 2006.
+
+\bibitem{hu2022lora}
+E.~Hu, Y.~Shen, P.~Wallis, et al., LoRA: Low-rank adaptation of large
+language models, in: International Conference on Learning
+Representations (ICLR), 2022.
 
 \bibitem{ljung1983}
 L.~Ljung, T.~S\"oderstr\"om, Theory and Practice of Recursive
@@ -1566,18 +1572,24 @@ Saddle River, NJ, 2002.
 G.~C.~Goodwin, K.~S.~Sin, Adaptive Filtering Prediction and Control,
 Prentice-Hall, Englewood Cliffs, NJ, 1984.
 
-\bibitem{zinkevich2003}
-M.~Zinkevich, Online convex programming and generalized infinitesimal
-gradient ascent, in: International Conference on Machine Learning
-(ICML), 2003, pp.~928--936.
+\bibitem{shazeer2017moe}
+N.~Shazeer, A.~Mirhoseini, K.~Maziarz, A.~Davis, Q.~Le, G.~Hinton,
+J.~Dean, Outrageously large neural networks: The sparsely-gated
+mixture-of-experts layer, in: International Conference on Learning
+Representations (ICLR), 2017.
 
-\bibitem{cesabianchi2006}
-N.~Cesa-Bianchi, G.~Lugosi, Prediction, Learning, and Games, Cambridge
-University Press, New York, 2006.
+\bibitem{hochreiter1997lstm}
+S.~Hochreiter, J.~Schmidhuber, Long short-term memory, Neural
+Computation 9 (1997) 1735--1780.
 
 \bibitem{kingma2015adam}
 D.~P.~Kingma, J.~Ba, Adam: A method for stochastic optimization, in:
 International Conference on Learning Representations (ICLR), 2015.
+
+\bibitem{redemf}
+Y.~Hu, Learning the readout form: objective-level calibration, sparse
+selectivity, and expert routing on a diagonal state-space host,
+companion preprint (Paper F), 2026.
 
 \end{thebibliography}
 \endgroup

@@ -286,8 +286,8 @@ def main():
         ax.set_title(topo, fontsize=9)
         ax.legend(fontsize=7)
         ax.grid(alpha=0.3)
-    fig.suptitle('S61 (G3): cross-family transfer is partial & '
-                 'structure-matched (ring segment shaded)\n'
+    fig.suptitle('S61 (G3): cross-family transfer is weak and only '
+                 'partly structure-matched (ring segment shaded)\n'
                  'n=10 seeds/segment; error bars = SEM', fontsize=8)
     fig.tight_layout(rect=(0, 0, 1, 0.90))
     fig.savefig(os.path.join(FIG_DIR, 'self_evo_f5_cross_family.pdf'))

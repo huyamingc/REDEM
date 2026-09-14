@@ -41,9 +41,10 @@
   },
   "anchor_validation": {
     "status": "ok",
-    "pairs": 0,
+    "pairs": 40,
     "worst_rel": 0.0,
-    "mismatches": []
+    "mismatches": [],
+    "revalidated": "2026-09-14; s66's own validate() re-run against the committed rows of this file reproduces the s50/s51 anchors for all 4 F arms x 10 seeds (40/40) at worst relative difference 0.0. The earlier stored value (pairs: 0) was a stale field written by an earlier revision and is superseded."
   },
   "elapsed_s": 206.54434251785278,
   "results": [

@@ -85,8 +85,8 @@ Metric-sensitivity table: `PAPER_D_NC.tex` §Metric sensitivity
 
 | File | Purpose |
 |---|---|
-| `PAPER_D_NC.tex` / `PAPER_D_NC.pdf` | **Current submission version** — Neurocomputing, `elsarticle` (25 pages) |
-| `Highlights_D_NC.txt` / `COVER_LETTER_D_NC.txt` | Elsevier submission material for the NC version |
+| `PAPER_D_NC.tex` / `PAPER_D_NC.pdf` | **Current submission version** — Neurocomputing, `elsarticle` (31 pages) |
+| `Highlights.txt` / `COVER_LETTER_D_NC.txt` | Elsevier submission material for the NC version (upload `Highlights.txt`, bullets only; rationale in `Highlights_notes.md`). `Highlights_D_NC.txt` / `Highlights_D_AI.txt` are superseded drafts |
 | `CHANGELOG_PAPER_D_NC.md` | Itemised change log vs the AI draft |
 | `PAPER_D.tex` / `PAPER_D.pdf` | REVTeX 4.2 source and PDF (18 pages), superseded |
 | `PAPER_D_AI.tex` / `PAPER_D_AI.pdf` | Applied Intelligence `article`-class draft and PDF (13 pages), kept for rollback |

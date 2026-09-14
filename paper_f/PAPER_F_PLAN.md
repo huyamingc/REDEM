@@ -169,8 +169,8 @@ no scaling until s53; no multi-step RL.
 | `PARADIGM_AND_RULES.md` | Rules R1–R4, traps D/E, C1–C4 | authority |
 | `scripts/s50_paper_f_pilot_nl_readout.py` | C1, C2, C3, P-F0b controls | done |
 | `scripts/s51_paper_f_learned_gate.py` | C4 + **C4b (M2b)** | C4 done; C4b next |
-| `data/s50_paper_f_pilot_nl_readout_v1.csv` | 80 rows | untracked → commit |
-| `data/s51_paper_f_learned_gate_v1.csv` | 60 rows | untracked → commit |
+| `data/s50_paper_f_pilot_nl_readout_v1.csv` | 80 rows (verified 2026-09-14) | committed |
+| `data/s51_paper_f_learned_gate_v1.csv` | 80 rows (this row said 60; corrected 2026-09-14 by counting the file) | committed |
 | `review_workspace/modification_log_paper_f.md` | Chinese log | append M2b |
 | s52 routing / s53 scale / s54 benchmarks | after C4b | planned |
 | D.tex L76–79, L1043–1046 reword | scope floor to squared-loss+clip family | **needs user confirm** |

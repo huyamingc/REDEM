@@ -4,9 +4,12 @@ S66: Paper F - EXTERNAL modern-SSM / test-time-training baseline.
 =============================================================================
 Type:           ML (torch CPU; no @njit; Pool only around independent trials)
 Experiment:     S66 (Paper F, external validity): does a modern
-                selective-SSM baseline carrying more trainable parameters
-                than every reported F arm, or a test-time-training (TTT)
-                local learner, beat Paper F's learned-gate readout on the SAME
+                selective-SSM baseline whose host adds 24,864 parameters
+                on top of the shared 8,224-parameter readout (held at a
+                per-seed RANDOM init and frozen in X-SelSSM-frozen,
+                trained jointly in X-SelSSM-full), or a
+                test-time-training (TTT) local learner, beat Paper F's
+                learned-gate readout on the SAME
                 host, task, seeds and metric?
 
 MOTIVATION (verbatim from the program's own self-stated gap)
@@ -70,11 +73,26 @@ CAPACITY MATCHING (Rule R4-adjacent: report the budget, do not hide it)
   F-Gate-C-topk-softmax : readout 8,224 + gate 16,512 + host 0 = 24,736
   X-SelSSM-frozen/full  : readout 8,224 + gate 0 + host 24,864 = 33,088
   F-B-softmax-sgd       : readout 4,128 + gate 0 + host 0      =  4,128
-  Ratio X / Gate-C-topk = 33,088 / 24,736 ~ 1.34x (Paper F Limitations).
-  Ratio X / B-softmax-sgd ~ 8.0x -- the external arm is NOT capacity-matched
-  against the ungated anchor; it is the larger of the two.
-  Ties are therefore reported as F WINS on a budget-normalised basis
-  vs Gate-C-topk; losses are unambiguous.
+  TOTAL parameter counts (all three fields summed):
+    X / Gate-C-topk      = 33,088 / 24,736 ~ 1.34x (external larger)
+    X / B-softmax-sgd    = 33,088 /  4,128 ~ 8.0x  (external larger)
+  TRAINED parameter counts -- the two budgets are NOT the same thing,
+  because X-SelSSM-frozen holds its 24,864 host parameters at a per-seed
+  RANDOM initialisation and never updates them:
+    X-SelSSM-frozen      =  8,224 trained (readout only)
+    F-Gate-C-topk        = 24,736 trained -> F trains 3.0x MORE than the
+                           frozen external arm
+    F-B-softmax-sgd      =  4,128 trained -> the frozen external arm
+                           trains 2.0x MORE than this anchor
+  Consequence for interpretation: against Gate-C-topk F is the LARGER
+  model on the trained axis (and the smaller on the total axis), so this
+  pairing is not capacity-matched in either direction and a win over it
+  is not evidence about trained modern SSMs. Against B-softmax-sgd the
+  external arm is the larger on both axes, so a win there IS on the
+  larger budget. X-SelSSM-full (host trained jointly, 33,088 trained)
+  is the only arm that is capacity-matched-in-the-external-favour and it
+  diverges; report that as a finding about joint training at this scale,
+  not as an F win.
 
 PRE-REGISTRATION (written before running; outcomes reported either way)
   P1  X-SelSSM-full <= Gate-C-topk-softmax on stream ppl (external method

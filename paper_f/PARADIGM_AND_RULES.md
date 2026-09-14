@@ -180,7 +180,7 @@ establishes, plus the boundary at which the rule stops paying.
 | Item | State | Action |
 |---|---|---|
 | D's floor-sensitive framing | `PAPER_D_NC.tex` L76-79, L1043-1046 still locate the artifact in the readout range | Reword to scope the sensitivity to the squared-loss + clip readout family; record that F ran the prescription and that the post-hoc variant is falsified |
-| E's abstract | Already states autonomy at the decision level as the contribution; 242/250 words | No change. E's boundaries stand as scoping, which is what the abstract already says |
+| E's abstract | Already states autonomy at the decision level as the contribution; 283 words on a 2026-09-14 re-measure (LaTeX and math stripped — the "242/250" figure recorded here earlier was not reproducible, and this journal states no abstract word limit) | No change. E's boundaries stand as scoping, which is what the abstract already says |
 | F | No abstract exists (`preprint_titles_abstracts.txt` covers A-D only; E is also absent) | Write after C4's outcome fixes the form |
 | F artifacts | `paper_f/`, `scripts/s50_*`, `data/s50_*`, `data/per_token/s50__*` are all git-untracked | Commit before any further runs |
 

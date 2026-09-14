@@ -1,21 +1,5 @@
-Highlights
-==========
-
-Paper: "Learning the Readout Form: Objective-Level Calibration, Sparse
-Selectivity, and Expert Routing on a Diagonal State-Space Host"
-(target: Neurocomputing)
-
-1. Trained softmax readout removes the clip-floor metric artifact
-2. Post-hoc simplex projection does not repair a broken objective
-3. Hard top-k sparsity is required for selective gates to retain
-4. Expert routing cuts forgetting further at stream parity
-5. Gate beats a selective-SSM baseline (~1.34x params) 10/10 seeds
-
-Notes
------
-- Format: 3-5 bullet points, each <= 85 characters including spaces.
-- Elsevier/Neurocomputing: upload as a separate "Highlights" file.
-- Lengths: 65/65/64/58/66 (all <= 85; verified).
-- Alignment with manuscript: bullet 1-2 = objective vs range (s50, C1/C2);
-  bullet 3 = s51 Gate-C-topk (C4b); bullet 4 = s52 soft routing (C5);
-  bullet 5 = s66 external selective-SSM (scoped, not SoTA).
+Trained softmax readout removes the clip-floor metric artifact
+Post-hoc simplex projection does not repair a broken objective
+Hard top-k sparsity is required for selective gates to retain
+Expert routing cuts forgetting further at stream parity
+Gate beats a frozen selective-SSM baseline on stream, 10/10 seeds
