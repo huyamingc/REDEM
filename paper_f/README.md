@@ -90,7 +90,8 @@ readout) and then asks which selectivity pressure the clean metric still needs.
 | `../review_workspace/modification_log_paper_f.md` | Full experiment / manuscript change log |
 | `../review_workspace/modification_log_EF_clean_p0.md` | 2026-09-13 clean-P0 + r2/r3 consistency rounds |
 | `../review_workspace/modification_log_EF_meta_20260913.md` | 2026-09-13 P1 fixes (bib, abstract 266 words with LaTeX and math stripped, Π_Δ wording, …) |
-| `../review_workspace/S66_EXTERNAL_BASELINE_FINDINGS.md` | External-baseline audit |
+| `../review_workspace/modification_log_paper_f_s67.md` | s67 host-freeze change log |
+| `../review_workspace/MANIFEST.md` | Temp/backup/verify scripts archive index |
 | `../figures/paperF_fig1_arms.{pdf,png}` | Figure 1: headline arms C1–C5 (stream/forget, 10-seed mean ± std) |
 | `../figures/paperF_fig2_floor.{pdf,png}` | Figure 2: clip-floor artifact (C1/C2) |
 | `../figures/paperF_graphical_abstract.{png,pdf}` | Graphical abstract for submission (300 dpi PNG) |
@@ -107,8 +108,8 @@ readout) and then asks which selectivity pressure the clean metric still needs.
 & .\.venv\Scripts\python.exe scripts\s54_paper_f_mackey_glass.py --sequential
 & .\.venv\Scripts\python.exe scripts\s66_external_ssm_baseline.py
 & .\.venv\Scripts\python.exe scripts\s67_host_freeze.py
-# optional read-only report
-& .\.venv\Scripts\python.exe scripts\s66_report.py
+# optional read-only report (archived under review_workspace)
+& .\.venv\Scripts\python.exe review_workspace\verify\s66_report.py
 # figures (reads committed s50/s51/s52 CSVs only)
 & .\.venv\Scripts\python.exe scripts\gen_paperF_figs.py
 ```
