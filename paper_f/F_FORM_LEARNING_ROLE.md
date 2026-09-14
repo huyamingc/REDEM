@@ -453,47 +453,66 @@ statements must cite s53 *and* s53b together, and must state that
 width helps the **ungated calibrated baseline** more reliably than it
 helps the gated arms under the original \(k\) rule.
 
-### 5.3 s67 (pre-H): frozen / pretrained / online host
+### 5.3 s67 (completed): frozen / pretrained / online host
 
-s66's internal ordering — **random frozen selective-SSM >
-jointly trained selective-SSM**, and frozen **beats** F's own
-B-softmax-sgd anchor on stream (9.03 vs 8.65 is *worse* for frozen
-on stream, but frozen is the stronger *external* competitor and joint
-is destructive) — requires care in wording and an immediate
-follow-up:
+s66's internal ordering — **random frozen selective-SSM ≫ jointly
+trained selective-SSM** — required an immediate follow-up before any
+Paper H claim that generates new host forms.
 
 | Arm | stream | forget | note |
 |---|---|---|---|
 | F Gate-C-topk | **7.03** | 9.20 | best stream |
 | F B-softmax-sgd | 8.65 | 8.89 | calibrated anchor |
-| X-SelSSM-frozen | 9.03 | 10.38 | strongest external; beats F's B on forget? 10.38 > 8.89 so **no** on forget; on stream worse than B |
-| X-SelSSM-full | 10.19 | 115.24 | joint training destructive (matched lr); 4× lr diverges |
+| X-SelSSM-frozen | 9.03 | 10.38 | strongest external; loses to B on both axes |
+| X-SelSSM-full | 10.19 | 115.24 | joint training destructive (matched lr) |
 
-*(Clarification against the informal summary: frozen does **not**
-beat B-softmax-sgd on stream (9.03 vs 8.65, frozen worse). What
-holds is: frozen ≫ joint on the external pair, and frozen is the
-stronger of the two external arms, yet still 0/10 better than F's
-Gate-C-topk on stream. The "frozen beats B" phrasing in older notes
-is wrong for stream; frozen beats joint and is closer to B than joint
-is.)*
+**s67 design** (`scripts/s67_host_freeze.py`,
+`data/s67_host_freeze_v1.*`, 10 seeds, same protocol; anchors bit-exact
+to s66/s50/s51, 80/80 pairs, `worst_rel=0`):
 
-**s67 design (same protocol, same 10 seeds, before any H paper):**
+| Arm | stream | forget | params |
+|---|---|---|---|
+| X67-random-frozen | 9.030 | 10.378 | 33,088 |
+| X67-pretrained-frozen | 9.581 | **84.714** | 33,088 |
+| X67-online | 10.191 | **115.238** | 33,088 |
+| X67-random-frozen-topk | 7.378 | 11.939 | 49,600 |
+| X67-pretrained-frozen-topk | 7.177 | 14.978 | 49,600 |
+| F-B-softmax-sgd | 8.648 | 8.891 | 4,128 |
+| F-Gate-C-topk-softmax | **7.033** | 9.201 | 24,736 |
 
-1. **random-frozen** host + trained softmax/gate (s66 frozen arm,
-   bit-paired);
-2. **pretrained-frozen** host (fit host or a static feature map on
-   domain-A only or on a disjoint burn-in, then freeze);
-3. **online-trained** host (s66 full arm, matched lr only — no
-   pooled divergent rate).
+`pretrained-frozen` trains the host **only on the first segment**
+(`t ≤ SEG_LEN=3000`, domain A), then freezes; readout stays online.
+`online` uses matched `SOFTMAX_LR` only (s66's divergent 4× rate is
+not re-run).
 
-Primary questions: (i) is the frozen advantage a *host* property or
-an *optimization interference* property of joint CE? (ii) does
-pretrained-frozen beat random-frozen on retention? (iii) does adding
-F's top-k gate on top of the frozen host beat F's own Gate-C-topk,
-or is the diagonal host already the right substrate at this scale?
+**Pre-registration outcomes (10 seeds):**
 
-s67 is the **last external-check paper** implied by F. Paper H should
-not start until s67 is committed.
+| ID | Question | Result |
+|---|---|---|
+| Q1 | pretrained-frozen better than random-frozen on forget? | **NO** — Δ +74.3, **0/10** (prediction falsified) |
+| Q2 | pretrained-frozen better than online on forget? | **YES** — Δ −30.5, **10/10**, t=−8.5 |
+| Q3 | random-frozen+topk stream not worse than Gate-C-topk by >+5%? | **NO** — Δ +0.35, **0/10** (≈5% worse, not parity) |
+| Q4 | pretrained-frozen+topk stream ≥ Gate-C-topk? | **NO** — Δ +0.14, **3/10** (near-parity, not a win) |
+
+**Interpretation (answers the pre-H questions):**
+
+1. The frozen advantage is **optimisation interference**, not host
+   quality. Even a *single segment* of joint CE on the host, then
+   freeze, destroys retention (84.7 vs random-frozen 10.4, 0/10).
+   "Pretrain then freeze" is worse than "never train the host" here.
+2. Freezing after burn-in is still better than always-online (Q2),
+   so post-burn-in joint updates are a large part of the damage — but
+   they are not the only part.
+3. F's top-k gate **recovers most of the stream gap** on a frozen
+   selective host (9.03 → 7.38 / 7.18) but does **not** beat the
+   diagonal-host Gate-C-topk (7.03). At this protocol the diagonal
+   host remains the better substrate for the sparse gate.
+4. Paper H must not default to online host training. If H proposes
+   host updates, they need an explicit freeze / consolidation stage
+   and a retention pre-commit.
+
+s67 is the **last external-check experiment** implied by F. With s67
+committed, Paper H may begin under the constraints above.
 
 ---
 
@@ -595,14 +614,17 @@ jointly trains hosts by default.
    s66 covers one selective-SSM parameterisation only; TTT was
    removed as non-viable at this scale.
 4. **Host mostly frozen.** F's diagonal SSM timescales are not
-   trained. The only trained-host evidence (s66 full) is negative
-   under joint CE — which is a boundary result, not a host-design
-   recommendation. s67 is required.
+   trained. s66 full and s67 online show joint host CE is destructive;
+   s67 pretrained-frozen (1 segment then freeze) is also retention-
+   destructive (forget 84.7, 0/10 vs random-frozen). The licensed
+   statement is *do not train this host online under CE at this
+   scale*, not a general host-design recommendation.
 5. **Feedback budget is per-token labels.** Results are not
    comparable to E's \(\pm1\) autonomy without stating that budget.
 6. **Family breadth is still human-supplied.** F learns form inside
    \(\mathcal{F}_0\); it does not generate new candidate families.
-   That is H's job, and H must not start before s67.
+   That is H's job; s67 is now complete and licenses H under a
+   default-frozen-host constraint.
 7. **s66 rate-pooling disclosure.** Committed full-arm rows pool a
    matched-lr run and a divergent \(4\times\) lr run under one name;
    quotes must use the matched-lr value and disclose the pooling.
@@ -615,12 +637,12 @@ jointly trains hosts by default.
 
 | Priority | Action | Why |
 |---|---|---|
-| P0 | **Git commit** `paper_f/` (tex, pdf, README, plan, paradigm, cover letter, highlights) + F data (`s50`–`s54`, `s66`) + F scripts + `figures/paperF_*` | Citation prerequisite; folder currently 0 tracked files |
+| P0 | **Git commit** paper F package + s67 | Citation prerequisite |
 | P1 | Fix the informal "frozen beats B-softmax" phrasing wherever it appears; frozen loses to B on stream (9.03 vs 8.65) and on forget (10.38 vs 8.89) | Prevents an overclaim |
 | P1 | Keep s66 Limitations wording as scoped check + lr-pooling disclosure | Already in `PAPER_F.tex`; do not "upgrade" to SOTA |
-| P2 | Design and run **s67** (random-frozen / pretrained-frozen / online-trained, same 10 seeds) | Last gate before Paper H |
+| P2 | ~~Design and run **s67**~~ **DONE** (bit-exact anchors; Q1/Q3/Q4 falsified, Q2 supported) | Last gate before Paper H |
 | P3 | Optional F+1 logging: record top-k cutoff gap \(\delta_t\) and outside-mass as a counterfactual ledger | Cheap; feeds H's proposal prior |
-| P3 | Paper H spec: candidate-family generator under §2.2 definition, with C2-class falsifying controls mandatory | Form generation, not another scorer |
+| P3 | Paper H spec: candidate-family generator under §2.2, C2-class falsifying controls mandatory, **default host frozen** | Form generation, not another scorer |
 
 ---
 
@@ -635,6 +657,7 @@ jointly trains hosts by default.
 | k-sweep | `data/s53b_paper_f_ksweep_v1.*` | N=512, k∈{16,32,64,128} |
 | Transfer | `data/s54_paper_f_mackey_glass_v1.*` | Mackey–Glass bin task |
 | External | `data/s66_external_ssm_baseline_v1.*` | selective-SSM scoped check |
+| Host freeze | `data/s67_host_freeze_v1.*` | random / pretrained / online host policy |
 
 Manuscript: `paper_f/PAPER_F.tex` (Design rule §Analysis; s66 +
 limitations §Discussion; s53/s53b in Limitations).

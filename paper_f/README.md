@@ -49,7 +49,15 @@ readout) and then asks which selectivity pressure the clean metric still needs.
    beats the baseline (k-sweep, 3 seeds). Sparse-gate advantage transfers
    to Mackey–Glass (bin-32, 5 seeds): Gate-C-topk holdout 16.27 vs
    B-softmax 29.07.
-6. **Form-learning program role (`F_FORM_LEARNING_ROLE.md`).** Formal
+6. **Host freeze policy (s67, completed 2026-09-13).** Same protocol,
+   10 seeds; anchors bit-exact to s66/s50/s51 (80/80). Random-frozen
+   selective host 9.03/10.38; **any** host CE (1-segment pretrained-
+   then-freeze 9.58/84.71, or online 10.19/115.24) is retention-
+   destructive (Q1 0/10 vs random-frozen; Q2 10/10 better than online).
+   F top-k on frozen selective host recovers stream (7.38/7.18) but
+   does not beat diagonal Gate-C-topk (7.03). Paper H must default to
+   a frozen host.
+7. **Form-learning program role (`F_FORM_LEARNING_ROLE.md`).** Formal
    design rule (learnable instrument L1–L3), self+causality seeds
    (C1 verify / C4b select / C5 organize), counterfactual and
    world-model readings of the top-k gate, width/k capability
@@ -84,6 +92,7 @@ readout) and then asks which selectivity pressure the clean metric still needs.
 & .\.venv\Scripts\python.exe scripts\s53b_paper_f_ksweep.py --sequential
 & .\.venv\Scripts\python.exe scripts\s54_paper_f_mackey_glass.py --sequential
 & .\.venv\Scripts\python.exe scripts\s66_external_ssm_baseline.py
+& .\.venv\Scripts\python.exe scripts\s67_host_freeze.py
 # optional read-only report
 & .\.venv\Scripts\python.exe scripts\s66_report.py
 # figures (reads committed s50/s51/s52 CSVs only)
@@ -102,6 +111,7 @@ Regenerate submission docs after editing the txt sources:
 - [x] Primary experiments s50–s52
 - [x] Scaling / k-sweep / MG transfer s53, s53b, s54
 - [x] External selective-SSM baseline s66 (Limitations + Discussion updated)
+- [x] Host freeze follow-up s67 (random/pretrained/online; bit-exact anchors)
 - [x] Cover letter draft (`COVER_LETTER.txt` + regenerated `.docx`)
 - [x] Highlights draft (`Highlights.txt` + regenerated `.docx`; ≤85 chars each)
 - [x] 2026-09-13 clean-P0 / meta / r2–r6 (C-ID alignment, 1.34× basis vs
