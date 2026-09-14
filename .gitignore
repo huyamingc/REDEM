@@ -34,6 +34,10 @@ README.zip
 *.bak.py
 *.bak.tex
 
+# Local backups (any .bak* variant) and paper-review tool artifacts
+*.bak*
+_index/
+
 # LTSpice MCP server local config and runtime job state
 ltspice-mcp.toml
 .ltspice-mcp/
@@ -54,7 +58,21 @@ preprint_titles_abstracts.txt
 **/COVER_LETTER.docx
 **/DECLARATION_OF_INTERESTS.docx
 **/Highlights.docx
+**/Highlights_*.txt
+**/VITAE.docx
+**/VITAE.txt
+**/COVER_LETTER_D_AI.txt
+**/COVER_LETTER_D_AI.docx
+**/Suggested_Reviewers_*.txt
 **/Supplementary_Material_*.zip
+submission/
+
+# Smoke-test output (--quick runs; the paper cites only the full _v1 data)
+data/*_quick.csv
+data/*_quick.json
+
+# Debug trace output (--trace only; not part of committed results)
+data/*_trace_seed*.json
 
 # OS files
 .DS_Store

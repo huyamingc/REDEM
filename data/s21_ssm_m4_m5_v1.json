@@ -21,7 +21,7 @@
     },
     "task": "identical to s18: two biased-bigram generators, known switches, 6x3000; seed rules verbatim",
     "metrics": {
-      "E1": "stream ppl / forgetting ppl / T_adapt / neg_frac (s18 protocol)",
+      "E1": "stream ppl / forgetting ppl / T_adapt / neg_frac / clip_frac / unclipped sensitivity diagnostics (s18 protocol)",
       "E2": "full-state EMA detector flips, norm mean/max/final, recovery tokens, dt activity (mechanism-level)"
     },
     "discipline": "10 seeds, paired sign consistency",
@@ -41,7 +41,14 @@
       "stream_ppl_mean": 11.754124283044472,
       "neg_frac_mean": 0.015817545419189952,
       "t_adapt_mean_mean": 20.0,
-      "forgetting_ppl_mean": 8.386810407106838
+      "forgetting_ppl_mean": 8.386810407106836,
+      "clip_frac_mean": 0.015817545419189952,
+      "stream_ppl_unclipped_mean": 7.843835339524551,
+      "stream_n_unc_undefined_mean": 284.7,
+      "forget_neg_frac_mean": 0.0008416833667334669,
+      "forget_clip_frac_mean": 0.0008416833667334669,
+      "forgetting_ppl_unclipped_mean": 8.198046660520387,
+      "forget_n_unc_undefined_mean": 2.1
     },
     {
       "exp": "E1",
@@ -50,7 +57,14 @@
       "stream_ppl_mean": 10.032775778209635,
       "neg_frac_mean": 0.0146119228846047,
       "t_adapt_mean_mean": 20.0,
-      "forgetting_ppl_mean": 6.015284944342913
+      "forgetting_ppl_mean": 6.0152849443429135,
+      "clip_frac_mean": 0.0146119228846047,
+      "stream_ppl_unclipped_mean": 6.8909512420993,
+      "stream_n_unc_undefined_mean": 263.0,
+      "forget_neg_frac_mean": 0.0030861723446893785,
+      "forget_clip_frac_mean": 0.0030861723446893785,
+      "forgetting_ppl_unclipped_mean": 5.521320635982426,
+      "forget_n_unc_undefined_mean": 7.7
     },
     {
       "exp": "E1",
@@ -59,7 +73,14 @@
       "stream_ppl_mean": 8.218244292247023,
       "neg_frac_mean": 0.0028168231568420467,
       "t_adapt_mean_mean": 20.0,
-      "forgetting_ppl_mean": 6.399819055603116
+      "forgetting_ppl_mean": 6.399819055603116,
+      "clip_frac_mean": 0.0028168231568420467,
+      "stream_ppl_unclipped_mean": 7.646704228128668,
+      "stream_n_unc_undefined_mean": 50.7,
+      "forget_neg_frac_mean": 0.0006012024048096192,
+      "forget_clip_frac_mean": 0.0006012024048096192,
+      "forgetting_ppl_unclipped_mean": 6.29813825359443,
+      "forget_n_unc_undefined_mean": 1.5
     },
     {
       "exp": "E2",
@@ -69,21 +90,21 @@
       "norm_mean_mean": 50.18823344016563,
       "norm_max_mean": 57.77049078573564,
       "norm_final_mean": 52.144868770483946,
-      "recovery_tokens_mean": NaN,
-      "dt_mean_mean": NaN,
-      "dt_max_mean": NaN
+      "recovery_tokens_mean": null,
+      "dt_mean_mean": null,
+      "dt_max_mean": null
     },
     {
       "exp": "E2",
       "arm": "BARE-dist",
       "n_runs": 10,
       "flips_mean": 0.6,
-      "norm_mean_mean": 50.20257540360732,
+      "norm_mean_mean": 50.20257540360733,
       "norm_max_mean": 66.735802855012,
       "norm_final_mean": 52.1447839559235,
-      "recovery_tokens_mean": NaN,
-      "dt_mean_mean": NaN,
-      "dt_max_mean": NaN
+      "recovery_tokens_mean": null,
+      "dt_mean_mean": null,
+      "dt_max_mean": null
     },
     {
       "exp": "E2",
@@ -93,7 +114,7 @@
       "norm_mean_mean": 11.313732258887935,
       "norm_max_mean": 13.225004178863946,
       "norm_final_mean": 11.53566929364791,
-      "recovery_tokens_mean": NaN,
+      "recovery_tokens_mean": null,
       "dt_mean_mean": 5.403257445144727,
       "dt_max_mean": 7.938686089145881
     },
@@ -104,10 +125,11 @@
       "flips_mean": 5.0,
       "norm_mean_mean": 11.313732258887935,
       "norm_max_mean": 44.905766648889575,
-      "norm_final_mean": 11.535669293647903,
+      "norm_final_mean": 11.535669293647905,
       "recovery_tokens_mean": 9.8,
-      "dt_mean_mean": 5.407896479915702,
-      "dt_max_mean": 8.565663677710493
+      "dt_mean_mean": 5.407896479915703,
+      "dt_max_mean": 8.565663677710491
     }
-  ]
+  ],
+  "null_reason": "non-finite aggregate values are written as null (undefined, e.g. a cell in which the adaptation criterion was never met, so recovery_tokens, dt_mean and dt_max have no measurement)"
 }

@@ -66,6 +66,7 @@ from s19_ssm_rls_readout import (sample_substrate, whiten_scale,
                                  SEED_SCALE, SEED_OFF)
 from s20_ssm_m3_routing import fast_mask_of, REF_LEN
 from s21_ssm_m4_m5 import make_readout, rls_update
+from per_token_io import save_stream_and_holdout
 
 torch.set_num_threads(1)   # per-worker; Pool gives process-level parallelism
 
@@ -182,7 +183,11 @@ def run_ssm(args):
 
     ce = np.empty(T, dtype=np.float64)
     ce[:] = np.nan
+    ce_unc = np.empty(T, dtype=np.float64)
+    ce_unc[:] = np.nan
     nneg = 0
+    nclip = 0
+    n_unc_undef = 0
     h = torch.zeros(N_STATE, dtype=torch.float64)
 
     for t in range(1, T):
@@ -198,9 +203,17 @@ def run_ssm(args):
             y_hat = sum(w[i] * (Ws[i][0] @ phi) for i in range(2))
         else:
             y_hat = W @ phi
-        p_t = float(y_hat[stream[t]].clamp(min=1e-12, max=1.0))
-        if float(y_hat[stream[t]]) <= 0.0:
+        y_tok = y_hat[stream[t]]
+        p_t = float(y_tok.clamp(min=1e-12, max=1.0))
+        yt = float(y_tok)
+        if yt <= 0.0:
             nneg += 1
+        if yt <= 1e-12:
+            nclip += 1
+        if yt > 0.0:
+            ce_unc[t] = -np.log(yt)
+        else:
+            n_unc_undef += 1
         ce[t] = -np.log(p_t)
         target = torch.zeros(VOCAB, dtype=torch.float64)
         target[stream[t]] = 1.0
@@ -213,6 +226,9 @@ def run_ssm(args):
 
     stream_ppl = float(np.exp(np.nanmean(ce[1:])))
     neg_frac = float(nneg) / (T - 1)
+    clip_frac = float(nclip) / (T - 1)
+    stream_ppl_unclipped = (float(np.exp(np.nanmean(ce_unc[1:])))
+                            if n_unc_undef < (T - 1) else float('nan'))
 
     # T_adapt (known switches)
     t_adapts = []
@@ -234,6 +250,12 @@ def run_ssm(args):
     # Forgetting: held-out 500-char window from the previous source
     rng = np.random.RandomState(seed * 41 + 3)
     forgets = []
+    forgets_unc = []
+    fneg = 0
+    fclip = 0
+    n_f_undef = 0
+    hold_ce_all = []
+    hold_ce_unc_all = []
     for si in range(1, N_SEGMENTS):
         prev_dom = int(domains[si * SEG_LEN - 1])
         src = sources[prev_dom]
@@ -245,20 +267,53 @@ def run_ssm(args):
             Wf = W
         hh = torch.zeros(N_STATE, dtype=torch.float64)
         ces = []
+        ces_unc = []
         for t in range(1, HOLDOUT_LEN):
             hh = A * hh + B[:, hold[t - 1]]
             phi = torch.cat([B[:, hold[t - 1]],
                              torch.ones(1, dtype=torch.float64)])
-            p_t = float((Wf @ phi)[hold[t]].clamp(min=1e-12, max=1.0))
+            y_tok = (Wf @ phi)[hold[t]]
+            p_t = float(y_tok.clamp(min=1e-12, max=1.0))
+            yt = float(y_tok)
+            if yt <= 0.0:
+                fneg += 1
+            if yt <= 1e-12:
+                fclip += 1
+            if yt > 0.0:
+                ces_unc.append(-np.log(yt))
+                hold_ce_unc_all.append(-np.log(yt))
+            else:
+                n_f_undef += 1
+                hold_ce_unc_all.append(np.nan)
             ces.append(-np.log(p_t))
+            hold_ce_all.append(-np.log(p_t))
         forgets.append(float(np.exp(np.mean(ces))))
+        forgets_unc.append(float(np.exp(np.mean(ces_unc)))
+                           if ces_unc else float('nan'))
     forgetting_ppl = float(np.mean(forgets))
+    forgetting_ppl_unclipped = (float(np.nanmean(forgets_unc))
+                                if forgets_unc else float('nan'))
+    n_hold = (HOLDOUT_LEN - 1) * max(1, len(forgets))
+    forget_neg_frac = float(fneg) / n_hold if n_hold else float('nan')
+    forget_clip_frac = float(fclip) / n_hold if n_hold else float('nan')
+
+    save_stream_and_holdout(
+        's23', arm, seed, 'rt', ce, ce_unc,
+        np.asarray(hold_ce_all, dtype=np.float64),
+        np.asarray(hold_ce_unc_all, dtype=np.float64))
 
     return {'arm': arm, 'seed': seed, 'stream_ppl': stream_ppl,
             'neg_frac': neg_frac,
             't_adapt_mean': float(np.nanmean(t_adapts))
             if t_adapts else float('nan'),
             'forgetting_ppl': forgetting_ppl,
+            'clip_frac': clip_frac,
+            'stream_ppl_unclipped': stream_ppl_unclipped,
+            'stream_n_unc_undefined': int(n_unc_undef),
+            'forget_neg_frac': forget_neg_frac,
+            'forget_clip_frac': forget_clip_frac,
+            'forgetting_ppl_unclipped': forgetting_ppl_unclipped,
+            'forget_n_unc_undefined': int(n_f_undef),
             'runtime_s': time.time() - t0}
 
 
@@ -328,6 +383,13 @@ def run_tf(args):
             'neg_frac': float('nan'),
             't_adapt_mean': float('nan'),
             'forgetting_ppl': forgetting_ppl,
+            'clip_frac': float('nan'),
+            'stream_ppl_unclipped': float('nan'),
+            'stream_n_unc_undefined': float('nan'),
+            'forget_neg_frac': float('nan'),
+            'forget_clip_frac': float('nan'),
+            'forgetting_ppl_unclipped': float('nan'),
+            'forget_n_unc_undefined': float('nan'),
             'runtime_s': time.time() - t0}
 
 
@@ -420,7 +482,10 @@ def main():
 
     os.makedirs(DATA_DIR, exist_ok=True)
     fieldnames = ['arm', 'seed', 'stream_ppl', 'neg_frac', 't_adapt_mean',
-                  'forgetting_ppl', 'runtime_s']
+                  'forgetting_ppl', 'clip_frac', 'stream_ppl_unclipped',
+                  'stream_n_unc_undefined', 'forget_neg_frac',
+                  'forget_clip_frac', 'forgetting_ppl_unclipped',
+                  'forget_n_unc_undefined', 'runtime_s']
     out_csv = CSV_PATH if not quick else CSV_PATH.replace('.csv', '_quick.csv')
     with open(out_csv, 'w', newline='') as f:
         w = csv.DictWriter(f, fieldnames=fieldnames, extrasaction='ignore')
@@ -466,12 +531,35 @@ def main():
         'n_seeds': n_seeds, 'quick': bool(quick),
     }
     out_json = JSON_PATH if not quick else JSON_PATH.replace('.json', '_quick.json')
+    payload = _nan_to_null({'params': params, 'rows': results,
+                            'null_reason': ('non-finite per-run values are '
+                                            'written as null (undefined, e.g. '
+                                            'neg_frac and t_adapt_mean for a run '
+                                            'with no finite qualification '
+                                            'score)')})
     with open(out_json, 'w') as f:
-        json.dump({'params': params, 'rows': results}, f, indent=2)
+        json.dump(payload, f, indent=2, allow_nan=False)
 
     print(f"\nCSV : {out_csv}")
     print(f"JSON: {out_json}")
     print(f"[{time.strftime('%H:%M:%S')}] DONE, total {time.time() - t_start:.1f}s")
+
+
+def _nan_to_null(obj):
+    """Recursively map non-finite floats to None (strict-JSON safe).
+
+    Bug fix 2026-09-09 (dedup P1-90): json.dump wrote bare NaN literals for
+    undefined per-run values (neg_frac and t_adapt_mean of a run with no finite
+    qualification score), which is not valid JSON and is rejected by strict
+    parsers.
+    """
+    if isinstance(obj, dict):
+        return {k: _nan_to_null(v) for k, v in obj.items()}
+    if isinstance(obj, (list, tuple)):
+        return [_nan_to_null(v) for v in obj]
+    if isinstance(obj, float) and not np.isfinite(obj):
+        return None
+    return obj
 
 
 if __name__ == '__main__':

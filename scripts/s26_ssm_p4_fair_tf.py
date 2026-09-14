@@ -421,12 +421,34 @@ def main():
         'n_seeds': n_seeds, 'quick': bool(quick),
     }
     out_json = JSON_PATH if not quick else JSON_PATH.replace('.json', '_quick.json')
+    payload = _nan_to_null({'params': params, 'rows': results,
+                            'null_reason': ('non-finite per-run values are '
+                                            'written as null (undefined, e.g. '
+                                            'neg_frac is undefined for a run '
+                                            'whose negative-control stream is '
+                                            'empty)')})
     with open(out_json, 'w') as f:
-        json.dump({'params': params, 'rows': results}, f, indent=2)
+        json.dump(payload, f, indent=2, allow_nan=False)
 
     print(f"\nCSV : {out_csv}")
     print(f"JSON: {out_json}")
     print(f"[{time.strftime('%H:%M:%S')}] DONE, total {time.time() - t_start:.1f}s")
+
+
+def _nan_to_null(obj):
+    """Recursively map non-finite floats to None (strict-JSON safe).
+
+    Bug fix 2026-09-09 (dedup P1-90): json.dump wrote bare NaN literals for
+    undefined per-run values (neg_frac of a run whose negative-control stream is
+    empty), which is not valid JSON and is rejected by strict parsers.
+    """
+    if isinstance(obj, dict):
+        return {k: _nan_to_null(v) for k, v in obj.items()}
+    if isinstance(obj, (list, tuple)):
+        return [_nan_to_null(v) for v in obj]
+    if isinstance(obj, float) and not np.isfinite(obj):
+        return None
+    return obj
 
 
 if __name__ == '__main__':

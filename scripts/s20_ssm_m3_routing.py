@@ -80,6 +80,7 @@ from s19_ssm_rls_readout import (gen_drift_stream, gen_stream,
                                  HOLDOUT_LEN, BIAS_A, BIAS_B,
                                  RLS_LAMBDA, RLS_DELTA, SEED_SCALE,
                                  SEED_OFF)
+from per_token_io import save_stream_and_holdout
 
 torch.set_num_threads(1)   # per-worker; Pool gives process-level parallelism
 
@@ -93,6 +94,8 @@ GATE_LOW_FRAC = 0.10        # in-domain RLS error scale for A2 (s18)
 T_ADAPT_WINDOW = 20
 STEADY_WINDOW = 400
 T_ADAPT_RATIO = 1.5
+DETECT_WINDOW = 200         # tokens after a known switch within which the
+                            # M3 detector event counts as a detection
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.path.join(SCRIPT_DIR, '..', 'data')
@@ -193,10 +196,20 @@ def run_single(args):
     slow = refs[0].clone()
     prev_est = 0
     last_switch_t = -10 ** 9
+    # Per-switch detection of the M3 fast-channel detector (the P2 claim that
+    # the metadata EMA tracks the known switches). One event is recorded per
+    # change of the hysteresis estimate; a known switch counts as detected
+    # when the first event at or after it falls within DETECT_WINDOW tokens.
+    # Additive instrumentation: no metric below is computed from it.
+    det_events = []
 
     ce = np.empty(T, dtype=np.float64)
     ce[:] = np.nan
+    ce_unc = np.empty(T, dtype=np.float64)
+    ce_unc[:] = np.nan
     nneg = 0
+    nclip = 0
+    n_unc_undef = 0
     h = torch.zeros(N_STATE, dtype=torch.float64)
 
     for t in range(1, T):
@@ -210,6 +223,7 @@ def run_single(args):
             if est != prev_est:
                 last_switch_t = t
                 prev_est = est
+                det_events.append(t)
         else:
             est = 0
 
@@ -220,9 +234,17 @@ def run_single(args):
         else:
             Wa, Pa = W, P
         y_hat = Wa @ phi
-        p_target = float(y_hat[stream[t]].clamp(min=1e-12, max=1.0))
-        if float(y_hat[stream[t]]) <= 0.0:
+        y_tok = y_hat[stream[t]]
+        p_target = float(y_tok.clamp(min=1e-12, max=1.0))
+        yt = float(y_tok)
+        if yt <= 0.0:
             nneg += 1
+        if yt <= 1e-12:
+            nclip += 1
+        if yt > 0.0:
+            ce_unc[t] = -np.log(yt)
+        else:
+            n_unc_undef += 1
         ce[t] = -np.log(p_target)
 
         target = torch.zeros(VOCAB, dtype=torch.float64)
@@ -243,6 +265,9 @@ def run_single(args):
     valid = ce[1:]
     stream_ppl = float(np.exp(np.nanmean(valid)))
     neg_frac = float(nneg) / (T - 1)
+    clip_frac = float(nclip) / (T - 1)
+    stream_ppl_unclipped = (float(np.exp(np.nanmean(ce_unc[1:])))
+                            if n_unc_undef < (T - 1) else float('nan'))
 
     # T_adapt: post-switch running-window ppl (known switches)
     t_adapts = []
@@ -267,6 +292,12 @@ def run_single(args):
     # Forgetting: held-out previous domain, current readout(s). A3 uses the
     # domain-matched specialist (s18 semantics).
     forgets = []
+    forgets_unc = []
+    fneg = 0
+    fclip = 0
+    n_f_undef = 0
+    hold_ce_all = []
+    hold_ce_unc_all = []
     for si, t_s in enumerate(switch_times):
         prev_dom = int(domains[t_s - 1])
         hold = gen_stream(seed * 41 + si * 211 + 3,
@@ -278,20 +309,63 @@ def run_single(args):
         else:
             Wf = W
         ces = []
+        ces_unc = []
         for t in range(1, HOLDOUT_LEN):
             hh = A * hh + B[:, hold[t - 1]]
             phi = torch.cat([B[:, hold[t - 1]],
                              torch.ones(1, dtype=torch.float64)])
-            p_target = float((Wf @ phi)[hold[t]].clamp(min=1e-12, max=1.0))
+            y_tok = (Wf @ phi)[hold[t]]
+            p_target = float(y_tok.clamp(min=1e-12, max=1.0))
+            yt = float(y_tok)
+            if yt <= 0.0:
+                fneg += 1
+            if yt <= 1e-12:
+                fclip += 1
+            if yt > 0.0:
+                ces_unc.append(-np.log(yt))
+                hold_ce_unc_all.append(-np.log(yt))
+            else:
+                n_f_undef += 1
+                hold_ce_unc_all.append(np.nan)
             ces.append(-np.log(p_target))
+            hold_ce_all.append(-np.log(p_target))
         forgets.append(float(np.exp(np.mean(ces))))
+        forgets_unc.append(float(np.exp(np.mean(ces_unc)))
+                           if ces_unc else float('nan'))
     forgetting_ppl = float(np.mean(forgets))
+    forgetting_ppl_unclipped = (float(np.nanmean(forgets_unc))
+                                if forgets_unc else float('nan'))
+    n_hold = (HOLDOUT_LEN - 1) * max(1, len(forgets))
+    forget_neg_frac = float(fneg) / n_hold if n_hold else float('nan')
+    forget_clip_frac = float(fclip) / n_hold if n_hold else float('nan')
+
+    save_stream_and_holdout(
+        's20', arm, seed, f'tau{tau_m:g}', ce, ce_unc,
+        np.asarray(hold_ce_all, dtype=np.float64),
+        np.asarray(hold_ce_unc_all, dtype=np.float64))
+
+    # Per-switch M3 detection (same known switch instants as T_adapt above).
+    detected = []
+    for t_s in switch_times:
+        first = next((e for e in det_events if e >= t_s), None)
+        detected.append(bool(first is not None
+                             and (first - t_s) <= DETECT_WINDOW))
+    n_detected = int(sum(detected))
 
     return {'arm': arm, 'tau_m': float(tau_m), 'seed': seed,
             'stream_ppl': stream_ppl, 'neg_frac': neg_frac,
             't_adapt_mean': float(np.nanmean(t_adapts))
             if t_adapts else float('nan'),
             'forgetting_ppl': forgetting_ppl,
+            'switches_detected': n_detected,
+            'n_switches': len(switch_times),
+            'clip_frac': clip_frac,
+            'stream_ppl_unclipped': stream_ppl_unclipped,
+            'stream_n_unc_undefined': int(n_unc_undef),
+            'forget_neg_frac': forget_neg_frac,
+            'forget_clip_frac': forget_clip_frac,
+            'forgetting_ppl_unclipped': forgetting_ppl_unclipped,
+            'forget_n_unc_undefined': int(n_f_undef),
             'runtime_s': time.time() - t0}
 
 
@@ -304,13 +378,20 @@ def aggregate(results):
     agg = []
     for (arm, tm), rs in sorted(groups.items()):
         entry = {'arm': arm, 'tau_m': tm, 'n_runs': len(rs)}
-        for m in ['stream_ppl', 't_adapt_mean', 'forgetting_ppl']:
+        for m in ['stream_ppl', 't_adapt_mean', 'forgetting_ppl',
+                  'clip_frac', 'stream_ppl_unclipped',
+                  'forgetting_ppl_unclipped', 'forget_neg_frac',
+                  'forget_clip_frac']:
             v = np.array([r[m] for r in rs], dtype=float)
             v = v[~np.isnan(v)]
             entry[m + '_mean'] = float(np.mean(v)) if v.size else float('nan')
             entry[m + '_std'] = float(np.std(v)) if v.size else float('nan')
         entry['neg_frac_mean'] = float(np.mean(
             [r['neg_frac'] for r in rs]))
+        entry['stream_n_unc_undefined_mean'] = float(np.mean(
+            [r['stream_n_unc_undefined'] for r in rs]))
+        entry['forget_n_unc_undefined_mean'] = float(np.mean(
+            [r['forget_n_unc_undefined'] for r in rs]))
         agg.append(entry)
     return agg
 
@@ -406,7 +487,11 @@ def main():
 
     os.makedirs(DATA_DIR, exist_ok=True)
     fieldnames = ['arm', 'tau_m', 'seed', 'stream_ppl', 'neg_frac',
-                  't_adapt_mean', 'forgetting_ppl', 'runtime_s']
+                  't_adapt_mean', 'forgetting_ppl', 'switches_detected',
+                  'n_switches', 'clip_frac', 'stream_ppl_unclipped',
+                  'stream_n_unc_undefined', 'forget_neg_frac',
+                  'forget_clip_frac', 'forgetting_ppl_unclipped',
+                  'forget_n_unc_undefined', 'runtime_s']
     out_csv = CSV_PATH if not quick else CSV_PATH.replace('.csv', '_quick.csv')
     with open(out_csv, 'w', newline='') as f:
         w = csv.DictWriter(f, fieldnames=fieldnames, extrasaction='ignore')
@@ -450,6 +535,11 @@ def main():
                                       'over 1500-token reference streams '
                                       'per domain (s18 seed rule)',
                         'gate': 'nearest reference + 1.15 hysteresis margin',
+                        'detector_tracking': 'one event per hysteresis-estimate '
+                                             'change; a known switch counts as '
+                                             'detected when the first event at '
+                                             'or after it falls within '
+                                             f'{DETECT_WINDOW} tokens',
                         'tau_m_list': TAU_M_LIST},
         'arms': {'A1': 'bare: single RLS readout, updates every token',
                  'A2': 'gate-only: RLS error scaled 1.0 for tau_m tokens '
@@ -466,6 +556,13 @@ def main():
         'metrics': {'stream_ppl': 'exp(mean CE) over the stream, '
                                   'predict-before-update',
                     'neg_frac': 'fraction of clipped (<=0) predictions',
+                    'clip_frac': 'fraction with y_hat<=1e-12 (floor hits)',
+                    'stream_ppl_unclipped': 'stream ppl on y_hat>0 tokens '
+                                            'only (sensitivity diagnostic)',
+                    'forget_neg_frac': 'holdout fraction y_hat<=0',
+                    'forget_clip_frac': 'holdout fraction y_hat<=1e-12',
+                    'forgetting_ppl_unclipped': 'holdout ppl on y_hat>0 '
+                                                'tokens only',
                     't_adapt_mean': 'post-switch tokens to window ppl <= '
                                     'steady*1.5 (known switches)',
                     'forgetting_ppl': 'held-out ppl of the previous domain '

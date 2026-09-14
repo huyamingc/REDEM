@@ -39,7 +39,7 @@
       "rank": 16,
       "seed": 8,
       "stream_ppl": 29.799269803519497,
-      "neg_frac": NaN,
+      "neg_frac": null,
       "t_adapt_mean": 20.0,
       "forgetting_ppl": 22.050029076611043,
       "runtime_s": 16.05356454849243
@@ -50,7 +50,7 @@
       "rank": 16,
       "seed": 2,
       "stream_ppl": 30.39547350005801,
-      "neg_frac": NaN,
+      "neg_frac": null,
       "t_adapt_mean": 20.0,
       "forgetting_ppl": 21.882513804261404,
       "runtime_s": 16.516788005828857
@@ -61,7 +61,7 @@
       "rank": 16,
       "seed": 7,
       "stream_ppl": 30.914530920368467,
-      "neg_frac": NaN,
+      "neg_frac": null,
       "t_adapt_mean": 20.0,
       "forgetting_ppl": 22.49438090805624,
       "runtime_s": 16.60868787765503
@@ -72,7 +72,7 @@
       "rank": 16,
       "seed": 5,
       "stream_ppl": 30.182150376324856,
-      "neg_frac": NaN,
+      "neg_frac": null,
       "t_adapt_mean": 20.0,
       "forgetting_ppl": 22.11751291537812,
       "runtime_s": 16.81526803970337
@@ -83,7 +83,7 @@
       "rank": 16,
       "seed": 0,
       "stream_ppl": 32.02044727501913,
-      "neg_frac": NaN,
+      "neg_frac": null,
       "t_adapt_mean": 20.0,
       "forgetting_ppl": 24.114077198130754,
       "runtime_s": 17.21899151802063
@@ -94,7 +94,7 @@
       "rank": 16,
       "seed": 0,
       "stream_ppl": 23.97540699177919,
-      "neg_frac": NaN,
+      "neg_frac": null,
       "t_adapt_mean": 20.0,
       "forgetting_ppl": 18.515791893708204,
       "runtime_s": 16.82142210006714
@@ -105,7 +105,7 @@
       "rank": 16,
       "seed": 3,
       "stream_ppl": 28.81762454600403,
-      "neg_frac": NaN,
+      "neg_frac": null,
       "t_adapt_mean": 20.0,
       "forgetting_ppl": 21.122236058964173,
       "runtime_s": 17.06082272529602
@@ -116,7 +116,7 @@
       "rank": 16,
       "seed": 4,
       "stream_ppl": 29.231063317909292,
-      "neg_frac": NaN,
+      "neg_frac": null,
       "t_adapt_mean": 20.0,
       "forgetting_ppl": 20.4950808371788,
       "runtime_s": 17.17885732650757
@@ -127,7 +127,7 @@
       "rank": 16,
       "seed": 6,
       "stream_ppl": 30.36028718251942,
-      "neg_frac": NaN,
+      "neg_frac": null,
       "t_adapt_mean": 20.0,
       "forgetting_ppl": 21.808461822965906,
       "runtime_s": 17.42458748817444
@@ -138,7 +138,7 @@
       "rank": 16,
       "seed": 4,
       "stream_ppl": 21.669450102329012,
-      "neg_frac": NaN,
+      "neg_frac": null,
       "t_adapt_mean": 20.0,
       "forgetting_ppl": 17.538503803946632,
       "runtime_s": 17.07784390449524
@@ -149,7 +149,7 @@
       "rank": 16,
       "seed": 2,
       "stream_ppl": 22.943306292815244,
-      "neg_frac": NaN,
+      "neg_frac": null,
       "t_adapt_mean": 20.0,
       "forgetting_ppl": 18.8587661787487,
       "runtime_s": 17.448028564453125
@@ -160,7 +160,7 @@
       "rank": 16,
       "seed": 1,
       "stream_ppl": 29.990780965815848,
-      "neg_frac": NaN,
+      "neg_frac": null,
       "t_adapt_mean": 20.0,
       "forgetting_ppl": 21.308535557925403,
       "runtime_s": 18.170478343963623
@@ -171,7 +171,7 @@
       "rank": 16,
       "seed": 9,
       "stream_ppl": 29.906800887510098,
-      "neg_frac": NaN,
+      "neg_frac": null,
       "t_adapt_mean": 20.0,
       "forgetting_ppl": 21.338488882781864,
       "runtime_s": 17.95622158050537
@@ -182,7 +182,7 @@
       "rank": 16,
       "seed": 5,
       "stream_ppl": 22.814251202941513,
-      "neg_frac": NaN,
+      "neg_frac": null,
       "t_adapt_mean": 20.0,
       "forgetting_ppl": 16.665516946533256,
       "runtime_s": 17.64205265045166
@@ -193,7 +193,7 @@
       "rank": 16,
       "seed": 1,
       "stream_ppl": 21.947663769617446,
-      "neg_frac": NaN,
+      "neg_frac": null,
       "t_adapt_mean": 20.0,
       "forgetting_ppl": 23.65956476570832,
       "runtime_s": 18.136166095733643
@@ -204,7 +204,7 @@
       "rank": 16,
       "seed": 3,
       "stream_ppl": 21.839288237342583,
-      "neg_frac": NaN,
+      "neg_frac": null,
       "t_adapt_mean": 20.0,
       "forgetting_ppl": 17.30579401189515,
       "runtime_s": 18.379117488861084
@@ -215,7 +215,7 @@
       "rank": 16,
       "seed": 7,
       "stream_ppl": 23.193284172771147,
-      "neg_frac": NaN,
+      "neg_frac": null,
       "t_adapt_mean": 20.0,
       "forgetting_ppl": 16.848971150351257,
       "runtime_s": 9.635258436203003
@@ -226,7 +226,7 @@
       "rank": 16,
       "seed": 6,
       "stream_ppl": 22.194555404142196,
-      "neg_frac": NaN,
+      "neg_frac": null,
       "t_adapt_mean": 20.0,
       "forgetting_ppl": 20.858986821636417,
       "runtime_s": 9.988300561904907
@@ -237,7 +237,7 @@
       "rank": 16,
       "seed": 2,
       "stream_ppl": 16.00280302171937,
-      "neg_frac": NaN,
+      "neg_frac": null,
       "t_adapt_mean": 20.0,
       "forgetting_ppl": 51.5693829765434,
       "runtime_s": 9.441982507705688
@@ -248,7 +248,7 @@
       "rank": 16,
       "seed": 9,
       "stream_ppl": 21.839343075415965,
-      "neg_frac": NaN,
+      "neg_frac": null,
       "t_adapt_mean": 20.0,
       "forgetting_ppl": 20.115962306738925,
       "runtime_s": 9.744032382965088
@@ -259,7 +259,7 @@
       "rank": 16,
       "seed": 8,
       "stream_ppl": 22.16751458455051,
-      "neg_frac": NaN,
+      "neg_frac": null,
       "t_adapt_mean": 20.0,
       "forgetting_ppl": 19.76510337184634,
       "runtime_s": 9.867563009262085
@@ -270,7 +270,7 @@
       "rank": 16,
       "seed": 0,
       "stream_ppl": 16.85367484693551,
-      "neg_frac": NaN,
+      "neg_frac": null,
       "t_adapt_mean": 20.0,
       "forgetting_ppl": 53.020400964734385,
       "runtime_s": 9.730500221252441
@@ -281,7 +281,7 @@
       "rank": 16,
       "seed": 3,
       "stream_ppl": 15.633408052854968,
-      "neg_frac": NaN,
+      "neg_frac": null,
       "t_adapt_mean": 20.0,
       "forgetting_ppl": 50.81830460375806,
       "runtime_s": 9.657154321670532
@@ -292,7 +292,7 @@
       "rank": 16,
       "seed": 5,
       "stream_ppl": 16.39794590739106,
-      "neg_frac": NaN,
+      "neg_frac": null,
       "t_adapt_mean": 20.0,
       "forgetting_ppl": 47.49071871837192,
       "runtime_s": 9.287458896636963
@@ -303,7 +303,7 @@
       "rank": 16,
       "seed": 7,
       "stream_ppl": 16.61387447623415,
-      "neg_frac": NaN,
+      "neg_frac": null,
       "t_adapt_mean": 20.0,
       "forgetting_ppl": 45.760422235121275,
       "runtime_s": 9.416731595993042
@@ -314,7 +314,7 @@
       "rank": 16,
       "seed": 4,
       "stream_ppl": 15.272994584295967,
-      "neg_frac": NaN,
+      "neg_frac": null,
       "t_adapt_mean": 20.0,
       "forgetting_ppl": 56.31316185276053,
       "runtime_s": 10.18745493888855
@@ -325,7 +325,7 @@
       "rank": 16,
       "seed": 1,
       "stream_ppl": 14.877595988454322,
-      "neg_frac": NaN,
+      "neg_frac": null,
       "t_adapt_mean": 20.0,
       "forgetting_ppl": 67.42039590722331,
       "runtime_s": 10.701616287231445
@@ -336,7 +336,7 @@
       "rank": 16,
       "seed": 6,
       "stream_ppl": 15.286316072185747,
-      "neg_frac": NaN,
+      "neg_frac": null,
       "t_adapt_mean": 20.0,
       "forgetting_ppl": 65.22682897506986,
       "runtime_s": 10.183486461639404
@@ -347,7 +347,7 @@
       "rank": 16,
       "seed": 9,
       "stream_ppl": 15.460912609314462,
-      "neg_frac": NaN,
+      "neg_frac": null,
       "t_adapt_mean": 20.0,
       "forgetting_ppl": 59.14145481394127,
       "runtime_s": 10.502569675445557
@@ -358,7 +358,7 @@
       "rank": 16,
       "seed": 8,
       "stream_ppl": 15.981544203809822,
-      "neg_frac": NaN,
+      "neg_frac": null,
       "t_adapt_mean": 20.0,
       "forgetting_ppl": 58.84852878246674,
       "runtime_s": 10.641149997711182
@@ -369,7 +369,7 @@
       "rank": 16,
       "seed": 1,
       "stream_ppl": 22.381889071028276,
-      "neg_frac": NaN,
+      "neg_frac": null,
       "t_adapt_mean": 20.0,
       "forgetting_ppl": 60.33237389401336,
       "runtime_s": 11.041589260101318
@@ -380,7 +380,7 @@
       "rank": 16,
       "seed": 0,
       "stream_ppl": 25.621518596599387,
-      "neg_frac": NaN,
+      "neg_frac": null,
       "t_adapt_mean": 20.0,
       "forgetting_ppl": 48.54114478881805,
       "runtime_s": 11.47146725654602
@@ -391,7 +391,7 @@
       "rank": 32,
       "seed": 0,
       "stream_ppl": 29.419761203804196,
-      "neg_frac": NaN,
+      "neg_frac": null,
       "t_adapt_mean": 20.0,
       "forgetting_ppl": 21.022500640153776,
       "runtime_s": 8.88222336769104
@@ -402,7 +402,7 @@
       "rank": 16,
       "seed": 6,
       "stream_ppl": 17.501943099769505,
-      "neg_frac": NaN,
+      "neg_frac": null,
       "t_adapt_mean": 20.0,
       "forgetting_ppl": 82.8951873646316,
       "runtime_s": 10.171764373779297
@@ -413,7 +413,7 @@
       "rank": 16,
       "seed": 7,
       "stream_ppl": 24.04665031493415,
-      "neg_frac": NaN,
+      "neg_frac": null,
       "t_adapt_mean": 20.0,
       "forgetting_ppl": 40.98202267954762,
       "runtime_s": 10.707062005996704
@@ -424,7 +424,7 @@
       "rank": 16,
       "seed": 3,
       "stream_ppl": 16.20474955376692,
-      "neg_frac": NaN,
+      "neg_frac": null,
       "t_adapt_mean": 20.0,
       "forgetting_ppl": 95.51925270049567,
       "runtime_s": 11.530735731124878
@@ -435,7 +435,7 @@
       "rank": 16,
       "seed": 2,
       "stream_ppl": 20.160611378393444,
-      "neg_frac": NaN,
+      "neg_frac": null,
       "t_adapt_mean": 20.0,
       "forgetting_ppl": 81.18812800663876,
       "runtime_s": 11.792247533798218
@@ -446,7 +446,7 @@
       "rank": 32,
       "seed": 2,
       "stream_ppl": 30.806885996851868,
-      "neg_frac": NaN,
+      "neg_frac": null,
       "t_adapt_mean": 20.0,
       "forgetting_ppl": 21.695387087880057,
       "runtime_s": 10.165072679519653
@@ -457,7 +457,7 @@
       "rank": 16,
       "seed": 4,
       "stream_ppl": 16.248520331313575,
-      "neg_frac": NaN,
+      "neg_frac": null,
       "t_adapt_mean": 20.0,
       "forgetting_ppl": 75.45363665121492,
       "runtime_s": 11.521590232849121
@@ -468,7 +468,7 @@
       "rank": 32,
       "seed": 4,
       "stream_ppl": 29.089164918360936,
-      "neg_frac": NaN,
+      "neg_frac": null,
       "t_adapt_mean": 20.0,
       "forgetting_ppl": 20.578460643637648,
       "runtime_s": 9.375593185424805
@@ -479,7 +479,7 @@
       "rank": 16,
       "seed": 9,
       "stream_ppl": 17.797833740189326,
-      "neg_frac": NaN,
+      "neg_frac": null,
       "t_adapt_mean": 20.0,
       "forgetting_ppl": 70.15008905056449,
       "runtime_s": 11.412053108215332
@@ -490,7 +490,7 @@
       "rank": 16,
       "seed": 8,
       "stream_ppl": 21.529349468208537,
-      "neg_frac": NaN,
+      "neg_frac": null,
       "t_adapt_mean": 20.0,
       "forgetting_ppl": 42.37996313451383,
       "runtime_s": 11.624369621276855
@@ -501,7 +501,7 @@
       "rank": 32,
       "seed": 1,
       "stream_ppl": 28.62482422000094,
-      "neg_frac": NaN,
+      "neg_frac": null,
       "t_adapt_mean": 20.0,
       "forgetting_ppl": 19.912254270461546,
       "runtime_s": 10.792844772338867
@@ -512,7 +512,7 @@
       "rank": 32,
       "seed": 7,
       "stream_ppl": 28.24625533735263,
-      "neg_frac": NaN,
+      "neg_frac": null,
       "t_adapt_mean": 20.0,
       "forgetting_ppl": 19.57931956847813,
       "runtime_s": 9.233313798904419
@@ -523,7 +523,7 @@
       "rank": 32,
       "seed": 3,
       "stream_ppl": 28.184992862553898,
-      "neg_frac": NaN,
+      "neg_frac": null,
       "t_adapt_mean": 20.0,
       "forgetting_ppl": 19.543418618918533,
       "runtime_s": 11.352312088012695
@@ -534,7 +534,7 @@
       "rank": 16,
       "seed": 5,
       "stream_ppl": 23.3542421968365,
-      "neg_frac": NaN,
+      "neg_frac": null,
       "t_adapt_mean": 20.0,
       "forgetting_ppl": 44.9697471149186,
       "runtime_s": 13.071772336959839
@@ -545,7 +545,7 @@
       "rank": 32,
       "seed": 5,
       "stream_ppl": 29.59547090697038,
-      "neg_frac": NaN,
+      "neg_frac": null,
       "t_adapt_mean": 20.0,
       "forgetting_ppl": 20.636806436992497,
       "runtime_s": 11.298998355865479
@@ -556,7 +556,7 @@
       "rank": 32,
       "seed": 6,
       "stream_ppl": 28.471294608411775,
-      "neg_frac": NaN,
+      "neg_frac": null,
       "t_adapt_mean": 20.0,
       "forgetting_ppl": 19.433467181714178,
       "runtime_s": 10.423871994018555
@@ -567,7 +567,7 @@
       "rank": 32,
       "seed": 0,
       "stream_ppl": 21.548743201041344,
-      "neg_frac": NaN,
+      "neg_frac": null,
       "t_adapt_mean": 20.0,
       "forgetting_ppl": 23.616092055328494,
       "runtime_s": 8.51465630531311
@@ -578,7 +578,7 @@
       "rank": 32,
       "seed": 8,
       "stream_ppl": 29.02905346163943,
-      "neg_frac": NaN,
+      "neg_frac": null,
       "t_adapt_mean": 20.0,
       "forgetting_ppl": 20.141668008906127,
       "runtime_s": 10.43919563293457
@@ -589,7 +589,7 @@
       "rank": 32,
       "seed": 9,
       "stream_ppl": 29.159037737599913,
-      "neg_frac": NaN,
+      "neg_frac": null,
       "t_adapt_mean": 20.0,
       "forgetting_ppl": 19.38332011744995,
       "runtime_s": 10.894806385040283
@@ -600,7 +600,7 @@
       "rank": 32,
       "seed": 2,
       "stream_ppl": 22.0578824533436,
-      "neg_frac": NaN,
+      "neg_frac": null,
       "t_adapt_mean": 20.0,
       "forgetting_ppl": 24.15907793864969,
       "runtime_s": 10.098057746887207
@@ -611,7 +611,7 @@
       "rank": 32,
       "seed": 8,
       "stream_ppl": 20.869467543299354,
-      "neg_frac": NaN,
+      "neg_frac": null,
       "t_adapt_mean": 20.0,
       "forgetting_ppl": 27.33761428541798,
       "runtime_s": 9.451756954193115
@@ -622,7 +622,7 @@
       "rank": 32,
       "seed": 7,
       "stream_ppl": 20.784827031885328,
-      "neg_frac": NaN,
+      "neg_frac": null,
       "t_adapt_mean": 20.0,
       "forgetting_ppl": 23.08881336383256,
       "runtime_s": 9.570820331573486
@@ -633,7 +633,7 @@
       "rank": 32,
       "seed": 6,
       "stream_ppl": 20.720330085311037,
-      "neg_frac": NaN,
+      "neg_frac": null,
       "t_adapt_mean": 20.0,
       "forgetting_ppl": 25.46731601626727,
       "runtime_s": 9.88928771018982
@@ -644,7 +644,7 @@
       "rank": 32,
       "seed": 1,
       "stream_ppl": 20.00515068685962,
-      "neg_frac": NaN,
+      "neg_frac": null,
       "t_adapt_mean": 20.0,
       "forgetting_ppl": 32.1165070027104,
       "runtime_s": 10.445289850234985
@@ -655,7 +655,7 @@
       "rank": 32,
       "seed": 4,
       "stream_ppl": 20.339158281568313,
-      "neg_frac": NaN,
+      "neg_frac": null,
       "t_adapt_mean": 20.0,
       "forgetting_ppl": 28.428977818140115,
       "runtime_s": 10.247891187667847
@@ -666,7 +666,7 @@
       "rank": 32,
       "seed": 5,
       "stream_ppl": 21.50637681003043,
-      "neg_frac": NaN,
+      "neg_frac": null,
       "t_adapt_mean": 20.0,
       "forgetting_ppl": 23.884482272853834,
       "runtime_s": 10.162236452102661
@@ -677,7 +677,7 @@
       "rank": 32,
       "seed": 3,
       "stream_ppl": 19.52478463483658,
-      "neg_frac": NaN,
+      "neg_frac": null,
       "t_adapt_mean": 20.0,
       "forgetting_ppl": 30.42359666505983,
       "runtime_s": 10.555594444274902
@@ -688,7 +688,7 @@
       "rank": 32,
       "seed": 2,
       "stream_ppl": 15.477173185300943,
-      "neg_frac": NaN,
+      "neg_frac": null,
       "t_adapt_mean": 20.0,
       "forgetting_ppl": 68.87943923399932,
       "runtime_s": 9.345360040664673
@@ -699,7 +699,7 @@
       "rank": 32,
       "seed": 9,
       "stream_ppl": 19.86048665341979,
-      "neg_frac": NaN,
+      "neg_frac": null,
       "t_adapt_mean": 20.0,
       "forgetting_ppl": 31.283778611201733,
       "runtime_s": 10.485810995101929
@@ -710,7 +710,7 @@
       "rank": 32,
       "seed": 0,
       "stream_ppl": 15.574183567854725,
-      "neg_frac": NaN,
+      "neg_frac": null,
       "t_adapt_mean": 20.0,
       "forgetting_ppl": 53.24994605404699,
       "runtime_s": 10.31430196762085
@@ -721,7 +721,7 @@
       "rank": 32,
       "seed": 1,
       "stream_ppl": 13.680257518042,
-      "neg_frac": NaN,
+      "neg_frac": null,
       "t_adapt_mean": 20.0,
       "forgetting_ppl": 72.67101345500178,
       "runtime_s": 11.399537324905396
@@ -732,7 +732,7 @@
       "rank": 32,
       "seed": 3,
       "stream_ppl": 14.963358831530163,
-      "neg_frac": NaN,
+      "neg_frac": null,
       "t_adapt_mean": 20.0,
       "forgetting_ppl": 66.15015672898788,
       "runtime_s": 11.47709059715271
@@ -743,7 +743,7 @@
       "rank": 32,
       "seed": 5,
       "stream_ppl": 15.217012018032662,
-      "neg_frac": NaN,
+      "neg_frac": null,
       "t_adapt_mean": 20.0,
       "forgetting_ppl": 63.538176075714446,
       "runtime_s": 8.233082294464111
@@ -754,7 +754,7 @@
       "rank": 32,
       "seed": 4,
       "stream_ppl": 14.788270680958847,
-      "neg_frac": NaN,
+      "neg_frac": null,
       "t_adapt_mean": 20.0,
       "forgetting_ppl": 63.14841440340398,
       "runtime_s": 9.372971773147583
@@ -765,7 +765,7 @@
       "rank": 32,
       "seed": 9,
       "stream_ppl": 14.445543078415927,
-      "neg_frac": NaN,
+      "neg_frac": null,
       "t_adapt_mean": 20.0,
       "forgetting_ppl": 62.216044636311814,
       "runtime_s": 8.440498113632202
@@ -776,7 +776,7 @@
       "rank": 32,
       "seed": 6,
       "stream_ppl": 14.710241513335575,
-      "neg_frac": NaN,
+      "neg_frac": null,
       "t_adapt_mean": 20.0,
       "forgetting_ppl": 58.98066030697731,
       "runtime_s": 9.157815217971802
@@ -787,7 +787,7 @@
       "rank": 32,
       "seed": 8,
       "stream_ppl": 14.453202018777466,
-      "neg_frac": NaN,
+      "neg_frac": null,
       "t_adapt_mean": 20.0,
       "forgetting_ppl": 60.8134394435695,
       "runtime_s": 9.16802453994751
@@ -798,7 +798,7 @@
       "rank": 32,
       "seed": 7,
       "stream_ppl": 15.312635995085179,
-      "neg_frac": NaN,
+      "neg_frac": null,
       "t_adapt_mean": 20.0,
       "forgetting_ppl": 52.65740581649805,
       "runtime_s": 9.723967790603638
@@ -809,7 +809,7 @@
       "rank": 32,
       "seed": 4,
       "stream_ppl": 17.21867980399596,
-      "neg_frac": NaN,
+      "neg_frac": null,
       "t_adapt_mean": 20.0,
       "forgetting_ppl": 55.55647107029423,
       "runtime_s": 9.467279434204102
@@ -820,7 +820,7 @@
       "rank": 32,
       "seed": 0,
       "stream_ppl": 17.70401553559275,
-      "neg_frac": NaN,
+      "neg_frac": null,
       "t_adapt_mean": 20.0,
       "forgetting_ppl": 62.19379874516985,
       "runtime_s": 9.801341533660889
@@ -831,7 +831,7 @@
       "rank": 32,
       "seed": 1,
       "stream_ppl": 22.75161628076317,
-      "neg_frac": NaN,
+      "neg_frac": null,
       "t_adapt_mean": 20.0,
       "forgetting_ppl": 38.61307654261424,
       "runtime_s": 10.279170513153076
@@ -842,7 +842,7 @@
       "rank": 32,
       "seed": 8,
       "stream_ppl": 18.10841226397281,
-      "neg_frac": NaN,
+      "neg_frac": null,
       "t_adapt_mean": 20.0,
       "forgetting_ppl": 44.78447124273201,
       "runtime_s": 8.441396474838257
@@ -853,7 +853,7 @@
       "rank": 32,
       "seed": 2,
       "stream_ppl": 23.377172345193966,
-      "neg_frac": NaN,
+      "neg_frac": null,
       "t_adapt_mean": 20.0,
       "forgetting_ppl": 53.2666286094415,
       "runtime_s": 11.485944509506226
@@ -864,7 +864,7 @@
       "rank": 32,
       "seed": 6,
       "stream_ppl": 15.315046264442215,
-      "neg_frac": NaN,
+      "neg_frac": null,
       "t_adapt_mean": 20.0,
       "forgetting_ppl": 90.16690511184332,
       "runtime_s": 11.025534391403198
@@ -875,7 +875,7 @@
       "rank": 32,
       "seed": 7,
       "stream_ppl": 25.031181811240298,
-      "neg_frac": NaN,
+      "neg_frac": null,
       "t_adapt_mean": 20.0,
       "forgetting_ppl": 67.49095018418838,
       "runtime_s": 11.60664701461792
@@ -886,7 +886,7 @@
       "rank": 32,
       "seed": 5,
       "stream_ppl": 20.707969824691702,
-      "neg_frac": NaN,
+      "neg_frac": null,
       "t_adapt_mean": 20.0,
       "forgetting_ppl": 35.80280181860877,
       "runtime_s": 12.36480188369751
@@ -897,7 +897,7 @@
       "rank": 32,
       "seed": 3,
       "stream_ppl": 20.61253732056471,
-      "neg_frac": NaN,
+      "neg_frac": null,
       "t_adapt_mean": 20.0,
       "forgetting_ppl": 65.20167864523646,
       "runtime_s": 15.94115686416626
@@ -908,7 +908,7 @@
       "rank": 32,
       "seed": 9,
       "stream_ppl": 21.868161919105088,
-      "neg_frac": NaN,
+      "neg_frac": null,
       "t_adapt_mean": 20.0,
       "forgetting_ppl": 36.203078733252696,
       "runtime_s": 13.906817197799683
@@ -919,7 +919,7 @@
       "rank": 16,
       "seed": 0,
       "stream_ppl": 23.307777512685206,
-      "neg_frac": NaN,
+      "neg_frac": null,
       "t_adapt_mean": 20.0,
       "forgetting_ppl": 11.958012196988275,
       "runtime_s": 11.17374324798584
@@ -930,7 +930,7 @@
       "rank": 16,
       "seed": 2,
       "stream_ppl": 21.867725138428536,
-      "neg_frac": NaN,
+      "neg_frac": null,
       "t_adapt_mean": 20.0,
       "forgetting_ppl": 10.593052294068189,
       "runtime_s": 10.126397132873535
@@ -941,7 +941,7 @@
       "rank": 16,
       "seed": 1,
       "stream_ppl": 21.489333605093805,
-      "neg_frac": NaN,
+      "neg_frac": null,
       "t_adapt_mean": 20.0,
       "forgetting_ppl": 10.620304765133366,
       "runtime_s": 11.727748155593872
@@ -952,7 +952,7 @@
       "rank": 16,
       "seed": 3,
       "stream_ppl": 20.53210594747375,
-      "neg_frac": NaN,
+      "neg_frac": null,
       "t_adapt_mean": 20.0,
       "forgetting_ppl": 10.778263838972396,
       "runtime_s": 10.673149347305298
@@ -963,7 +963,7 @@
       "rank": 16,
       "seed": 4,
       "stream_ppl": 21.223083543977506,
-      "neg_frac": NaN,
+      "neg_frac": null,
       "t_adapt_mean": 20.0,
       "forgetting_ppl": 10.255867916763744,
       "runtime_s": 10.50017523765564
@@ -974,7 +974,7 @@
       "rank": 16,
       "seed": 8,
       "stream_ppl": 21.71503976975201,
-      "neg_frac": NaN,
+      "neg_frac": null,
       "t_adapt_mean": 20.0,
       "forgetting_ppl": 11.021062621022963,
       "runtime_s": 10.04399824142456
@@ -985,7 +985,7 @@
       "rank": 16,
       "seed": 7,
       "stream_ppl": 22.730263038681027,
-      "neg_frac": NaN,
+      "neg_frac": null,
       "t_adapt_mean": 20.0,
       "forgetting_ppl": 11.148151163428977,
       "runtime_s": 10.576596975326538
@@ -996,7 +996,7 @@
       "rank": 16,
       "seed": 5,
       "stream_ppl": 21.68665780157692,
-      "neg_frac": NaN,
+      "neg_frac": null,
       "t_adapt_mean": 20.0,
       "forgetting_ppl": 11.04071758749093,
       "runtime_s": 10.895431756973267
@@ -1007,7 +1007,7 @@
       "rank": 16,
       "seed": 6,
       "stream_ppl": 22.135206037128658,
-      "neg_frac": NaN,
+      "neg_frac": null,
       "t_adapt_mean": 20.0,
       "forgetting_ppl": 10.91649146685903,
       "runtime_s": 11.080442667007446
@@ -1018,10 +1018,11 @@
       "rank": 16,
       "seed": 9,
       "stream_ppl": 21.002837375688628,
-      "neg_frac": NaN,
+      "neg_frac": null,
       "t_adapt_mean": 20.0,
       "forgetting_ppl": 10.114799884470441,
       "runtime_s": 9.780472993850708
     }
-  ]
+  ],
+  "null_reason": "non-finite per-run values are written as null (undefined, e.g. neg_frac is undefined for a run whose negative-control stream is empty)"
 }

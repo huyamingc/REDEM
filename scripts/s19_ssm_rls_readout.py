@@ -89,6 +89,9 @@ import numpy as np
 import torch
 from multiprocessing import Pool, cpu_count
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from per_token_io import save_stream_and_holdout
+
 torch.set_num_threads(1)   # per-worker; Pool gives process-level parallelism
 
 # ========================== Fixed parameters ==========================
@@ -281,7 +284,11 @@ def run_single(args):
     h = torch.zeros(N_STATE, dtype=torch.float64)
     ce = np.empty(T, dtype=np.float64)
     ce[:] = np.nan
+    ce_unc = np.empty(T, dtype=np.float64)
+    ce_unc[:] = np.nan
     nneg = 0
+    nclip = 0
+    n_unc_undef = 0
     hs = np.empty((T - 1, F), dtype=np.float64)
     for t in range(1, T):
         h = A * h + B[:, stream[t - 1]]
@@ -289,9 +296,17 @@ def run_single(args):
         phi = build_phi(hw, stream[t - 1])
         hs[t - 1] = phi.numpy()
         y_hat = W @ phi
-        p_target = float(y_hat[stream[t]].clamp(min=1e-12, max=1.0))
-        if float(y_hat[stream[t]]) <= 0.0:
+        y_tok = y_hat[stream[t]]
+        p_target = float(y_tok.clamp(min=1e-12, max=1.0))
+        yt = float(y_tok)
+        if yt <= 0.0:
             nneg += 1
+        if yt <= 1e-12:
+            nclip += 1
+        if yt > 0.0:
+            ce_unc[t] = -np.log(yt)
+        else:
+            n_unc_undef += 1
         ce[t] = -np.log(p_target)
         # RLS update (after predicting: predict-before-update)
         target = torch.zeros(VOCAB, dtype=torch.float64)
@@ -303,6 +318,9 @@ def run_single(args):
         P = (P - torch.outer(k, phi) @ P) / RLS_LAMBDA
     stream_ppl = float(np.exp(np.nanmean(ce[1:])))
     neg_frac = float(nneg) / (T - 1)
+    clip_frac = float(nclip) / (T - 1)
+    stream_ppl_unclipped = (float(np.exp(np.nanmean(ce_unc[1:])))
+                            if n_unc_undef < (T - 1) else float('nan'))
 
     # ---- Pooled ridge oracle (in-sample linear-in-history bound) ----
     Y = np.zeros((T - 1, VOCAB))
@@ -317,6 +335,12 @@ def run_single(args):
 
     # ---- Forgetting: final readout, held-out previous domain (s18 metric) ----
     forgets = []
+    forgets_unc = []
+    fneg = 0
+    fclip = 0
+    n_f_undef = 0
+    hold_ce_all = []
+    hold_ce_unc_all = []
     for si, t_s in enumerate([SEG_LEN * s for s in range(1, N_SEGMENTS)]):
         prev_dom = int(domains[t_s - 1])
         hold = gen_stream(seed * 41 + si * 211 + 3,
@@ -324,17 +348,52 @@ def run_single(args):
                           BIAS_A if prev_dom == 0 else BIAS_B)
         hh = torch.zeros(N_STATE, dtype=torch.float64)
         ces = []
+        ces_unc = []
         for t in range(1, HOLDOUT_LEN):
             hh = A * hh + B[:, hold[t - 1]]
             phi = build_phi(hh * scale, hold[t - 1])
-            p_target = float((W @ phi)[hold[t]].clamp(min=1e-12, max=1.0))
+            y_tok = (W @ phi)[hold[t]]
+            p_target = float(y_tok.clamp(min=1e-12, max=1.0))
+            yt = float(y_tok)
+            if yt <= 0.0:
+                fneg += 1
+            if yt <= 1e-12:
+                fclip += 1
+            if yt > 0.0:
+                ces_unc.append(-np.log(yt))
+                hold_ce_unc_all.append(-np.log(yt))
+            else:
+                n_f_undef += 1
+                ces_unc.append(np.nan)
+                hold_ce_unc_all.append(np.nan)
             ces.append(-np.log(p_target))
+            hold_ce_all.append(-np.log(p_target))
         forgets.append(float(np.exp(np.mean(ces))))
+        forgets_unc.append(float(np.exp(np.nanmean(ces_unc)))
+                           if np.isfinite(ces_unc).any() else float('nan'))
     forgetting_ppl = float(np.mean(forgets))
+    forgetting_ppl_unclipped = (float(np.nanmean(forgets_unc))
+                                if forgets_unc else float('nan'))
+    n_hold = (HOLDOUT_LEN - 1) * max(1, len(forgets))
+    forget_neg_frac = float(fneg) / n_hold if n_hold else float('nan')
+    forget_clip_frac = float(fclip) / n_hold if n_hold else float('nan')
+
+    save_stream_and_holdout(
+        's19', arm, seed, 'x', ce, ce_unc,
+        np.asarray(hold_ce_all, dtype=np.float64),
+        np.asarray(hold_ce_unc_all, dtype=np.float64))
 
     return {'arm': arm, 'seed': seed, 'stream_ppl': stream_ppl,
             'neg_frac': neg_frac, 'forgetting_ppl': forgetting_ppl,
-            'oracle_ppl': oracle_ppl, 'runtime_s': time.time() - t0}
+            'oracle_ppl': oracle_ppl,
+            'clip_frac': clip_frac,
+            'stream_ppl_unclipped': stream_ppl_unclipped,
+            'stream_n_unc_undefined': int(n_unc_undef),
+            'forget_neg_frac': forget_neg_frac,
+            'forget_clip_frac': forget_clip_frac,
+            'forgetting_ppl_unclipped': forgetting_ppl_unclipped,
+            'forget_n_unc_undefined': int(n_f_undef),
+            'runtime_s': time.time() - t0}
 
 
 # ========================== Aggregation ==========================
@@ -424,7 +483,10 @@ def main():
 
     os.makedirs(DATA_DIR, exist_ok=True)
     fieldnames = ['arm', 'seed', 'stream_ppl', 'neg_frac', 'forgetting_ppl',
-                  'oracle_ppl', 'runtime_s']
+                  'oracle_ppl', 'clip_frac', 'stream_ppl_unclipped',
+                  'stream_n_unc_undefined', 'forget_neg_frac',
+                  'forget_clip_frac', 'forgetting_ppl_unclipped',
+                  'forget_n_unc_undefined', 'runtime_s']
     out_csv = CSV_PATH if not quick else CSV_PATH.replace('.csv', '_quick.csv')
     with open(out_csv, 'w', newline='') as f:
         w = csv.DictWriter(f, fieldnames=fieldnames, extrasaction='ignore')
@@ -517,6 +579,21 @@ def main():
                     'neg_frac': 'fraction of tokens whose predicted '
                                 'probability was <= 0 (clipped) - '
                                 'diagnostic of the linear-MMSE evaluation',
+                    'clip_frac': 'fraction of stream tokens with '
+                                 'y_hat[target] <= 1e-12 (true floor hits; '
+                                 '>= neg_frac)',
+                    'stream_ppl_unclipped': 'exp(mean CE) over stream tokens '
+                                            'with y_hat>0 only (sensitivity '
+                                            'diagnostic; not a headline metric)',
+                    'stream_n_unc_undefined': 'count of stream tokens with '
+                                              'y_hat<=0 (unclipped CE undefined)',
+                    'forget_neg_frac': 'holdout fraction with y_hat<=0',
+                    'forget_clip_frac': 'holdout fraction with y_hat<=1e-12',
+                    'forgetting_ppl_unclipped': 'holdout ppl over y_hat>0 '
+                                                'tokens only (sensitivity '
+                                                'diagnostic)',
+                    'forget_n_unc_undefined': 'count of holdout tokens with '
+                                              'y_hat<=0',
                     'forgetting_ppl': 's18 metric: final readout on held-out '
                                       'previous-domain samples (5 switches)',
                     'oracle_ppl': 'pooled ridge, in-sample linear-in-history '

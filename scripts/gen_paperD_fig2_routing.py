@@ -69,7 +69,7 @@ def main():
     ax = axes[0]
     ax.axhline(s20['a1_forget'], color='black', linestyle='--', linewidth=1.0,
                label='A1 bare')
-    ax.plot(TAUS, s20['a2_forget'], 'o-', color='#dd8452', label='A2 gate-only')
+    ax.plot(TAUS, s20['a2_forget'], 'o-', color='#dd8452', label='A2 pause')
     ax.plot(TAUS, s20['a3_forget'], 's-', color='#4c72b0',
             label='A3 routing')
     ax.set_xscale('log')
