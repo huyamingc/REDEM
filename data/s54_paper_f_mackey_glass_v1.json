@@ -1,0 +1,114 @@
+{
+  "task": "mackey-glass-bin32",
+  "n_train": 18000,
+  "n_hold": 2000,
+  "n_seeds": 5,
+  "elapsed_s": 43.309731006622314,
+  "results": [
+    {
+      "arm": "B-softmax-sgd",
+      "seed": 1,
+      "train_ppl": 29.540820470418073,
+      "holdout_ppl": 29.92690387297749,
+      "runtime_s": 2.572760820388794
+    },
+    {
+      "arm": "B-softmax-sgd",
+      "seed": 2,
+      "train_ppl": 29.54669293640243,
+      "holdout_ppl": 28.745285434797182,
+      "runtime_s": 2.565429449081421
+    },
+    {
+      "arm": "B-softmax-sgd",
+      "seed": 0,
+      "train_ppl": 29.4674468330842,
+      "holdout_ppl": 28.77031853127949,
+      "runtime_s": 2.5957822799682617
+    },
+    {
+      "arm": "B-softmax-sgd",
+      "seed": 3,
+      "train_ppl": 29.620665402482732,
+      "holdout_ppl": 28.86469187804522,
+      "runtime_s": 2.464115619659424
+    },
+    {
+      "arm": "B-softmax-sgd",
+      "seed": 4,
+      "train_ppl": 29.420864527798244,
+      "holdout_ppl": 29.039121601718975,
+      "runtime_s": 2.4800424575805664
+    },
+    {
+      "arm": "Gate-C-topk-softmax",
+      "seed": 0,
+      "train_ppl": 21.108355919594082,
+      "holdout_ppl": 17.07773788784843,
+      "runtime_s": 7.783706188201904
+    },
+    {
+      "arm": "Gate-C-topk-softmax",
+      "seed": 1,
+      "train_ppl": 19.339419298755402,
+      "holdout_ppl": 16.90342474403293,
+      "runtime_s": 7.952749967575073
+    },
+    {
+      "arm": "Gate-C-topk-softmax",
+      "seed": 2,
+      "train_ppl": 20.10693810992219,
+      "holdout_ppl": 15.38454235135492,
+      "runtime_s": 7.954644680023193
+    },
+    {
+      "arm": "Gate-C-topk-softmax",
+      "seed": 3,
+      "train_ppl": 20.24000355397752,
+      "holdout_ppl": 16.716088082234265,
+      "runtime_s": 8.450420141220093
+    },
+    {
+      "arm": "Gate-C-topk-softmax",
+      "seed": 4,
+      "train_ppl": 18.754803187093128,
+      "holdout_ppl": 15.253369771228007,
+      "runtime_s": 8.578187942504883
+    },
+    {
+      "arm": "Soft-topk",
+      "seed": 0,
+      "train_ppl": 21.291735367240758,
+      "holdout_ppl": 17.2296767019812,
+      "runtime_s": 12.463593006134033
+    },
+    {
+      "arm": "Soft-topk",
+      "seed": 1,
+      "train_ppl": 19.289531618678396,
+      "holdout_ppl": 16.97300503373655,
+      "runtime_s": 12.487685203552246
+    },
+    {
+      "arm": "Soft-topk",
+      "seed": 2,
+      "train_ppl": 20.00291218296342,
+      "holdout_ppl": 15.281030993002224,
+      "runtime_s": 12.518504619598389
+    },
+    {
+      "arm": "Soft-topk",
+      "seed": 3,
+      "train_ppl": 20.404138427057724,
+      "holdout_ppl": 16.731740603893563,
+      "runtime_s": 12.045881271362305
+    },
+    {
+      "arm": "Soft-topk",
+      "seed": 4,
+      "train_ppl": 18.629684189123928,
+      "holdout_ppl": 15.117107446294689,
+      "runtime_s": 10.3277747631073
+    }
+  ]
+}
