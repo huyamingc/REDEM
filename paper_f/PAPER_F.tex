@@ -449,6 +449,14 @@ candidate-space \emph{breadth}: a trainable generator of hypotheses,
 not only a scorer of human-supplied ones.
 
 \paragraph{External baseline (s66) and the frozen-host surprise.}
+{\sloppy
+All s66 numbers cited below are $10$-seed means over the committed rows
+of \url{data/s66_external_ssm_baseline_v1.json} (single
+configuration: $N{=}128$ diagonal selective-SSM host on the char-level
+biased-bigram stream; \texttt{stream\_ppl} is the stream perplexity and
+\texttt{forgetting\_ppl} the held-out previous-domain perplexity; parameter
+counts are the \texttt{n\_params\_readout}/\texttt{n\_params\_gate}/
+\texttt{n\_params\_host} fields of the same file).
 A Mamba-style selective-SSM arm on the identical host,
 stream, seeds and metric does not close the gap to F's learned top-$k$
 gate (stream $9.03$ vs.\ $7.03$, $0/10$ external better), and joint
@@ -463,12 +471,14 @@ points to a pretrained-versus-random-host comparison, not to a claim
 that selective SSMs are inferior in general. We therefore treat s66
 as a scoped external check that licenses only the selective-SSM
 parameterisation at this protocol scale.
+}
 
 \paragraph{Limitations.}
 Two-domain biased-bigram stream; primary tables at $N=128$; one host
 configuration. A Mamba-style selective-SSM baseline
 (\texttt{s66}) has now been run on the same host, stream, seeds and
-metric: the frozen-host external arm reaches stream ppl $9.03$ and the
+metric: the frozen-host external arm reaches stream ppl
+(\texttt{stream\_ppl} mean) $9.03$ and the
 jointly trained host arm is worse on both axes ($10.19$ stream at the
 matched learning rate; retention collapses; a $4\times$ larger host
 learning rate makes joint training diverge, so the committed
@@ -477,7 +487,11 @@ learned top-$k$ gate remains best
 ($7.03$, $10/10$ paired seeds vs.\ the frozen external arm). The
 external arm carries $\sim1.34\times$ the trainable parameters of
 F's \emph{Gate-C-topk} arm ($33{,}088$ vs.\ $24{,}736$, from
-\texttt{s66} committed rows: readout+gate+host), so that gate win is not
+\texttt{s66} committed rows: F's gate arm is readout ($8{,}224$) +
+gate ($16{,}512$) $= 24{,}736$; the external arm is readout ($8{,}224$) +
+host ($24{,}864$) $= 33{,}088$, fields
+\texttt{n\_params\_readout}/\texttt{n\_params\_gate}/\texttt{n\_params\_host}),
+so that gate win is not
 a capacity fluke on this comparison; the ratio is not $1.34\times$ F's
 ungated \texttt{B-softmax-sgd} anchor ($4{,}128$), against which the
 external arm is much larger. This closes the earlier
