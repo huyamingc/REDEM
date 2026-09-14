@@ -1,0 +1,21 @@
+Highlights
+==========
+
+Paper: "Self-evolution under ±1 reward: sign-flip correction,
+reconstructed-label capacity sensing, and snapshot-gated memory in a
+recurrent relaxation reservoir"
+(target: Neurocomputing)
+
+1. A ±1-reward reservoir's only demonstrated correction is a uniform sign flip
+2. Credit assignment under ±1 reward is rule selection, not an information limit
+3. Decision-level autonomy is distinct from a minimal operational self
+4. Frozen hypothesis memory preserves solutions and learns its own snapshot threshold
+5. A measured timescale bound: the meta layer cannot act below the pipeline floor
+
+Notes
+-----
+- Format: 3-5 bullet points, each <= 85 characters including spaces.
+- Elsevier/Neurocomputing: upload as a separate "Highlights" file.
+- Lengths: 75/77/67/82/78 (all <= 85; verified).
+- Aligned with the v3 manuscript after the autonomy/self expansion (Discussion:
+  operational self, graded negatives, s47 retracted not negative).
