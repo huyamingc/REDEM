@@ -1,0 +1,110 @@
+{
+  "params": {
+    "n_units": 256,
+    "cv_tau": 0.2,
+    "alpha0": 0.02,
+    "gamma": 4.605170185988092,
+    "tau0": 0.00017361743662152847,
+    "topo_seed": 777,
+    "avg_degree": 8,
+    "kappa_random": 25.0,
+    "rls_forgetting": 0.99,
+    "rls_init_cov": 1.0,
+    "probe_ema_alpha": 0.02,
+    "snap_ema_min": 0.55,
+    "snap_hold": 20,
+    "pop_k": 5,
+    "agree_w": 50,
+    "agree_thresh": 0.85,
+    "ring_in": 0.3,
+    "ring_out": 0.5,
+    "segments": [
+      "linear",
+      "circle",
+      "linear",
+      "ring",
+      "linear"
+    ],
+    "seg_blocks": 500,
+    "substrates": [
+      "random_graph_k25",
+      "parallel"
+    ],
+    "arms": [
+      "rls_single",
+      "pop_mem"
+    ],
+    "n_seeds": 10,
+    "quick": false
+  },
+  "aggregates": [
+    {
+      "substrate": "parallel",
+      "readout": "pop_mem",
+      "n_runs": 10,
+      "mean_acc_all_mean": 0.7868340997168731,
+      "n_snaps_mean": 65.0,
+      "seg1_acc_mean": 0.9164999999999999,
+      "seg2_acc_mean": 0.5839999999999999,
+      "seg3_acc_mean": 0.959,
+      "seg4_acc_mean": 0.593,
+      "seg5_acc_mean": 0.93125,
+      "mem_sel1_mean": 83.4,
+      "mem_sel2_mean": 271.1,
+      "mem_sel3_mean": 208.6,
+      "mem_sel4_mean": 319.4,
+      "mem_sel5_mean": 197.6,
+      "mem_acc1_mean": 0.9475718492608776,
+      "mem_acc2_mean": 0.580367154697588,
+      "mem_acc3_mean": 0.9391330385539913,
+      "mem_acc4_mean": 0.5758921637635389,
+      "mem_acc5_mean": 0.9260284882314942
+    },
+    {
+      "substrate": "parallel",
+      "readout": "rls_single",
+      "n_runs": 10,
+      "mean_acc_all_mean": 0.7441799361458605,
+      "n_snaps_mean": -1.0,
+      "seg1_acc_mean": 0.9,
+      "seg2_acc_mean": 0.518,
+      "seg3_acc_mean": 0.9,
+      "seg4_acc_mean": 0.5045,
+      "seg5_acc_mean": 0.9
+    },
+    {
+      "substrate": "random_graph_k25",
+      "readout": "pop_mem",
+      "n_runs": 10,
+      "mean_acc_all_mean": 0.8481390935924983,
+      "n_snaps_mean": 81.5,
+      "seg1_acc_mean": 0.999,
+      "seg2_acc_mean": 0.881,
+      "seg3_acc_mean": 0.9085000000000001,
+      "seg4_acc_mean": 0.6775,
+      "seg5_acc_mean": 0.9,
+      "mem_sel1_mean": 28.4,
+      "mem_sel2_mean": 103.7,
+      "mem_sel3_mean": 88.3,
+      "mem_sel4_mean": 56.6,
+      "mem_sel5_mean": 138.4,
+      "mem_acc1_mean": 0.974456802283427,
+      "mem_acc2_mean": 0.8506669593974424,
+      "mem_acc3_mean": 0.9060310297115375,
+      "mem_acc4_mean": 0.6188675779283694,
+      "mem_acc5_mean": 0.8974491329075788
+    },
+    {
+      "substrate": "random_graph_k25",
+      "readout": "rls_single",
+      "n_runs": 10,
+      "mean_acc_all_mean": 0.8293379651011025,
+      "n_snaps_mean": -1.0,
+      "seg1_acc_mean": 0.9685,
+      "seg2_acc_mean": 0.8415000000000001,
+      "seg3_acc_mean": 0.9,
+      "seg4_acc_mean": 0.6635000000000001,
+      "seg5_acc_mean": 0.889
+    }
+  ]
+}

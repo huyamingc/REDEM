@@ -1,0 +1,470 @@
+{
+  "params": {
+    "n_units": 256,
+    "cv_tau": 0.2,
+    "alpha0": 0.02,
+    "gamma": 4.605170185988092,
+    "tau0": 0.00017361743662152847,
+    "topo_seed": 777,
+    "avg_degree": 8,
+    "kappa_random": 25.0,
+    "delta_eta": 0.05,
+    "w_max": 20.0,
+    "rls_forgetting": 0.99,
+    "rls_init_cov": 1.0,
+    "cap_n_pc": 50,
+    "n_blocks": 2000,
+    "k3d": 21,
+    "k4d": 24,
+    "shell3d": [
+      [
+        0.179,
+        0.5
+      ]
+    ],
+    "shell2_3d": [
+      [
+        0.14,
+        0.24
+      ],
+      [
+        0.26,
+        0.5
+      ]
+    ],
+    "shell4d": [
+      [
+        0.45,
+        0.64
+      ]
+    ],
+    "shell2_4d": [
+      [
+        0.3,
+        0.45
+      ],
+      [
+        0.52,
+        0.64
+      ]
+    ],
+    "shell3_4d": [
+      [
+        0.2,
+        0.34
+      ],
+      [
+        0.42,
+        0.52
+      ],
+      [
+        0.56,
+        0.64
+      ]
+    ],
+    "envs": [
+      {
+        "dim": "2D",
+        "boundary": "circle",
+        "substrate": "random_graph_k25",
+        "k": 20
+      },
+      {
+        "dim": "3D",
+        "boundary": "sphere",
+        "substrate": "random_graph_k25",
+        "k": 21
+      },
+      {
+        "dim": "3D",
+        "boundary": "shell",
+        "substrate": "random_graph_k25",
+        "k": 21
+      },
+      {
+        "dim": "3D",
+        "boundary": "shell2",
+        "substrate": "random_graph_k25",
+        "k": 21
+      },
+      {
+        "dim": "4D",
+        "boundary": "sphere",
+        "substrate": "random_graph_k25",
+        "k": 24
+      },
+      {
+        "dim": "4D",
+        "boundary": "shell",
+        "substrate": "random_graph_k25",
+        "k": 24
+      },
+      {
+        "dim": "4D",
+        "boundary": "shell",
+        "substrate": "parallel",
+        "k": 24
+      },
+      {
+        "dim": "4D",
+        "boundary": "shell2",
+        "substrate": "random_graph_k25",
+        "k": 24
+      },
+      {
+        "dim": "4D",
+        "boundary": "shell2",
+        "substrate": "parallel",
+        "k": 24
+      },
+      {
+        "dim": "4D",
+        "boundary": "shell3",
+        "substrate": "random_graph_k25",
+        "k": 24
+      },
+      {
+        "dim": "4D",
+        "boundary": "shell3",
+        "substrate": "parallel",
+        "k": 24
+      },
+      {
+        "dim": "4D",
+        "boundary": "plane",
+        "substrate": "random_graph_k25",
+        "k": 24
+      }
+    ],
+    "n_seeds": 10,
+    "quick": false
+  },
+  "aggregates": [
+    {
+      "dim": "2D",
+      "boundary": "circle",
+      "substrate": "random_graph_k25",
+      "readout": "delta_raw",
+      "n_runs": 10,
+      "mean_acc_all_mean": 0.5048227431471572,
+      "mean_acc_all_std": 0.008491866349739585,
+      "pre_swap_acc_mean": 0.50525,
+      "pre_swap_acc_std": 0.03915434203252559,
+      "steady_acc_mean": 0.48900000000000005,
+      "steady_acc_std": 0.04705316142407436
+    },
+    {
+      "dim": "2D",
+      "boundary": "circle",
+      "substrate": "random_graph_k25",
+      "readout": "rls_raw",
+      "n_runs": 10,
+      "mean_acc_all_mean": 0.8285167458104068,
+      "mean_acc_all_std": 0.012498478218443963,
+      "pre_swap_acc_mean": 0.8950000000000001,
+      "pre_swap_acc_std": 0.033837848631377246,
+      "steady_acc_mean": 0.89,
+      "steady_acc_std": 0.029999999999999992
+    },
+    {
+      "dim": "3D",
+      "boundary": "shell",
+      "substrate": "random_graph_k25",
+      "readout": "delta_raw",
+      "n_runs": 10,
+      "mean_acc_all_mean": 0.500725628573479,
+      "mean_acc_all_std": 0.00739100531499338,
+      "pre_swap_acc_mean": 0.50475,
+      "pre_swap_acc_std": 0.05383365582978738,
+      "steady_acc_mean": 0.505,
+      "steady_acc_std": 0.03278719262151002
+    },
+    {
+      "dim": "3D",
+      "boundary": "shell",
+      "substrate": "random_graph_k25",
+      "readout": "rls_raw",
+      "n_runs": 10,
+      "mean_acc_all_mean": 0.6802170761465037,
+      "mean_acc_all_std": 0.011929914795720257,
+      "pre_swap_acc_mean": 0.7705,
+      "pre_swap_acc_std": 0.02553918557824429,
+      "steady_acc_mean": 0.685,
+      "steady_acc_std": 0.04919349550499537
+    },
+    {
+      "dim": "3D",
+      "boundary": "shell2",
+      "substrate": "random_graph_k25",
+      "readout": "delta_raw",
+      "n_runs": 10,
+      "mean_acc_all_mean": 0.5030090069615559,
+      "mean_acc_all_std": 0.008573017045387906,
+      "pre_swap_acc_mean": 0.5082500000000001,
+      "pre_swap_acc_std": 0.05511408622121934,
+      "steady_acc_mean": 0.49574999999999997,
+      "steady_acc_std": 0.020188177233222443
+    },
+    {
+      "dim": "3D",
+      "boundary": "shell2",
+      "substrate": "random_graph_k25",
+      "readout": "rls_raw",
+      "n_runs": 10,
+      "mean_acc_all_mean": 0.6743325398913902,
+      "mean_acc_all_std": 0.012322599350482688,
+      "pre_swap_acc_mean": 0.7465,
+      "pre_swap_acc_std": 0.03384154251803544,
+      "steady_acc_mean": 0.6545,
+      "steady_acc_std": 0.038042739123254544
+    },
+    {
+      "dim": "3D",
+      "boundary": "sphere",
+      "substrate": "random_graph_k25",
+      "readout": "delta_raw",
+      "n_runs": 10,
+      "mean_acc_all_mean": 0.5055399033515944,
+      "mean_acc_all_std": 0.003889674237898396,
+      "pre_swap_acc_mean": 0.52625,
+      "pre_swap_acc_std": 0.03360152526299959,
+      "steady_acc_mean": 0.49850000000000005,
+      "steady_acc_std": 0.03715171597651986
+    },
+    {
+      "dim": "3D",
+      "boundary": "sphere",
+      "substrate": "random_graph_k25",
+      "readout": "rls_raw",
+      "n_runs": 10,
+      "mean_acc_all_mean": 0.7224186263486518,
+      "mean_acc_all_std": 0.012321040104092967,
+      "pre_swap_acc_mean": 0.787,
+      "pre_swap_acc_std": 0.02051828452868321,
+      "steady_acc_mean": 0.7332500000000001,
+      "steady_acc_std": 0.04162406155098275
+    },
+    {
+      "dim": "4D",
+      "boundary": "plane",
+      "substrate": "random_graph_k25",
+      "readout": "delta_raw",
+      "n_runs": 10,
+      "mean_acc_all_mean": 0.8464593209347087,
+      "mean_acc_all_std": 0.011200927258900402,
+      "pre_swap_acc_mean": 0.8675,
+      "pre_swap_acc_std": 0.02551960031034971,
+      "steady_acc_mean": 0.8805,
+      "steady_acc_std": 0.0480858607076966
+    },
+    {
+      "dim": "4D",
+      "boundary": "plane",
+      "substrate": "random_graph_k25",
+      "readout": "rls_raw",
+      "n_runs": 10,
+      "mean_acc_all_mean": 0.8899009225748415,
+      "mean_acc_all_std": 0.012157384991509706,
+      "pre_swap_acc_mean": 0.924,
+      "pre_swap_acc_std": 0.049689032995219366,
+      "steady_acc_mean": 0.8860000000000001,
+      "steady_acc_std": 0.01640121946685674
+    },
+    {
+      "dim": "4D",
+      "boundary": "shell",
+      "substrate": "parallel",
+      "readout": "delta_raw",
+      "n_runs": 10,
+      "mean_acc_all_mean": 0.5004302002050166,
+      "mean_acc_all_std": 0.01232911620666632,
+      "pre_swap_acc_mean": 0.5090000000000001,
+      "pre_swap_acc_std": 0.04048456495999433,
+      "steady_acc_mean": 0.5165,
+      "steady_acc_std": 0.026744158240632688
+    },
+    {
+      "dim": "4D",
+      "boundary": "shell",
+      "substrate": "parallel",
+      "readout": "rls_raw",
+      "n_runs": 10,
+      "mean_acc_all_mean": 0.5028869688918641,
+      "mean_acc_all_std": 0.006745739812495008,
+      "pre_swap_acc_mean": 0.5005000000000001,
+      "pre_swap_acc_std": 0.03677295201639379,
+      "steady_acc_mean": 0.5110000000000001,
+      "steady_acc_std": 0.022891046284519215
+    },
+    {
+      "dim": "4D",
+      "boundary": "shell",
+      "substrate": "random_graph_k25",
+      "readout": "delta_raw",
+      "n_runs": 10,
+      "mean_acc_all_mean": 0.49699621346833744,
+      "mean_acc_all_std": 0.008688401268486216,
+      "pre_swap_acc_mean": 0.5029999999999999,
+      "pre_swap_acc_std": 0.020024984394500803,
+      "steady_acc_mean": 0.5085,
+      "steady_acc_std": 0.029500000000000002
+    },
+    {
+      "dim": "4D",
+      "boundary": "shell",
+      "substrate": "random_graph_k25",
+      "readout": "rls_raw",
+      "n_runs": 10,
+      "mean_acc_all_mean": 0.5440408778059037,
+      "mean_acc_all_std": 0.009271728212175508,
+      "pre_swap_acc_mean": 0.5395,
+      "pre_swap_acc_std": 0.03566861365402361,
+      "steady_acc_mean": 0.5994999999999999,
+      "steady_acc_std": 0.03423813663153999
+    },
+    {
+      "dim": "4D",
+      "boundary": "shell2",
+      "substrate": "parallel",
+      "readout": "delta_raw",
+      "n_runs": 10,
+      "mean_acc_all_mean": 0.5005767661764399,
+      "mean_acc_all_std": 0.007215381916638495,
+      "pre_swap_acc_mean": 0.5025000000000001,
+      "pre_swap_acc_std": 0.024924887161229044,
+      "steady_acc_mean": 0.5025000000000001,
+      "steady_acc_std": 0.018874586088176888
+    },
+    {
+      "dim": "4D",
+      "boundary": "shell2",
+      "substrate": "parallel",
+      "readout": "rls_raw",
+      "n_runs": 10,
+      "mean_acc_all_mean": 0.5029035375828956,
+      "mean_acc_all_std": 0.009961131944501087,
+      "pre_swap_acc_mean": 0.5040000000000001,
+      "pre_swap_acc_std": 0.031921779399024734,
+      "steady_acc_mean": 0.4925,
+      "steady_acc_std": 0.025421447637772335
+    },
+    {
+      "dim": "4D",
+      "boundary": "shell2",
+      "substrate": "random_graph_k25",
+      "readout": "delta_raw",
+      "n_runs": 10,
+      "mean_acc_all_mean": 0.4959840170707725,
+      "mean_acc_all_std": 0.011471551880104486,
+      "pre_swap_acc_mean": 0.5025000000000001,
+      "pre_swap_acc_std": 0.025322914524201223,
+      "steady_acc_mean": 0.469,
+      "steady_acc_std": 0.036318039594669754
+    },
+    {
+      "dim": "4D",
+      "boundary": "shell2",
+      "substrate": "random_graph_k25",
+      "readout": "rls_raw",
+      "n_runs": 10,
+      "mean_acc_all_mean": 0.5467976820568607,
+      "mean_acc_all_std": 0.009916271665058823,
+      "pre_swap_acc_mean": 0.5435000000000001,
+      "pre_swap_acc_std": 0.03694928957368462,
+      "steady_acc_mean": 0.5807499999999999,
+      "steady_acc_std": 0.0536895008358245
+    },
+    {
+      "dim": "4D",
+      "boundary": "shell3",
+      "substrate": "parallel",
+      "readout": "delta_raw",
+      "n_runs": 10,
+      "mean_acc_all_mean": 0.4998422208740402,
+      "mean_acc_all_std": 0.007160412612033662,
+      "pre_swap_acc_mean": 0.47450000000000003,
+      "pre_swap_acc_std": 0.04865439342957632,
+      "steady_acc_mean": 0.4995000000000001,
+      "steady_acc_std": 0.038435010081955226
+    },
+    {
+      "dim": "4D",
+      "boundary": "shell3",
+      "substrate": "parallel",
+      "readout": "rls_raw",
+      "n_runs": 10,
+      "mean_acc_all_mean": 0.504444927930378,
+      "mean_acc_all_std": 0.009482440790416755,
+      "pre_swap_acc_mean": 0.48199999999999993,
+      "pre_swap_acc_std": 0.04654030511288039,
+      "steady_acc_mean": 0.5139999999999999,
+      "steady_acc_std": 0.03382306905057553
+    },
+    {
+      "dim": "4D",
+      "boundary": "shell3",
+      "substrate": "random_graph_k25",
+      "readout": "delta_raw",
+      "n_runs": 10,
+      "mean_acc_all_mean": 0.49848492709357545,
+      "mean_acc_all_std": 0.00875842146783597,
+      "pre_swap_acc_mean": 0.49350000000000005,
+      "pre_swap_acc_std": 0.04929756586282936,
+      "steady_acc_mean": 0.5075,
+      "steady_acc_std": 0.025024987512484408
+    },
+    {
+      "dim": "4D",
+      "boundary": "shell3",
+      "substrate": "random_graph_k25",
+      "readout": "rls_raw",
+      "n_runs": 10,
+      "mean_acc_all_mean": 0.559026673082153,
+      "mean_acc_all_std": 0.014617646548781482,
+      "pre_swap_acc_mean": 0.5854999999999999,
+      "pre_swap_acc_std": 0.03629393888791901,
+      "steady_acc_mean": 0.5770000000000001,
+      "steady_acc_std": 0.04013726448077896
+    },
+    {
+      "dim": "4D",
+      "boundary": "sphere",
+      "substrate": "random_graph_k25",
+      "readout": "delta_raw",
+      "n_runs": 10,
+      "mean_acc_all_mean": 0.5023696575385452,
+      "mean_acc_all_std": 0.009956668010724855,
+      "pre_swap_acc_mean": 0.5095000000000001,
+      "pre_swap_acc_std": 0.01809005251512556,
+      "steady_acc_mean": 0.4959999999999999,
+      "steady_acc_std": 0.042883563284783134
+    },
+    {
+      "dim": "4D",
+      "boundary": "sphere",
+      "substrate": "random_graph_k25",
+      "readout": "rls_raw",
+      "n_runs": 10,
+      "mean_acc_all_mean": 0.7462300370285141,
+      "mean_acc_all_std": 0.02347110171107295,
+      "pre_swap_acc_mean": 0.8112499999999999,
+      "pre_swap_acc_std": 0.05001562255935638,
+      "steady_acc_mean": 0.8465,
+      "steady_acc_std": 0.03847401720642127
+    }
+  ],
+  "ridge_probe": {
+    "2D|circle|random_graph_k25": 0.8,
+    "3D|sphere|random_graph_k25": 0.63,
+    "3D|shell|random_graph_k25": 0.6,
+    "3D|shell2|random_graph_k25": 0.58,
+    "4D|sphere|random_graph_k25": 0.7,
+    "4D|shell|random_graph_k25": 0.54,
+    "4D|shell|parallel": 0.38,
+    "4D|shell2|random_graph_k25": 0.57,
+    "4D|shell2|parallel": 0.47,
+    "4D|shell3|random_graph_k25": 0.55,
+    "4D|shell3|parallel": 0.44,
+    "4D|plane|random_graph_k25": 0.84
+  }
+}

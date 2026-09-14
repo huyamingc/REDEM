@@ -1,0 +1,157 @@
+{
+  "params": {
+    "n_units": 256,
+    "cv_tau": 0.2,
+    "alpha0": 0.02,
+    "gamma": 4.605170185988092,
+    "tau0": 0.00017361743662152847,
+    "topo_seed": 777,
+    "avg_degree": 8,
+    "kappa_random": 25.0,
+    "rls_forgetting": 0.99,
+    "rls_init_cov": 1.0,
+    "n_segments": 4,
+    "seg_blocks": 500,
+    "segments": [
+      "linear",
+      "circle",
+      "linear",
+      "circle"
+    ],
+    "probe_ema_alpha": 0.02,
+    "snap_ema_min": 0.55,
+    "snap_hold": 20,
+    "pop_k": 5,
+    "n_seeds": 10,
+    "quick": false,
+    "pop_plain_init_scale": 1.0,
+    "pop_plain_seed_base": 90001,
+    "pop_plain_seed_stride": 1009,
+    "pop_plain_init_note": "per-specialist RandomState initial weights, std = scale/sqrt(d); fixes the bit-identical specialists of the pre-2026-09-09 control arm, dedup P1-13"
+  },
+  "aggregates": [
+    {
+      "readout": "pop_mem",
+      "n_runs": 10,
+      "mean_acc_all_mean": 0.8880186427476696,
+      "mean_acc_all_std": 0.01291052338788628,
+      "seg1_acc_mean": 0.993,
+      "seg1_acc_std": 0.020999999999999987,
+      "seg2_acc_mean": 0.8985000000000001,
+      "seg2_acc_std": 0.004500000000000004,
+      "seg3_acc_mean": 0.913,
+      "seg3_acc_std": 0.030347981810987034,
+      "seg4_acc_mean": 0.8860000000000001,
+      "seg4_acc_std": 0.0223383079036887,
+      "n_snaps_mean": 65.6
+    },
+    {
+      "readout": "pop_plain",
+      "n_runs": 10,
+      "mean_acc_all_mean": 0.8387389764076281,
+      "mean_acc_all_std": 0.009710463397845382,
+      "seg1_acc_mean": 0.96,
+      "seg1_acc_std": 0.04153311931459036,
+      "seg2_acc_mean": 0.8644999999999999,
+      "seg2_acc_std": 0.03704389288398293,
+      "seg3_acc_mean": 0.8875,
+      "seg3_acc_std": 0.028917987481842503,
+      "seg4_acc_mean": 0.7374999999999999,
+      "seg4_acc_std": 0.040078048854703535,
+      "n_snaps_mean": -1.0
+    },
+    {
+      "readout": "rls_single",
+      "n_runs": 10,
+      "mean_acc_all_mean": 0.8376248084218991,
+      "mean_acc_all_std": 0.009821028989589505,
+      "seg1_acc_mean": 0.9515,
+      "seg1_acc_std": 0.04868521336093742,
+      "seg2_acc_mean": 0.8625,
+      "seg2_acc_std": 0.039575876490609785,
+      "seg3_acc_mean": 0.8875,
+      "seg3_acc_std": 0.028917987481842503,
+      "seg4_acc_mean": 0.7375,
+      "seg4_acc_std": 0.040078048854703535,
+      "n_snaps_mean": -1.0
+    }
+  ],
+  "stats": {
+    "field": "mean_acc_all",
+    "pairing": "arms paired by seed_idx (same task realization)",
+    "ci_method": "two-sided 95% Student-t, n-1 dof",
+    "test": "paired t-test vs rls_single (p from scipy)"
+  },
+  "pop_plain_specialist_seeds": {
+    "2": [
+      92019,
+      92020,
+      92021,
+      92022,
+      92023
+    ],
+    "3": [
+      93028,
+      93029,
+      93030,
+      93031,
+      93032
+    ],
+    "0": [
+      90001,
+      90002,
+      90003,
+      90004,
+      90005
+    ],
+    "1": [
+      91010,
+      91011,
+      91012,
+      91013,
+      91014
+    ],
+    "4": [
+      94037,
+      94038,
+      94039,
+      94040,
+      94041
+    ],
+    "5": [
+      95046,
+      95047,
+      95048,
+      95049,
+      95050
+    ],
+    "6": [
+      96055,
+      96056,
+      96057,
+      96058,
+      96059
+    ],
+    "7": [
+      97064,
+      97065,
+      97066,
+      97067,
+      97068
+    ],
+    "8": [
+      98073,
+      98074,
+      98075,
+      98076,
+      98077
+    ],
+    "9": [
+      99082,
+      99083,
+      99084,
+      99085,
+      99086
+    ]
+  }
+}

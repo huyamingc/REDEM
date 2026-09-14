@@ -1,0 +1,68 @@
+{
+  "params": {
+    "d_feat": 2,
+    "n_blocks": 2000,
+    "k_pulses": 20,
+    "bias": 1.0,
+    "rot_lo": 800,
+    "rot_hi": 1600,
+    "rmhl_eta": 0.05,
+    "rmhl_elig_decay": 0.9,
+    "probe_ema_alpha": 0.02,
+    "flip_check": 20,
+    "meta_v_init": 0.15,
+    "meta_v_thresh": 0.02,
+    "meta_beta": 0.5,
+    "meta_w_est": 40,
+    "meta_warmup_blocks": 100,
+    "pop_k": 5,
+    "prune_every": 50,
+    "prune_thresh": -0.2,
+    "seed_step": 0.3,
+    "seed_noise": 0.05,
+    "w_max": 20.0,
+    "n_seeds": 10,
+    "quick": false
+  },
+  "aggregates": [
+    {
+      "readout": "pop5",
+      "n_runs": 10,
+      "mean_acc_all_mean": 0.5860327504334062,
+      "mean_acc_all_std": 0.05807353822992789,
+      "win_mid_acc_mean": 0.626,
+      "win_mid_acc_std": 0.05812916651733447,
+      "win_final_acc_mean": 0.604,
+      "win_final_acc_std": 0.21489299662855466,
+      "n_flips_mean": 24.5,
+      "n_prunes_mean": 2.3,
+      "w_norm_max_end_mean": 18.14060018549577
+    },
+    {
+      "readout": "rmhl",
+      "n_runs": 10,
+      "mean_acc_all_mean": 0.509849752518781,
+      "mean_acc_all_std": 0.1413589462434311,
+      "win_mid_acc_mean": 0.5405,
+      "win_mid_acc_std": 0.13717598186271532,
+      "win_final_acc_mean": 0.6125,
+      "win_final_acc_std": 0.2017578994736018,
+      "n_flips_mean": 0.0,
+      "n_prunes_mean": 0.0,
+      "w_norm_max_end_mean": 11.737719268338305
+    },
+    {
+      "readout": "single_flip",
+      "n_runs": 10,
+      "mean_acc_all_mean": 0.5347396422200447,
+      "mean_acc_all_std": 0.09526358746807942,
+      "win_mid_acc_mean": 0.5889999999999999,
+      "win_mid_acc_std": 0.08537564055396599,
+      "win_final_acc_mean": 0.6455,
+      "win_final_acc_std": 0.2030941899710575,
+      "n_flips_mean": 4.0,
+      "n_prunes_mean": 0.0,
+      "w_norm_max_end_mean": 15.41410056082768
+    }
+  ]
+}
