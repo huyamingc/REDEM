@@ -1,9 +1,23 @@
 #!/usr/bin/env python3
 """S66 reporting helper: arm summary + paired comparisons from the s66 CSV.
 
-Type: EXPLORE (reporting only; no training logic, no output artifacts).
-Not part of any paper's claim chain - a read-only view of
-data/s66_external_ssm_baseline_v1.csv.
+Type:           EXPLORE (read-only audit of committed s66 rows; no training)
+Paper Section:  Paper F Discussion / Limitations (external selective-SSM check)
+Experiment:     S66 audit view
+
+What it verifies (against data/s66_external_ssm_baseline_v1.csv):
+  - per-arm 10-seed means of stream_ppl / forgetting_ppl
+  - paired external-vs-F-anchor deltas, t, and seed win counts
+  - lr_scale separation (matched 1.0 vs divergent 4.0), so the paper's
+    "matched-lr 10.19" quote is not silently mixed with the 4x rows
+  - trainable parameter totals (readout+gate+host)
+
+Coupling: Paper F Discussion quotes Gate-C-topk 7.03 vs frozen 9.03
+(0/10), joint 10.19 / forget 115.24, and the lr-pooling disclosure.
+This script is the offline view of those numbers. It does not train
+or emit new result artifacts.
+
+Usage: python s66_report.py
 """
 import csv
 import os
