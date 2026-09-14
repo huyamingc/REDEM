@@ -1,10 +1,11 @@
 # REDEM — Physics-Grounded Online Learning Architecture
 
-This repository contains the complete code, data, and figures for **four
-companion preprints** that form one research program on online learning in
-physics-constrained systems. The four papers share a single simulation
-pipeline and data set, cite each other as companions, and are designed to
-be read in order (**A → B → C → D**):
+This repository contains the complete code, data, and figures for
+**six companion preprints** that form one research program on online
+learning in physics-constrained systems. The papers share a single
+simulation pipeline and data set, cite each other as companions, and are
+designed to be read in order (**A → B → C → D**, then the standalone
+self-evolution extension **E** and the readout-form companion **F**):
 
 | Paper | Role | Core question | Preprint |
 | :--- | :--- | :--- | :--- |
@@ -12,12 +13,21 @@ be read in order (**A → B → C → D**):
 | **B** | Algorithm | How do you learn on top of it? (REDEM: RLS readout, meta-adaptation, structural plasticity) | Zenodo [10.5281/zenodo.22110606](https://doi.org/10.5281/zenodo.22110606) |
 | **C** | Dissection | Which mechanism does which job? (statistical memory ≠ robustness recovery) | Zenodo [10.5281/zenodo.22110618](https://doi.org/10.5281/zenodo.22110618) |
 | **D** | Architecture | What host makes these mechanisms native? (state-space-native REDEM) | Zenodo [10.5281/zenodo.22110623](https://doi.org/10.5281/zenodo.22110623) |
+| **E** | Self-evolution | Can the substrate detect and repair its own failures under ±1 reward? (sign-flip correction, reconstructed-label capacity sensing, snapshot-gated memory) | — (submission, target: *Neurocomputing*) |
+| **F** | Readout form | Which selectivity pressure does a calibrated (clip-free) readout still need? (trained softmax, top-k, expert routing) | — (draft, target: *Neurocomputing* / TMLR) |
 
 In one sentence each: **Paper A** establishes the physics (what the
 substrate computes); **Paper B** builds the learning architecture on that
 physics; **Paper C** dissects the mechanisms by falsifying transfers and
 locates the host boundary; **Paper D** redesigns the host so the mechanisms
-are native rather than retrofitted, motivated by C's boundary result.
+are native rather than retrofitted, motivated by C's boundary result;
+**Paper E** extends the program to autonomous self-correction — the
+substrate detecting, repairing, and remembering its own failures from a
+sign-only reward, self-contained in its own directory with frozen
+dependencies; **Paper F** is D's companion on the readout form —
+replacing the squared-loss / clip-floor instrument with a trained
+softmax, then asking which sparse-selectivity pressure the clean metric
+still needs.
 
 ## Papers
 
@@ -41,7 +51,7 @@ are native rather than retrofitted, motivated by C's boundary result.
 - **Paper C — Dissection**: *"Dissecting Online Learning Mechanisms:
   Statistical Memory, Homeostatic Recovery, and Substrate Physics are
   Non-Substitutable in the Directions and Conditions Tested"* — three-mechanism disentanglement built on a
-  falsifying transfer experiment (target: *Neurocomputing*)
+  falsifying transfer experiment (target: *Neural Networks*, same journal as Paper B)
   → [`paper_c/PAPER_C.pdf`](paper_c/PAPER_C.pdf) |
   [`paper_c/PAPER_C.tex`](paper_c/PAPER_C.tex) |
   [`paper_c/README.md`](paper_c/README.md) |
@@ -50,21 +60,79 @@ are native rather than retrofitted, motivated by C's boundary result.
 - **Paper D — Architecture**: *"REDEM-SSM: A State-Space Architecture with
   Native Online Learning, Meta-Adaptation, and Structural Plasticity"* —
   a native SSM-hosted architecture instantiating M1/M3/M4/M5 from the
-  ground up, motivated by Paper C's host-boundary result (target:
-  *PRX Intelligence*)
-  → [`paper_d/PAPER_D.pdf`](paper_d/PAPER_D.pdf) |
-  [`paper_d/PAPER_D.tex`](paper_d/PAPER_D.tex) |
+  ground up, motivated by Paper C's host-boundary result (desk-rejected by
+  *PRX Intelligence*: scope mismatch — the paper is CS/ML, not
+  physics-advancing). Intermediate AI draft kept for rollback; **current
+  submission = Neurocomputing** (`elsarticle`, 25 pp), with P4 M3/M4
+  factor ablation and a classical ESN+RLS baseline
+  → [`paper_d/PAPER_D_NC.pdf`](paper_d/PAPER_D_NC.pdf) |
+  [`paper_d/PAPER_D_NC.tex`](paper_d/PAPER_D_NC.tex) |
   [`paper_d/README.md`](paper_d/README.md) |
+  [`paper_d/CHANGELOG_PAPER_D_NC.md`](paper_d/CHANGELOG_PAPER_D_NC.md) |
   Zenodo [10.5281/zenodo.22110623](https://doi.org/10.5281/zenodo.22110623)
+
+- **Paper E — Self-evolution**: *"Self-evolution under ±1 reward:
+  sign-flip correction, reconstructed-label capacity sensing, and
+  snapshot-gated memory in a recurrent relaxation reservoir"* — the
+  autonomous correction stack: direction detection and sign-flip
+  correction, a reconstructed-label capacity sense, snapshot-gated
+  frozen-hypothesis memory with divergence protection, the multi-level
+  expansion chain, the measured D2 timescale bound, content–rendering
+  separation, multi-source validation, and an external EWC baseline
+  (target: *Neurocomputing*; submission-ready elsarticle
+  version). **Current manuscript = v3** (2026-09-10 stats/positioning
+  repair + 2026-09-13 meta/clean-P0 wording): v3 corrects two false
+  significance statements against the committed per-run data (cross-family
+  ring gain `t=2.45 > 2.262`, `p≈0.037`; three of four per-segment memory
+  gains significant), rewrites the Introduction positioning, cuts the
+  Abstract to ≤250 words (now 238), adds **EWC**
+  (`scripts/s65_ewc_baseline.py`, bit-exact pairing to s52: whole-run
+  −0.85±0.70 pp, t=−3.87, 0/10; only redistributes revisit retention,
+  while frozen-snapshot memory gains +8.70±2.92 pp with no linear loss),
+  and aligns title/abstract/cover letter with the retracted
+  per-dimension-correction claim (uniform sign flip only); 63 pp
+  → [`paper_e/PAPER_E_v3.pdf`](paper_e/PAPER_E_v3.pdf) |
+  [`paper_e/PAPER_E_v3.tex`](paper_e/PAPER_E_v3.tex) |
+  [`paper_e/PAPER_E_v2.pdf`](paper_e/PAPER_E_v2.pdf) (v2) |
+  [`paper_e/PAPER_E_v1.pdf`](paper_e/PAPER_E_v1.pdf) (reviewed baseline) |
+  [`paper_e/README.md`](paper_e/README.md) |
+  [`review_workspace/modification_log_E_v3.md`](review_workspace/modification_log_E_v3.md)
+  (v3 change log) |
+  [`review_workspace/modification_log_EF_meta_20260913.md`](review_workspace/modification_log_EF_meta_20260913.md) |
+  [`review_workspace/modification_log_EF_clean_p0.md`](review_workspace/modification_log_EF_clean_p0.md) |
+  submission materials: `paper_e/COVER_LETTER.docx`, `paper_e/VITAE.docx`,
+  `paper_e/Highlights.docx` (+ `Highlights.txt`), `paper_e/DECLARATION_OF_INTERESTS.docx`,
+  `paper_e/Supplementary_Material_PaperE.zip` (**rebuilt for v3**: manuscript =
+  `PAPER_E_v3.tex`, scripts s39–s65, post-rerun committed data, six figures)
+  (Paper E is self-contained: its scripts `s39`–`s65` import the frozen
+  `paper_e/deps/` modules, so it is reproducible from its own folder
+  without the A–D pipeline.)
+
+- **Paper F — Readout form** (companion to D):
+  *"Learning the Readout Form: Objective-Level Calibration, Sparse
+  Selectivity, and Expert Routing on a Diagonal State-Space Host"* —
+  Paper D shows the squared-loss / clip-floor metric is load-bearing;
+  Paper F *changes the instrument* (trained softmax readout) and then
+  asks which selectivity pressure the clean metric still needs (top-k
+  gates, expert routing). External Mamba-style selective-SSM baseline
+  (s66) loses to Gate-C-topk on the same host/stream/seeds
+  (stream 9.03 vs 7.03, 0/10 external better), despite ~1.34× more
+  trainable parameters than Gate-C-topk. Target: *Neurocomputing* / TMLR
+  (draft, 11 pp)
+  → [`paper_f/PAPER_F.pdf`](paper_f/PAPER_F.pdf) |
+  [`paper_f/PAPER_F.tex`](paper_f/PAPER_F.tex) |
+  [`paper_f/README.md`](paper_f/README.md) |
+  [`review_workspace/modification_log_paper_f.md`](review_workspace/modification_log_paper_f.md) |
+  [`review_workspace/S66_EXTERNAL_BASELINE_FINDINGS.md`](review_workspace/S66_EXTERNAL_BASELINE_FINDINGS.md)
 
 ## What each paper contributes to the series
 
-| | Paper A | Paper B | Paper C | Paper D |
-| :--- | :--- | :--- | :--- | :--- |
-| **Question** | What can this substrate compute? | How do you learn on it? | Which mechanism does what? | What host makes it native? |
-| **Core result** | κ*∈(25,30); held-out MC +24–53% just before it; forgetting kernel r=0.97; λ-homeostat +7.9–18% | 0.996 vs 0.973 (p<0.0001; N=1024: 0.9970 vs 0.9753); tracks drift where frozen learners never recover | the +32% sequential-recovery gain is the homeostat's, not the metadata's; metadata robustness transfer falsified (0/10 seeds at every τ_m); routing transfers, gating-only falsified | input-path readout beats the pooled state readout (10/10); soft routing beats abrupt at the tested τ_m=500 (−1.81, 10/10); full stack beats TF+LoRA (−9.28/−10.08, 10/10; untuned reference) |
-| **Target venue** | Chaos, Solitons & Fractals | Neural Networks | Neurocomputing | PRX Intelligence |
-| **Preprint DOI** | [10.5281/zenodo.22109664](https://doi.org/10.5281/zenodo.22109664) | [10.5281/zenodo.22110606](https://doi.org/10.5281/zenodo.22110606) | [10.5281/zenodo.22110618](https://doi.org/10.5281/zenodo.22110618) | [10.5281/zenodo.22110623](https://doi.org/10.5281/zenodo.22110623) |
+| | Paper A | Paper B | Paper C | Paper D | Paper E | Paper F |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| **Question** | What can this substrate compute? | How do you learn on it? | Which mechanism does what? | What host makes it native? | How does it fix itself under ±1 reward? | Which readout form / selectivity pressure is still required under a clean metric? |
+| **Core result** | κ*∈(25,30); held-out MC +24–53% just before it; forgetting kernel r=0.97; λ-homeostat +7.9–18% | 0.996 vs 0.973 (p<0.0001; N=1024: 0.9970 vs 0.9753); tracks drift where frozen learners never recover | the +32% sequential-recovery gain is the homeostat's, not the metadata's; metadata robustness transfer falsified (0/10 seeds at every τ_m); routing transfers, gating-only falsified | calibrated input path (state-mixture ranking is a clip-floor/calibration property); routing retains specialists; pause-learning does **not** pass the retention rubric once the floor is accounted for; full stack beats bare host on forgetting (−4.47/−4.53, 10/10) and TF+LoRA on reported axes; P4 factor ablation: hard M3 carries forgetting, soft M4 recovers stream; classical ESN+RLS fails out of sample (~98 vs bare 15.4 / lin 12.4) | reward-rate sign hides the direction; credit assignment = rule selection; ~~structural (per-dimension) gain correction required~~ **retracted** (only a uniform sign flip is demonstrated; s47 is a retracted design attempt, **not** a negative result); capacity sense idles/triggers by reconstruction; frozen memory beats re-adaptation; D2 timescale bound verified; decision-level autonomy + minimal operational self (persistence / functional identity / causal use); memory, not expansion, separates content–rendering (s63); majority rule collapses under a wrong majority but validation-driven selection finds the correct source (s64); s42 corrupt-reward is an honest negative (self-deception, not self-detectable); s58c multi-level expansion refuses the cubic rung and memory masks (not prevents) divergence; EWC does not improve the run and only redistributes revisit retention; hosts: E on relaxation reservoir, D/F on SSM, G is a port design (not in E) | trained softmax removes the clip-floor artifact (simplex projection does not); hard top-k is required for selective gates to retain; expert routing cuts forgetting further at stream parity; external selective-SSM baseline loses on stream (0/10) with ~1.34× Gate-C-topk params |
+| **Target venue** | Chaos, Solitons & Fractals | Neural Networks | Neural Networks | Neurocomputing (NC retarget; PRX desk-reject) | Neurocomputing | Neurocomputing / TMLR |
+| **Preprint DOI** | [10.5281/zenodo.22109664](https://doi.org/10.5281/zenodo.22109664) | [10.5281/zenodo.22110606](https://doi.org/10.5281/zenodo.22110606) | [10.5281/zenodo.22110618](https://doi.org/10.5281/zenodo.22110618) | [10.5281/zenodo.22110623](https://doi.org/10.5281/zenodo.22110623) | — (submission) | — (draft) |
 
 ## Provenance: prior Si₃N₄ pulse-encoding paper
 
@@ -122,8 +190,10 @@ Data and figures live in `data/` and `figures/`.
 ├── paper_a/     Paper A: substrate characterization (PDF, LaTeX, README)
 ├── paper_b/     Paper B: REDEM online learning architecture (PDF, LaTeX, README)
 ├── paper_c/     Paper C: three-mechanism disentanglement (PDF, LaTeX, README)
-├── paper_d/     Paper D: native REDEM-SSM architecture (PDF, LaTeX, README)
-├── scripts/     Shared simulation code (CORE substrate, tasks, readouts, figure scripts)
+├── paper_d/     Paper D: native REDEM-SSM architecture (PDF, LaTeX, README; current = Neurocomputing)
+├── paper_e/     Paper E: self-evolution (submission-ready elsarticle, frozen deps/, submission materials)
+├── paper_f/     Paper F: readout form / calibrated objective + sparse selectivity (draft, companion to D)
+├── scripts/     Shared simulation code (CORE substrate, tasks, readouts, figure scripts; s39–s65 = Paper E; F uses s50–s54/s66)
 ├── data/        All experiment results (CSV + JSON, 10-seed means)
 ├── figures/     All publication figures (vector PDF; no raster twins)
 └── *.md         Overview and technical README
@@ -132,17 +202,41 @@ Data and figures live in `data/` and `figures/`.
 Each paper folder contains its own `README.md` (key results, figures and
 data anchors, compile instructions, and the reproduction commands scoped
 to that paper), so a paper can be read and reproduced independently of the
-series.
+series. Paper E additionally carries its **frozen dependency set** in
+`paper_e/deps/` (the four core modules its scripts import), so it is fully
+self-contained and reproducible from its own folder without the A–D
+pipeline; its submission materials (cover letter, Vitae, Highlights,
+declaration of interests, supplementary zip) live beside the manuscript.
 
 ## Scripts
 
-All 56 committed scripts in `scripts/`, typed
+All committed scripts in `scripts/`, typed
 (ML > CORE > PAPER > FIG > EXPLORE). The **Paper** column marks which paper
 each script serves (A / B / C / D; shared = library or figure used by more
 than one paper). Two legacy scripts from the prior Si₃N₄-pulse-encoding
 project are kept as shared dependencies (imported by the new code) and are
 never modified. `README_REDEM.md` holds the full headline-results registry
-(S1–s36) and reproduction commands.
+(S1–s36) and reproduction commands for Papers A–D.
+
+**Paper E chain (s39–s65).** The self-evolution experiments live in the
+same `scripts/` directory but import the **frozen `paper_e/deps/` modules**
+(they shadow the shared core), so they are reproducible independently of
+Papers A–D. They are NOT enumerated in the A–D table below; see
+[`paper_e/README.md`](paper_e/README.md) for the claim→script→data index.
+Key members: `s39`–`s47` (direction, rule selection, sign-flip
+correction), `s48`–`s58` (capacity sensing, memory, D2), `s58e`–`s62`
+(timescale bounds), `s63` (content–rendering separation), `s64`
+(multi-source validation), `s65` (external EWC baseline on the revisit
+protocol), and
+`gen_fig_self_evolution.py` (Paper E figures).
+
+**Paper F chain (s50–s54, s53b, s66).** Readout-form experiments on the
+Paper D diagonal-SSM host / stream protocol: `s50` (trained-softmax
+pilot + controls), `s51` (learned gates incl. Gate-C-topk), `s52`
+(soft/hard expert routing), `s53`/`s53b`/`s54` (N-scaling, k-sweep,
+Mackey–Glass transfer), `s66` (external selective-SSM baseline).
+See [`paper_f/README.md`](paper_f/README.md) and
+[`review_workspace/modification_log_paper_f.md`](review_workspace/modification_log_paper_f.md).
 
 | Script | Type | Paper | Purpose | Key result |
 |---|---|---|---|---|
@@ -188,6 +282,9 @@ never modified. `README_REDEM.md` holds the full headline-results registry
 | `s31_char_bigram_oracle.py` | PAPER | D | char-bigram oracle on the real-text protocol (full-book vs ref-window fits, 10 seeds) | true first-order ceiling ppl 10.97±0.18; REDEM-SSM 12.07 sits within ~1.1 ppl of it — the "first-order regime" boundary is now quantitative |
 | `s32_ftle_noise_robustness.py` | PAPER | A | homeostat with Gaussian noise on every FTLE estimate (5 levels × 10 seeds, S11 chain) | no significant MC degradation up to σ=0.10 (≈100% of estimate scale); settled κ 28.5–28.7 — clipped proportional feedback integrates out estimation noise |
 | `s33_ssm_p4_m5.py` | ML | D | M5 state-norm homeostat added to the P4 stack (2 arms, 10 seeds) | M5 is significantly worse (stream +1.53, forgetting +2.90, t=−22.8/−26.5, 10/10) — Δt modulation breaks the Δt=1-calibrated whitening; S22's exclusion of M5 validated |
+| `s21_ssm_m4_m5.py --frozen-p-probe` | ML | D | dormant-covariance-refresh isolation (weights frozen, inverse P refreshed; writes s37) | stream/forget both exactly 32.0 (uniform) on all 10 seeds — refresh alone learns nothing |
+| `s38_ssm_p4_m3m4_ablation.py` | ML | D | P4 factor ablation: bare / uniform / hard M3 / soft full stack (4 arms, 10 seeds) | Hard M3: +2.90/−5.24 (0/10, 10/10); soft vs hard: −5.14/+0.77 — M3 carries forgetting, soft M4 recovers stream |
+| `s40_esn_rls_p4_baseline.py` | ML | D | classical ESN + online RLS on P4 (4 arms incl. one-hot control, 10 seeds) | ESN-128 stream 98.8 vs bare 15.4 / lin 12.4 (0/10 vs both); bare-vs-lin gap is the clip floor (unclipped bare ~11.5) |
 | `s34_leak_sensitivity.py` | PAPER | B | leak sensitivity scan on the S28 audit (7 leak configs, 10 seeds); leak_k drives the FTLE leak horizon (s28 hard-codes 400) | 10× FTLE leak still NS at every tested horizon (+0.13/+0.39/+0.21 at horizons 50/200/400, CIs include 0); plasticity 30% future correlation +0.57 mean (7/10; paired t=2.04, 95% CI [−0.06,+1.20]) — audit resolution is bounded, "causally clean" scoped to operational leaks |
 | `s35_readout_boundary_probe.py` | PAPER | D | P1 readout boundary probes (10 seeds, s19 host verbatim): full/half-window oracle, skip-vs-proj nested check, fast/slow token decoding, fast-channel next-token readouts vs static-table reference | full-window oracle 31.2 (matches s19, max diff 0.00) vs half-window 17.3 — oracle is window-dependent; skip 18.0 > proj 7.25 (nested violation, 10/10); token linearly decodable from fast channels (τ≤8) at 88.9–99.7% out-of-sample (chance 3.1%), slow channels at chance; yet fast-channel-only direct and two-stage next-token readouts still fail out-of-sample (ppl 68–104 vs static table 13.9–17.4) — "no useful linear map" is false, and no closed-form squared-loss state readout yields calibrated next-token probabilities; the P1 failure is a pooled-readout/metric property, not missing linear information |
 | `s36_random_graph_instance_variability.py` | PAPER | A | random-graph instance variability: S1 random_graph sweep repeated on 9 Erdős–Rényi instances (8 fresh + original 777), 10 substrate seeds each (990 runs); reuses substrate_recurrence_characterization.run_single with per-task TOPO_SEED | peak held-out MC 13.47±0.57 (range 12.80–14.35), +48.5%±6.3% over uncoupled; κ*=25 (7/9) or 30 (2/9); original instance 13.91 (+53%) inside the envelope |
@@ -205,7 +302,9 @@ never modified. `README_REDEM.md` holds the full headline-results registry
 
 Each FIG script emits a single vector `.pdf` (journal submission); the papers
 include the extension-less basename so `pdflatex` picks the vector file
-automatically. Reproduction commands (S1–s36) are in `README_REDEM.md`.
+automatically. Reproduction commands (S1–s36 shared registry) are in
+`README_REDEM.md`; Paper D follow-ups `s37`/`s38`/`s40` and the Paper E/F
+chains are indexed in the per-paper READMEs.
 
 ## Code availability
 

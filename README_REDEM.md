@@ -293,3 +293,13 @@ table in the root [`README.md`](README.md). Targets: A → *Chaos, Solitons
 submit in the current "Your Paper Your Way" format), D → *PRX
 Intelligence* (APS; REVTeX source, APC waived for 2026 submissions).
 Journal-specific formatting happens at submission time.
+
+**Paper E (self-evolution, s39–s63).** The fifth paper of the program —
+autonomous self-correction under ±1 reward — is a standalone extension
+carried in [`paper_e/`](paper_e/): it imports the frozen `paper_e/deps/`
+modules, so it is reproducible independently of the A–D pipeline. Its
+claim→script→data index, reproduction commands, and submission materials
+(cover letter, Vitae, Highlights, declaration, supplementary zip) are
+documented in [`paper_e/README.md`](paper_e/README.md); the claim-driven
+manuscript is `paper_e/PAPER_E_v1.tex` (elsarticle, target: *Neurocomputing*).
+This file (README_REDEM.md) covers the S1–s36 A–D registry only.

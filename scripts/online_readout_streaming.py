@@ -367,8 +367,14 @@ def run_sweep(quick=False):
         'quick': bool(quick),
     }
     out_json = JSON_PATH if not quick else JSON_PATH.replace('.json', '_quick.json')
+    payload = _nan_to_null({
+        'params': params, 'aggregates': agg,
+        'null_reason': ('non-finite aggregate values are written as null '
+                        '(undefined, e.g. a cell in which the probe never '
+                        'crossed its adaptation threshold, so '
+                        'adapt_time_pulses has no measurement)')})
     with open(out_json, 'w') as f:
-        json.dump({'params': params, 'aggregates': agg}, f, indent=2)
+        json.dump(payload, f, indent=2, allow_nan=False)
 
     # ---- curves npz (mean over seeds per cell) ----
     out_npz = NPZ_PATH if not quick else NPZ_PATH.replace('.npz', '_quick.npz')
@@ -391,6 +397,23 @@ def run_sweep(quick=False):
     print(f"JSON : {out_json}")
     print(f"NPZ  : {out_npz}")
     print(f"[{time.strftime('%H:%M:%S')}] DONE, total {time.time() - t_start:.1f}s")
+
+
+def _nan_to_null(obj):
+    """Recursively map non-finite floats to None (strict-JSON safe).
+
+    Bug fix 2026-09-09 (dedup P1-90): json.dump wrote bare NaN literals for
+    undefined aggregates (adapt_time_pulses of a cell whose probe never crossed
+    its adaptation threshold), which is not valid JSON and is rejected by
+    strict parsers.
+    """
+    if isinstance(obj, dict):
+        return {k: _nan_to_null(v) for k, v in obj.items()}
+    if isinstance(obj, (list, tuple)):
+        return [_nan_to_null(v) for v in obj]
+    if isinstance(obj, float) and not np.isfinite(obj):
+        return None
+    return obj
 
 
 def main():

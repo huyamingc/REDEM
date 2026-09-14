@@ -38,8 +38,8 @@
       "pre_steady_acc_std": 0.00642261628933257,
       "post_swap_acc_mean": 0.019499999999999997,
       "post_swap_acc_std": 0.0065,
-      "adapt_time_pulses_mean": NaN,
-      "adapt_time_pulses_std": NaN,
+      "adapt_time_pulses_mean": null,
+      "adapt_time_pulses_std": null,
       "mean_acc_all_mean": 0.4997880832139896,
       "mean_acc_all_std": 0.00046676245980817235,
       "pre_stability_std_mean": 0.006879316180322942,
@@ -71,8 +71,8 @@
       "pre_steady_acc_std": 0.0,
       "post_swap_acc_mean": 0.0,
       "post_swap_acc_std": 0.0,
-      "adapt_time_pulses_mean": NaN,
-      "adapt_time_pulses_std": NaN,
+      "adapt_time_pulses_mean": null,
+      "adapt_time_pulses_std": null,
       "mean_acc_all_mean": 0.5002770030903746,
       "mean_acc_all_std": 0.0005755259065949367,
       "pre_stability_std_mean": 0.0,
@@ -163,5 +163,6 @@
       "nmse_final30_std": 0.027702535609874245,
       "forgetting": 0.999
     }
-  ]
+  ],
+  "null_reason": "non-finite aggregate values are written as null (undefined, e.g. a cell in which the probe never crossed its adaptation threshold, so adapt_time_pulses has no measurement)"
 }
