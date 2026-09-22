@@ -210,6 +210,12 @@ E zip unchanged (closed from the start; 34 scripts self-insert
 `paper_e/deps/` on sys.path). Old zips remain in
 `review_workspace/zip_backup_20260922/` (pre-repack state, before this patch).
 
+Supplementary zip compile verification (2026-09-22): each zip extracted to a
+clean temp dir and `pdflatex -interaction=nonstopmode` run from `manuscript/`
+(the layout a reviewer gets). All three exit 0, zero errors: D 32 pp,
+E 71 pp, F 15 pp — page counts match the recorded package check (D 32 pp,
+E 71 pp). Zips are submission-ready.
+
 After filling a placeholder, recompile the PDF and re-run `run_all_audits.py`
 before the next deposit.
 
