@@ -141,6 +141,53 @@ PMAP OK, RNUM 15/0.
   not table cells; `where` no longer claims `Table`.
 - Gate: verify_claims **121/0**, check_tables **121 / 22 tables / 0 fail**.
 
+## Zenodo concept-DOI convention (2026-09-22)
+
+Always cite the **concept DOI** (Zenodo "Cite all versions" / always-latest),
+never a version DOI (e.g. Paper D v5 is `10.5281/zenodo.22641857` — do not
+cite that). Paper D concept DOI is `10.5281/zenodo.22110623` (v1–v5 live
+under it). Cross-citations in D/E/F already use that concept DOI.
+
+Placeholders for the two not-yet-uploaded companions:
+
+| placeholder | fill after | who cites it | status |
+|---|---|---|---|
+| `CONCEPT_DOI_E` in `paper_f/PAPER_F.tex` | Paper E first Zenodo upload | F → E (`epaper`) | **done** → `10.5281/zenodo.22888172` |
+| `CONCEPT_DOI_F` in `paper_d/PAPER_D.tex` | Paper F first Zenodo upload | D → F (`redemf`) | **done** → `10.5281/zenodo.22888049` |
+
+Companion concept DOIs (Zenodo "Cite all versions"):
+
+| paper | concept DOI |
+|---|---|
+| A | `10.5281/zenodo.22109664` |
+| B | `10.5281/zenodo.22110606` |
+| C | `10.5281/zenodo.22110618` |
+| D | `10.5281/zenodo.22110623` |
+| E | `10.5281/zenodo.22888172` |
+| F | `10.5281/zenodo.22888049` |
+
+Upload order (complete):
+
+1. Upload **Paper E** → concept DOI filled into F. **(done)**
+2. Upload **Paper F** → concept DOI filled into D. **(done)**
+3. Zenodo **New version** of Paper D (same concept DOI `…22110623`) with F cited. **(done 2026-09-22)**
+
+Re-upload verification (2026-09-22, online record pages vs local MD5):
+
+| paper | online version | record | online PDF md5 == local? |
+|---|---|---|---|
+| B | v6 | 22110606 (concept page) | yes (`b01ae0ba…`) |
+| D | v6 | 22110623 (concept page) | yes (`22f0dac6…`) |
+| E | v2 | 22888172 (concept page) | yes (`26135581…`) |
+
+B v6 fixes the Hoerzel→Hoerzer reference; D v6 fixes the F archive DOI in Code
+availability and cites F; E v2 carries the concept-DOI companion wording. All
+three uploads byte-identical to the local PDFs. Concept DOIs unchanged; version
+DOIs (e.g. D v6 `10.5281/zenodo.22887905`) are recorded here only — never cite.
+
+After filling a placeholder, recompile the PDF and re-run `run_all_audits.py`
+before the next deposit.
+
 ## Pre-submission package check (2026-09-22)
 
 - **E**: package complete (PAPER_E.pdf 71 pp, COVER_LETTER, Highlights, VITAE,

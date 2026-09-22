@@ -1,5 +1,7 @@
 # Paper F — Learning the Readout Form (calibration + sparse selectivity)
 
+- Preprint (Zenodo concept DOI, all versions): [doi:10.5281/zenodo.22888049](https://doi.org/10.5281/zenodo.22888049)
+
 Companion to Paper D: Paper D diagnosed that the squared-loss / clip-floor
 metric is load-bearing; Paper F *changes the instrument* (trained softmax
 readout) and then asks which selectivity pressure the clean metric still needs.
@@ -149,7 +151,8 @@ python scripts/gen_cover_letter_docx.py paper_f Highlights
       2025 + arXiv:2407.04620, duplicated-sentence & overfull fixes)
 - [x] 2026-09-14 compliance pass: declarations moved before the reference
       list, `Highlights.txt` reduced to bullets only (+ `.docx`
-      regenerated), Paper E given a `\bibitem`, D given its Zenodo DOI,
+      regenerated), Paper E given a `\bibitem` + Zenodo concept DOI
+      `10.5281/zenodo.22888172`, D given its Zenodo DOI,
       Lukoševičius name/venue corrected, bibliography re-ordered into
       first-citation order, capacity sentence corrected, s66 anchor field
       refreshed
@@ -187,6 +190,13 @@ Claims registered for Paper F (includes shared anchors where relevant). Every re
 
 Register new numbers in `scripts/verify_claims.py`, re-run `run_all_audits.py`, then let this script rewrite the block.
 <!-- END PROVENANCE -->
+
+
+
+
+
+
+
 
 
 

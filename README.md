@@ -30,8 +30,8 @@ self-evolution extension **E** and the readout-form companion **F**):
 | **B** | Algorithm | How do you learn on top of it? (REDEM: RLS readout, meta-adaptation, structural plasticity) | Zenodo [10.5281/zenodo.22110606](https://doi.org/10.5281/zenodo.22110606) |
 | **C** | Dissection | Which mechanism does which job? (statistical memory ≠ robustness recovery) | Zenodo [10.5281/zenodo.22110618](https://doi.org/10.5281/zenodo.22110618) |
 | **D** | Architecture | What host makes these mechanisms native? (state-space-native REDEM) | Zenodo [10.5281/zenodo.22110623](https://doi.org/10.5281/zenodo.22110623) |
-| **E** | Self-evolution | Can the substrate detect and repair its own failures under ±1 reward? (sign-flip correction, reconstructed-label capacity sensing, snapshot-gated memory) | — (submission, target: *Neurocomputing*) |
-| **F** | Readout form | Which selectivity pressure does a calibrated (clip-free) readout still need? (trained softmax, top-k, expert routing) | — (draft, target: *Neurocomputing* / TMLR) |
+| **E** | Self-evolution | Can the substrate detect and repair its own failures under ±1 reward? (sign-flip correction, reconstructed-label capacity sensing, snapshot-gated memory) | Zenodo [10.5281/zenodo.22888172](https://doi.org/10.5281/zenodo.22888172) |
+| **F** | Readout form | Which selectivity pressure does a calibrated (clip-free) readout still need? (trained softmax, top-k, expert routing) | Zenodo [10.5281/zenodo.22888049](https://doi.org/10.5281/zenodo.22888049) |
 
 In one sentence each: **Paper A** establishes the physics (what the
 substrate computes); **Paper B** builds the learning architecture on that
@@ -154,7 +154,7 @@ still needs.
 | **Question** | What can this substrate compute? | How do you learn on it? | Which mechanism does what? | What host makes it native? | How does it fix itself under ±1 reward? | Which readout form / selectivity pressure is still required under a clean metric? |
 | **Core result** | κ*∈(25,30); held-out MC +24–53% just before it; forgetting kernel r=0.97; λ-homeostat +7.9–18% | 0.996 vs 0.973 (p<0.0001; N=1024: 0.9970 vs 0.9753); tracks drift where frozen learners never recover | the +32% sequential-recovery gain is the homeostat's, not the metadata's; metadata robustness transfer falsified (0/10 seeds at every τ_m); routing transfers, gating-only falsified | calibrated input path (state-mixture ranking is a clip-floor/calibration property); routing retains specialists; pause-learning does **not** pass the retention rubric once the floor is accounted for; full stack beats bare host on forgetting (−4.47/−4.53, 10/10) and TF+LoRA on reported axes; P4 factor ablation: hard M3 carries forgetting, soft M4 recovers stream; classical ESN+RLS fails out of sample (~98 vs bare 15.4 / lin 12.4) | reward-rate sign hides the direction; credit assignment = rule selection; ~~structural (per-dimension) gain correction required~~ **retracted** (only a uniform sign flip is demonstrated; s47 is a retracted design attempt, **not** a negative result); capacity sense idles/triggers by reconstruction; frozen memory beats re-adaptation; D2 timescale bound verified; decision-level autonomy + minimal operational self (persistence / functional identity / causal use); memory, not expansion, separates content–rendering (s63); majority rule collapses under a wrong majority but validation-driven selection finds the correct source (s64); s42 corrupt-reward is an honest negative (self-deception, not self-detectable); s58c multi-level expansion refuses the cubic rung and memory masks (not prevents) divergence; EWC does not improve the run and only redistributes revisit retention; hosts: E on relaxation reservoir, D/F on SSM, G is a port design (not in E) | trained softmax removes the clip-floor artifact (simplex projection does not); hard top-k is required for selective gates to retain; expert routing cuts forgetting further at stream parity; external selective-SSM baseline loses on stream (0/10); its 24,864 host parameters are frozen at a random init, so it trains fewer parameters than Gate-C-topk (8,224 vs 24,736) — see `paper_f/README.md` |
 | **Target venue** | Chaos, Solitons & Fractals | Neural Networks | Neural Networks | Neurocomputing (NC retarget; PRX desk-reject) | Neurocomputing | Neurocomputing |
-| **Preprint DOI** | [10.5281/zenodo.22109664](https://doi.org/10.5281/zenodo.22109664) | [10.5281/zenodo.22110606](https://doi.org/10.5281/zenodo.22110606) | [10.5281/zenodo.22110618](https://doi.org/10.5281/zenodo.22110618) | [10.5281/zenodo.22110623](https://doi.org/10.5281/zenodo.22110623) | — (submission) | — (draft) |
+| **Preprint DOI** | [10.5281/zenodo.22109664](https://doi.org/10.5281/zenodo.22109664) | [10.5281/zenodo.22110606](https://doi.org/10.5281/zenodo.22110606) | [10.5281/zenodo.22110618](https://doi.org/10.5281/zenodo.22110618) | [10.5281/zenodo.22110623](https://doi.org/10.5281/zenodo.22110623) | [10.5281/zenodo.22888172](https://doi.org/10.5281/zenodo.22888172) | [10.5281/zenodo.22888049](https://doi.org/10.5281/zenodo.22888049) |
 
 ## Provenance: prior Si₃N₄ pulse-encoding paper
 
@@ -611,6 +611,13 @@ All papers (A–F). Failures in last run: **0**. Every registered headline quant
 
 Register new numbers in `scripts/verify_claims.py`, re-run `run_all_audits.py`, then let this script rewrite the block.
 <!-- END PROVENANCE -->
+
+
+
+
+
+
+
 
 
 

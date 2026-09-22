@@ -1,5 +1,7 @@
 # paper_e — Self-Evolution Main Line (S39–S65)
 
+- Preprint (Zenodo concept DOI, all versions): [doi:10.5281/zenodo.22888172](https://doi.org/10.5281/zenodo.22888172)
+
 This folder holds the REDEM "self-evolution / self-correction /
 self-iteration" paper for **Neurocomputing**. It is **self-contained**
 (frozen `deps/`, scripts `s39`–`s65` import those modules and can run
@@ -376,6 +378,13 @@ Claims registered for Paper E (includes shared anchors where relevant). Every re
 
 Register new numbers in `scripts/verify_claims.py`, re-run `run_all_audits.py`, then let this script rewrite the block.
 <!-- END PROVENANCE -->
+
+
+
+
+
+
+
 
 
 
