@@ -55,7 +55,7 @@
       "mean_acc_all_mean": 0.5956743549157058,
       "mean_acc_all_std": 0.02241225677356728,
       "pre_swap_acc_mean": 0.6174999999999999,
-      "pre_swap_acc_std": 0.06265979572261628,
+      "pre_swap_acc_std": 0.06265979572261626,
       "steady_acc_mean": 0.6552499999999999,
       "steady_acc_std": 0.04147966369198284,
       "post_switch_acc_mean": 0.625,
@@ -148,8 +148,8 @@
       "readout": "rls_linear_only",
       "n_runs": 10,
       "mean_acc_all_mean": 0.8285167458104068,
-      "mean_acc_all_std": 0.012498478218443963,
-      "pre_swap_acc_mean": 0.8949999999999999,
+      "mean_acc_all_std": 0.012498478218443965,
+      "pre_swap_acc_mean": 0.8950000000000001,
       "pre_swap_acc_std": 0.033837848631377246,
       "steady_acc_mean": 0.89,
       "steady_acc_std": 0.029999999999999992,
@@ -206,7 +206,7 @@
       },
       "parallel": {
         "n_readings": 2550,
-        "cap_mean": 0.5468431372549021,
+        "cap_mean": 0.546843137254902,
         "cap_sd": 0.05107825825118379,
         "cap_min": 0.38333333333333336,
         "cap_max": 0.7416666666666667,
@@ -218,6 +218,24 @@
       {
         "substrate": "random_graph_k25",
         "readout": "rls_linear_only",
+        "seed_idx": 0,
+        "n_readings": 85,
+        "cap_mean": 0.8335294117647056,
+        "cap_min": 0.75,
+        "cap_max": 0.9416666666666667
+      },
+      {
+        "substrate": "random_graph_k25",
+        "readout": "rls_linear_only",
+        "seed_idx": 1,
+        "n_readings": 85,
+        "cap_mean": 0.8570588235294119,
+        "cap_min": 0.7666666666666667,
+        "cap_max": 0.9416666666666667
+      },
+      {
+        "substrate": "random_graph_k25",
+        "readout": "rls_linear_only",
         "seed_idx": 6,
         "n_readings": 85,
         "cap_mean": 0.8587254901960781,
@@ -236,38 +254,20 @@
       {
         "substrate": "random_graph_k25",
         "readout": "rls_linear_only",
-        "seed_idx": 8,
+        "seed_idx": 2,
         "n_readings": 85,
-        "cap_mean": 0.8602941176470589,
-        "cap_min": 0.7416666666666667,
+        "cap_mean": 0.8312745098039216,
+        "cap_min": 0.49166666666666664,
+        "cap_max": 0.9416666666666667
+      },
+      {
+        "substrate": "random_graph_k25",
+        "readout": "rls_linear_only",
+        "seed_idx": 3,
+        "n_readings": 85,
+        "cap_mean": 0.8213725490196081,
+        "cap_min": 0.525,
         "cap_max": 0.9333333333333333
-      },
-      {
-        "substrate": "random_graph_k25",
-        "readout": "rls_linear_only",
-        "seed_idx": 9,
-        "n_readings": 85,
-        "cap_mean": 0.8477450980392157,
-        "cap_min": 0.7583333333333333,
-        "cap_max": 0.925
-      },
-      {
-        "substrate": "random_graph_k25",
-        "readout": "rls_linear_only",
-        "seed_idx": 0,
-        "n_readings": 85,
-        "cap_mean": 0.8335294117647056,
-        "cap_min": 0.75,
-        "cap_max": 0.9416666666666667
-      },
-      {
-        "substrate": "random_graph_k25",
-        "readout": "rls_linear_only",
-        "seed_idx": 1,
-        "n_readings": 85,
-        "cap_mean": 0.8570588235294119,
-        "cap_min": 0.7666666666666667,
-        "cap_max": 0.9416666666666667
       },
       {
         "substrate": "random_graph_k25",
@@ -290,38 +290,38 @@
       {
         "substrate": "random_graph_k25",
         "readout": "rls_linear_only",
-        "seed_idx": 2,
+        "seed_idx": 8,
         "n_readings": 85,
-        "cap_mean": 0.8312745098039216,
-        "cap_min": 0.49166666666666664,
-        "cap_max": 0.9416666666666667
+        "cap_mean": 0.8602941176470589,
+        "cap_min": 0.7416666666666667,
+        "cap_max": 0.9333333333333333
       },
       {
         "substrate": "random_graph_k25",
         "readout": "rls_linear_only",
-        "seed_idx": 3,
+        "seed_idx": 9,
         "n_readings": 85,
-        "cap_mean": 0.8213725490196081,
-        "cap_min": 0.525,
-        "cap_max": 0.9333333333333333
+        "cap_mean": 0.8477450980392157,
+        "cap_min": 0.7583333333333333,
+        "cap_max": 0.925
       },
       {
         "substrate": "random_graph_k25",
         "readout": "rls_quad_start",
-        "seed_idx": 2,
+        "seed_idx": 0,
         "n_readings": 85,
-        "cap_mean": 0.8312745098039216,
-        "cap_min": 0.49166666666666664,
+        "cap_mean": 0.8335294117647056,
+        "cap_min": 0.75,
         "cap_max": 0.9416666666666667
       },
       {
         "substrate": "random_graph_k25",
         "readout": "rls_quad_start",
-        "seed_idx": 3,
+        "seed_idx": 1,
         "n_readings": 85,
-        "cap_mean": 0.8213725490196081,
-        "cap_min": 0.525,
-        "cap_max": 0.9333333333333333
+        "cap_mean": 0.8570588235294119,
+        "cap_min": 0.7666666666666667,
+        "cap_max": 0.9416666666666667
       },
       {
         "substrate": "random_graph_k25",
@@ -344,56 +344,38 @@
       {
         "substrate": "random_graph_k25",
         "readout": "rls_quad_start",
-        "seed_idx": 0,
+        "seed_idx": 2,
         "n_readings": 85,
-        "cap_mean": 0.8335294117647056,
-        "cap_min": 0.75,
+        "cap_mean": 0.8312745098039216,
+        "cap_min": 0.49166666666666664,
         "cap_max": 0.9416666666666667
       },
       {
         "substrate": "random_graph_k25",
         "readout": "rls_quad_start",
-        "seed_idx": 1,
+        "seed_idx": 3,
         "n_readings": 85,
-        "cap_mean": 0.8570588235294119,
-        "cap_min": 0.7666666666666667,
-        "cap_max": 0.9416666666666667
-      },
-      {
-        "substrate": "random_graph_k25",
-        "readout": "delta_linear_only",
-        "seed_idx": 0,
-        "n_readings": 0,
-        "cap_mean": null,
-        "cap_min": null,
-        "cap_max": null
-      },
-      {
-        "substrate": "random_graph_k25",
-        "readout": "delta_linear_only",
-        "seed_idx": 1,
-        "n_readings": 0,
-        "cap_mean": null,
-        "cap_min": null,
-        "cap_max": null
-      },
-      {
-        "substrate": "random_graph_k25",
-        "readout": "rls_quad_start",
-        "seed_idx": 8,
-        "n_readings": 85,
-        "cap_mean": 0.8602941176470589,
-        "cap_min": 0.7416666666666667,
+        "cap_mean": 0.8213725490196081,
+        "cap_min": 0.525,
         "cap_max": 0.9333333333333333
       },
       {
         "substrate": "random_graph_k25",
-        "readout": "rls_quad_start",
-        "seed_idx": 9,
-        "n_readings": 85,
-        "cap_mean": 0.8477450980392157,
-        "cap_min": 0.7583333333333333,
-        "cap_max": 0.925
+        "readout": "delta_linear_only",
+        "seed_idx": 0,
+        "n_readings": 0,
+        "cap_mean": null,
+        "cap_min": null,
+        "cap_max": null
+      },
+      {
+        "substrate": "random_graph_k25",
+        "readout": "delta_linear_only",
+        "seed_idx": 1,
+        "n_readings": 0,
+        "cap_mean": null,
+        "cap_min": null,
+        "cap_max": null
       },
       {
         "substrate": "random_graph_k25",
@@ -415,6 +397,24 @@
       },
       {
         "substrate": "random_graph_k25",
+        "readout": "rls_quad_start",
+        "seed_idx": 8,
+        "n_readings": 85,
+        "cap_mean": 0.8602941176470589,
+        "cap_min": 0.7416666666666667,
+        "cap_max": 0.9333333333333333
+      },
+      {
+        "substrate": "random_graph_k25",
+        "readout": "rls_quad_start",
+        "seed_idx": 9,
+        "n_readings": 85,
+        "cap_mean": 0.8477450980392157,
+        "cap_min": 0.7583333333333333,
+        "cap_max": 0.925
+      },
+      {
+        "substrate": "random_graph_k25",
         "readout": "rls_auto_expand",
         "seed_idx": 2,
         "n_readings": 85,
@@ -430,6 +430,24 @@
         "cap_mean": 0.8213725490196081,
         "cap_min": 0.525,
         "cap_max": 0.9333333333333333
+      },
+      {
+        "substrate": "random_graph_k25",
+        "readout": "delta_linear_only",
+        "seed_idx": 2,
+        "n_readings": 0,
+        "cap_mean": null,
+        "cap_min": null,
+        "cap_max": null
+      },
+      {
+        "substrate": "random_graph_k25",
+        "readout": "delta_linear_only",
+        "seed_idx": 3,
+        "n_readings": 0,
+        "cap_mean": null,
+        "cap_min": null,
+        "cap_max": null
       },
       {
         "substrate": "random_graph_k25",
@@ -502,24 +520,6 @@
         "cap_mean": 0.8477450980392157,
         "cap_min": 0.7583333333333333,
         "cap_max": 0.925
-      },
-      {
-        "substrate": "random_graph_k25",
-        "readout": "delta_linear_only",
-        "seed_idx": 2,
-        "n_readings": 0,
-        "cap_mean": null,
-        "cap_min": null,
-        "cap_max": null
-      },
-      {
-        "substrate": "random_graph_k25",
-        "readout": "delta_linear_only",
-        "seed_idx": 3,
-        "n_readings": 0,
-        "cap_mean": null,
-        "cap_min": null,
-        "cap_max": null
       },
       {
         "substrate": "random_graph_k25",
@@ -739,24 +739,6 @@
       },
       {
         "substrate": "parallel",
-        "readout": "rls_quad_start",
-        "seed_idx": 8,
-        "n_readings": 85,
-        "cap_mean": 0.5494117647058824,
-        "cap_min": 0.44166666666666665,
-        "cap_max": 0.6333333333333333
-      },
-      {
-        "substrate": "parallel",
-        "readout": "rls_quad_start",
-        "seed_idx": 9,
-        "n_readings": 85,
-        "cap_mean": 0.560686274509804,
-        "cap_min": 0.4583333333333333,
-        "cap_max": 0.6916666666666667
-      },
-      {
-        "substrate": "parallel",
         "readout": "rls_auto_expand",
         "seed_idx": 0,
         "n_readings": 85,
@@ -775,21 +757,39 @@
       },
       {
         "substrate": "parallel",
-        "readout": "rls_auto_expand",
-        "seed_idx": 2,
+        "readout": "rls_quad_start",
+        "seed_idx": 8,
         "n_readings": 85,
-        "cap_mean": 0.561764705882353,
-        "cap_min": 0.425,
-        "cap_max": 0.6583333333333333
+        "cap_mean": 0.5494117647058824,
+        "cap_min": 0.44166666666666665,
+        "cap_max": 0.6333333333333333
       },
       {
         "substrate": "parallel",
-        "readout": "rls_auto_expand",
-        "seed_idx": 3,
+        "readout": "rls_quad_start",
+        "seed_idx": 9,
         "n_readings": 85,
-        "cap_mean": 0.5470588235294118,
-        "cap_min": 0.44166666666666665,
-        "cap_max": 0.65
+        "cap_mean": 0.560686274509804,
+        "cap_min": 0.4583333333333333,
+        "cap_max": 0.6916666666666667
+      },
+      {
+        "substrate": "parallel",
+        "readout": "delta_linear_only",
+        "seed_idx": 0,
+        "n_readings": 0,
+        "cap_mean": null,
+        "cap_min": null,
+        "cap_max": null
+      },
+      {
+        "substrate": "parallel",
+        "readout": "delta_linear_only",
+        "seed_idx": 1,
+        "n_readings": 0,
+        "cap_mean": null,
+        "cap_min": null,
+        "cap_max": null
       },
       {
         "substrate": "parallel",
@@ -811,8 +811,26 @@
       },
       {
         "substrate": "parallel",
+        "readout": "rls_auto_expand",
+        "seed_idx": 2,
+        "n_readings": 85,
+        "cap_mean": 0.561764705882353,
+        "cap_min": 0.425,
+        "cap_max": 0.6583333333333333
+      },
+      {
+        "substrate": "parallel",
+        "readout": "rls_auto_expand",
+        "seed_idx": 3,
+        "n_readings": 85,
+        "cap_mean": 0.5470588235294118,
+        "cap_min": 0.44166666666666665,
+        "cap_max": 0.65
+      },
+      {
+        "substrate": "parallel",
         "readout": "delta_linear_only",
-        "seed_idx": 0,
+        "seed_idx": 2,
         "n_readings": 0,
         "cap_mean": null,
         "cap_min": null,
@@ -821,7 +839,7 @@
       {
         "substrate": "parallel",
         "readout": "delta_linear_only",
-        "seed_idx": 1,
+        "seed_idx": 3,
         "n_readings": 0,
         "cap_mean": null,
         "cap_min": null,
@@ -840,24 +858,6 @@
         "substrate": "parallel",
         "readout": "delta_linear_only",
         "seed_idx": 5,
-        "n_readings": 0,
-        "cap_mean": null,
-        "cap_min": null,
-        "cap_max": null
-      },
-      {
-        "substrate": "parallel",
-        "readout": "delta_linear_only",
-        "seed_idx": 2,
-        "n_readings": 0,
-        "cap_mean": null,
-        "cap_min": null,
-        "cap_max": null
-      },
-      {
-        "substrate": "parallel",
-        "readout": "delta_linear_only",
-        "seed_idx": 3,
         "n_readings": 0,
         "cap_mean": null,
         "cap_min": null,
@@ -937,5 +937,5 @@
       }
     ]
   },
-  "null_reason": "non-finite aggregate values are written as null (undefined, e.g. a cell where no expansion was triggered, so post_switch_acc and detect_cap have no value)"
+  "null_reason": "non-finite aggregate values are written as null (undefined, e.g. a cell where no expansion was triggered, so post_switch_acc and detect_cap have no measurement)"
 }

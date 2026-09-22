@@ -22,6 +22,7 @@
     "snap_hold": 20,
     "pop_k": 3,
     "agree_w": 50,
+    "agree_thresh": 0.85,
     "delta_eta": 0.05,
     "w_max": 20.0,
     "meta_ema_alpha": 0.02,
@@ -52,7 +53,7 @@
     ],
     "n_seeds": 10,
     "quick": false,
-    "sequential": true
+    "sequential": false
   },
   "aggregates": [
     {
@@ -95,7 +96,7 @@
       "n_runs": 10,
       "mean_acc_all_mean": 0.8855305143086858,
       "acc_first_mean": 0.9,
-      "acc_mid_mean": 0.8985,
+      "acc_mid_mean": 0.8985000000000001,
       "acc_last_mean": 0.9,
       "pre_win_mean": 0.9,
       "post_win_mean": 0.9,
@@ -109,7 +110,7 @@
       "substrate": "parallel",
       "readout": "rls_single",
       "n_runs": 10,
-      "mean_acc_all_mean": 0.8904085324489335,
+      "mean_acc_all_mean": 0.8904085324489334,
       "acc_first_mean": 0.9,
       "acc_mid_mean": 0.9,
       "acc_last_mean": 0.9020000000000001,
@@ -255,7 +256,7 @@
       "n_runs": 10,
       "mean_acc_all_mean": 0.8110484661189418,
       "acc_first_mean": 0.8245000000000001,
-      "acc_mid_mean": 0.8395000000000001,
+      "acc_mid_mean": 0.8394999999999999,
       "acc_last_mean": 0.8225,
       "pre_win_mean": 0.8245000000000001,
       "post_win_mean": 0.8225,
@@ -355,7 +356,7 @@
       "acc_last_mean": 0.9,
       "pre_win_mean": 0.9,
       "post_win_mean": 0.9,
-      "capacity_probe_mean": 0.8906000000000001,
+      "capacity_probe_mean": 0.8906000000000003,
       "n_snaps_mean": 0.0,
       "n_flips_mean": -1.0
     },
@@ -515,7 +516,7 @@
       "acc_last_mean": 0.8915,
       "pre_win_mean": 0.8875,
       "post_win_mean": 0.8915,
-      "capacity_probe_mean": 0.9493,
+      "capacity_probe_mean": 0.9492999999999998,
       "n_snaps_mean": 0.0,
       "n_flips_mean": 0.0
     },
@@ -542,7 +543,7 @@
       "readout": "rls_quad",
       "n_runs": 10,
       "mean_acc_all_mean": 0.9327411371573578,
-      "acc_first_mean": 0.9710000000000001,
+      "acc_first_mean": 0.9709999999999999,
       "acc_mid_mean": 0.942,
       "acc_last_mean": 0.9802500000000001,
       "pre_win_mean": 0.9804999999999999,
@@ -558,12 +559,12 @@
       "readout": "rls_single",
       "n_runs": 10,
       "mean_acc_all_mean": 0.937713248410844,
-      "acc_first_mean": 0.9654999999999999,
+      "acc_first_mean": 0.9655000000000001,
       "acc_mid_mean": 0.967,
-      "acc_last_mean": 0.9824999999999999,
+      "acc_last_mean": 0.9825000000000002,
       "pre_win_mean": 0.984,
-      "post_win_mean": 0.9824999999999999,
-      "capacity_probe_mean": 0.9493,
+      "post_win_mean": 0.9825000000000002,
+      "capacity_probe_mean": 0.9492999999999998,
       "n_snaps_mean": 0.0,
       "n_flips_mean": -1.0
     }

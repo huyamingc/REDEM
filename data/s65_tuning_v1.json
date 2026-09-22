@@ -68,7 +68,7 @@
       "arm": "ewc_sgd",
       "lr": 3.0,
       "n": 3,
-      "mean_acc_all": 0.5324104084486989
+      "mean_acc_all": 0.532410408448699
     }
   ],
   "lambda_grid_results": [

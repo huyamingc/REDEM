@@ -184,8 +184,7 @@ def batch_sample_currents(x_final, tau, col_noise_rms, noise_rng, k,
         # Noiseless branch: broadcast the single clean waveform to n_samples
         # rows. NOTE: np.broadcast(...) returns a read-only broadcast object
         # without .copy() and raises ValueError; np.broadcast_to(...).copy()
-        # is the correct call (bug fix 2026-09-09, see
-        # review_workspace/modification_log_scripts.md). Only this
+        # is the correct call (bug fix 2026-09-10). Only this
         # col_noise_rms == 0 path is affected; the noise path is unchanged.
         return np.broadcast_to(I_clean[None, :],
                                (n_samples, len(t_samples))).copy()

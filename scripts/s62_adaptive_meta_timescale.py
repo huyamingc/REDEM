@@ -25,7 +25,7 @@ is maintained by construction). Everything else in the flip pipeline
 fixed -- so the honest question is how far adaptive tau_2 alone pushes the
 recovery threshold toward the pipeline floor.
 
-Fixes applied 2026-09-09 (see review_workspace/modification_log_scripts.md):
+Fixes applied 2026-09-09:
   P0-28: the meta-layer EMA bounds were renamed META_ALPHA_MIN/MAX; before
       the fix the names ALPHA_MIN/ALPHA_MAX shadowed the physical substrate
       clip imported from deps, so run_trajectory_nb used [0.02, 0.20]

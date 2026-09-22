@@ -33,6 +33,8 @@ _zip_temp/
 README.zip
 *.bak.py
 *.bak.tex
+rerun_backup/
+rerun_logs/
 
 # Local backups (any .bak* variant) and paper-review tool artifacts
 *.bak*
@@ -58,13 +60,16 @@ preprint_titles_abstracts.txt
 **/COVER_LETTER.docx
 **/DECLARATION_OF_INTERESTS.docx
 **/Highlights.docx
+**/Highlights.txt
 **/Highlights_*.txt
 **/VITAE.docx
 **/VITAE.txt
 **/COVER_LETTER_D_AI.txt
 **/COVER_LETTER_D_AI.docx
+**/COVER_LETTER_D_*.txt
 **/Suggested_Reviewers_*.txt
 **/Supplementary_Material_*.zip
+**/CHANGELOG_PAPER_*.md
 submission/
 
 # Smoke-test output (--quick runs; the paper cites only the full _v1 data)

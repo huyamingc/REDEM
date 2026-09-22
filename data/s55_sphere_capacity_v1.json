@@ -15,6 +15,8 @@
     "cap_n_pc": 50,
     "n_blocks": 2000,
     "k3d": 21,
+    "circle2d_radius": 0.4,
+    "sphere3d_radius": 0.5,
     "envs": [
       {
         "dim": "2D",
@@ -72,7 +74,7 @@
       "n_runs": 10,
       "mean_acc_all_mean": 0.5209061330117334,
       "mean_acc_all_std": 0.015755981377117707,
-      "pre_swap_acc_mean": 0.5195,
+      "pre_swap_acc_mean": 0.5195000000000001,
       "pre_swap_acc_std": 0.03481738071710736,
       "steady_acc_mean": 0.5305,
       "steady_acc_std": 0.051207909545303645
@@ -83,12 +85,12 @@
       "substrate": "random_graph_k25",
       "readout": "delta_raw",
       "n_runs": 10,
-      "mean_acc_all_mean": 0.5048227431471571,
-      "mean_acc_all_std": 0.008491866349739583,
+      "mean_acc_all_mean": 0.5048227431471572,
+      "mean_acc_all_std": 0.008491866349739585,
       "pre_swap_acc_mean": 0.50525,
       "pre_swap_acc_std": 0.03915434203252559,
       "steady_acc_mean": 0.48900000000000005,
-      "steady_acc_std": 0.04705316142407437
+      "steady_acc_std": 0.04705316142407436
     },
     {
       "dim": "2D",
@@ -109,8 +111,8 @@
       "substrate": "random_graph_k25",
       "readout": "delta_raw",
       "n_runs": 10,
-      "mean_acc_all_mean": 0.78988418937346,
-      "mean_acc_all_std": 0.008326349983631161,
+      "mean_acc_all_mean": 0.7898841893734599,
+      "mean_acc_all_std": 0.008326349983631163,
       "pre_swap_acc_mean": 0.8077500000000001,
       "pre_swap_acc_std": 0.03729024671412082,
       "steady_acc_mean": 0.7975000000000001,
@@ -174,9 +176,9 @@
       "substrate": "random_graph_k25",
       "readout": "rls_raw",
       "n_runs": 10,
-      "mean_acc_all_mean": 0.7224186263486521,
+      "mean_acc_all_mean": 0.7224186263486518,
       "mean_acc_all_std": 0.012321040104092969,
-      "pre_swap_acc_mean": 0.7870000000000001,
+      "pre_swap_acc_mean": 0.7869999999999999,
       "pre_swap_acc_std": 0.02051828452868321,
       "steady_acc_mean": 0.7332500000000001,
       "steady_acc_std": 0.04162406155098274

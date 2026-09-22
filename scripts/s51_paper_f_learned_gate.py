@@ -28,8 +28,9 @@ stream same-token-set CE on >=8/10 seeds, or if every gate arm is worse than
 B-softmax on forgetting on >=8/10 seeds.
 
 Output files:
-  data/s51_paper_f_learned_gate_v1.csv
-  data/s51_paper_f_learned_gate_v1.json
+  data/s51_paper_f_learned_gate_v2.csv (v2: adds per-channel top-k
+                 selection histograms; v1 files untouched)
+  data/s51_paper_f_learned_gate_v2.json
 
 Usage: python s51_paper_f_learned_gate.py [--quick] [--sequential]
                  [--only Gate-C-topk-softmax,Gate-C-L1-softmax]
@@ -84,8 +85,8 @@ L1_LAMBDA = 0.01               # on gate pre-activation grads
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.path.join(SCRIPT_DIR, '..', 'data')
-CSV_PATH = os.path.join(DATA_DIR, 's51_paper_f_learned_gate_v1.csv')
-JSON_PATH = os.path.join(DATA_DIR, 's51_paper_f_learned_gate_v1.json')
+CSV_PATH = os.path.join(DATA_DIR, 's51_paper_f_learned_gate_v2.csv')
+JSON_PATH = os.path.join(DATA_DIR, 's51_paper_f_learned_gate_v2.json')
 
 
 def run_single(args):
@@ -165,6 +166,11 @@ def run_single(args):
     nfloor = 0
     hs = np.empty((T - 1, F), dtype=np.float64)
 
+    # per-channel top-k selection histogram (channel-utilization evidence;
+    # v2 addition: counts which state channels the top-k gate picks over time)
+    chan_count = np.zeros(N_STATE, dtype=np.int64) if feat == 'gate_c_topk' else None
+    chan_tokens = 0
+
     for t in range(1, T):
         h = A * h + B[:, stream[t - 1]]
         hw = h * scale
@@ -207,6 +213,9 @@ def run_single(args):
                     mask = torch.zeros_like(g2)
                     mask[idx] = 1.0
                     dpre = dpre * mask
+                    if chan_count is not None:
+                        chan_count[idx.numpy()] += 1
+                        chan_tokens += 1
                 elif feat == 'gate_c_l1':
                     # λ ||g||_1 on the gate values
                     dpre = dpre + L1_LAMBDA * torch.sign(g2) * g2 * (1 - g2)
@@ -285,6 +294,20 @@ def run_single(args):
         else:
             gate_active = float((g0 > 0.5).mean())
 
+    # channel-utilization summary (v2): per-channel share of top-k
+    # selections over the stream, plus the never-selected count.
+    chan_util_min = float('nan')
+    chan_util_gini = float('nan')
+    chan_never_selected = -1
+    if chan_count is not None and chan_tokens > 0:
+        share = chan_count / float(chan_tokens)          # sums to k/N = 0.25
+        chan_util_min = float(share.min())
+        sorted_share = np.sort(share)
+        n_ch = len(share)
+        cum = np.cumsum(sorted_share)
+        chan_util_gini = float((n_ch + 1 - 2 * (cum / cum[-1]).sum()) / n_ch)
+        chan_never_selected = int((chan_count == 0).sum())
+
     save_stream_and_holdout(
         's51', arm, seed, 'x', ce, ce,
         np.asarray(hold_ce_all, dtype=np.float64),
@@ -298,6 +321,9 @@ def run_single(args):
         'forgetting_ppl_med': forgetting_med,
         'forget_floor_frac': forget_floor_frac,
         'oracle_ppl': oracle_ppl,
+        'chan_util_min': chan_util_min,
+        'chan_util_gini': chan_util_gini,
+        'chan_never_selected': chan_never_selected,
         'gate_mean': gate_l1,
         'gate_frac_gt_half': gate_active,
         'n_params_gate': int(sum(gstore[k].numel() for k in g_keys)),
@@ -364,7 +390,8 @@ def main():
     print_table(results)
     os.makedirs(DATA_DIR, exist_ok=True)
     fieldnames = ['arm', 'seed', 'feat', 'stream_ppl', 'floor_frac',
-                  'forgetting_ppl', 'forgetting_ppl_med', 'forget_floor_frac',
+                  'forgetting_ppl', 'forgetting_ppl_med', 'forget_floor_frac', 'chan_util_min', 'chan_util_gini',
+                  'chan_never_selected',
                   'oracle_ppl', 'gate_mean', 'gate_frac_gt_half',
                   'n_params_gate', 'runtime_s']
     out_csv = CSV_PATH if not quick else CSV_PATH.replace('.csv', '_quick.csv')

@@ -51,7 +51,7 @@ Output files:
   data/s58e_d2_timescale_v1.csv    (one row per run)
   data/s58e_d2_timescale_v1.json   (params + per-cell aggregates + per-ratio SD)
 
-Fixes applied 2026-09-09 (see review_workspace/modification_log_scripts.md):
+Fixes applied 2026-09-09:
   P0-23: ratio grid densified around the D2 threshold (interior points added;
       no existing ratio removed), per-ratio SD already reported.
   P1-15: ThreeFactorReadout is now constructed with w_max=20.0 (CORE soft L2

@@ -103,6 +103,15 @@ PRE-REGISTRATION (written before running; outcomes reported either way)
       P1b If it does not: F's mechanism is competitive with an external
           method carrying ~1.34x Gate-C-topk parameters (~8x B-softmax-sgd)
           - a materially stronger claim than F can make today.
+          POST-HOC CORRECTION (2026-09-14, pre-registration text left as
+          written): that framing was wrong. The P1b sentence counted the
+          frozen arm's 24,864 host parameters as trainable; they are held at
+          a per-seed RANDOM init and are never updated (see CAPACITY MATCHING
+          above). In TRAINED parameters the frozen external arm is 8,224
+          against Gate-C-topk's 24,736, so F is the LARGER model on the axis
+          that matters for learning and P1b's "materially stronger claim"
+          does not follow. The corrected reading is reported in PAPER_F.tex
+          (Limitations) and in paper_f/README.md.
   P2  (X-TTT fast-weight memory) NOT TESTABLE at this protocol scale - the
       arm was removed; see the note above. Reported as an unrun prediction,
       not as a negative result.

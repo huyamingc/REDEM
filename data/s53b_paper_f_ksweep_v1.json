@@ -7,7 +7,7 @@
     128
   ],
   "n_seeds": 3,
-  "elapsed_s": 870.2541151046753,
+  "elapsed_s": 1430.307116985321,
   "results": [
     {
       "arm": "Gate-C-topk-softmax",
@@ -16,7 +16,7 @@
       "seed": 0,
       "stream_ppl": 6.901937057403503,
       "forgetting_ppl": 9.925055554709171,
-      "runtime_s": 70.46556401252747
+      "runtime_s": 56.00502276420593
     },
     {
       "arm": "Gate-C-topk-softmax",
@@ -25,16 +25,7 @@
       "seed": 1,
       "stream_ppl": 6.5216801220492115,
       "forgetting_ppl": 7.3652870129783565,
-      "runtime_s": 70.69687938690186
-    },
-    {
-      "arm": "Gate-C-topk-softmax",
-      "N": 512,
-      "k": 32,
-      "seed": 0,
-      "stream_ppl": 6.996735986262621,
-      "forgetting_ppl": 10.099110088358001,
-      "runtime_s": 68.45258617401123
+      "runtime_s": 56.28229999542236
     },
     {
       "arm": "Gate-C-topk-softmax",
@@ -43,7 +34,16 @@
       "seed": 2,
       "stream_ppl": 6.7134864014663,
       "forgetting_ppl": 10.056704670116565,
-      "runtime_s": 69.17952966690063
+      "runtime_s": 65.9875693321228
+    },
+    {
+      "arm": "Gate-C-topk-softmax",
+      "N": 512,
+      "k": 32,
+      "seed": 0,
+      "stream_ppl": 6.996735986262621,
+      "forgetting_ppl": 10.099110088358001,
+      "runtime_s": 55.29377508163452
     },
     {
       "arm": "Gate-C-topk-softmax",
@@ -52,7 +52,7 @@
       "seed": 1,
       "stream_ppl": 6.598361058682685,
       "forgetting_ppl": 8.210234534758083,
-      "runtime_s": 68.21886277198792
+      "runtime_s": 55.23389649391174
     },
     {
       "arm": "Gate-C-topk-softmax",
@@ -61,7 +61,7 @@
       "seed": 2,
       "stream_ppl": 6.780700450535184,
       "forgetting_ppl": 11.371375378245531,
-      "runtime_s": 68.27813339233398
+      "runtime_s": 56.52029013633728
     },
     {
       "arm": "Gate-C-topk-softmax",
@@ -70,7 +70,7 @@
       "seed": 0,
       "stream_ppl": 7.56281990182986,
       "forgetting_ppl": 15.010401201981901,
-      "runtime_s": 66.94185876846313
+      "runtime_s": 53.748051166534424
     },
     {
       "arm": "Gate-C-topk-softmax",
@@ -79,16 +79,7 @@
       "seed": 1,
       "stream_ppl": 7.038295260241064,
       "forgetting_ppl": 11.071520999509616,
-      "runtime_s": 67.01359963417053
-    },
-    {
-      "arm": "Gate-C-topk-softmax",
-      "N": 512,
-      "k": 128,
-      "seed": 0,
-      "stream_ppl": 8.961038462023819,
-      "forgetting_ppl": 29.022571293575407,
-      "runtime_s": 65.09948587417603
+      "runtime_s": 54.95373058319092
     },
     {
       "arm": "Gate-C-topk-softmax",
@@ -97,7 +88,16 @@
       "seed": 2,
       "stream_ppl": 7.32408042560123,
       "forgetting_ppl": 15.402195034720439,
-      "runtime_s": 67.2997841835022
+      "runtime_s": 54.24746036529541
+    },
+    {
+      "arm": "Gate-C-topk-softmax",
+      "N": 512,
+      "k": 128,
+      "seed": 0,
+      "stream_ppl": 8.961038462023819,
+      "forgetting_ppl": 29.022571293575407,
+      "runtime_s": 51.56531548500061
     },
     {
       "arm": "Gate-C-topk-softmax",
@@ -106,7 +106,7 @@
       "seed": 1,
       "stream_ppl": 9.06223862677876,
       "forgetting_ppl": 30.414548110801,
-      "runtime_s": 65.55858540534973
+      "runtime_s": 51.34384059906006
     },
     {
       "arm": "Gate-C-topk-softmax",
@@ -115,7 +115,7 @@
       "seed": 2,
       "stream_ppl": 9.459394395356167,
       "forgetting_ppl": 34.434357275661384,
-      "runtime_s": 65.67429280281067
+      "runtime_s": 51.744141817092896
     },
     {
       "arm": "Soft-topk",
@@ -124,7 +124,7 @@
       "seed": 0,
       "stream_ppl": 6.773594514819645,
       "forgetting_ppl": 6.38960736113681,
-      "runtime_s": 78.89540028572083
+      "runtime_s": 65.54378342628479
     },
     {
       "arm": "Soft-topk",
@@ -133,7 +133,7 @@
       "seed": 1,
       "stream_ppl": 6.412372133566605,
       "forgetting_ppl": 6.184300904942015,
-      "runtime_s": 78.78115320205688
+      "runtime_s": 69.60458493232727
     },
     {
       "arm": "Soft-topk",
@@ -142,7 +142,7 @@
       "seed": 2,
       "stream_ppl": 6.57709915709346,
       "forgetting_ppl": 6.23663443177931,
-      "runtime_s": 78.18570923805237
+      "runtime_s": 64.60973834991455
     },
     {
       "arm": "Soft-topk",
@@ -151,7 +151,7 @@
       "seed": 0,
       "stream_ppl": 7.023287728818274,
       "forgetting_ppl": 7.655373883932066,
-      "runtime_s": 77.64995741844177
+      "runtime_s": 64.18996381759644
     },
     {
       "arm": "Soft-topk",
@@ -160,7 +160,7 @@
       "seed": 1,
       "stream_ppl": 6.629046038881262,
       "forgetting_ppl": 6.900497628803295,
-      "runtime_s": 78.10779619216919
+      "runtime_s": 64.01519513130188
     },
     {
       "arm": "Soft-topk",
@@ -169,7 +169,7 @@
       "seed": 2,
       "stream_ppl": 6.957164315389315,
       "forgetting_ppl": 8.303379958531483,
-      "runtime_s": 78.10264945030212
+      "runtime_s": 65.14751243591309
     },
     {
       "arm": "Soft-topk",
@@ -178,7 +178,7 @@
       "seed": 0,
       "stream_ppl": 8.010364182919835,
       "forgetting_ppl": 11.350621352158427,
-      "runtime_s": 76.50678753852844
+      "runtime_s": 62.63962435722351
     },
     {
       "arm": "Soft-topk",
@@ -187,16 +187,7 @@
       "seed": 1,
       "stream_ppl": 7.470457924877225,
       "forgetting_ppl": 9.844591337735137,
-      "runtime_s": 76.88791680335999
-    },
-    {
-      "arm": "Soft-topk",
-      "N": 512,
-      "k": 128,
-      "seed": 0,
-      "stream_ppl": 12.523023309298662,
-      "forgetting_ppl": 30.791354506460145,
-      "runtime_s": 73.43074584007263
+      "runtime_s": 64.00018787384033
     },
     {
       "arm": "Soft-topk",
@@ -205,7 +196,16 @@
       "seed": 2,
       "stream_ppl": 7.861367490931027,
       "forgetting_ppl": 12.007107206337558,
-      "runtime_s": 75.29167890548706
+      "runtime_s": 62.85858702659607
+    },
+    {
+      "arm": "Soft-topk",
+      "N": 512,
+      "k": 128,
+      "seed": 0,
+      "stream_ppl": 12.523023309298662,
+      "forgetting_ppl": 30.791354506460145,
+      "runtime_s": 60.82294201850891
     },
     {
       "arm": "Soft-topk",
@@ -214,7 +214,7 @@
       "seed": 1,
       "stream_ppl": 14.937358053922383,
       "forgetting_ppl": 34.0167759461756,
-      "runtime_s": 74.93260502815247
+      "runtime_s": 63.384971618652344
     },
     {
       "arm": "Soft-topk",
@@ -223,7 +223,7 @@
       "seed": 2,
       "stream_ppl": 20.958445305631336,
       "forgetting_ppl": 87.58505393482696,
-      "runtime_s": 74.85539746284485
+      "runtime_s": 60.557146310806274
     }
   ]
 }

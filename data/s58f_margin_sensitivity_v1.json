@@ -391,7 +391,7 @@
       "rel_margin": 0.1,
       "n_runs": 10,
       "mean_acc_all_mean": 0.8849842968769629,
-      "mean_acc_all_std": 0.010343827797110332,
+      "mean_acc_all_std": 0.01034382779711033,
       "best_delta_mean": 0.1291666666666667,
       "best_delta_std": 0.04876958296133175,
       "seg1_acc_mean": 0.999,

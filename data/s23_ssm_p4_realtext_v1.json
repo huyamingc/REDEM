@@ -62,7 +62,7 @@
       "forget_clip_frac": 0.0008016032064128256,
       "forgetting_ppl_unclipped": 11.57276770657439,
       "forget_n_unc_undefined": 2,
-      "runtime_s": 3.624206781387329
+      "runtime_s": 9.980641841888428
     },
     {
       "arm": "SSM-bare",
@@ -78,7 +78,7 @@
       "forget_clip_frac": 0.0012024048096192384,
       "forgetting_ppl_unclipped": 12.50365774560494,
       "forget_n_unc_undefined": 3,
-      "runtime_s": 3.6526968479156494
+      "runtime_s": 6.106440782546997
     },
     {
       "arm": "SSM-bare",
@@ -94,7 +94,7 @@
       "forget_clip_frac": 0.002404809619238477,
       "forgetting_ppl_unclipped": 10.942071843915294,
       "forget_n_unc_undefined": 6,
-      "runtime_s": 3.83347749710083
+      "runtime_s": 5.8569886684417725
     },
     {
       "arm": "SSM-bare",
@@ -110,7 +110,7 @@
       "forget_clip_frac": 0.0008016032064128256,
       "forgetting_ppl_unclipped": 15.334712260666066,
       "forget_n_unc_undefined": 2,
-      "runtime_s": 3.7006893157958984
+      "runtime_s": 10.30109453201294
     },
     {
       "arm": "SSM-bare",
@@ -126,7 +126,7 @@
       "forget_clip_frac": 0.0012024048096192384,
       "forgetting_ppl_unclipped": 11.433928292138884,
       "forget_n_unc_undefined": 3,
-      "runtime_s": 3.660771131515503
+      "runtime_s": 6.060864448547363
     },
     {
       "arm": "SSM-bare",
@@ -142,7 +142,7 @@
       "forget_clip_frac": 0.0004008016032064128,
       "forgetting_ppl_unclipped": 11.415118132256177,
       "forget_n_unc_undefined": 1,
-      "runtime_s": 3.645068883895874
+      "runtime_s": 5.945382118225098
     },
     {
       "arm": "SSM-bare",
@@ -158,7 +158,7 @@
       "forget_clip_frac": 0.0,
       "forgetting_ppl_unclipped": 11.428111152119687,
       "forget_n_unc_undefined": 0,
-      "runtime_s": 3.780909299850464
+      "runtime_s": 10.251447916030884
     },
     {
       "arm": "SSM-bare",
@@ -174,7 +174,7 @@
       "forget_clip_frac": 0.0008016032064128256,
       "forgetting_ppl_unclipped": 11.725161974757802,
       "forget_n_unc_undefined": 2,
-      "runtime_s": 3.769299268722534
+      "runtime_s": 6.146028995513916
     },
     {
       "arm": "SSM-bare",
@@ -190,7 +190,7 @@
       "forget_clip_frac": 0.0008016032064128256,
       "forgetting_ppl_unclipped": 11.753116696346208,
       "forget_n_unc_undefined": 2,
-      "runtime_s": 3.7427690029144287
+      "runtime_s": 10.476975917816162
     },
     {
       "arm": "SSM-bare",
@@ -206,7 +206,7 @@
       "forget_clip_frac": 0.0004008016032064128,
       "forgetting_ppl_unclipped": 12.290381730440057,
       "forget_n_unc_undefined": 1,
-      "runtime_s": 3.7149417400360107
+      "runtime_s": 6.273746967315674
     },
     {
       "arm": "SSM-REDEM",
@@ -222,7 +222,7 @@
       "forget_clip_frac": 0.0008016032064128256,
       "forgetting_ppl_unclipped": 11.445645783037392,
       "forget_n_unc_undefined": 2,
-      "runtime_s": 8.429574251174927
+      "runtime_s": 13.352660417556763
     },
     {
       "arm": "SSM-REDEM",
@@ -238,7 +238,7 @@
       "forget_clip_frac": 0.0,
       "forgetting_ppl_unclipped": 12.10318390729743,
       "forget_n_unc_undefined": 0,
-      "runtime_s": 8.230862379074097
+      "runtime_s": 14.66973876953125
     },
     {
       "arm": "SSM-REDEM",
@@ -254,7 +254,7 @@
       "forget_clip_frac": 0.0012024048096192384,
       "forgetting_ppl_unclipped": 10.972242747067616,
       "forget_n_unc_undefined": 3,
-      "runtime_s": 8.299905776977539
+      "runtime_s": 13.235373258590698
     },
     {
       "arm": "SSM-REDEM",
@@ -270,7 +270,7 @@
       "forget_clip_frac": 0.0004008016032064128,
       "forgetting_ppl_unclipped": 13.597313211754273,
       "forget_n_unc_undefined": 1,
-      "runtime_s": 8.27961778640747
+      "runtime_s": 13.174422264099121
     },
     {
       "arm": "SSM-REDEM",
@@ -286,7 +286,7 @@
       "forget_clip_frac": 0.0,
       "forgetting_ppl_unclipped": 11.359101519451572,
       "forget_n_unc_undefined": 0,
-      "runtime_s": 8.375553846359253
+      "runtime_s": 17.358003854751587
     },
     {
       "arm": "SSM-REDEM",
@@ -302,7 +302,7 @@
       "forget_clip_frac": 0.0,
       "forgetting_ppl_unclipped": 11.266165592022922,
       "forget_n_unc_undefined": 0,
-      "runtime_s": 8.31869101524353
+      "runtime_s": 16.411226272583008
     },
     {
       "arm": "SSM-REDEM",
@@ -318,7 +318,7 @@
       "forget_clip_frac": 0.0004008016032064128,
       "forgetting_ppl_unclipped": 11.281685564379535,
       "forget_n_unc_undefined": 1,
-      "runtime_s": 8.402599573135376
+      "runtime_s": 19.209671020507812
     },
     {
       "arm": "SSM-REDEM",
@@ -334,7 +334,7 @@
       "forget_clip_frac": 0.0,
       "forgetting_ppl_unclipped": 11.620962171152877,
       "forget_n_unc_undefined": 0,
-      "runtime_s": 8.313759326934814
+      "runtime_s": 14.837714672088623
     },
     {
       "arm": "SSM-REDEM",
@@ -350,7 +350,7 @@
       "forget_clip_frac": 0.0,
       "forgetting_ppl_unclipped": 11.581913400727242,
       "forget_n_unc_undefined": 0,
-      "runtime_s": 8.265260934829712
+      "runtime_s": 15.640244960784912
     },
     {
       "arm": "SSM-REDEM",
@@ -366,7 +366,7 @@
       "forget_clip_frac": 0.0016032064128256513,
       "forgetting_ppl_unclipped": 11.920049831473666,
       "forget_n_unc_undefined": 4,
-      "runtime_s": 8.27567172050476
+      "runtime_s": 15.359482765197754
     },
     {
       "arm": "TF-A1",
@@ -382,7 +382,7 @@
       "forget_clip_frac": null,
       "forgetting_ppl_unclipped": null,
       "forget_n_unc_undefined": null,
-      "runtime_s": 1.6717753410339355
+      "runtime_s": 2.733309030532837
     },
     {
       "arm": "TF-A1",
@@ -398,7 +398,7 @@
       "forget_clip_frac": null,
       "forgetting_ppl_unclipped": null,
       "forget_n_unc_undefined": null,
-      "runtime_s": 0.8088600635528564
+      "runtime_s": 1.5897367000579834
     },
     {
       "arm": "TF-A1",
@@ -414,7 +414,7 @@
       "forget_clip_frac": null,
       "forgetting_ppl_unclipped": null,
       "forget_n_unc_undefined": null,
-      "runtime_s": 0.7206919193267822
+      "runtime_s": 1.468656301498413
     },
     {
       "arm": "TF-A1",
@@ -430,7 +430,7 @@
       "forget_clip_frac": null,
       "forgetting_ppl_unclipped": null,
       "forget_n_unc_undefined": null,
-      "runtime_s": 0.7199966907501221
+      "runtime_s": 1.3184456825256348
     },
     {
       "arm": "TF-A1",
@@ -446,7 +446,7 @@
       "forget_clip_frac": null,
       "forgetting_ppl_unclipped": null,
       "forget_n_unc_undefined": null,
-      "runtime_s": 0.748403787612915
+      "runtime_s": 1.2045092582702637
     },
     {
       "arm": "TF-A1",
@@ -462,7 +462,7 @@
       "forget_clip_frac": null,
       "forgetting_ppl_unclipped": null,
       "forget_n_unc_undefined": null,
-      "runtime_s": 0.7845034599304199
+      "runtime_s": 1.4059746265411377
     },
     {
       "arm": "TF-A1",
@@ -478,7 +478,7 @@
       "forget_clip_frac": null,
       "forgetting_ppl_unclipped": null,
       "forget_n_unc_undefined": null,
-      "runtime_s": 0.7255032062530518
+      "runtime_s": 1.4726135730743408
     },
     {
       "arm": "TF-A1",
@@ -494,7 +494,7 @@
       "forget_clip_frac": null,
       "forgetting_ppl_unclipped": null,
       "forget_n_unc_undefined": null,
-      "runtime_s": 0.7232789993286133
+      "runtime_s": 1.456664800643921
     },
     {
       "arm": "TF-A1",
@@ -510,7 +510,7 @@
       "forget_clip_frac": null,
       "forgetting_ppl_unclipped": null,
       "forget_n_unc_undefined": null,
-      "runtime_s": 0.7202155590057373
+      "runtime_s": 1.509016513824463
     },
     {
       "arm": "TF-A1",
@@ -526,7 +526,7 @@
       "forget_clip_frac": null,
       "forgetting_ppl_unclipped": null,
       "forget_n_unc_undefined": null,
-      "runtime_s": 0.7320022583007812
+      "runtime_s": 1.2926037311553955
     }
   ],
   "null_reason": "non-finite per-run values are written as null (undefined, e.g. neg_frac and t_adapt_mean for a run with no finite qualification score)"

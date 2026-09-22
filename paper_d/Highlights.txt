@@ -1,5 +1,0 @@
-The online readout must use a calibrated additive input path
-The state's role is statistical metadata, not the readout
-Specialist routing retains domains; pause fails the retention rubric
-A state-norm homeostat helps two domains but is excluded on four
-Forgetting gains are robust to clip-floor removal; stream ranks are not

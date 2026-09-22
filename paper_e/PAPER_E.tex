@@ -1,15 +1,11 @@
 % ============================================================================
-% Paper E — Self-evolution under ±1 reward (draft)
-% Sign-flip correction, reconstructed-label capacity sensing, and snapshot-gated
-% memory in a recurrent relaxation reservoir
-%
-% COMPILATION: pdflatex PAPER_E_v3.tex   (three passes; latexmk is not
-%   available on this machine because MiKTeX cannot find a perl script engine)
-%
-% STATUS: claim-driven draft (R1-R6), self-contained dependencies in deps/.
-% Every number is committed in ../data/ (scripts s39-s62 import deps/).
-% Chinese traceability: ../review_workspace/derivation_record_s39-s44.md.
-% TEMPLATE: Elsevier elsarticle (Neurocomputing).
+% Paper E — Self-evolution under ±1 reward
+% Sign-flip correction, reconstructed-label capacity sensing,
+% and snapshot-gated memory in a recurrent relaxation reservoir
+% ============================================================================
+% Target: Neurocomputing (Elsevier), elsarticle.
+% Compile: pdflatex PAPER_E.tex (three passes).
+% Self-contained dependencies in deps/.
 % ============================================================================
 \documentclass[preprint,12pt]{elsarticle}
 
@@ -19,7 +15,12 @@
 \usepackage{array}
 \usepackage{longtable}
 \usepackage{enumitem}
-\usepackage{url}
+\usepackage{xurl}
+
+% Breakable monospace path for the appendix tables: xurl's \path allows
+% line breaks after underscores and dots so long script/data filenames
+% do not overflow their table column.
+\newcommand{\fpath}[1]{{\small\ttfamily\path{#1}}}
 
 \graphicspath{{../figures/}}
 
@@ -78,6 +79,23 @@ reservoir computing \sep credit assignment \sep memory
 \end{keyword}
 
 \end{frontmatter}
+
+\paragraph{Notation and experiment index.}
+Results are numbered R1--R8 (R1 direction/rule selection, R2 representation
+sufficiency, R3 composition and multi-level expansion, R4 sense reliability,
+R5 frozen-hypothesis memory, R6 meta timescale, R7 content rendering, R8
+multi-source validation); design statements are numbered D1--D4 (D1
+sign-ambiguity dissolution, D2 tracking-bandwidth limit, D3 regression
+boundary, D4 signal trust). SEG is the per-regime segment length in blocks;
+EMA the exponential moving average; RMHL reward-modulated Hebbian learning;
+RLS recursive least squares. Script-constant names appear in typewriter
+face: FLIP\_CHECK (flip-decision interval, $20$ blocks), W\_EST (post-flip
+flip-value evaluation window, $40$ blocks), W\_EVAL (snapshot-gate
+re-evaluation window, $400$ blocks), REL\_MARGIN / REL\_HOLD (capacity-sense
+trigger margin / hold requirement). Script identifiers \texttt{s39}--\texttt{s65}
+index the experiments; the full mapping of claims to scripts and archived
+data files is in Appendix~\ref{app:index}, and the archived value behind
+each headline number is in Appendix~\ref{app:numbers}.
 
 \section{Introduction}
 \label{sec:intro}
@@ -212,7 +230,7 @@ family pair and absent on the deployed substrate.
 empirical scope condition is a monotone recovery transition band at
 $\tau_{\mathrm{env}}/\tau_2\approx1$--$2$ (not a theorem);
 adapting its observation scale helps at the working end but cannot soften
-the band: the flip pipeline latency ($60$ blocks, check interval plus
+the band: the flip-plus-confirmation pipeline latency ($60$ blocks, check interval plus
 value window) is the floor.
 \end{description}
 
@@ -220,7 +238,7 @@ Two further experiments support these claims and are reported in Results as
 R7 and R8 rather than as separate claims: R7 separates the semantic content
 of a stream from the per-speaker render that carries it, and R8 tests
 multi-source validation and the majority fallacy. Every claim is keyed to
-its scripts and committed data files in Appendix~\ref{app:index}.
+its scripts and archived data files in Appendix~\ref{app:index}.
 
 What ``autonomy'' means here must be stated precisely. The system is never
 handed a label and never receives an external decision telling it when or
@@ -264,7 +282,7 @@ mechanism verified numerically on the substrate model rather than assumed.
 \paragraph{Substrate (numerical model).} Every result reported in this paper
 is obtained from CPU numerical simulation of the model described here: no
 device was fabricated for this work, no physical measurement is reported, and
-every ``verification'' below is a numerical verification against committed
+every ``verification'' below is a numerical verification against archived
 simulation output. The model is physics-inspired rather than device-calibrated:
 its constants are model parameters of the simulator (representative
 values for a shallow-trap resistive-switching array), not values measured on
@@ -290,7 +308,10 @@ update of unit $i$ uses a contrast-modulated injection coefficient,
 \label{eq:coupled}
 x_i \leftarrow \mathrm{clip}\Big(x_i+\alpha_{\mathrm{eff},i}\,(1-x_i)\Big)
 \cdot e^{-t_w/\tau_i}\cdot e^{-\Delta t/\tau_i},
-\qquad
+\end{equation}
+with the effective injection coefficient
+\begin{equation}
+\label{eq:coeff}
 \alpha_{\mathrm{eff},i}=\mathrm{clip}\Big(\alpha_0\big(1+\kappa g_i\big),\,
 \alpha_{\min},\,\alpha_{\max}\Big),
 \end{equation}
@@ -315,7 +336,7 @@ the substrate model is defined with, and it is applied in every experiment
 reported here, including the meta-timescale study of R6, which does not
 override it. The two clips of Eq.~\eqref{eq:coupled} are ordered as written,
 with $\alpha_{\mathrm{eff},i}$ bounded first and the resulting state update
-bounded second, and the committed code applies the outer bound after the two
+bounded second, and the archived code applies the outer bound after the two
 relaxation factors instead of before them; the orderings are exactly
 equivalent, because $x_i+\alpha_{\mathrm{eff},i}(1-x_i)$ already lies in
 $[0,1]$ and both relaxation factors are at most one, so the outer bound is
@@ -460,7 +481,7 @@ inherits, because every construction site passes the value explicitly.
 
 The
 per-family value is recorded in the
-committed parameter block where the script writes one (it is present in
+archived parameter block where the script writes one (it is present in
 \texttt{s39}'s JSON and absent from the other R1 JSONs), so we state the value
 per experiment rather than as a single global constant.
 
@@ -512,7 +533,7 @@ fitted and $2000$ held out, so it is well-conditioned by sample count alone.
 The \emph{block-mean} probe averages each block to one $N$-dimensional
 activity vector first, which divides the sample count by the block size
 $K=20$: over the same $200$-block window it has $200$ samples ($100$ fitted,
-$100$ held out) against $257$ features, and the originally committed probe
+$100$ held out) against $257$ features, and the block-mean probe
 (scripts \texttt{s50}/\texttt{s51}, JSON keys \texttt{...|block} and the
 linear rung \texttt{...|linear}) is
 exactly that ill-conditioned fit; on the circle it reads $0.42$, below
@@ -528,7 +549,7 @@ ceiling for the tracking experiments of R2.
 
 In both probe families the ridge
 penalty is
-$\lambda=1.0$ (the value used throughout the committed scripts, applied to
+$\lambda=1.0$ (the value used throughout the archived scripts, applied to
 standardized features), and it is a fixed regularization constant rather
 than a per-experiment tuned hyper-parameter. The probe is also \emph{not}
 an in-sample fit: the feature standardization, the PCA basis and the ridge
@@ -595,7 +616,7 @@ use it: the \texttt{s39}--\texttt{s42} reward-credit scripts, plus
 \texttt{s58e} and \texttt{s62} for the timescale study (full filenames in
 Appendix~\ref{app:index}), and not as a callable in
 \texttt{deps/}; its behaviour is therefore fixed by those scripts and their
-committed per-run CSVs, so a change to it appears as a new script version
+archived per-run CSVs, so a change to it appears as a new script version
 rather than as a parameter value.
 
 The tracked quantity is a \emph{reward-rate
@@ -610,7 +631,7 @@ level. Throughout the paper this quantity is written $\bar r$ and is also
 called the \emph{reward-rate EMA}: the two names denote the one recursive
 estimate~\eqref{eq:metaema}, and the same single quantity is meant wherever a
 section writes ``reward-rate EMA'' or ``reward-rate contrast''. In the
-committed scripts the state variable that carries $\bar r$ is
+archived scripts the state variable that carries $\bar r$ is
 \texttt{r\_ema} (Appendix~\ref{app:index}), so that name and the symbol are one
 quantity under two spellings; for a
 per-source estimate in R8 the symbol is $\bar r_{\mathrm{ema}}$, which is the
@@ -623,12 +644,15 @@ this paper may be read as an accuracy. Accuracy enters the meta layer only
 through the block vote that generates $r$.
 
 Two equivalent spellings of the
-flip criterion appear in the committed scripts and are the same test: the
+flip criterion appear in the archived scripts and are the same test: the
 direct form flips when $\bar r<0$ after the warmup (\texttt{s41},
 \texttt{s58e}, \texttt{s62}), while the mirror form tracks the negated
 hypothesis explicitly ($\bar r_{\mathrm{opp}}:=-\bar r$) and flips when
-$\bar r_{\mathrm{opp}}>\bar r+\text{margin}$ (\texttt{s39}, \texttt{s40}),
-which for a hard block vote is $\bar r<-\text{margin}/2$.
+$\bar r_{\mathrm{opp}}>\bar r+0.20$ (\texttt{FLIP\_MARGIN}$=0.20$,
+\texttt{s39}/\texttt{s40}; a fixed architectural constant, distinct from the
+capacity sense's \texttt{REL\_MARGIN}$=0.10$ trigger margin of the
+Parameters paragraph),
+which for a hard block vote is $\bar r<-0.10$.
 
 The \emph{learned
 flip value} $v$ is a reward-rate target on that same $[-1,1]$ scale, not a
@@ -643,7 +667,7 @@ often than wrong. On a stable stream no flip fires, so $v$ is never updated
 and stays at $v_0$; the cost measurement for that case is in R1.
 
 \paragraph{Parameters.} Protocol constants used throughout (values in the
-committed scripts, Appendix~\ref{app:index}): in the 2-D protocol,
+archived scripts, Appendix~\ref{app:index}): in the 2-D protocol,
 $K=20$ pulses per block and $T=40\,000$ samples ($2000$ blocks); the 3-D and
 4-D sweeps of R2 use the same generator with the per-dimension channel
 interleave, $K=21$ ($T=42\,000$ samples, $7$ pulses per channel) and $K=24$
@@ -660,9 +684,16 @@ consecutive refits spaced $20$ blocks apart (hold gate, REL\_HOLD$=3$, i.e.\
 a $60$-block sustained requirement), while the candidate basis must also
 clear an absolute floor of $0.60$ probe accuracy; identity window $50$ blocks
 with $>85\%$ agreement; snapshot slot
-capacity $5$; and a meta-layer detection pipeline of $60$ blocks, composed of
-the flip check interval $20$ blocks (FLIP\_CHECK) and the flip-value
-evaluation window $40$ blocks (W\_EST). The relative sense is used in dynamic environments; its
+capacity $5$; and a meta-layer flip-plus-confirmation pipeline of $60$ blocks
+in total, composed of the flip check interval $20$ blocks (FLIP\_CHECK) and
+the flip-value evaluation window $40$ blocks (W\_EST) that runs \emph{after}
+a flip is taken. The detection path itself is only the check interval: the
+flip decision is evaluated every FLIP\_CHECK blocks, so a detected flip can
+land at most $20$ blocks after the evidence that triggered it (the R1
+measurement below lands at $39$); the W\_EST window then updates the flip
+value $v$ over the $40$ post-flip blocks and gates only \emph{subsequent}
+flips, not the one in progress. ``Pipeline'' therefore names the
+flip-plus-confirmation total, not a detection latency. The relative sense is used in dynamic environments; its
 trigger margin and window are fixed architectural values, not tuned per
 experiment: deployment never re-tunes them, and the margin and window scans
 reported in R4 are separate sensitivity analyses (scripts \texttt{s58f},
@@ -678,12 +709,12 @@ itself, not as the deployment setting.
 \label{sec:results}
 
 \paragraph{Statistics and reporting conventions.} All experiments use
-$n=10$ seeds and every number is committed (Appendix~\ref{app:index}).
+$n=10$ seeds and every number is archived (Appendix~\ref{app:index}).
 Unless stated otherwise, a reported accuracy is the \emph{mean over the 10
 seeds}, and a $\pm$ term attached to it is the \emph{sample standard
 deviation across those 10 seed-level values} (SD, the $n-1$ denominator;
 not the standard error of the mean; the SEM is the quoted SD divided by
-$\sqrt{10}\approx3.16$). Every $\pm$ that reports seed-level dispersion uses that same convention, and each one can be recomputed from the committed per-run CSV files;
+$\sqrt{10}\approx3.16$). Every $\pm$ that reports seed-level dispersion uses that same convention, and each one can be recomputed from the archived per-run CSV files;
 where a $\pm$ instead reports the dispersion of a different set of readings, the sentence giving it says so explicitly. The archived
 per-experiment JSON files record the population standard deviation ($n$
 denominator) in their \texttt{*\_std} fields, and the $\pm$ terms printed here
@@ -699,7 +730,7 @@ untested summary. Per-seed SDs are quoted at the point of each claim
 rather than pooled into a single global summary. Where a paired comparison
 does not reach the $5\%$ level we report it as an \emph{absence of a
 detectable difference at $n=10$}, not as a demonstrated equality: with
-$df=9$ these tests have low power. The committed per-run CSV files listed in
+$df=9$ these tests have low power. The archived per-run CSV files listed in
 Appendix~\ref{app:index} contain one row per run (cell and seed), so every
 mean and SD quoted below can be recomputed from them.
 
@@ -716,7 +747,12 @@ reference oracle of the same experiment defined below; the flip arm
 recovers most, but not all, of the oracle's post-inversion accuracy, and we
 report the gap rather than an equality. Detection succeeds in $10/10$ seeds and
 the first flip occurs at block $1039$ in every one of them, i.e.\ $39$ blocks
-after the inversion at block $1000$, with zero seed SD: what is committed is a
+after the inversion at block $1000$, with zero seed SD (the latency is
+recorded in the \texttt{passive\_flip} rows of \texttt{s40\_meta\_flip},
+whose per-seed post-inversion accuracies are identical to this arm's
+\texttt{s39} rows; the v-gated \texttt{probe\_directed} arm of \texttt{s40}
+first flips at block $1099$, latency $99$, and the fixed margin of both
+mirrored forms is \texttt{FLIP\_MARGIN}$=0.20$, Methods): what is archived is a
 single latency rather than a latency distribution, because the flip decision
 is evaluated only every $20$ blocks (FLIP\_CHECK) and the mirrored hypothesis
 is wrong on essentially every block after the inversion, so the reward-rate
@@ -758,7 +794,8 @@ post-inversion readings across the zoo span $0.053$--$0.505$: neither endpoint
 stands for the whole family, and the two regimes are different failures, not
 one anti-learning phenomenon. The partial-shift and compression rows also
 expose the flip mechanism's own limit: there it chatters ($2.7$ flips per
-run on average) and lands at $0.485$--$0.508$, indistinguishable from the RMHL
+run on average) and lands at $0.485$--$0.508$ ($0.485$ post-window,
+$0.508$ steady-window, both seed means), indistinguishable from the RMHL
 baseline, so the sign flip is not a general repair even where it fires.
 
 A polluted reward signal drives the system to optimize the wrong signal and
@@ -810,7 +847,10 @@ The adjudication makes this concrete: a delta-rule readout trained on the
 identity-derived labels ($y=\mathrm{vote}$ if $r=+1$, else $1-\mathrm{vote}$;
 the only quantity the $\pm1$ channel adds to the system's own vote) reaches
 $0.990$ pre-swap and $0.989$ steady on the uncoupled substrate and
-$1.000$/$0.999$ on the coupled one, while the RMHL arm falls to $0.097$
+$1.000$/$0.999$ on the coupled one (full-swap regime,
+\texttt{s46\_rule\_adjudication}; the CSV pools four regimes $\times$ $10$
+seeds per arm and these four numbers are the full-swap rows, whose means
+each rest on $n=10$ seeds), while the RMHL arm falls to $0.097$
 post-swap on the uncoupled substrate (script \texttt{s46\_rule\_adjudication};
 Appendix~\ref{app:numbers}). The
 operative criterion for a correction operator is whether its magnitude
@@ -822,10 +862,10 @@ only correction our stack demonstrates is the uniform sign flip $w\to-w$,
 which is not a per-dimension gain. We also do not present this as a correction
 to the field. The dedicated isolation arm that would have tested a
 reward-driven \emph{gain} modulation on the error-driven base
-(\texttt{s47\_self\_correction\_gain}) is a retracted design attempt rather
-than a reported negative: at script level its pre-registered self-correction
-prediction is marked refuted by its own committed data, and no number from
-that arm is adopted in this manuscript (see Discussion). What survives is
+(\texttt{s47\_self\_correction\_gain}) is not reported as a negative
+result: its pre-declared self-correction prediction is not supported by
+its own archived data, and no number from that arm is adopted in this
+manuscript (see Discussion). What survives is
 the weaker, positive criterion above, plus the known rule-family fact that a
 three-factor rule consulting a scalar reward which carries no direction
 information at zero mean modulation, and eligibility-trace rules of this
@@ -974,7 +1014,7 @@ and degenerates the arm into its own control
 (\texttt{data/s65\_tuning\_v1.json}); the tuning seeds are a subset of the ten
 reported seeds, which favours the baseline, not the stack. The pairing is
 exact: every per-seed value of the reference arm in this run matches the
-committed s52 file to the last bit ($50/50$ comparisons, maximum difference
+archived s52 file to the last bit ($50/50$ comparisons, maximum difference
 $0.0$), so the two are paired on identical task realizations. EWC does not
 improve the run. Whole-run accuracy falls by $0.85\pm0.70$\,pp ($t=-3.87$,
 $0/10$ seeds) and total revisit retention is statistically unchanged
@@ -1277,12 +1317,12 @@ geometrically. The mechanism was settled that way after the geometric variant
 failed during development: independently initialized solutions to the
 \emph{same} boundary are not cosine-close in the $513$-dimensional quadratic
 feature space, so a cosine-based dedup treated every snapshot as new and
-evicted the hypothesis that the revisit needed. We state the evidential status
-of that observation plainly: the earlier development note carried a
-cosine range of order $0.1$--$0.2$, but there is no committed estimator
-definition, and no matched-budget geometric-versus-functional control arm was
-run, so it is a development observation, not an ablation, and no numerical
-cosine claim is made here. Forgetting is capacity-driven in the
+evicted the hypothesis that the revisit needed. The evidential status of this
+motivating observation is deliberately weak: it rests on an informal
+diagnostic rather than on a matched-budget geometric-versus-functional
+control arm, so no numerical cosine claim is made here and the choice of
+functional identity is presented as a design decision, not as an ablation
+result. Forgetting is capacity-driven in the
 implemented policy: a slot is evicted only when a new hypothesis must be
 admitted and the capacity is reached, and nothing in the code evicts on
 elapsed time, but we did not run a time-driven control arm either, so this
@@ -1354,7 +1394,7 @@ the statement the numbers support is therefore that it removes a
 hand-set threshold, not that it removes the need to trust the reward.
 
 Cross-family transfer is \emph{weak and only partly structure-matched}
-(Fig.~\ref{fig:xfam}), and we downgrade the claim to what the committed runs
+(Fig.~\ref{fig:xfam}), and we downgrade the claim to what the archived runs
 support. The experiment is a single family pair
 (\texttt{s61\_cross\_family\_transfer.py}: segments linear, circle, linear,
 ring, linear, $500$ blocks each, $n=10$ seeds); no second family pair and no
@@ -1362,8 +1402,8 @@ deliberately non-transferring control arm was run, so this is one contrast
 rather than a transfer law. On the uncoupled substrate a frozen hypothesis
 learnt on the circle transfers to the ring (both are radial boundaries)
 for $+8.9\pm2.5$\,pp on that segment (paired $t=11.3$, $10/10$ seeds, worst
-seed $+2$\,pp), where the worker cannot learn the ring. Three numbers behind
-that gain must be kept apart, because the earlier text ran them together. The
+seed $+2$\,pp), where the worker cannot learn the ring. Three distinct
+quantities underlie this gain and must not be conflated. The
 frozen hypothesis's \emph{own} accuracy on the ring segment is $0.576$
 (that is what the $0.576$ quoted here and in Appendix~\ref{app:numbers} is, an
 accuracy on the segment and only $7.6$\,pp above chance, not an overall
@@ -1383,7 +1423,7 @@ deployed stack on effect-size and seed-consistency grounds rather than on a
 failure to reach significance. Two further statements are observations
 rather than controls and are labelled as such: linear hypotheses show no
 transfer to the ring because selection discards them, and we did not run a
-foreign-segment control to certify that prior hypotheses are never poisoned; what the committed runs show is that the linear segment following the ring
+foreign-segment control to certify that prior hypotheses are never poisoned; what the archived runs show is that the linear segment following the ring
 reads $0.931$ against $0.959$ for the linear segment preceding it (different
 segments, no poison visible in either).
 
@@ -1496,19 +1536,24 @@ the adaptation buys is faster detection after each swap, not a higher steady
 state, and it buys it under the qualification that both arms start from the
 same detector and the gain is measured against a fixed-$\tau_2$ arm of the
 same script, not against an external baseline. On the cost side we did not
-measure a decision-noise curve, and the one committed proxy points the other
+measure a decision-noise curve, and the one archived proxy points the other
 way: with the adaptive scale the flip count at the fast end is \emph{lower}
 than with the fixed scale ($1.4$ vs $5.7$ flips at ratio $0.24$), so
-``a too-fast EMA adds decision noise'' is not what the committed numbers show
-and we no longer offer it as the reason adaptation fails.
+``a too-fast EMA adds decision noise'' is not what the archived numbers
+show, and it is not offered as the reason adaptation fails.
 
 The reason the
 transition cannot be lowered is the pipeline floor, which is a property of the
-detection path rather than of the EMA rate: the flip pipeline latency (the
+detection path rather than of the EMA rate: the flip-plus-confirmation
+pipeline latency (the
 check interval of $20$ blocks (FLIP\_CHECK) plus the flip-value evaluation
-window of $40$ blocks (W\_EST), $60$ blocks in total, about $1.2\,\tau_2$)
+window of $40$ blocks (W\_EST) that follows a taken flip, $60$ blocks in
+total, about $1.2\,\tau_2$)
 is comparable to the dwell times of the fast regimes ($12$--$50$ blocks at
-ratios $0.25$--$1$).
+ratios $0.25$--$1$); the detection component alone (FLIP\_CHECK) is $20$
+blocks, and the R1 measured detection latency is $39$ blocks, so a regime
+shorter than the full pipeline can still be \emph{detected} but cannot be
+\emph{confirmed and acted on stably} within its dwell time.
 The quantitative form of ``$\tau_{\mathrm{env}}\gg\tau_2$'' is therefore a
 single scope condition, ``$\tau_{\mathrm{env}}\gtrsim$ pipeline latency''
 ($60$ blocks $\approx1.2\,\tau_2$): the pipeline length and the measured band
@@ -1595,7 +1640,8 @@ $\pm$ terms report sample SD).}
 \centering
 \includegraphics[width=0.62\linewidth]{self_evo_f6_meta_timescale.pdf}
 \caption{R6: adapting $\tau_2$ cannot soften the D2 transition band: the
-flip pipeline latency (FLIP\_CHECK $20$ + W\_EST $40$ $=60$ blocks) is the
+flip-plus-confirmation pipeline latency (FLIP\_CHECK $20$ + W\_EST $40$
+$=60$ blocks) is the
 floor. Means over $n=10$ seeds with SEM error bars
 (SEM $=$ sample SD$/\sqrt{10}$); the shading marks ratio
 $\leq1$.}
@@ -1620,10 +1666,9 @@ the slowest rate, \texttt{switch\_every}$=200$ blocks; Appendix~\ref{app:s63s64}
 a single linear
 readout degrades ($0.938\to0.900$, paired $t=-18.2$, $10/10$), a quadratic
 expansion does not repair it ($0.889$, paired $t=-4.7$, $0/10$). The reason is
-\emph{not} a geometric one: the earlier reading that ``in the expanded space
-the readout is still a single hyperplane'' does not hold, because a hyperplane
-in the expanded coordinates is already a quadratic surface in the original
-ones. The correct reason is that the required rule is not a single function of
+\emph{not} a geometric one: in the expanded space the readout
+is not a single hyperplane, because a hyperplane in the expanded coordinates
+is already a quadratic surface in the original ones. The correct reason is that the required rule is not a single function of
 the observed features: the two speakers induce two \emph{different} maps from
 the same physical encoding to the same label, so a correct readout must select
 between two maps, and no basis built from the observed features contains the
@@ -1727,11 +1772,27 @@ difference between the validation arm and the majority rule has a seed SD of
 only $0.0099$. The large $t$ statistics here therefore describe a small spread
 rather than a large effect: the quoted $t=100.5$ compares \texttt{ema} against
 \texttt{vote}, and the same contrast routed through the worker reads $t=61.4$.
-Second, no intermediate reliability is sampled: every source is either
-perfect or a coin flip, so the regime in which validation must separate a
-$0.7$ source from a $0.6$ one, which is exactly what would test the selector's
-resolution, is untested, as is the sample-complexity question of how many
-sources or blocks the selection needs. Both gaps are listed in Limitations.
+Second, on intermediate reliability: a follow-up run
+(\texttt{s64b\_weak\_source\_reliability}, sources correct with
+probability $0.70$, three scenarios $\times$ $10$ seeds $\times$ $2$
+substrates) probes the middle where validation-based selection is
+genuinely challenged. The selector still tracks reliability rather
+than the crowd's opinion: in the \emph{minority-weak} scenario
+(one good $0.7$ source among noise), validation-driven selection beats
+the majority rule by $+0.128$ ($10/10$ seeds; worker level $+0.159$,
+$10/10$) --- exactly the regime the perfect/coin-flip design could not
+test. But when \emph{no} clearly-best source exists the advantage
+reverses: with all sources weak, selection lands at $0.694$ vs $0.836$
+for the raw vote ($0/10$), and in the majority-weak scenario the
+majority rule edges validation by $+0.020$ ($1/10$ for selection).
+The pattern is consistent with the mechanism: the selector's EMA
+faithfully follows a $0.70$ source, so it pays the source's own error
+rate, while the raw vote pools five $0.70$ sources and benefits from
+their independent fluctuations; validation pays off exactly when a
+reliability \emph{ordering} exists that the crowd's opinion does not
+encode. The sample-complexity question (how many blocks the selection
+needs at a given reliability gap) remains untested; both gaps are
+listed in Limitations.
 
 Third, the D4 boundary is reproduced for the source-consuming arms: when all
 five sources are noise, every arm that consumes only source suggestions sits
@@ -1906,9 +1967,11 @@ does not (ring, ladder cap).
 \item \emph{Memory} (R5): frozen snapshots are persistent, functionally
 identified experience; selection among them is the reuse of one's own past
 solution rather than re-adaptation from scratch.
-\item \emph{Temporal self-model} (R6): the flip pipeline latency
-($60$ blocks) is a measured lower bound on the system's own action
-timescale. Knowing that one cannot act faster than one's estimator is a
+\item \emph{Temporal self-model} (R6): the flip-plus-confirmation pipeline
+latency ($60$ blocks; detection component FLIP\_CHECK $=20$, measured
+detection latency $39$) is a measured lower bound on the timescale of one
+\emph{confirmed} action of the meta operator. Knowing that one cannot act
+faster than one's estimator is a
 self-bound, not a property of the task.
 \end{itemize}
 
@@ -1968,8 +2031,9 @@ instantiate.
 Self-bounding is the dual of attribution: knowing when \emph{not} to act.
 R4's reliability cliff is a self-bound on expansion (a held probe deficit
 that the window/segment ratio cannot certify is not a license to expand);
-R6's pipeline floor is a self-bound on the meta operator (no flip cadence
-faster than $60$ blocks); the ladder cap is an open self-bound (no rung left
+R6's pipeline floor is a self-bound on the meta operator (no \emph{confirmed}
+flip cadence
+faster than $60$ blocks, detection alone every $20$); the ladder cap is an open self-bound (no rung left
 to refuse). Taken together these three are the sense in which the stack
 ``knows when it cannot act'': not as an introspective report, but as a set
 of measured abstentions.
@@ -2001,12 +2065,11 @@ self-verification: the stack optimizes the signal it measures, and the
 signal cannot vouch for itself. It is also why self-attribution's range,
 stated above, excludes ``corrupted reward'' as an output class.
 
-\paragraph{Retracted operator: the s47 per-dimension gain claim.}
-An earlier draft of this line advertised that corrections \emph{must} be
-structural, in the sense of a per-dimension gain. That claim is
-\emph{retracted} and is not a negative scientific result. The dedicated
+\paragraph{Why no per-dimension gain operator is claimed.}
+A per-dimension structural gain is \emph{not} claimed, and the boundary is
+worth stating precisely because it is easy to over-read. The dedicated
 isolation arm (\texttt{s47\_self\_correction\_gain}) was run at script level
-against the committed data ($10$ seeds); its pre-registered self-correction
+against the archived data ($10$ seeds); its pre-registered self-correction
 prediction (P2: a reward-driven scalar boost improves the R2/R3 shift
 regimes without costing R1/R4) is marked \texttt{[REFUTED by own data]} in
 the script header, and its adaptivity prediction (P3) is marked
@@ -2017,9 +2080,9 @@ retains is weaker and positive: the only correction the stack demonstrates
 is the uniform sign flip $w\to-w$, which is not a per-dimension gain; the
 operative design criterion is whether an operator's magnitude scales with the
 noisy reward in the $\mathbb E[r]\approx0$ dead zone (a positive-feedback
-trap), not whether its gain is per-dimension. Readers who need the
-retracted claim's status should treat s47 as ``script-level P2 refuted; not
-adopted''---not as ``a negative result about structural correction.''
+trap), not whether its gain is per-dimension. The correct reading of s47 is
+therefore ``its own pre-declared prediction failed; its numbers are not
+adopted''---not ``a negative result about structural correction.''
 
 \paragraph{Hosts and portability.}
 The mechanism stack reported here is demonstrated on one host: the
@@ -2049,7 +2112,7 @@ surfaces leave an irreducible $\sim+4$--$6$\,pp edge, and the trend across
 complexity is flat-to-rising rather than degrading.
 \item The capacity sense's reliability cliff is structural. It is unfixable by
 its margin, by its window, or by a self-adapted observation scale, and
-exposure count is the only repair the committed runs demonstrate.
+exposure count is the only repair the archived runs demonstrate.
 \end{itemize}
 
 \paragraph{Limitations.} The demonstration is a CPU numerical study of one
@@ -2077,9 +2140,9 @@ property of this decision stack under this protocol, not evidence about
 organisms or about a physical device. The structural-correction
 criterion is explicitly \emph{not} a demonstrated per-dimension mechanism:
 the only operator the stack applies is a uniform sign flip, and the
-dedicated gain-modulation arm (\texttt{s47}) is a retracted design attempt
-whose script-level prediction is refuted and whose numbers are not adopted
-here (see Discussion). Several claims are bounded by the
+dedicated gain-modulation arm (\texttt{s47}) is not used as evidence:
+its pre-declared prediction is not supported by its archived data and
+its numbers are not adopted here (see Discussion). Several claims are bounded by the
 range actually tested rather than by an argument: the absence of collapse on
 the coupled substrate holds for the boundary families tried (up to six
 quadratic surfaces), the ring's non-expansion holds for the nested basis
@@ -2091,7 +2154,12 @@ and the deployed value is not presented as that peak.
 The
 reliability figures of R4 are rates over autocorrelated per-window decisions
 and are therefore trend-level rather than sharp, and their product form
-assumes, without verifying, that the two factors are independent. A
+assumes, without verifying, that the two factors are independent. The
+paired comparisons reported throughout are exploratory in the
+multiplicity sense: they are per-claim paired tests and sign counts at
+$n=10$ seeds, with no family-wise error-rate or false-discovery-rate
+correction applied across the paper's comparisons, and the $k/n$ sign counts
+are descriptive summaries rather than tested statistics. A
 substantial set of constants is hand-set rather than learned: the
 memory/selection thresholds that remain hand-set are architectural
 (capacity, agreement window), while the snapshot gate itself is now learned.
@@ -2103,7 +2171,8 @@ the revisit run, but no reservoir-specific online-learning method and no
 supervised baseline at matched budget is compared,
 and the stack matches rather than exceeds a label-fed readout on single
 tasks. The D2 recovery transition band is
-pipeline-bound (FLIP\_CHECK $+$ W\_EST $=60$ blocks); whether any
+pipeline-bound (FLIP\_CHECK $+$ W\_EST $=60$ blocks, flip-plus-confirmation);
+whether any
 adaptation of the observation scale could lower it was not measured
 (no open-loop $\tau_2$ scan), and ``faster observation costs decision
 noise'' is not offered as a measured trade-off. The transition itself is
@@ -2115,10 +2184,15 @@ taken rather than from results that came out badly, and we list them so they
 are not read as measurements. No fixed-protocol scan over the meta's
 observation scale $\tau_2$ was run: what exists is a closed-loop controller
 whose rate is bounded to $\tau_2\in[5,50]$ blocks; no open-loop $\tau_2$
-scan exists, so no decision-noise trade-off is claimed. No intermediate source reliability and no
-sample-complexity curve were run in the multi-source experiment, whose sources
-are fixed at $1.0$ or $0.5$ and whose seed spread is correspondingly tiny
-($0.0099$), so its equivalence-class results are precise but narrow. And no
+scan exists, so no decision-noise trade-off is claimed. The
+multi-source experiment's sources are fixed at $1.0$ or $0.5$ in the
+archived run (seed spread correspondingly tiny, $0.0099$), so its
+equivalence-class results are precise but narrow; an
+intermediate-reliability follow-up (\texttt{s64b}, sources at $0.70$)
+is summarized in R8 and locates where validation selection pays
+(majority-weak ordering: $10/10$) and where it does not (all-weak:
+$0/10$), but no sample-complexity curve over reliability gaps or block
+budgets was run. And no
 higher basis rung exists above the cubic one, so the ring refusal observed at
 the top of the ladder cannot be separated from a shortage of rungs.
 
@@ -2187,7 +2261,7 @@ the public, commercial, or not-for-profit sectors.
 \section*{Data availability}
 The simulation scripts for this paper (the \texttt{s39}--\texttt{s65}
 series listed in Appendix~\ref{app:index}), the frozen dependency set they
-import (\texttt{paper\_e/deps/}), the six figure PDFs, and the committed
+import (\texttt{paper\_e/deps/}), the six figure PDFs, and the archived
 CSV/JSON result files that back the numbers reported here are provided as
 Supplementary Material accompanying this submission
 (\texttt{Supplementary\_Material\_PaperE.zip}). Three scope notes keep this
@@ -2222,21 +2296,25 @@ Finally, and in the same
 spirit, what this archive does and does not contain is stated literally, so
 that the reproducibility claims can be checked rather than assumed. It does contain: every script of the
 \texttt{s39}--\texttt{s65} series as source, the frozen dependency modules they
-import, the six figure PDFs and the committed CSV/JSON pairs; each CSV row
+import, the six figure PDFs and the archived CSV/JSON pairs; each CSV row
 records its run's seed index (\texttt{seed\_idx}) and each JSON records the
 constant block of that experiment (including the substrate topology seed), so
 the ten seeds can be identified and re-run individually. It does not contain:
 a commit hash or release tag (the material is delivered as this archive rather
-than from a versioned public repository), a lock file or interpreter and
+than from a versioned public repository; the public repository
+\url{https://github.com/huyamingc/REDEM} carries an MIT LICENSE and a
+\texttt{requirements-lock.txt} pinning the interpreter-side package versions
+used for the archived runs, and this archive is a snapshot of that state), a lock file or interpreter and
 package version pins (the dependency set is frozen as source in
 \texttt{paper\_e/deps/}, and no Python/NumPy version strings are written into
-the committed JSON), or an explicit license, which will be attached to the
-deposited version.
+the archived JSON; the repository-level lock file named above covers this
+gap), or an explicit license inside the archive, which is attached at the
+repository level (MIT) and will accompany the deposited version.
 
 \section*{CRediT authorship contribution statement}
 \textbf{Yaming Hu}: Conceptualization, Methodology, Software, Validation,
-Formal analysis, Investigation, Data curation, Writing of the original draft,
-Writing of the review and editing, Visualization. The CRediT roles not listed
+Formal analysis, Investigation, Data curation, Writing -- original draft,
+Writing -- review \& editing, Visualization. The CRediT roles not listed
 here (Funding acquisition, Resources, Supervision, Project administration) do
 not apply to this single-author, self-funded study.
 
@@ -2266,28 +2344,43 @@ them all theorems. The label at the head of each item is that
 classification: \emph{Theorem (analytical)} for a statement proved from the
 stated model assumptions; \emph{Proposition (analytical, checked
 numerically)} for a short analytical consequence that is also tested against
-the committed runs; \emph{Empirical finding} for a measured regularity of
+the archived runs; \emph{Proposition (analytical, blockwise-conditional)}
+for an identity that holds block-by-block under a stated condition on the
+block statistic, with the condition's coverage stated inside the item;
+\emph{Empirical finding} for a measured regularity of
 this substrate and protocol; \emph{Empirical finding (scoped)} where the claim
 is bounded to the range actually tested; \emph{Design criterion} for a
 modelling rule that is motivated rather than proved; and \emph{Conjecture}
 for an open statement. The parenthetical source at the end of each item
 (R1--R8) names the Results subsection that carries the evidence, whose scripts
-and committed data files are listed in Appendix~\ref{app:index}; where a
+and archived data files are listed in Appendix~\ref{app:index}; where a
 statement is empirical, the conditions under which it was measured
 (substrate, tested range and sample size) are stated inside the item.
 
 \begin{enumerate}[label=\arabic*.]
-\item \emph{Theorem (analytical).} \textbf{Mirror impossibility.} Under the protocol's block vote
+\item \emph{Proposition (analytical, blockwise-conditional).} \textbf{Mirror impossibility.} Under the protocol's block vote
 $\mathrm{vote}=\mathbb 1[\bar o>0.5]$ (Methods) with an unbiased linear
 readout and a fixed block size $K$, negating the readout weight negates the
-block mean, so $\mathrm{vote}(-w)=1-\mathrm{vote}(w)$ and hence
-$r(-w)=-r(w)$ blockwise, except on the tie set $\bar o=0.5$, where the
-deterministic tie rule sends both arms to class $0$; the protocol uses
-$K=20$ (even), so that exception is stated here rather than excluded by an
-odd-$K$ assumption. If in addition the state distribution is taken to be
-independent of $w$ (a deterministic mirror assumption, assumed here
-rather than derived), then $\mathbb E[r](-w)=-\mathbb E[r](w)$ off the
-tie set, and no suppression is learnable inside the
+block mean, $\bar o\mapsto-\bar o$. On a block where $|\bar o|>0.5$ this
+gives $\mathrm{vote}(-w)=\mathbb 1[\bar o<-0.5]=1-\mathrm{vote}(w)$ and
+hence $r(-w)=-r(w)$ blockwise. The identity is blockwise-conditional, not
+global: on the dead zone $|\bar o|\le 0.5$ (which contains the tie set
+$\bar o=0.5$ but is strictly larger for this readout family, since a linear
+readout with $W_0=\mathbf 0$ initialization routinely produces block means
+inside it) both arms emit class $0$, so $\mathrm{vote}(-w)=\mathrm{vote}(w)$
+there and the two arms \emph{agree} rather than mirror; the deterministic
+tie rule at $\bar o=0.5$ (both classes $0$; $K=20$ is even, so the exception
+is stated here rather than excluded by an odd-$K$ assumption) is the
+measure-zero boundary of that dead zone. The fraction
+$P(|\bar o|\le 0.5)$ of dead-zone blocks is a property of the readout's
+converged state distribution, is not fixed by the protocol, and is not
+derived here; the archived R1 runs operate far from it (the mirror
+hypothesis is wrong on essentially every post-inversion block, Methods), so
+the blockwise identity carries the R1 argument on those runs. If in addition
+the state distribution is taken to be independent of $w$ (a deterministic
+mirror assumption, assumed here rather than derived), then
+$\mathbb E[r](-w)=-\mathbb E[r](w)$ on the non-dead-zone blocks, and no
+suppression is learnable inside the
 two-arm mirror set by \emph{RMHL-type local reward-driven rules}. The
 global discrete flip of the meta-layer is an outside-of-the-mirror-set
 operation (it exploits, rather than learns, the mirror symmetry) and is
@@ -2308,7 +2401,7 @@ recovery transition band at
 $\tau_{\mathrm{env}}/\tau_2\approx1$--$2$ (empirical, this substrate, sampled
 at eleven ratios with five of them inside $[1,2]$, so the band is bracketed by
 measured points),
-quantitatively $\tau_{\mathrm{env}}\gtrsim$ the flip pipeline latency of $60$
+quantitatively $\tau_{\mathrm{env}}\gtrsim$ the flip-plus-confirmation pipeline latency of $60$
 blocks $=1.2\,\tau_2$, which is the same constraint (R6).
 \item \emph{Conjecture}. \textbf{D3 regression boundary.} Finite hierarchy plus
 fixed top-level rule; infinite bootstrapping would violate the
@@ -2443,7 +2536,8 @@ accuracy on the ring segment is $0.576$ and the selection share of the segment
 varies from $9$\% to $92$\% across seeds, so the gain is neither large nor
 uniformly engaged (R5).
 \item \emph{Empirical finding (scoped)}. \textbf{The D2 transition band is pipeline-bound.} Adapting $\tau_2$
-gives a working-end speed gain but cannot soften the band; the flip pipeline
+gives a working-end speed gain but cannot soften the band; the
+flip-plus-confirmation pipeline
 latency ($60$ blocks, FLIP\_CHECK $+$ W\_EST) is the floor (R6).
 \end{enumerate}
 
@@ -2451,7 +2545,7 @@ latency ($60$ blocks, FLIP\_CHECK $+$ W\_EST) is the floor (R6).
 experiments}
 \label{app:s63s64}
 
-Both experiments share one task frame, and both are generated by committed
+Both experiments share one task frame, and both are generated by archived
 scripts, so every number quoted for them can be rebuilt from the definitions
 below together with \texttt{data/s63\_content\_rendering\_v1.csv} and
 \texttt{data/s64\_multi\_source\_validation\_v1.csv}.
@@ -2540,9 +2634,9 @@ exactly; see item~7 of Appendix~\ref{app:theorems}).
 \section{Experiment reproducibility index}
 \label{app:index}
 
-Each claim maps to committed scripts and data. Inside the supplementary
+Each claim maps to archived scripts and data. Inside the supplementary
 archive the layout is \texttt{scripts/} (the simulation scripts, which import
-the frozen \texttt{paper\_e/deps/}), \texttt{data/} (committed CSV/JSON),
+the frozen \texttt{paper\_e/deps/}), \texttt{data/} (archived CSV/JSON),
 \texttt{figures/} (the six figure PDFs) and \texttt{manuscript/}; the paths
 below are relative to the manuscript. Scripts are named
 \texttt{<id>\_<descriptive\_name>.py} and their outputs
@@ -2553,13 +2647,13 @@ lettered variants (\texttt{s43b} of the rotation study and the
 \texttt{s58a}--\texttt{s58f} family) which a range notation would hide.
 Script-side names follow the text: the reward-rate estimate written $\bar r$ in
 Methods is the state variable \texttt{r\_ema} in the scripts, so \texttt{r\_ema}
-wherever it appears in a committed CSV column or JSON field is that
+wherever it appears in an archived CSV column or JSON field is that
 quantity, not an accuracy.
 Table~\ref{tab:reproindex} gives the claim-by-claim mapping.
 
-\begin{longtable}{@{}>{\footnotesize}p{0.07\linewidth}>{\footnotesize}p{0.47\linewidth}>{\footnotesize}p{0.34\linewidth}@{}}
+\begin{longtable}{@{}>{\footnotesize}p{0.07\linewidth}>{\footnotesize\raggedright\arraybackslash}p{0.47\linewidth}>{\footnotesize\raggedright\arraybackslash}p{0.34\linewidth}@{}}
 \caption{Experiment reproducibility index: every claim of the
-paper mapped to the committed scripts that produce it and to the committed
+paper mapped to the archived scripts that produce it and to the archived
 data files that carry its numbers. Paths are relative to the manuscript
 inside the supplementary archive.}
 \label{tab:reproindex}\\
@@ -2573,60 +2667,65 @@ Claim & Scripts (\texttt{scripts/}) & Data (\texttt{data/}) \\
 \endhead
 \bottomrule
 \endlastfoot
-R1 & \texttt{s39\_prediction\_reward\_test.py},
-\texttt{s40\_meta\_flip\_ablation.py},
-\texttt{s41\_meta\_reward\_self\_tuning.py},
-\texttt{s42\_corrupt\_signal\_test.py},
-\texttt{s43\_hypothesis\_population.py},
-\texttt{s43b\_synthetic\_rotation.py}, \texttt{s44\_regime\_zoo.py},
-\texttt{s45\_population\_r2r3.py}, \texttt{s46\_rule\_adjudication.py},
-\texttt{s47\_self\_correction\_gain.py} &
-\texttt{s39\_prediction\_reward\_v2},
-\texttt{s40\_meta\_flip\_v1}, \texttt{s43b\_rotation\_v1},
-\texttt{s44\_regime\_zoo\_v1}, \texttt{s46\_rule\_adjudication\_v1},
-\texttt{s47\_self\_correction\_gain\_v1} \\
-R2 & \texttt{s48\_rotation2d.py}, \texttt{s49\_capacity\_probe.py},
-\texttt{s50\_nonlinear\_capacity.py}, \texttt{s51\_quadratic\_circle.py},
-\texttt{s53\_auto\_basis.py}, \texttt{s55\_sphere\_capacity.py},
-\texttt{s57\_dimension\_stress.py}, \texttt{s58a\_complexity\_trigger.py},
-\texttt{s58d\_kernel\_capacity\_sweep.py} &
-\texttt{s48\_rotation2d\_v1},
-\texttt{s49\_capacity\_probe\_v1}, \texttt{s50\_nonlinear\_capacity\_v1},
-\texttt{s51\_quadratic\_circle\_v1}, \texttt{s53\_auto\_basis\_v1},
-\texttt{s55\_sphere\_capacity\_v1}, \texttt{s57\_dimension\_stress\_v1},
-\texttt{s58a\_complexity\_trigger\_v1},
-\texttt{s58d\_kernel\_capacity\_sweep\_v1} \\
-R3 & \texttt{s52\_dynamic\_memory.py}, \texttt{s53\_auto\_basis.py},
-\texttt{s56\_joint\_self\_evolution.py},
-\texttt{s58c\_multi\_level\_expansion.py},
-\texttt{s65\_ewc\_baseline.py} &
-\texttt{s52\_dynamic\_memory\_v1}, \texttt{s53\_auto\_basis\_v1},
-\texttt{s56\_joint\_self\_evolution\_v1},
-\texttt{s58c\_multi\_level\_expansion\_v1},
-\texttt{s65\_ewc\_baseline\_v1}, \texttt{s65\_tuning\_v1} \\
-R4 & \texttt{s58b\_relative\_sense\_stress.py},
-\texttt{s58f\_margin\_sensitivity.py}, \texttt{s60\_adaptive\_window.py} &
-\texttt{s58b\_relative\_sense\_stress\_v1},
-\texttt{s58b\_trace\_seed4.json} (refit trace),
-\texttt{s58f\_margin\_sensitivity\_v1}, \texttt{s60\_adaptive\_window\_v1} \\
-R5 & \texttt{s52\_dynamic\_memory.py}, \texttt{s54\_memory\_boundaries.py},
-\texttt{s58c\_multi\_level\_expansion.py}, \texttt{s59\_self\_tuned\_gate.py},
-\texttt{s61\_cross\_family\_transfer.py} &
-\texttt{s54\_memory\_boundaries\_v1}, \texttt{s59\_self\_tuned\_gate\_v1},
-\texttt{s61\_cross\_family\_v1} \\
-R6 & \texttt{s58e\_d2\_timescale.py},
-\texttt{s62\_adaptive\_meta\_timescale.py} &
-\texttt{s58e\_d2\_timescale\_v1}, \texttt{s62\_adaptive\_meta\_v1} \\
-R7 & \texttt{s63\_content\_rendering.py} (in the archive) &
-\texttt{s63\_content\_rendering\_v1} (in the archive) \\
-R8 & \texttt{s64\_multi\_source\_validation.py} (in the archive) &
-\texttt{s64\_multi\_source\_validation\_v1} (in the archive) \\
+R1 & \fpath{s39\_prediction\_reward\_test.py},
+\fpath{s40\_meta\_flip\_ablation.py},
+\fpath{s41\_meta\_reward\_self\_tuning.py},
+\fpath{s42\_corrupt\_signal\_test.py},
+\fpath{s43\_hypothesis\_population.py},
+\fpath{s43b\_synthetic\_rotation.py}, \fpath{s44\_regime\_zoo.py},
+\fpath{s45\_population\_r2r3.py}, \fpath{s46\_rule\_adjudication.py},
+\fpath{s47\_self\_correction\_gain.py} (s47 not adopted; see Discussion) &
+\fpath{s39\_prediction\_reward\_v2},
+\fpath{s40\_meta\_flip\_v1}, \fpath{s41\_meta\_reward\_v1},
+\fpath{s42\_corrupt\_signal\_v1}, \fpath{s43\_population\_v1},
+\fpath{s43b\_rotation\_v1},
+\fpath{s44\_regime\_zoo\_v1}, \fpath{s45\_population\_r2r3\_v1},
+\fpath{s46\_rule\_adjudication\_v1},
+\fpath{s47\_self\_correction\_gain\_v1} (not used as evidence) \\
+R2 & \fpath{s48\_rotation2d.py}, \fpath{s49\_capacity\_probe.py},
+\fpath{s50\_nonlinear\_capacity.py}, \fpath{s51\_quadratic\_circle.py},
+\fpath{s53\_auto\_basis.py}, \fpath{s55\_sphere\_capacity.py},
+\fpath{s57\_dimension\_stress.py}, \fpath{s58a\_complexity\_trigger.py},
+\fpath{s58d\_kernel\_capacity\_sweep.py} &
+\fpath{s48\_rotation2d\_v1},
+\fpath{s49\_capacity\_probe\_v1}, \fpath{s50\_nonlinear\_capacity\_v1},
+\fpath{s51\_quadratic\_circle\_v1}, \fpath{s53\_auto\_basis\_v1},
+\fpath{s55\_sphere\_capacity\_v1}, \fpath{s57\_dimension\_stress\_v1},
+\fpath{s58a\_complexity\_trigger\_v1},
+\fpath{s58d\_kernel\_capacity\_sweep\_v1} \\
+R3 & \fpath{s52\_dynamic\_memory.py}, \fpath{s53\_auto\_basis.py},
+\fpath{s56\_joint\_self\_evolution.py},
+\fpath{s58c\_multi\_level\_expansion.py},
+\fpath{s65\_ewc\_baseline.py} &
+\fpath{s52\_dynamic\_memory\_v1}, \fpath{s53\_auto\_basis\_v1},
+\fpath{s56\_joint\_self\_evolution\_v1},
+\fpath{s58c\_multi\_level\_expansion\_v1},
+\fpath{s65\_ewc\_baseline\_v1}, \fpath{s65\_tuning\_v1} \\
+R4 & \fpath{s58b\_relative\_sense\_stress.py},
+\fpath{s58f\_margin\_sensitivity.py}, \fpath{s60\_adaptive\_window.py} &
+\fpath{s58b\_relative\_sense\_stress\_v1},
+\fpath{s58b\_trace\_seed4.json} (refit trace),
+\fpath{s58f\_margin\_sensitivity\_v1}, \fpath{s60\_adaptive\_window\_v1} \\
+R5 & \fpath{s52\_dynamic\_memory.py}, \fpath{s54\_memory\_boundaries.py},
+\fpath{s58c\_multi\_level\_expansion.py}, \fpath{s59\_self\_tuned\_gate.py},
+\fpath{s61\_cross\_family\_transfer.py} &
+\fpath{s54\_memory\_boundaries\_v1}, \fpath{s59\_self\_tuned\_gate\_v1},
+\fpath{s61\_cross\_family\_v1} \\
+R6 & \fpath{s58e\_d2\_timescale.py},
+\fpath{s62\_adaptive\_meta\_timescale.py} &
+\fpath{s58e\_d2\_timescale\_v1}, \fpath{s62\_adaptive\_meta\_v1} \\
+R7 & \fpath{s63\_content\_rendering.py} (in the archive) &
+\fpath{s63\_content\_rendering\_v1} (in the archive) \\
+R8 & \fpath{s64\_multi\_source\_validation.py} (in the archive),
+\fpath{s64b\_weak\_source\_reliability.py} &
+\fpath{s64\_multi\_source\_validation\_v1} (in the archive),
+\fpath{s64b\_weak\_source\_reliability\_v1} \\
 \end{longtable}
 
-The six figure PDFs in \texttt{figures/} are regenerated from those committed
-CSV files by \texttt{scripts/gen\_fig\_self\_evolution.py}; the cross-family
-figure is drawn from \texttt{s61\_cross\_family\_v1}. Every experiment uses ten
-runs whose seed index is recorded per row in the committed CSV
+The six figure PDFs in \texttt{figures/} are regenerated from those archived
+CSV files by \fpath{scripts/gen\_fig\_self\_evolution.py}; the cross-family
+figure is drawn from \fpath{s61\_cross\_family\_v1}. Every experiment uses ten
+runs whose seed index is recorded per row in the archived CSV
 (\texttt{seed\_idx}) and whose constant block (including the substrate
 topology seed where the script uses one) is recorded in the matching JSON
 \texttt{params} object, so the ten seeds can be identified and re-run
@@ -2634,7 +2733,7 @@ individually.
 
 What each JSON does and does not carry is worth stating exactly, because the
 CSVs and the JSONs play different roles and the appendix is the only place the
-distinction is visible. A committed JSON has two keys in the general case:
+distinction is visible. An archived JSON has two keys in the general case:
 \texttt{params}, a flat object of that experiment's run constants (unit count,
 $\tau$ CV, coupling and topology seed, mean degree, the sense's
 window/margin/hold/cooldown constants, the meta's EMA and pipeline constants,
@@ -2644,8 +2743,8 @@ parameter) holding that cell's \texttt{n\_runs} and the mean and population SD
 (the $n$ denominator, as in the conventions of Sec.~\ref{sec:results}) of each reported quantity. Per-seed values are carried by the \emph{CSV}, which
 has one row per run keyed by \texttt{seed\_idx}, not by the JSON. Two
 scripts also write an explicitly keyed per-seed block into their JSON:
-\texttt{s48} (the \texttt{ridge\_probe} per-seed entries, one per seed and
-window) and \texttt{s52} (the per-specialist initialization seeds plus a
+\fpath{s48} (the \texttt{ridge\_probe} per-seed entries, one per seed and
+window) and \fpath{s52} (the per-specialist initialization seeds plus a
 \texttt{stats} block naming the pairing, the CI method and the test used).
 They are listed here so that the asymmetry is not mistaken for a missing file.
 No JSON stores interpreter or package version strings, and no JSON stores a
@@ -2653,10 +2752,10 @@ per-seed table for experiments other than those two, which is why every
 per-seed claim in this paper is traceable to a CSV row rather than to a JSON
 field.
 
-\section{Key committed numbers}
+\section{Key archived numbers}
 \label{app:numbers}
 
-Table~\ref{tab:keynumbers} lists the committed value behind each claim; the
+Table~\ref{tab:keynumbers} lists the archived value behind each claim; the
 last column gives
 the abbreviated stem of the data file pair, which is
 \texttt{<stem>.\{csv,json\}} under \texttt{data/} with the script of the same
@@ -2688,8 +2787,8 @@ script-side arm labels defined in the task and method descriptions above. All
 entries are means over $n=10$ seeds unless a row says
 otherwise, and every $\pm$ that reports seed-level dispersion is the sample SD across those seeds (where a $\pm$ reports the dispersion of a different set of readings, the entry or the sentence giving it says so explicitly).
 
-\begin{longtable}{@{}>{\footnotesize}p{0.17\linewidth}>{\footnotesize}p{0.45\linewidth}>{\footnotesize}p{0.26\linewidth}@{}}
-\caption{Key committed numbers: the committed value behind each
+\begin{longtable}{@{}>{\footnotesize}p{0.17\linewidth}>{\footnotesize\raggedright\arraybackslash}p{0.45\linewidth}>{\footnotesize\raggedright\arraybackslash}p{0.26\linewidth}@{}}
+\caption{Key archived numbers: the archived value behind each
 claim, with the abbreviated stem of its data file pair
 (\texttt{<stem>.\{csv,json\}} under \texttt{data/}, and the script of the same
 stem under \texttt{scripts/}). All entries are means over $n=10$ seeds unless
@@ -2707,30 +2806,31 @@ Result & Numbers & Data file \\
 \endhead
 \bottomrule
 \endlastfoot
-Direction in reward-rate sign & \texttt{probe\_directed} post-swap 0.898/0.939; the same ten runs as the \texttt{passive\_flip} row below, seed by seed; oracle (\texttt{rls\_oracle}, gold per-pulse label) 0.975/1.000 & s39\_prediction\_reward \\
-Flip mechanism & \texttt{passive\_flip} 0.898$\pm$0.013 / 0.939$\pm$0.011 (uncoupled/coupled); detect 10/10 seeds, first flip at block 1039 (latency 39 blocks, SD 0) & s40\_meta\_flip \\
-Meta learns its own policy & envA 0.899/0.940; $v=+0.504$ (post-flip reward-rate contrast); stable stream: no flip, whole-run accuracy bit-identical to no-meta (0.897925/0.938241) & s41\_meta\_reward \\
-Pollution self-deception (D4) & accuracy \emph{inside} the corrupted window 0.106$\pm$0.014 / 0.064$\pm$0.008 (a different experiment from the regime zoo); 3.0 flips vs 1.0 in the control & s42\_corrupt\_signal \\
-Regime zoo (Table~\ref{tab:zoo}) & \textit{rmhl} post 0.058/0.096 (full swap), 0.053/0.123 (near inversion), 0.505 (shift/compression); \textit{flip} 0.942/0.904, 0.947/0.878, 0.485--0.508; \textit{rls} restarted 1.000/0.988 & s44\_regime\_zoo \\
-$\pm1$=label; rule selection & derived rule tests 0.989/0.999 & s46\_rule\_adjudication \\
-L2 (smooth rotation) decodable & held-out supervised ridge probe 0.9307$\pm$0.0254 (early) / 0.9239$\pm$0.0308 (late) coupled; 0.8209/0.8218 uncoupled & s48\_rotation2d \\
-L3 (boundary complexity) probe correction & raw block-mean circle, top-50 PCA ridge probe 0.84$\pm$0.06 (5--95\% 0.76--0.91); parallel (uncoupled) 0.55 & s53\_auto\_basis \\
-Dimension stress & ball 2-D$\to$3-D 0.800$\to$0.630; annulus 0.650$\to$0.600$\to$0.540 & s57\_dimension\_stress \\
-Memory wins revisits & memory (population) 0.888$\pm$0.014 vs 0.838$\pm$0.010; per-segment gains $+4.2$, $+3.6$, $+2.6$ (n.s.) and $+14.9\pm4.1$\,pp (circle revisit, 10/10) & s52\_dynamic\_memory \\
-External baseline (EWC) & EWC penalty on the same RLS readout: whole-run $-0.85\pm0.70$\,pp ($t=-3.87$, 0/10), revisit retention $-0.60\pm2.02$\,pp ($t=-0.94$, n.s.), retention redistributed (circle revisit $+4.95\pm4.28$, linear revisit $-6.15\pm3.72$\,pp). EWC by AdaGrad (as published): $-22.3$\,pp whole-run ($t=-12.03$, 0/10), optimiser-limited & s65\_ewc\_baseline \\
-Composition (R3) & joint 0.769 $\approx$ oracle 0.762; memory 0.758; expansion 0.737 & s56\_joint\_self\_evo \\
-Complexity: no collapse, not saturation & 4-D shell$\to$triple (six quadratic surfaces) rls 0.544$\pm$0.010$\to$0.559$\pm$0.015 (paired $+0.015$, $t=2.98$, 7/10) & s58a\_complexity \\
-Sense reliability cliff & 0.90$\to$0.27$\to$0.00 (counts 18/20, 6/20, 0/20 correct; 0/20, 2/20, 0/20 false); SEG=250 2-regime vs 3-regime: 6/20 vs 10/20 correct & s58b\_relative\_sense \\
-Multi-level + divergence & stage-1 10/10 (always in a circle segment); stage-2 5/10 (circle revisit, blocks 2219--2379); no ring expansion, but ladder capped at level 2; ring unrepaired 0.565/0.584; 0.801 vs 0.504; weight norm $\sim$2800 & s58c\_multi\_level \\
-Rich-kernel margin & $\kappa$ peak 0.1185 ($\kappa{=}20$) vs 0.0995 (deployed $\kappa{=}25$); $\kappa{\ge}30$: $\sim$0; $N\uparrow$: 0.034$\to$0.107 & s58d\_kernel\_cap \\
-D2 transition band & post 0.486$\to$0.791$\to$0.850$\to$0.909$\to$0.938 at ratio 0.25/1.25/1.5/1.75/2 (coupled); success rate 1.0; five interior points bridge the band & s58e\_d2\_timescale \\
-Margin cannot fix cliff & reliability 0.900$\to$0.100 (SEG=500); noise 0.129 vs signal 0.188 & s58f\_margin\_sens \\
-Self-tuned gate (R5) & $v_{\mathrm{snap}}$ $0.252\pm0.067$ dynamic vs $0.922\pm0.056$ static; accuracy learned/fixed $0.876/0.885$ dynamic, $0.955/0.954$ static & s59\_self\_tuned\_gate \\
-Window cannot fix cliff (R4) & SEG=250 reliability 0.270 unchanged; SEG=500 0.900$\to$0.475 with both arms pooled (memory arm alone 0.500); best-window delta (max single-refit probe change) 0.198$\pm$0.058 vs 0.174$\pm$0.050, window candidates \{100,240\} & s60\_adaptive\_window \\
-Cross-family (R5) & ring segment $+8.9\pm2.5$\,pp (parallel/uncoupled, 10/10 seeds) but $+1.4\pm1.8$\,pp (coupled, 5/10); frozen-hypothesis accuracy on the ring segment 0.576; selection share of the ring segment 63.9\% (9.4--92.2\% per seed) & s61\_cross\_family \\
-Adaptive $\tau_2$ (R6) & whole-run mean $+15.0$\,pp at ratio 2 (coupled random-graph substrate, adaptive vs fixed $\tau_2$; $+13.8$\,pp uncoupled) while the post-swap window is unchanged (0.938 vs 0.938); ratio $\le$1 post 0.486--0.561 & s62\_adaptive\_meta \\
-Content--rendering (s63) & single 0.938 $\to$ mixed 0.900 (rls); memory 0.913; quad 0.889; meta $n_{\mathrm{flips}}{=}0$; probe 0.9493$\pm$0.0145 $\to$ 0.9003$\pm$0.0250 (paired drop 0.049$\pm$0.018, $t=8.38$, 10/10 seeds, all below the 0.10 trigger margin, so it registers without triggering); paired $t$ at \texttt{switch\_every}$=200$: mixed vs single $-18.2$, quad vs mixed $-4.7$, memory vs mixed $+9.3$ & s63\_content\_rendering \\
-Multi-source (s64) & minority-good vote 0.684 vs validation 1.000 (t=100.5, 10/10); drifting 0.681$\to$0.991 (selection fraction 1.0); all-bad $\sim$0.49, 242 switches & s64\_multi\_source \\
+Direction in reward-rate sign & \texttt{probe\_directed} post-swap 0.898/0.939; the same ten runs as the \texttt{passive\_flip} row below, seed by seed; oracle (\texttt{rls\_oracle}, gold per-pulse label) 0.975/1.000 & \fpath{s39\_prediction\_reward} \\
+Flip mechanism & \texttt{passive\_flip} 0.898$\pm$0.013 / 0.939$\pm$0.011 (uncoupled/coupled); detect 10/10 seeds, first flip at block 1039 (latency 39 blocks, SD 0) & \fpath{s40\_meta\_flip} \\
+Meta learns its own policy & envA 0.899/0.940; $v=+0.504$ (post-flip reward-rate contrast); stable stream: no flip, whole-run accuracy bit-identical to no-meta (0.897925/0.938241) & \fpath{s41\_meta\_reward} \\
+Pollution self-deception (D4) & accuracy \emph{inside} the corrupted window 0.106$\pm$0.014 / 0.064$\pm$0.008 (a different experiment from the regime zoo); 3.0 flips vs 1.0 in the control & \fpath{s42\_corrupt\_signal} \\
+Regime zoo (Table~\ref{tab:zoo}) & \textit{rmhl} post 0.058/0.096 (full swap), 0.053/0.123 (near inversion), 0.505 (shift/compression); \textit{flip} 0.942/0.904, 0.947/0.878, 0.485 post / 0.508 steady (shift/compression); \textit{rls} restarted 1.000/0.988 & \fpath{s44\_regime\_zoo} \\
+$\pm1$=label; rule selection & derived rule tests 0.989/0.999 (full-swap regime rows of a four-regime $\times$ 10-seed CSV) & \fpath{s46\_rule\_adjudication} \\
+L2 (smooth rotation) decodable & held-out supervised ridge probe 0.9307$\pm$0.0254 (early) / 0.9239$\pm$0.0308 (late) coupled; 0.8209/0.8218 uncoupled & \fpath{s48\_rotation2d} \\
+L3 (boundary complexity) probe correction & raw block-mean circle, top-50 PCA ridge probe 0.84$\pm$0.06 (5--95\% 0.76--0.91); parallel (uncoupled) 0.55 & \fpath{s53\_auto\_basis} \\
+Dimension stress & ball 2-D$\to$3-D 0.800$\to$0.630; annulus 0.650$\to$0.600$\to$0.540 & \fpath{s57\_dimension\_stress} \\
+Memory wins revisits & memory (population) 0.888$\pm$0.014 vs 0.838$\pm$0.010; per-segment gains $+4.2$, $+3.6$, $+2.6$ (n.s.) and $+14.9\pm4.1$\,pp (circle revisit, 10/10) & \fpath{s52\_dynamic\_memory} \\
+External baseline (EWC) & EWC penalty on the same RLS readout: whole-run $-0.85\pm0.70$\,pp ($t=-3.87$, 0/10), revisit retention $-0.60\pm2.02$\,pp ($t=-0.94$, n.s.), retention redistributed (circle revisit $+4.95\pm4.28$, linear revisit $-6.15\pm3.72$\,pp). EWC by AdaGrad (as published): $-22.3$\,pp whole-run ($t=-12.03$, 0/10), optimiser-limited & \fpath{s65\_ewc\_baseline} \\
+Composition (R3) & joint 0.769 $\approx$ oracle 0.762; memory 0.758; expansion 0.737 & \fpath{s56\_joint\_self\_evo} \\
+Complexity: no collapse, not saturation & 4-D shell$\to$triple (six quadratic surfaces) rls 0.544$\pm$0.010$\to$0.559$\pm$0.015 (paired $+0.015$, $t=2.98$, 7/10) & \fpath{s58a\_complexity} \\
+Sense reliability cliff & 0.90$\to$0.27$\to$0.00 (counts 18/20, 6/20, 0/20 correct; 0/20, 2/20, 0/20 false); SEG=250 2-regime vs 3-regime: 6/20 vs 10/20 correct & \fpath{s58b\_relative\_sense} \\
+Multi-level + divergence & stage-1 10/10 (always in a circle segment); stage-2 5/10 (circle revisit, blocks 2219--2379); no ring expansion, but ladder capped at level 2; ring unrepaired 0.565/0.584; 0.801 vs 0.504; weight norm $\sim$2800 & \fpath{s58c\_multi\_level} \\
+Rich-kernel margin & $\kappa$ peak 0.1185 ($\kappa{=}20$) vs 0.0995 (deployed $\kappa{=}25$); $\kappa{\ge}30$: $\sim$0; $N\uparrow$: 0.034$\to$0.107 & \fpath{s58d\_kernel\_cap} \\
+D2 transition band & post 0.486$\to$0.791$\to$0.850$\to$0.909$\to$0.938 at ratio 0.25/1.25/1.5/1.75/2 (coupled); success rate 1.0; five interior points bridge the band & \fpath{s58e\_d2\_timescale} \\
+Margin cannot fix cliff & reliability 0.900$\to$0.100 (SEG=500); noise 0.129 vs signal 0.188 & \fpath{s58f\_margin\_sens} \\
+Self-tuned gate (R5) & $v_{\mathrm{snap}}$ $0.252\pm0.067$ dynamic vs $0.922\pm0.056$ static; accuracy learned/fixed $0.876/0.885$ dynamic, $0.955/0.954$ static & \fpath{s59\_self\_tuned\_gate} \\
+Window cannot fix cliff (R4) & SEG=250 reliability 0.270 unchanged; SEG=500 0.900$\to$0.475 with both arms pooled (memory arm alone 0.500); best-window delta (max single-refit probe change) 0.198$\pm$0.058 vs 0.174$\pm$0.050, window candidates \{100,240\} & \fpath{s60\_adaptive\_window} \\
+Cross-family (R5) & ring segment $+8.9\pm2.5$\,pp (parallel/uncoupled, 10/10 seeds) but $+1.4\pm1.8$\,pp (coupled, 5/10); frozen-hypothesis accuracy on the ring segment 0.576; selection share of the ring segment 63.9\% (9.4--92.2\% per seed) & \fpath{s61\_cross\_family} \\
+Adaptive $\tau_2$ (R6) & whole-run mean $+15.0$\,pp at ratio 2 (coupled random-graph substrate, adaptive vs fixed $\tau_2$; $+13.8$\,pp uncoupled) while the post-swap window is unchanged (0.938 vs 0.938); ratio $\le$1 post 0.486--0.561 & \fpath{s62\_adaptive\_meta} \\
+Content--rendering (s63) & single 0.938 $\to$ mixed 0.900 (rls); memory 0.913; quad 0.889; meta $n_{\mathrm{flips}}{=}0$; probe 0.9493$\pm$0.0145 $\to$ 0.9003$\pm$0.0250 (paired drop 0.049$\pm$0.018, $t=8.38$, 10/10 seeds, all below the 0.10 trigger margin, so it registers without triggering); paired $t$ at \texttt{switch\_every}$=200$: mixed vs single $-18.2$, quad vs mixed $-4.7$, memory vs mixed $+9.3$ & \fpath{s63\_content\_rendering} \\
+Multi-source (s64) & minority-good vote 0.684 vs validation 1.000 (t=100.5, ema vs vote, 10/10; worker-level replication t=61.4); drifting 0.681$\to$0.991 (selection fraction 0.991); all-bad $\sim$0.49, 242 switches & \fpath{s64\_multi\_source} \\
+Intermediate sources (s64b, p=0.70) & minority-weak: validation selection beats majority +0.128 (10/10; worker level +0.159, 10/10); all-weak: selection 0.694 vs vote 0.836 (0/10) — validation pays only when a reliability ordering exists; good-source selection fraction 0.699 & \fpath{s64b\_weak\_source\_reliability} \\
 \end{longtable}
 
 \begin{thebibliography}{31}

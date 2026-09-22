@@ -1,9 +1,10 @@
 % ============================================================================
-% Paper F — Calibrated online readout and sparse selectivity on an SSM host
-%   Companion to Paper D (REDEM-SSM diagnostics).
-% Target: Neurocomputing / TMLR (mechanism + methodology; honest negatives).
-% Compile: pdflatex PAPER_F.tex (twice for cross-refs).
-% Numbers: data/s50_*, s51_*, s52_* (10 seeds, s18/s19 paired protocol).
+% Paper F — Learning the Readout Form
+%   Objective-level calibration, sparse selectivity, and expert routing
+%   on a diagonal state-space host
+% ============================================================================
+% Target: Neurocomputing (Elsevier), elsarticle.
+% Compile: pdflatex PAPER_F.tex (run twice for cross-refs).
 % ============================================================================
 \documentclass[preprint,12pt]{elsarticle}
 
@@ -38,13 +39,18 @@ On the same diagonal SSM host and paired stream protocol as Paper~D, a
 squared-loss RLS readout
 evaluated with a clip floor parks $1.6$--$10.2\%$ of tokens on a
 fixed floor; several stream comparisons become floor-sensitive.
+This paper's novelty is the \emph{learnable evaluation instrument}
+--- it learns the readout form and the objective, not a re-report of
+Paper~D's host diagnostics.
 Replacing the evaluation---not the numeric range---with a
 trained softmax readout removes the floor and
 lowers stream cross-entropy by $0.307$~nats/token (perplexity
 $11.75\to8.65$, $10/10$ seeds), at a retention cost of $+0.32$
-same-token-set ppl ($1/10$). A post-hoc simplex projection that
+same-token-set ppl (worse on $9$ of $10$ seeds). A post-hoc simplex
+projection that
 removes all negatives does \emph{not} repair the metric
-(stream $\Delta$ppl $+0.03$, $0/10$): the artifact lives in the
+(stream $\Delta$ppl $+0.03$, worse on $10$ of $10$ seeds): the artifact
+lives in the
 objective, not the range. Under the clean metric the ungated full
 state remains stream-neutral and retention-harmful; a $128$-dimensional
 noise control rules out dimension/optimizer imbalance, while a
@@ -57,7 +63,9 @@ it on stream, $6.99$, at $11.57$ retention). Soft routing over two online
 softmax experts reduces forgetting further ($9.20\to7.79$,
 $10/10$) at stream parity; a hard-routing ablation is slightly better
 on retention ($6.94$) at a small stream tax. The full stack beats the calibrated
-input-path baseline on both axes. We state a design rule---the
+input-path baseline on both axes. An external selective-SSM check is
+not parameter-matched and licenses only a scoped comparison. We state a
+design rule---the
 evaluation instrument must be part of the learned system---and the
 boundary where it stops paying: candidate-family breadth remains
 human-supplied. All results are CPU-scale; we make no scaling or
@@ -111,7 +119,7 @@ removes the clip floor and lowers stream CE by $0.307$~nats/token
 (ppl $-26\%$), with an honest retention cost in the same sentence.
 \item \textbf{C2 (post-hoc control).} Projecting the same RLS solution
 onto the probability simplex after the fact eliminates all negatives
-and does \emph{not} improve stream ppl ($0/10$). Range fixes are
+and does \emph{not} improve stream ppl ($0$ of $10$ seeds better). Range fixes are
 decoration.
 \item \textbf{C3 (boundary under a clean metric).} The ungated full
 state is stream-neutral and retention-harmful; dimension and optimizer
@@ -139,8 +147,11 @@ absent once a calibrated CE objective is available.
 Proposition~1 of Paper~D is not ``beaten''; our gains come from
 recalibrating the input path and from sparse gating, not from
 inverting a linear deconvolution. We do not claim SOTA against
-Mamba/TTT/DeltaNet, scaling, or multi-step RL. All results are
-CPU-scale ($N=128$) on a two-domain biased-bigram stream.
+Mamba/TTT/DeltaNet, scaling, or multi-step RL. All \emph{primary}
+results are CPU-scale ($N=128$) on a two-domain biased-bigram stream;
+the exceptions are stated where they appear (the width sweep at
+$N\in\{128,256,512\}$, the follow-up $k$-sweep at $N=512$, and the
+Mackey--Glass transfer task).
 
 \section{Related work}
 \label{sec:related}
@@ -274,14 +285,25 @@ metrics, $10/10$). Forgetting is the held-out previous-domain
 perplexity of the final readout (domain-matched specialist when
 routing). Head-to-head statements use same-token-set CE where
 relevant. We report means over seeds and sign counts; we do not merge
-\texttt{clip\_frac} with \texttt{floor\_frac}.
+\texttt{clip\_frac} with \texttt{floor\_frac}. Sign-count convention:
+a count $(k/10)$ attached to a comparison names the number of seeds on
+which the \emph{first-named} arm wins on the axis under discussion
+(the direction the sentence claims), so a cost such as "$+0.32$ ($9$
+of $10$ seeds worse)" counts seeds paying the cost; every such count is
+computable from the archived per-seed CSVs. These comparisons are
+exploratory in the multiplicity sense: per-claim paired tests and sign
+counts at $10$ seeds with no family-wise or false-discovery-rate
+correction across the paper's comparisons.
 
 \subsection{C1--C2: readout form}
+Table~\ref{tab:c1c2} gives the readout-form comparison.
 \begin{table}[h]
 \centering
 \caption{Readout form (10-seed means). Post-hoc simplex removes
 negatives ($\texttt{neg\_frac}\to0$) but does not repair stream ppl
-(C2). Trained softmax does (C1), with a small retention cost.}
+(C2). Trained softmax does (C1), with a small retention cost.
+$^\dagger$: the softmax floor fraction is $0$ by construction (the
+output map is strictly positive), not an empirical measurement.}
 \label{tab:c1c2}
 \begin{tabular}{lcccc}
 \toprule
@@ -299,10 +321,10 @@ Skip-softmax-sgd & 8.629 & 57.711 & 0 & 0$^\dagger$ \\
 
 Same-token-set stream: B-softmax vs B-lin-clip $\Delta$CE $=-0.307$
 ($10/10$; paired $t=-92.3$ from an offline seed-level reduction of the
-committed per-token CE arrays, not a separate script);
+archived per-token CE arrays, not a separate script);
 B-simplex vs B-lin-clip $\Delta$ppl $=+0.03$
-($0/10$). Retention price of C1: same-set $\Delta$ppl $+0.32$
-($1/10$). The range-fix story is visualized in
+($0$ of $10$ seeds better). Retention price of C1: same-set $\Delta$ppl $+0.32$
+($9$ of $10$ seeds worse). The range-fix story is visualized in
 Figure~\ref{fig:floor}: the post-hoc simplex relocates the clipped
 negative mass to the floor, while the trained softmax removes it by
 construction.
@@ -320,6 +342,8 @@ either by construction (C1).}
 \end{figure}
 
 \subsection{C3: state under a clean metric}
+Table~\ref{tab:c3} isolates dimension and optimizer controls under the
+softmax objective.
 \begin{table}[h]
 \centering
 \caption{Dimension/optimizer controls under softmax (10-seed means).}
@@ -343,10 +367,14 @@ stream-positive vs B-softmax ($\Delta$CE $+0.061$, $9/10$) with mild
 retention cost.
 
 \subsection{C4/C4b: learned selectivity and sparsity}
+Table~\ref{tab:c4} compares gate variants.
 \begin{table}[h]
 \centering
 \caption{Gates under CE (10-seed means). Unconstrained Gate-C is the
-best non-sparse stream arm but fails retention; top-$k$ fixes both.}
+best non-sparse stream arm but fails retention; top-$k$ fixes both.
+The med column is the across-seed median of each arm's per-seed
+holdout perplexity (not the mean of the \texttt{forgetting\_ppl\_med}
+CSV column, which is a per-seed within-run median).}
 \label{tab:c4}
 \begin{tabular}{lccc}
 \toprule
@@ -375,9 +403,12 @@ therefore reported for completeness and not selected, and every
 that keep retention near baseline.
 
 \subsection{C5: expert routing}
+Table~\ref{tab:c5} routes on the Gate-C-topk base.
 \begin{table}[h]
 \centering
-\caption{Routing on the Gate-C-topk base, $\tau_m=500$ (10-seed means).}
+\caption{Routing on the Gate-C-topk base, $\tau_m=500$ (10-seed means;
+med as in Table~\ref{tab:c4}: across-seed median of per-seed holdout
+ppl).}
 \label{tab:c5}
 \begin{tabular}{lccc}
 \toprule
@@ -460,7 +491,7 @@ not only a scorer of human-supplied ones.
 
 \paragraph{External baseline (s66) and the frozen-host surprise.}
 {\sloppy
-All s66 numbers cited below are $10$-seed means over the committed rows
+All s66 numbers cited below are $10$-seed means over the archived rows
 of \url{data/s66_external_ssm_baseline_v1.json} (single
 configuration: $N{=}128$ diagonal selective-SSM host on the char-level
 biased-bigram stream; \texttt{stream\_ppl} is the stream perplexity and
@@ -480,18 +511,43 @@ ordering --- random frozen selectivity $>$ jointly trained host ---
 points to a pretrained-versus-random-host comparison, not to a claim
 that selective SSMs are inferior in general. We therefore treat s66
 as a scoped external check that licenses only the selective-SSM
-parameterisation at this protocol scale.
+parameterisation at this protocol scale. A follow-up host-policy
+experiment (\texttt{s67\_host\_freeze}, same host, stream, seeds;
+three host modes $\times$ two gate modes, $10$ seeds) turns that
+observation into a controlled comparison with pre-registered
+questions: the \emph{pretrained} selective host is not better than
+the random-frozen one (stream $9.58$ vs.\ $9.03$; forget $84.71$
+vs.\ $10.38$ --- pretraining destabilises retention under this
+online protocol), the jointly trained host remains worst on
+retention ($115.24$), and adding our learned top-$k$ gate on top of
+either frozen host recovers stream to near-F levels
+($7.38$ random / $7.18$ pretrained vs.\ our $7.03$) without reaching
+its retention ($11.94$/$14.98$ vs.\ $9.20$). The s66 ordering is thus
+a host-\emph{policy} effect --- for this parameterisation, keeping
+the host frozen at a random init and training only the readout (and a
+sparse gate) is the strongest external configuration --- not a
+statement about selective SSMs as a family. The full mode-by-mode
+table is in the repository (\texttt{data/s67\_host\_freeze\_v1}).
 }
 
 \paragraph{Limitations.}
 Two-domain biased-bigram stream; primary tables at $N=128$; one host
-configuration. A Mamba-style selective-SSM baseline
-(\texttt{s66}) has now been run on the same host, stream, seeds and
+configuration. Channel utilization under top-$k$ was measured over the
+same runs (the \texttt{s51} channel-utilization pass, bit-identical
+metrics to the archived tables): selection is \emph{not} confined to
+a fixed 32-channel subset --- the chosen set rotates over the stream,
+so every one of the $k/N=25\%$ openings is real capacity use --- but
+it is concentrated: on average $29.2$ of the $128$ state channels are
+never selected (per-seed range $21$--$41$) and the per-channel
+selection share has Gini $0.59$ ($0.55$--$0.63$ across seeds). A
+soft-to-hard annealing and a utilization-vs-$k$ curve are left to
+future work. A Mamba-style selective-SSM baseline
+(\texttt{s66}) is run on the same host, stream, seeds and
 metric: the frozen-host external arm reaches stream ppl
 (\texttt{stream\_ppl} mean) $9.03$ and the
 jointly trained host arm is worse on both axes ($10.19$ stream at the
 matched learning rate; retention collapses; a $4\times$ larger host
-learning rate makes joint training diverge, so the committed
+learning rate makes joint training diverge, so the archived
 \texttt{s66} rows pool both rates under one arm name), while F's
 learned top-$k$ gate remains best
 ($7.03$, $10/10$ paired seeds vs.\ the frozen external arm). The two
@@ -509,27 +565,26 @@ not claim one: the margin over the frozen arm is a positive result
 against a random selective-SSM feature map at this scale, not against
 a trained modern SSM. Against F's ungated \texttt{B-softmax-sgd}
 anchor ($4{,}128$ trained) the external arm carries $2.0\times$ the
-trained parameters and still loses on both axes. This closes the
-earlier
-``no external modern-SSM baseline'' gap for the
+trained parameters and still loses on both axes. This fills the
+external-baseline gap for the
 \emph{selective-SSM} family only --- one host configuration, one
 protocol family, $N=128$, $10$ seeds, CPU scale; it is not a
 state-of-the-art comparison and does not cover DeltaNet, gated linear
 attention, or TTT (the TTT fast-weight arm scored worse than the
-uniform predictor at this protocol scale and was removed as
-non-viable). A width sweep
-($N\in\{128,256,512\}$, 5 seeds) with $k=\max(8,N/4)$ showed the
+uniform predictor at this protocol scale and is therefore not
+comparable here). A width sweep
+($N\in\{128,256,512\}$, 5 seeds; preliminary at this sample size) with $k=\max(8,N/4)$ showed the
 calibrated input-path baseline improving with $N$ (stream
 $8.63\to7.25$) while sparse-gate and soft-routing arms failed at
 $N=512$ (Gate-C-topk stream $9.16$, forget $27.3$). A follow-up
-$k$-sweep at $N=512$ (3 seeds) shows this is a \emph{sparsity}
+$k$-sweep at $N=512$ (3 seeds; preliminary at this sample size) shows this is a \emph{sparsity}
 failure, not a width impossibility: $k\in\{16,32\}$ restores the
 ordering (Gate-C-topk $k=32$: stream $6.79$, forget $9.89$; Soft-topk
 $k=16$: stream $6.59$, forget $6.27$) and beats the $N=512$
 input-path baseline ($7.25$/$11.09$), whereas $k=128$ reproduces the
 collapse. Claims should therefore be read as requiring a
 \emph{fixed} modest $k$ (or a tuned $k(N)$), not $k\propto N$. A
-Mackey-Glass bin-prediction task (5 seeds) supports transfer of the
+Mackey-Glass bin-prediction task (5 seeds; preliminary) supports transfer of the
 sparse-gate advantage off the bigram stream (train/holdout ppl
 $\approx20$/$16$ vs $30$/$29$ for the input-path baseline).
 Softmax $\texttt{floor\_frac}=0$ is structural. These remain
@@ -552,18 +607,25 @@ autonomy claim.
 \section*{Code and data availability}
 {\sloppy\emergencystretch=2em
 All simulation scripts and generated data reported here are openly
-available at \url{https://github.com/huyamingc/REDEM}.\par}
+available at \url{https://github.com/huyamingc/REDEM} (MIT license;
+\texttt{requirements-lock.txt} pins the package versions used for the
+archived runs).\par}
 The experiment scripts cited in this paper are CSVs and scripts under
 \texttt{data/} and \texttt{scripts/} (paired to
 Paper~D \texttt{s19}/\texttt{s20}):
 \begin{itemize}
 \item \texttt{s50\_paper\_f\_pilot\_nl\_readout} (C1--C3);
-\item \texttt{s51\_paper\_f\_learned\_gate} (C4/C4b);
+\item \texttt{s51\_paper\_f\_learned\_gate} (C4/C4b; also records
+per-channel top-$k$ selection histograms --- the channel-utilization
+evidence in Limitations);
 \item \texttt{s52\_paper\_f\_soft\_route\_experts} (C5);
 \item \texttt{s53\_paper\_f\_scaling} (width sweep);
 \item \texttt{s53b\_paper\_f\_ksweep} ($k$-sweep at $N=512$);
 \item \texttt{s54\_paper\_f\_mackey\_glass} (Mackey--Glass transfer);
-\item \texttt{s66\_external\_ssm\_baseline} (selective-SSM baseline).
+\item \texttt{s66\_external\_ssm\_baseline} (selective-SSM baseline);
+\item \texttt{s67\_host\_freeze} (host-policy comparison quoted in
+Discussion: random / pretrained / online host $\times$ gate modes);
+\item \texttt{s66\_report} (read-only audit helper for the s66 table).
 \end{itemize}
 
 \section*{CRediT authorship contribution statement}

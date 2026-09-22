@@ -109,7 +109,7 @@
           "arm": "ewc_sgd",
           "lr": 3.0,
           "n": 3,
-          "mean_acc_all": 0.5324104084486989
+          "mean_acc_all": 0.532410408448699
         }
       ],
       "lambda_grid_results": [
@@ -203,7 +203,7 @@
       "retention_seg3_seg4_mean": 0.65425,
       "retention_seg3_seg4_std": 0.060114993969890736,
       "seg1_acc_mean": 0.6965,
-      "seg1_acc_std": 0.10457174570599845,
+      "seg1_acc_std": 0.10457174570599843,
       "seg2_acc_mean": 0.46849999999999997,
       "seg2_acc_std": 0.07335018745715649,
       "seg3_acc_mean": 0.7405,
@@ -214,18 +214,18 @@
     {
       "readout": "rls_ewc",
       "n_runs": 10,
-      "mean_acc_all_mean": 0.8291052988618375,
-      "mean_acc_all_std": 0.012741908990272971,
+      "mean_acc_all_mean": 0.8291052988618377,
+      "mean_acc_all_std": 0.012741908990272973,
       "retention_seg3_seg4_mean": 0.8065000000000001,
       "retention_seg3_seg4_std": 0.013928388277184105,
       "seg1_acc_mean": 0.9515,
-      "seg1_acc_std": 0.04868521336093741,
+      "seg1_acc_std": 0.04868521336093742,
       "seg2_acc_mean": 0.8300000000000001,
       "seg2_acc_std": 0.03413209633175201,
       "seg3_acc_mean": 0.826,
       "seg3_acc_std": 0.03254228019054595,
-      "seg4_acc_mean": 0.787,
-      "seg4_acc_std": 0.02100000000000002
+      "seg4_acc_mean": 0.7870000000000001,
+      "seg4_acc_std": 0.021000000000000015
     },
     {
       "readout": "rls_single",
@@ -241,21 +241,21 @@
       "seg3_acc_mean": 0.8875,
       "seg3_acc_std": 0.028917987481842503,
       "seg4_acc_mean": 0.7374999999999999,
-      "seg4_acc_std": 0.04007804885470353
+      "seg4_acc_std": 0.040078048854703535
     },
     {
       "readout": "sgd_plain",
       "n_runs": 10,
-      "mean_acc_all_mean": 0.614717720660285,
-      "mean_acc_all_std": 0.05446162072098513,
+      "mean_acc_all_mean": 0.6147177206602848,
+      "mean_acc_all_std": 0.054461620720985135,
       "retention_seg3_seg4_mean": 0.65425,
       "retention_seg3_seg4_std": 0.060114993969890736,
       "seg1_acc_mean": 0.6965,
-      "seg1_acc_std": 0.10457174570599845,
+      "seg1_acc_std": 0.10457174570599843,
       "seg2_acc_mean": 0.46849999999999997,
       "seg2_acc_std": 0.07335018745715649,
-      "seg3_acc_mean": 0.7404999999999999,
-      "seg3_acc_std": 0.11301437961604711,
+      "seg3_acc_mean": 0.7405,
+      "seg3_acc_std": 0.1130143796160471,
       "seg4_acc_mean": 0.568,
       "seg4_acc_std": 0.06885491994040803
     }
@@ -487,42 +487,7 @@
         "seg3_acc": 0.0,
         "seg4_acc": 0.0
       },
-      "2": {
-        "mean_acc_all": 0.0,
-        "seg1_acc": 0.0,
-        "seg2_acc": 0.0,
-        "seg3_acc": 0.0,
-        "seg4_acc": 0.0
-      },
-      "5": {
-        "mean_acc_all": 0.0,
-        "seg1_acc": 0.0,
-        "seg2_acc": 0.0,
-        "seg3_acc": 0.0,
-        "seg4_acc": 0.0
-      },
-      "3": {
-        "mean_acc_all": 0.0,
-        "seg1_acc": 0.0,
-        "seg2_acc": 0.0,
-        "seg3_acc": 0.0,
-        "seg4_acc": 0.0
-      },
-      "7": {
-        "mean_acc_all": 0.0,
-        "seg1_acc": 0.0,
-        "seg2_acc": 0.0,
-        "seg3_acc": 0.0,
-        "seg4_acc": 0.0
-      },
       "4": {
-        "mean_acc_all": 0.0,
-        "seg1_acc": 0.0,
-        "seg2_acc": 0.0,
-        "seg3_acc": 0.0,
-        "seg4_acc": 0.0
-      },
-      "6": {
         "mean_acc_all": 0.0,
         "seg1_acc": 0.0,
         "seg2_acc": 0.0,
@@ -536,7 +501,35 @@
         "seg3_acc": 0.0,
         "seg4_acc": 0.0
       },
-      "9": {
+      "3": {
+        "mean_acc_all": 0.0,
+        "seg1_acc": 0.0,
+        "seg2_acc": 0.0,
+        "seg3_acc": 0.0,
+        "seg4_acc": 0.0
+      },
+      "2": {
+        "mean_acc_all": 0.0,
+        "seg1_acc": 0.0,
+        "seg2_acc": 0.0,
+        "seg3_acc": 0.0,
+        "seg4_acc": 0.0
+      },
+      "6": {
+        "mean_acc_all": 0.0,
+        "seg1_acc": 0.0,
+        "seg2_acc": 0.0,
+        "seg3_acc": 0.0,
+        "seg4_acc": 0.0
+      },
+      "7": {
+        "mean_acc_all": 0.0,
+        "seg1_acc": 0.0,
+        "seg2_acc": 0.0,
+        "seg3_acc": 0.0,
+        "seg4_acc": 0.0
+      },
+      "5": {
         "mean_acc_all": 0.0,
         "seg1_acc": 0.0,
         "seg2_acc": 0.0,
@@ -544,6 +537,13 @@
         "seg4_acc": 0.0
       },
       "8": {
+        "mean_acc_all": 0.0,
+        "seg1_acc": 0.0,
+        "seg2_acc": 0.0,
+        "seg3_acc": 0.0,
+        "seg4_acc": 0.0
+      },
+      "9": {
         "mean_acc_all": 0.0,
         "seg1_acc": 0.0,
         "seg2_acc": 0.0,

@@ -69,8 +69,8 @@ Grepped every `*.py` under `scripts/` for `N_UNITS`, `N_DEV`, `n_units`, `N=`, `
 
 | Document | Anchor | Verbatim |
 |---|---|---|
-| `paper_f/PAPER_F_PLAN.md` | line 160 | `Evidence gaps (declare, no exceptions): two-domain biased-bigram; N=128 CPU; no Mamba/TTT baseline;` |
-| `paper_f/PAPER_F_PLAN.md` | line 189 | `\| M4 \| scale (s53 N=128/256/512, 5 seeds) \| **done** — C1 scales; C4b/C5 fail to hold at N=512 \|` |
+| `paper_f/PAPER_F_PLAN.md` (removed 2026-09-17; git history) | was line 160 | `Evidence gaps (declare, no exceptions): two-domain biased-bigram; N=128 CPU; no Mamba/TTT baseline;` |
+| `paper_f/PAPER_F_PLAN.md` (removed 2026-09-17; git history) | was line 189 | `\| M4 \| scale (s53 N=128/256/512, 5 seeds) \| **done** — C1 scales; C4b/C5 fail to hold at N=512 \|` |
 | `paper_f/PAPER_F_sketch.md` | line 83 | `\| Host \| N=128, log-uniform τ∈[1,3000], whitened (s19 CV) \|` |
 | `paper_f/PAPER_F_sketch.md` | lines 168-169 | `- Primary tables at N=128. **s53 + s53b:** with k=max(8,N/4), C4b/C5 fail at N=512` |
 | `paper_d/README.md` | line 155 | `…Real-text transfer: Alice vs. Dickens, 32-symbol char vocab (3 arms, 10 seeds)…` |
@@ -481,7 +481,7 @@ Ranked by number of pulses / tokens / steps in **one run** (max recorded `t_tota
 2. **Wall-clock (`elapsed_s`) is recorded for only 6 Paper F scripts.** For the other ~55
    result CSVs there is no wall-clock field at all; Σ`runtime_s` is the only quantitative
    proxy, and it is serial CPU time, not wall clock.
-3. **`--quick` runs are documented inconsistently.** `paper_f/PAPER_F_PLAN.md:172-173` claims
+3. **`--quick` runs are documented inconsistently.** `paper_f/PAPER_F_PLAN.md` (removed 2026-09-17; git history), lines 172-173, claims
    `data/s50_paper_f_pilot_nl_readout_v1.csv | 80 rows` (matches) but
    `data/s51_paper_f_learned_gate_v1.csv | 60 rows` — the actual file has **80 rows** (8 arms ×
    10 seeds), so the plan's row count is wrong.

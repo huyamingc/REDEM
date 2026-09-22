@@ -1,0 +1,437 @@
+{
+  "params": {
+    "n_units": 256,
+    "cv_tau": 0.2,
+    "alpha0": 0.02,
+    "gamma": 4.605170185988092,
+    "tau0": 0.00017361743662152847,
+    "topo_seed": 777,
+    "avg_degree": 8,
+    "kappa_random": 25.0,
+    "theta_star": 0.6,
+    "rls_forgetting": 0.99,
+    "rls_init_cov": 1.0,
+    "m_sources": 5,
+    "noise_flip_p": 0.5,
+    "weak_flip_p": 0.3,
+    "good_reliability_scan": {
+      "note": "intermediate-reliability cells (dedup P1-48): all_weak / majority_weak / minority_weak are the p=0.70 analogues of all_good / majority_good / minority_good",
+      "reliability_grid": [
+        0.7,
+        0.5
+      ],
+      "cells": [
+        "all_weak",
+        "majority_weak",
+        "minority_weak"
+      ]
+    },
+    "sample_budget": {
+      "n_blocks": 2000,
+      "note": "within-run sample-complexity proxy is already recorded per run as acc_first / acc_mid / acc_last (block windows 0-400 / 800-1200 / 1600-2000)"
+    },
+    "drift_block": 1000,
+    "probe_ema_alpha": 0.02,
+    "n_blocks": 2000,
+    "k_pulses": 20,
+    "scenarios": {
+      "all_weak": [
+        "weak",
+        "weak",
+        "weak",
+        "weak",
+        "weak"
+      ],
+      "majority_weak": [
+        "weak",
+        "weak",
+        "weak",
+        "noise",
+        "noise"
+      ],
+      "minority_weak": [
+        "weak",
+        "noise",
+        "noise",
+        "noise",
+        "noise"
+      ]
+    },
+    "arms": [
+      "worker_true",
+      "vote_pure",
+      "worker_majority",
+      "emasel_pure",
+      "worker_emasel"
+    ],
+    "substrates": [
+      "random_graph_k25",
+      "parallel"
+    ],
+    "n_seeds": 10,
+    "quick": false,
+    "sequential": false
+  },
+  "aggregates": [
+    {
+      "scenario": "all_weak",
+      "substrate": "parallel",
+      "readout": "emasel_pure",
+      "n_runs": 10,
+      "mean_acc_all_mean": 0.6938242757719656,
+      "acc_first_mean": 0.6885,
+      "acc_mid_mean": 0.6945,
+      "acc_last_mean": 0.7095,
+      "sel_good_frac_mean": 0.6938000000000001,
+      "n_switches_mean": 223.0
+    },
+    {
+      "scenario": "all_weak",
+      "substrate": "parallel",
+      "readout": "vote_pure",
+      "n_runs": 10,
+      "mean_acc_all_mean": 0.8361783623527048,
+      "acc_first_mean": 0.8585,
+      "acc_mid_mean": 0.8494999999999999,
+      "acc_last_mean": 0.8632500000000001,
+      "sel_good_frac_mean": 0.0,
+      "n_switches_mean": 0.0
+    },
+    {
+      "scenario": "all_weak",
+      "substrate": "parallel",
+      "readout": "worker_emasel",
+      "n_runs": 10,
+      "mean_acc_all_mean": 0.7872990628376171,
+      "acc_first_mean": 0.805,
+      "acc_mid_mean": 0.786,
+      "acc_last_mean": 0.8220000000000001,
+      "sel_good_frac_mean": 0.6938000000000001,
+      "n_switches_mean": 223.0
+    },
+    {
+      "scenario": "all_weak",
+      "substrate": "parallel",
+      "readout": "worker_majority",
+      "n_runs": 10,
+      "mean_acc_all_mean": 0.8762681842164769,
+      "acc_first_mean": 0.9,
+      "acc_mid_mean": 0.892,
+      "acc_last_mean": 0.8975000000000002,
+      "sel_good_frac_mean": 0.0,
+      "n_switches_mean": 0.0
+    },
+    {
+      "scenario": "all_weak",
+      "substrate": "parallel",
+      "readout": "worker_true",
+      "n_runs": 10,
+      "mean_acc_all_mean": 0.9192654707168163,
+      "acc_first_mean": 0.925,
+      "acc_mid_mean": 0.906,
+      "acc_last_mean": 0.9205,
+      "sel_good_frac_mean": 0.0,
+      "n_switches_mean": 0.0
+    },
+    {
+      "scenario": "all_weak",
+      "substrate": "random_graph_k25",
+      "readout": "emasel_pure",
+      "n_runs": 10,
+      "mean_acc_all_mean": 0.6938242757719656,
+      "acc_first_mean": 0.6885,
+      "acc_mid_mean": 0.6945,
+      "acc_last_mean": 0.7095,
+      "sel_good_frac_mean": 0.6938000000000001,
+      "n_switches_mean": 223.0
+    },
+    {
+      "scenario": "all_weak",
+      "substrate": "random_graph_k25",
+      "readout": "vote_pure",
+      "n_runs": 10,
+      "mean_acc_all_mean": 0.8361783623527046,
+      "acc_first_mean": 0.8584999999999999,
+      "acc_mid_mean": 0.8495000000000001,
+      "acc_last_mean": 0.8632500000000001,
+      "sel_good_frac_mean": 0.0,
+      "n_switches_mean": 0.0
+    },
+    {
+      "scenario": "all_weak",
+      "substrate": "random_graph_k25",
+      "readout": "worker_emasel",
+      "n_runs": 10,
+      "mean_acc_all_mean": 0.7218352553955931,
+      "acc_first_mean": 0.78,
+      "acc_mid_mean": 0.7025000000000001,
+      "acc_last_mean": 0.6984999999999999,
+      "sel_good_frac_mean": 0.6938000000000001,
+      "n_switches_mean": 223.0
+    },
+    {
+      "scenario": "all_weak",
+      "substrate": "random_graph_k25",
+      "readout": "worker_majority",
+      "n_runs": 10,
+      "mean_acc_all_mean": 0.840987161126605,
+      "acc_first_mean": 0.9,
+      "acc_mid_mean": 0.8557500000000001,
+      "acc_last_mean": 0.8470000000000001,
+      "sel_good_frac_mean": 0.0,
+      "n_switches_mean": 0.0
+    },
+    {
+      "scenario": "all_weak",
+      "substrate": "random_graph_k25",
+      "readout": "worker_true",
+      "n_runs": 10,
+      "mean_acc_all_mean": 0.937713248410844,
+      "acc_first_mean": 0.9654999999999999,
+      "acc_mid_mean": 0.967,
+      "acc_last_mean": 0.9824999999999999,
+      "sel_good_frac_mean": 0.0,
+      "n_switches_mean": 0.0
+    },
+    {
+      "scenario": "majority_weak",
+      "substrate": "parallel",
+      "readout": "emasel_pure",
+      "n_runs": 10,
+      "mean_acc_all_mean": 0.6979244240094469,
+      "acc_first_mean": 0.7015,
+      "acc_mid_mean": 0.7,
+      "acc_last_mean": 0.7105,
+      "sel_good_frac_mean": 0.69795,
+      "n_switches_mean": 161.2
+    },
+    {
+      "scenario": "majority_weak",
+      "substrate": "parallel",
+      "readout": "vote_pure",
+      "n_runs": 10,
+      "mean_acc_all_mean": 0.718094520238185,
+      "acc_first_mean": 0.7185,
+      "acc_mid_mean": 0.7005,
+      "acc_last_mean": 0.7322500000000001,
+      "sel_good_frac_mean": 0.0,
+      "n_switches_mean": 0.0
+    },
+    {
+      "scenario": "majority_weak",
+      "substrate": "parallel",
+      "readout": "worker_emasel",
+      "n_runs": 10,
+      "mean_acc_all_mean": 0.7899099268862592,
+      "acc_first_mean": 0.8095000000000001,
+      "acc_mid_mean": 0.8030000000000002,
+      "acc_last_mean": 0.8255000000000001,
+      "sel_good_frac_mean": 0.69795,
+      "n_switches_mean": 161.2
+    },
+    {
+      "scenario": "majority_weak",
+      "substrate": "parallel",
+      "readout": "worker_majority",
+      "n_runs": 10,
+      "mean_acc_all_mean": 0.8037975176503103,
+      "acc_first_mean": 0.8164999999999999,
+      "acc_mid_mean": 0.80575,
+      "acc_last_mean": 0.8565000000000002,
+      "sel_good_frac_mean": 0.0,
+      "n_switches_mean": 0.0
+    },
+    {
+      "scenario": "majority_weak",
+      "substrate": "parallel",
+      "readout": "worker_true",
+      "n_runs": 10,
+      "mean_acc_all_mean": 0.9192654707168162,
+      "acc_first_mean": 0.925,
+      "acc_mid_mean": 0.906,
+      "acc_last_mean": 0.9205,
+      "sel_good_frac_mean": 0.0,
+      "n_switches_mean": 0.0
+    },
+    {
+      "scenario": "majority_weak",
+      "substrate": "random_graph_k25",
+      "readout": "emasel_pure",
+      "n_runs": 10,
+      "mean_acc_all_mean": 0.6979244240094469,
+      "acc_first_mean": 0.7015,
+      "acc_mid_mean": 0.7,
+      "acc_last_mean": 0.7105,
+      "sel_good_frac_mean": 0.6979500000000001,
+      "n_switches_mean": 161.2
+    },
+    {
+      "scenario": "majority_weak",
+      "substrate": "random_graph_k25",
+      "readout": "vote_pure",
+      "n_runs": 10,
+      "mean_acc_all_mean": 0.718094520238185,
+      "acc_first_mean": 0.7185,
+      "acc_mid_mean": 0.7005,
+      "acc_last_mean": 0.7322500000000001,
+      "sel_good_frac_mean": 0.0,
+      "n_switches_mean": 0.0
+    },
+    {
+      "scenario": "majority_weak",
+      "substrate": "random_graph_k25",
+      "readout": "worker_emasel",
+      "n_runs": 10,
+      "mean_acc_all_mean": 0.7265534785558152,
+      "acc_first_mean": 0.805,
+      "acc_mid_mean": 0.7135,
+      "acc_last_mean": 0.7170000000000001,
+      "sel_good_frac_mean": 0.6979500000000001,
+      "n_switches_mean": 161.2
+    },
+    {
+      "scenario": "majority_weak",
+      "substrate": "random_graph_k25",
+      "readout": "worker_majority",
+      "n_runs": 10,
+      "mean_acc_all_mean": 0.7458008592748926,
+      "acc_first_mean": 0.8,
+      "acc_mid_mean": 0.7415,
+      "acc_last_mean": 0.733,
+      "sel_good_frac_mean": 0.0,
+      "n_switches_mean": 0.0
+    },
+    {
+      "scenario": "majority_weak",
+      "substrate": "random_graph_k25",
+      "readout": "worker_true",
+      "n_runs": 10,
+      "mean_acc_all_mean": 0.937713248410844,
+      "acc_first_mean": 0.9654999999999999,
+      "acc_mid_mean": 0.967,
+      "acc_last_mean": 0.9824999999999999,
+      "sel_good_frac_mean": 0.0,
+      "n_switches_mean": 0.0
+    },
+    {
+      "scenario": "minority_weak",
+      "substrate": "parallel",
+      "readout": "emasel_pure",
+      "n_runs": 10,
+      "mean_acc_all_mean": 0.6986525464184317,
+      "acc_first_mean": 0.702,
+      "acc_mid_mean": 0.7085000000000001,
+      "acc_last_mean": 0.7210000000000001,
+      "sel_good_frac_mean": 0.69855,
+      "n_switches_mean": 9.7
+    },
+    {
+      "scenario": "minority_weak",
+      "substrate": "parallel",
+      "readout": "vote_pure",
+      "n_runs": 10,
+      "mean_acc_all_mean": 0.5709224642596921,
+      "acc_first_mean": 0.5715,
+      "acc_mid_mean": 0.5744999999999999,
+      "acc_last_mean": 0.5725,
+      "sel_good_frac_mean": 0.0,
+      "n_switches_mean": 0.0
+    },
+    {
+      "scenario": "minority_weak",
+      "substrate": "parallel",
+      "readout": "worker_emasel",
+      "n_runs": 10,
+      "mean_acc_all_mean": 0.7844694856913142,
+      "acc_first_mean": 0.8130000000000001,
+      "acc_mid_mean": 0.804,
+      "acc_last_mean": 0.8245000000000001,
+      "sel_good_frac_mean": 0.69855,
+      "n_switches_mean": 9.7
+    },
+    {
+      "scenario": "minority_weak",
+      "substrate": "parallel",
+      "readout": "worker_majority",
+      "n_runs": 10,
+      "mean_acc_all_mean": 0.6252827818396524,
+      "acc_first_mean": 0.6129999999999999,
+      "acc_mid_mean": 0.6285000000000001,
+      "acc_last_mean": 0.654,
+      "sel_good_frac_mean": 0.0,
+      "n_switches_mean": 0.0
+    },
+    {
+      "scenario": "minority_weak",
+      "substrate": "parallel",
+      "readout": "worker_true",
+      "n_runs": 10,
+      "mean_acc_all_mean": 0.9192654707168162,
+      "acc_first_mean": 0.925,
+      "acc_mid_mean": 0.906,
+      "acc_last_mean": 0.9205,
+      "sel_good_frac_mean": 0.0,
+      "n_switches_mean": 0.0
+    },
+    {
+      "scenario": "minority_weak",
+      "substrate": "random_graph_k25",
+      "readout": "emasel_pure",
+      "n_runs": 10,
+      "mean_acc_all_mean": 0.6986525464184317,
+      "acc_first_mean": 0.702,
+      "acc_mid_mean": 0.7085000000000001,
+      "acc_last_mean": 0.7210000000000001,
+      "sel_good_frac_mean": 0.69855,
+      "n_switches_mean": 9.7
+    },
+    {
+      "scenario": "minority_weak",
+      "substrate": "random_graph_k25",
+      "readout": "vote_pure",
+      "n_runs": 10,
+      "mean_acc_all_mean": 0.5709224642596921,
+      "acc_first_mean": 0.5715,
+      "acc_mid_mean": 0.5744999999999999,
+      "acc_last_mean": 0.5725,
+      "sel_good_frac_mean": 0.0,
+      "n_switches_mean": 0.0
+    },
+    {
+      "scenario": "minority_weak",
+      "substrate": "random_graph_k25",
+      "readout": "worker_emasel",
+      "n_runs": 10,
+      "mean_acc_all_mean": 0.7225150121856234,
+      "acc_first_mean": 0.7885,
+      "acc_mid_mean": 0.7274999999999999,
+      "acc_last_mean": 0.7145000000000001,
+      "sel_good_frac_mean": 0.69855,
+      "n_switches_mean": 9.7
+    },
+    {
+      "scenario": "minority_weak",
+      "substrate": "random_graph_k25",
+      "readout": "worker_majority",
+      "n_runs": 10,
+      "mean_acc_all_mean": 0.5846917162885356,
+      "acc_first_mean": 0.6169999999999999,
+      "acc_mid_mean": 0.5744999999999999,
+      "acc_last_mean": 0.5865,
+      "sel_good_frac_mean": 0.0,
+      "n_switches_mean": 0.0
+    },
+    {
+      "scenario": "minority_weak",
+      "substrate": "random_graph_k25",
+      "readout": "worker_true",
+      "n_runs": 10,
+      "mean_acc_all_mean": 0.937713248410844,
+      "acc_first_mean": 0.9654999999999999,
+      "acc_mid_mean": 0.967,
+      "acc_last_mean": 0.9824999999999999,
+      "sel_good_frac_mean": 0.0,
+      "n_switches_mean": 0.0
+    }
+  ]
+}

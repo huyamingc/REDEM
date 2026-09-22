@@ -27,7 +27,7 @@
       "forget_clip_frac": 0.000286286859433152,
       "forgetting_ppl_unclipped": 8.648983787177082,
       "forget_n_unc_undefined": 1,
-      "runtime_s": 18.50208044052124
+      "runtime_s": 120.16443014144897
     },
     {
       "arm": "SSM-REDEM",
@@ -45,7 +45,7 @@
       "forget_clip_frac": 0.0,
       "forgetting_ppl_unclipped": 8.741553779375577,
       "forget_n_unc_undefined": 0,
-      "runtime_s": 20.351012706756592
+      "runtime_s": 56.78086757659912
     },
     {
       "arm": "SSM-REDEM",
@@ -63,7 +63,7 @@
       "forget_clip_frac": 0.0008588605782994561,
       "forgetting_ppl_unclipped": 8.641829419984138,
       "forget_n_unc_undefined": 3,
-      "runtime_s": 19.501806497573853
+      "runtime_s": 54.681297302246094
     },
     {
       "arm": "SSM-REDEM",
@@ -81,7 +81,7 @@
       "forget_clip_frac": 0.0,
       "forgetting_ppl_unclipped": 9.526302966294539,
       "forget_n_unc_undefined": 0,
-      "runtime_s": 20.90575075149536
+      "runtime_s": 56.83506965637207
     },
     {
       "arm": "SSM-REDEM",
@@ -99,7 +99,7 @@
       "forget_clip_frac": 0.000286286859433152,
       "forgetting_ppl_unclipped": 8.830988420660848,
       "forget_n_unc_undefined": 1,
-      "runtime_s": 19.347335815429688
+      "runtime_s": 62.10718321800232
     },
     {
       "arm": "SSM-REDEM",
@@ -117,7 +117,7 @@
       "forget_clip_frac": 0.000286286859433152,
       "forgetting_ppl_unclipped": 9.06666983840664,
       "forget_n_unc_undefined": 1,
-      "runtime_s": 19.788272380828857
+      "runtime_s": 45.234750747680664
     },
     {
       "arm": "SSM-REDEM",
@@ -135,7 +135,7 @@
       "forget_clip_frac": 0.001145147437732608,
       "forgetting_ppl_unclipped": 8.482604354398083,
       "forget_n_unc_undefined": 4,
-      "runtime_s": 19.96895408630371
+      "runtime_s": 40.58635592460632
     },
     {
       "arm": "SSM-REDEM",
@@ -153,7 +153,7 @@
       "forget_clip_frac": 0.000286286859433152,
       "forgetting_ppl_unclipped": 8.967553917266029,
       "forget_n_unc_undefined": 1,
-      "runtime_s": 18.938769102096558
+      "runtime_s": 33.52874255180359
     },
     {
       "arm": "SSM-REDEM",
@@ -171,7 +171,7 @@
       "forget_clip_frac": 0.0,
       "forgetting_ppl_unclipped": 9.40259508858883,
       "forget_n_unc_undefined": 0,
-      "runtime_s": 19.372633457183838
+      "runtime_s": 37.34823441505432
     },
     {
       "arm": "SSM-REDEM",
@@ -189,7 +189,7 @@
       "forget_clip_frac": 0.000286286859433152,
       "forgetting_ppl_unclipped": 8.436233115884253,
       "forget_n_unc_undefined": 1,
-      "runtime_s": 20.1515212059021
+      "runtime_s": 31.778459548950195
     },
     {
       "arm": "SSM-REDEM+M5",
@@ -207,7 +207,7 @@
       "forget_clip_frac": 0.002576581734898368,
       "forgetting_ppl_unclipped": 10.996213102764552,
       "forget_n_unc_undefined": 9,
-      "runtime_s": 18.88099193572998
+      "runtime_s": 31.422072410583496
     },
     {
       "arm": "SSM-REDEM+M5",
@@ -225,7 +225,7 @@
       "forget_clip_frac": 0.002576581734898368,
       "forgetting_ppl_unclipped": 11.038822472287196,
       "forget_n_unc_undefined": 9,
-      "runtime_s": 21.086731672286987
+      "runtime_s": 34.57754468917847
     },
     {
       "arm": "SSM-REDEM+M5",
@@ -243,7 +243,7 @@
       "forget_clip_frac": 0.002004008016032064,
       "forgetting_ppl_unclipped": 11.067473288255709,
       "forget_n_unc_undefined": 7,
-      "runtime_s": 19.732790231704712
+      "runtime_s": 31.630387544631958
     },
     {
       "arm": "SSM-REDEM+M5",
@@ -261,7 +261,7 @@
       "forget_clip_frac": 0.0,
       "forgetting_ppl_unclipped": 13.317663908132955,
       "forget_n_unc_undefined": 0,
-      "runtime_s": 20.789817094802856
+      "runtime_s": 35.51608204841614
     },
     {
       "arm": "SSM-REDEM+M5",
@@ -279,7 +279,7 @@
       "forget_clip_frac": 0.001145147437732608,
       "forgetting_ppl_unclipped": 11.443967730588625,
       "forget_n_unc_undefined": 4,
-      "runtime_s": 20.414233684539795
+      "runtime_s": 33.461986780166626
     },
     {
       "arm": "SSM-REDEM+M5",
@@ -297,7 +297,7 @@
       "forget_clip_frac": 0.001145147437732608,
       "forgetting_ppl_unclipped": 11.882769525651026,
       "forget_n_unc_undefined": 4,
-      "runtime_s": 20.19995355606079
+      "runtime_s": 33.53540873527527
     },
     {
       "arm": "SSM-REDEM+M5",
@@ -315,7 +315,7 @@
       "forget_clip_frac": 0.001145147437732608,
       "forgetting_ppl_unclipped": 11.238355731418482,
       "forget_n_unc_undefined": 4,
-      "runtime_s": 20.328089475631714
+      "runtime_s": 32.65508270263672
     },
     {
       "arm": "SSM-REDEM+M5",
@@ -333,7 +333,7 @@
       "forget_clip_frac": 0.0008588605782994561,
       "forgetting_ppl_unclipped": 11.686792647314402,
       "forget_n_unc_undefined": 3,
-      "runtime_s": 19.15582823753357
+      "runtime_s": 33.49703550338745
     },
     {
       "arm": "SSM-REDEM+M5",
@@ -351,7 +351,7 @@
       "forget_clip_frac": 0.0008588605782994561,
       "forgetting_ppl_unclipped": 11.751877411978098,
       "forget_n_unc_undefined": 3,
-      "runtime_s": 19.950921535491943
+      "runtime_s": 32.82045817375183
     },
     {
       "arm": "SSM-REDEM+M5",
@@ -369,7 +369,7 @@
       "forget_clip_frac": 0.000572573718866304,
       "forgetting_ppl_unclipped": 11.419909312357605,
       "forget_n_unc_undefined": 2,
-      "runtime_s": 20.25564432144165
+      "runtime_s": 33.88878893852234
     }
   ],
   "null_reason": "non-finite per-run values are written as null (undefined, e.g. dt_mean and dt_max for a run in which the adaptation criterion was never met)"

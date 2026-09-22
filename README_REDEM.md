@@ -84,6 +84,9 @@ kept in sync with `git ls-files scripts/`).
 
 ## Data and figures
 
+All data/figure paths are **relative to the repository root**. Scripts write
+CSV + JSON aggregates under `data/` (and vector PDFs under `figures/`).
+
 - Results: `data/substrate_phase_diagram_v2.*`, `data/s2_online_readout_v1.*`,
   `data/s3_three_factor_v1.*`, `data/s4_intrinsic_reward_v1.*`,
   `data/s5_dual_timescale_v1.*`, `data/s6_chaos_regulator_v1.*`,
@@ -113,6 +116,9 @@ kept in sync with `git ls-files scripts/`).
   `data/s21_ssm_m4_m5_v1.*`, `data/s22_ssm_p4_benchmark_v1.*`,
   `data/s23_ssm_p4_realtext_v1.*`; real-text corpus in
   `data/corpora/` (Gutenberg public domain, see `data/corpora/README.md`).
+  Per-token CE dumps for same-token-set rescoring live in
+  `data/per_token/*.npz` (written by Paper D/F host scripts via
+  `scripts/per_token_io.py`; see root `README.md` → *Paths and data generation*).
 - Figures: `figures/substrate_phase_diagram_v2.pdf`,
   `figures/s2_online_readout_v1.pdf`, `figures/forgetting_curve_theory.pdf`,
   `figures/paperA_fig1_substrate.pdf`, `figures/paperA_fig4_robustness.pdf`,
@@ -128,67 +134,88 @@ kept in sync with `git ls-files scripts/`).
 
 ## Reproduction
 
-CPU-only; uses the project venv. numba (optional but recommended), numpy,
-scipy, matplotlib, torch (CPU) for S9 only.
+CPU-only. **All commands run from the repository root** and use
+**repository-relative paths** (forward slashes work on Windows and POSIX).
+Install dependencies first:
 
-```powershell
-# S1 phase diagram (610 runs, ~1 min with multiprocessing)
-& .venv\Scripts\python.exe scripts\substrate_recurrence_characterization.py
-# ... each step S1–S9 runs its script; every script accepts --quick for a smoke run:
-& .venv\Scripts\python.exe scripts\online_readout_streaming.py --quick
-& .venv\Scripts\python.exe scripts\three_factor_online_readout.py
-& .venv\Scripts\python.exe scripts\intrinsic_reward_experiment.py
-& .venv\Scripts\python.exe scripts\dual_timescale_metadata.py
-& .venv\Scripts\python.exe scripts\chaos_regulator.py
-& .venv\Scripts\python.exe scripts\structure_plasticity.py
-& .venv\Scripts\python.exe scripts\integrated_benchmark.py
-& .venv\Scripts\python.exe scripts\cv_sweep.py
-# theory + figures
-& .venv\Scripts\python.exe scripts\forgetting_curve_theory.py
-& .venv\Scripts\python.exe scripts\kernel_coupling_shape.py
-& .venv\Scripts\python.exe scripts\esn_metadata_comparison.py
-& .venv\Scripts\python.exe scripts\cv_sweep.py
-# Paper A follow-up: random-graph instance variability (s36)
-& .venv\Scripts\python.exe scripts\s36_random_graph_instance_variability.py
-# supplementary experiments (E3, E4, O4)
-& .venv\Scripts\python.exe scripts\s11_disturbance_chain.py --sequential
-& .venv\Scripts\python.exe scripts\s12_lambda_target_sweep.py --sequential
-& .venv\Scripts\python.exe scripts\s13_causal_audit.py --sequential
-# Paper C experiments (s14, s16, s15, s16b) + figures
-& .venv\Scripts\python.exe scripts\s14_esn_disturbance_chain.py --sequential
-& .venv\Scripts\python.exe scripts\s16_tau_m_pressure_test.py --sequential
-& .venv\Scripts\python.exe scripts\s15_controlled_adaptation.py --sequential
-& .venv\Scripts\python.exe scripts\s16b_falsification_stress_test.py --sequential
-& .venv\Scripts\python.exe scripts\s17_substrate_stress.py --sequential
-& .venv\Scripts\python.exe scripts\s18_llm_drift_gate.py --sequential
-& .venv\Scripts\python.exe scripts\gen_paperC_fig3_llm.py
-& .venv\Scripts\python.exe scripts\gen_paperC_fig1_kernel.py
-& .venv\Scripts\python.exe scripts\gen_paperC_fig2_recovery.py
-# Paper B: S5 arms controlled re-measurement
-& .venv\Scripts\python.exe scripts\s5b_controlled_adaptation.py --sequential
-& .venv\Scripts\python.exe scripts\gen_architecture_schematic.py
-& .venv\Scripts\python.exe scripts\gen_paper_figures.py
-# Paper D experiments (s19–s23, s26, s31, s33, s35) + figures
-& .venv\Scripts\python.exe scripts\s19_ssm_rls_readout.py --sequential
-& .venv\Scripts\python.exe scripts\s20_ssm_m3_routing.py --sequential
-& .venv\Scripts\python.exe scripts\s21_ssm_m4_m5.py --sequential
-& .venv\Scripts\python.exe scripts\s22_ssm_p4_benchmark.py --sequential
-& .venv\Scripts\python.exe scripts\s23_ssm_p4_realtext.py --sequential
-& .venv\Scripts\python.exe scripts\s24_homeo_plasticity_coupling.py
-& .venv\Scripts\python.exe scripts\s25_reward_gated_plasticity.py
-& .venv\Scripts\python.exe scripts\s26_ssm_p4_fair_tf.py
-& .venv\Scripts\python.exe scripts\s27_clip_kappa_fine.py
-& .venv\Scripts\python.exe scripts\s28_causal_audit_chain.py
-& .venv\Scripts\python.exe scripts\s30_integrated_1024.py --workers 4
-& .venv\Scripts\python.exe scripts\s31_char_bigram_oracle.py
-& .venv\Scripts\python.exe scripts\s32_ftle_noise_robustness.py
-& .venv\Scripts\python.exe scripts\s33_ssm_p4_m5.py
-& .venv\Scripts\python.exe scripts\s34_leak_sensitivity.py
-& .venv\Scripts\python.exe scripts\s35_readout_boundary_probe.py --workers 4
-& .venv\Scripts\python.exe scripts\gen_paperD_fig1_p1_arms.py
-& .venv\Scripts\python.exe scripts\gen_paperD_fig2_routing.py
-& .venv\Scripts\python.exe scripts\gen_paperD_fig3_benchmark.py
+```bash
+python -m pip install -r requirements.txt
+# exact versions used for the committed results
+python -m pip install -r requirements-lock.txt
 ```
+
+Optional but recommended: `numba`. Torch (CPU) is required only for S9 and
+some Paper D/C ML scripts. Invoke the project venv if you created one:
+Windows `.venv/Scripts/python.exe` or POSIX `.venv/bin/python` in place of
+`python`. Every experiment script accepts `--quick` for a smoke run
+(except where noted).
+
+```bash
+# S1 phase diagram (610 runs, ~1 min with multiprocessing)
+python scripts/substrate_recurrence_characterization.py
+# smoke run example
+python scripts/online_readout_streaming.py --quick
+python scripts/three_factor_online_readout.py
+python scripts/intrinsic_reward_experiment.py
+python scripts/dual_timescale_metadata.py
+python scripts/chaos_regulator.py
+python scripts/structure_plasticity.py
+python scripts/integrated_benchmark.py
+python scripts/cv_sweep.py
+# theory + figures
+python scripts/forgetting_curve_theory.py
+python scripts/kernel_coupling_shape.py
+python scripts/esn_metadata_comparison.py
+python scripts/cv_sweep.py
+# Paper A follow-up: random-graph instance variability (s36)
+python scripts/s36_random_graph_instance_variability.py
+# supplementary experiments (E3, E4, O4)
+python scripts/s11_disturbance_chain.py --sequential
+python scripts/s12_lambda_target_sweep.py --sequential
+python scripts/s13_causal_audit.py --sequential
+# Paper C experiments (s14, s16, s15, s16b) + figures
+python scripts/s14_esn_disturbance_chain.py --sequential
+python scripts/s16_tau_m_pressure_test.py --sequential
+python scripts/s15_controlled_adaptation.py --sequential
+python scripts/s16b_falsification_stress_test.py --sequential
+python scripts/s17_substrate_stress.py --sequential
+python scripts/s18_llm_drift_gate.py --sequential
+python scripts/gen_paperC_fig3_llm.py
+python scripts/gen_paperC_fig1_kernel.py
+python scripts/gen_paperC_fig2_recovery.py
+# Paper B: S5 arms controlled re-measurement
+python scripts/s5b_controlled_adaptation.py --sequential
+python scripts/gen_architecture_schematic.py
+python scripts/gen_paper_figures.py
+# Paper D experiments (s19–s23, s26, s31, s33, s35) + figures
+# These also dump data/per_token/*.npz via scripts/per_token_io.py
+python scripts/s19_ssm_rls_readout.py --sequential
+python scripts/s20_ssm_m3_routing.py --sequential
+python scripts/s21_ssm_m4_m5.py --sequential
+python scripts/s22_ssm_p4_benchmark.py --sequential
+python scripts/s23_ssm_p4_realtext.py --sequential
+python scripts/s24_homeo_plasticity_coupling.py
+python scripts/s25_reward_gated_plasticity.py
+python scripts/s26_ssm_p4_fair_tf.py
+python scripts/s27_clip_kappa_fine.py
+python scripts/s28_causal_audit_chain.py
+python scripts/s30_integrated_1024.py --workers 4
+python scripts/s31_char_bigram_oracle.py
+python scripts/s32_ftle_noise_robustness.py
+python scripts/s33_ssm_p4_m5.py
+python scripts/s34_leak_sensitivity.py
+python scripts/s35_readout_boundary_probe.py --workers 4
+python scripts/gen_paperD_fig1_p1_arms.py
+python scripts/gen_paperD_fig2_routing.py
+python scripts/gen_paperD_fig3_benchmark.py
+```
+
+Paper E chain (s39–s65, self-contained via `paper_e/deps/`) and Paper F
+chain (s50–s54, s66–s67; also writes `data/per_token/`) are enumerated with
+their own relative commands in `paper_e/README.md` and `paper_f/README.md`.
+`data/per_token` regeneration = re-run the host scripts listed in the root
+`README.md` (*Paths and data generation*); the committed `.npz` files are
+the archives those runs produced.
 
 All experiments use fixed, per-run seeds (`run_idx * scale + offset`), paired
 draws across compared configs, CSV+JSON dual output, and unbuffered progress

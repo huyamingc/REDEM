@@ -1,142 +1,133 @@
 #!/usr/bin/env python3
 """
-Regenerate a cover letter / highlights .docx from a plain-text source
-=====================================================================
-Type:           EXPLORE
+Update a cover letter / highlights .docx in place from a plain-text draft
+=========================================================================
+Type:           FIG
 Experiment:     gen_cover_letter_docx
-Purpose:        Emit a minimal, valid WordprocessingML .docx from a UTF-8
-                plain-text source (cover letter or highlights list). Uses
-                only the standard library (zipfile + xml.sax.saxutils)
-                because no docx toolchain is available on this host:
-                pandoc / LibreOffice are absent, Word COM automation is
-                unavailable, and pip installs are blocked by the sandbox.
-                No third-party dependency is added to the project
-                environment.
+Purpose:        Write or replace the body of a minimal, valid
+                WordprocessingML .docx from plain text (cover letter or
+                highlights list). Uses only the standard library
+                (zipfile + xml.sax.saxutils) because no docx toolchain is
+                available on this host: pandoc / LibreOffice are absent,
+                Word COM automation is unavailable, and pip installs are
+                blocked by the sandbox. No third-party dependency is added
+                to the project environment.
 
-Usage:
-    python gen_cover_letter_docx.py                    # legacy: paper_d/COVER_LETTER_D_NC.txt -> paper_d/COVER_LETTER.docx
-    python gen_cover_letter_docx.py paper_e COVER_LETTER   # paper_e/COVER_LETTER.txt -> paper_e/COVER_LETTER.docx
-    python gen_cover_letter_docx.py paper_e Highlights     # paper_e/Highlights.txt -> paper_e/Highlights.docx
-    python gen_cover_letter_docx.py paper_f COVER_LETTER   # paper_f/COVER_LETTER.txt -> paper_f/COVER_LETTER.docx
+Workflow (docx is the single source of truth since 2026-09-17; the
+sibling .txt files were removed from the repository):
 
-Note:           The .txt remains the source of truth; re-run this script
-                after every edit to the .txt.
+    1. Read the current .docx body (paragraph text).
+    2. Edit that text (this script prints it; or keep the edited text in
+       a scratch file outside the repo while drafting).
+    3. Pipe the final text back through this script to rewrite the docx:
+
+    python gen_cover_letter_docx.py --text-file draft.txt paper_d COVER_LETTER
+    python gen_cover_letter_docx.py --print paper_d Highlights   # dump current text
+
+    With no --text-file/--print, the script prints the current body and
+    exits (read-only).
+
+The document keeps its original zip structure (styles, sectPr) and only
+the word/document.xml body paragraphs are replaced.
 =====================================================================
 """
 import argparse
 import os
+import re
 import sys
 import zipfile
-from pathlib import Path
 from xml.sax.saxutils import escape
 
 os.environ.setdefault('PYTHONUNBUFFERED', '1')
 if hasattr(sys.stdout, 'reconfigure'):
     sys.stdout.reconfigure(line_buffering=True)
 
-HERE = Path(__file__).resolve().parent.parent
-
-CONTENT_TYPES = (
-    '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
-    '<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">'
-    '<Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/>'
-    '<Default Extension="xml" ContentType="application/xml"/>'
-    '<Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/>'
-    '</Types>'
-)
-
-RELS = (
-    '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
-    '<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">'
-    '<Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/>'
-    '</Relationships>'
-)
-
-DOC_OPEN = (
-    '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
-    '<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">'
-    '<w:body>'
-)
-DOC_CLOSE = (
-    '<w:sectPr><w:pgSz w:w="12240" w:h="15840"/>'
-    '<w:pgMar w:top="1440" w:right="1440" w:bottom="1440" w:left="1440"/>'
-    '</w:sectPr></w:body></w:document>'
-)
+DOC_NS = 'http://schemas.openxmlformats.org/wordprocessingml/2006/main'
 
 
-def para(text):
-    """One body paragraph; empty text yields an empty paragraph."""
-    if not text.strip():
-        return '<w:p/>'
-    return (
-        '<w:p><w:r><w:t xml:space="preserve">'
-        + escape(text)
-        + '</w:t></w:r></w:p>'
+def read_docx_text(path):
+    """Extract paragraph texts from word/document.xml."""
+    with zipfile.ZipFile(path) as z:
+        xml = z.read('word/document.xml').decode('utf-8')
+    paras = []
+    for m in re.finditer(r'<w:p[ >].*?</w:p>|<w:p/>', xml, re.S):
+        block = m.group(0)
+        runs = re.findall(r'<w:t(?:\s[^>]*)?>(.*?)</w:t>', block, re.S)
+        text = ''.join(runs)
+        text = text.replace('&amp;', '&').replace('&lt;', '<').replace('&gt;', '>')
+        paras.append(text)
+    return paras
+
+
+def write_docx_text(path, paragraphs):
+    """Replace body paragraphs, preserving everything else in the zip."""
+    with zipfile.ZipFile(path) as z:
+        xml = z.read('word/document.xml').decode('utf-8')
+        names = z.namelist()
+
+    def _repl(m):
+        return '<w:p><w:r><w:t xml:space="preserve">%s</w:t></w:r></w:p>' % escape(m.group(1))
+
+    # Substitute every paragraph block (or empty <w:p/>) with the new sequence.
+    new_blocks = ''.join(
+        '<w:p><w:r><w:t xml:space="preserve">%s</w:t></w:r></w:p>' % escape(p) if p.strip()
+        else '<w:p/>'
+        for p in paragraphs
     )
+    body_start = xml.find('<w:body>') + len('<w:body>')
+    sect_pos = xml.rfind('<w:sectPr')
+    close_pos = xml.rfind('</w:body>')
+    if sect_pos != -1 and sect_pos > body_start:
+        body_end = sect_pos
+    elif close_pos != -1 and close_pos > body_start:
+        body_end = close_pos
+    else:
+        raise SystemExit('ERROR: unexpected document.xml structure in %s' % path)
+    new_xml = xml[:body_start] + new_blocks + xml[body_end:]
 
-
-def paragraphs_from_lines(lines):
-    """Join consecutive non-empty source lines into one Word paragraph.
-
-    The .txt is hard-wrapped; without this, each visual line becomes its
-    own paragraph and mid-sentence breaks read as line breaks in Word.
-    """
-    out = []
-    buf = []
-    for ln in lines:
-        if not ln.strip():
-            if buf:
-                out.append(' '.join(buf))
-                buf = []
-            out.append('')
-        else:
-            buf.append(ln.strip())
-    if buf:
-        out.append(' '.join(buf))
-    return out
-
-
-def resolve_paths(paper_dir, base):
-    """Map (paper_dir, base) to (txt_path, docx_path).
-
-    With no arguments the legacy Paper D mapping is kept:
-    paper_d/COVER_LETTER_D_NC.txt -> paper_d/COVER_LETTER.docx.
-    """
-    if paper_dir is None:
-        return (HERE / 'paper_d' / 'COVER_LETTER_D_NC.txt',
-                HERE / 'paper_d' / 'COVER_LETTER.docx')
-    return (HERE / paper_dir / f'{base}.txt',
-            HERE / paper_dir / f'{base}.docx')
+    tmp = str(path) + '.tmp'
+    with zipfile.ZipFile(path) as zin, \
+            zipfile.ZipFile(tmp, 'w', zipfile.ZIP_DEFLATED) as zout:
+        for item in zin.infolist():
+            data = zin.read(item.filename)
+            if item.filename == 'word/document.xml':
+                data = new_xml.encode('utf-8')
+            zout.writestr(item, data)
+    import os as _os
+    _os.replace(tmp, path)
 
 
 def main():
     ap = argparse.ArgumentParser(
-        description='Regenerate a .docx from a UTF-8 plain-text source.')
-    ap.add_argument('paper_dir', nargs='?', default=None,
-                    help='paper directory under the repo root (e.g. paper_e); '
-                         'omit for the legacy Paper D cover letter')
-    ap.add_argument('base', nargs='?', default=None,
-                    help='source base name without extension '
-                         '(e.g. COVER_LETTER, Highlights)')
+        description='Print or update the text body of a submission .docx '
+                    '(docx is the single source of truth).')
+    ap.add_argument('paper_dir', help='paper directory under the repo root (e.g. paper_d)')
+    ap.add_argument('base', help='document base name without extension '
+                                 '(e.g. COVER_LETTER, Highlights)')
+    ap.add_argument('--print', dest='show', action='store_true',
+                    help='print the current body text and exit (default action)')
+    ap.add_argument('--text-file', metavar='FILE',
+                    help='rewrite the docx body from this UTF-8 text file '
+                         '(blank line = paragraph break)')
     args = ap.parse_args()
-    if args.paper_dir is not None and args.base is None:
-        ap.error('base name required when paper_dir is given')
 
-    txt_path, out_path = resolve_paths(args.paper_dir, args.base)
-    if not txt_path.exists():
-        raise SystemExit(f'ERROR: source not found: {txt_path}')
-    lines = txt_path.read_text(encoding='utf-8').splitlines()
-    paras = paragraphs_from_lines(lines)
-    body = ''.join(para(p) for p in paras)
-    document = DOC_OPEN + body + DOC_CLOSE
+    docx = os.path.join(args.paper_dir, args.base + '.docx')
+    if not os.path.exists(docx):
+        raise SystemExit('ERROR: not found: %s' % docx)
 
-    with zipfile.ZipFile(out_path, 'w', zipfile.ZIP_DEFLATED) as z:
-        z.writestr('[Content_Types].xml', CONTENT_TYPES)
-        z.writestr('_rels/.rels', RELS)
-        z.writestr('word/document.xml', document)
+    if args.text_file is None:
+        paras = read_docx_text(docx)
+        for p in paras:
+            print(p)
+        return
 
-    print(f'[OK] wrote {out_path}  ({out_path.stat().st_size} bytes, '
-          f'{len(paras)} paragraphs from {len(lines)} source lines)')
+    with open(args.text_file, encoding='utf-8') as f:
+        raw = f.read()
+    blocks = re.split(r'\n\s*\n', raw.strip())
+    paragraphs = [' '.join(ln.strip() for ln in b.split('\n')) for b in blocks]
+    paragraphs = [p for p in paragraphs if p or True]
+    write_docx_text(docx, paragraphs)
+    print('[OK] updated %s (%d paragraphs)' % (docx, len(paragraphs)))
 
 
 if __name__ == '__main__':

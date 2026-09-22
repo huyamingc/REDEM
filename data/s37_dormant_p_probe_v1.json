@@ -122,7 +122,7 @@
       "forget_clip_frac": 0.0,
       "forgetting_ppl_unclipped": 32.0,
       "forget_n_unc_undefined": 0,
-      "runtime_s": 6.211618423461914
+      "runtime_s": 10.287383556365967
     },
     {
       "exp": "E1",
@@ -140,7 +140,7 @@
       "forget_clip_frac": 0.0,
       "forgetting_ppl_unclipped": 32.0,
       "forget_n_unc_undefined": 0,
-      "runtime_s": 9.090208768844604
+      "runtime_s": 9.58976435661316
     },
     {
       "exp": "E1",
@@ -158,7 +158,7 @@
       "forget_clip_frac": 0.0,
       "forgetting_ppl_unclipped": 32.0,
       "forget_n_unc_undefined": 0,
-      "runtime_s": 10.010523080825806
+      "runtime_s": 9.76207423210144
     },
     {
       "exp": "E1",
@@ -176,7 +176,7 @@
       "forget_clip_frac": 0.0,
       "forgetting_ppl_unclipped": 32.0,
       "forget_n_unc_undefined": 0,
-      "runtime_s": 9.878916263580322
+      "runtime_s": 9.617686033248901
     },
     {
       "exp": "E1",
@@ -194,7 +194,7 @@
       "forget_clip_frac": 0.0,
       "forgetting_ppl_unclipped": 32.0,
       "forget_n_unc_undefined": 0,
-      "runtime_s": 10.683431148529053
+      "runtime_s": 9.58884572982788
     },
     {
       "exp": "E1",
@@ -212,7 +212,7 @@
       "forget_clip_frac": 0.0,
       "forgetting_ppl_unclipped": 32.0,
       "forget_n_unc_undefined": 0,
-      "runtime_s": 11.01132607460022
+      "runtime_s": 9.597462177276611
     },
     {
       "exp": "E1",
@@ -230,7 +230,7 @@
       "forget_clip_frac": 0.0,
       "forgetting_ppl_unclipped": 32.0,
       "forget_n_unc_undefined": 0,
-      "runtime_s": 11.112757921218872
+      "runtime_s": 9.636904954910278
     },
     {
       "exp": "E1",
@@ -248,7 +248,7 @@
       "forget_clip_frac": 0.0,
       "forgetting_ppl_unclipped": 32.0,
       "forget_n_unc_undefined": 0,
-      "runtime_s": 11.568538188934326
+      "runtime_s": 9.596563339233398
     },
     {
       "exp": "E1",
@@ -266,7 +266,7 @@
       "forget_clip_frac": 0.0,
       "forgetting_ppl_unclipped": 32.0,
       "forget_n_unc_undefined": 0,
-      "runtime_s": 9.869367361068726
+      "runtime_s": 9.554095029830933
     },
     {
       "exp": "E1",
@@ -284,7 +284,7 @@
       "forget_clip_frac": 0.0,
       "forgetting_ppl_unclipped": 32.0,
       "forget_n_unc_undefined": 0,
-      "runtime_s": 9.533826351165771
+      "runtime_s": 9.656190395355225
     }
   ]
 }

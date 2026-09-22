@@ -3,55 +3,35 @@
 This folder holds the REDEM "self-evolution / self-correction /
 self-iteration" paper for **Neurocomputing**. It is **self-contained**
 (frozen `deps/`, scripts `s39`–`s65` import those modules and can run
-without the A–D pipeline). The Chinese derivation chapter (`PAPER_E.tex`)
-is the historical claim-driven draft; the current manuscript is
-`PAPER_E_v3.tex`.
+without the A–D pipeline). The current manuscript is `PAPER_E.tex`
+(renamed from `PAPER_E_v3.tex`; the earlier assembly chapter and the
+v1/v2 review rounds were removed on 2026-09-17 with the other internal
+working files — git history retains the last committed state).
 
 Current title (v3, 2026-09-13 clean-P0): *Self-evolution under ±1 reward:
 sign-flip correction, reconstructed-label capacity sensing, and
 snapshot-gated memory in a recurrent relaxation reservoir*.
 
+> **Repository vs. local material.** This folder keeps only the current
+> submission package: `PAPER_E.tex` / `.pdf`, cover letter, Highlights,
+> VITAE/DECLARATION, README, Supplementary zip. Historical rounds
+> (pre-rename assembly chapter, `PAPER_E_v1.*`, `PAPER_E_v2.*`), internal
+> notes (`self_evolution_mainline.md`, Highlights_notes), and LaTeX build
+> logs were removed on 2026-09-17; git history retains the last committed
+> state of the tracked ones.
+> Shared `scripts/` + `data/` + `deps/` remain the reproducibility path.
+
 ## Contents
 
-- [`PAPER_E.tex`](PAPER_E.tex) / [`PAPER_E.pdf`](PAPER_E.pdf) — historical
-  claim-driven assembly chapter (route R58F): Abstract, Introduction with six claims
-  (R1–R6), Methods, Results organized by claim, Discussion (positioning,
-  methodological notes, limitations), Conclusion, and appendices (theorem
-  index, experiment reproducibility index, key numbers). The
-  derivation-chain labels (s39–s65) appear only in the reproducibility
-  index, not in the narrative. Standalone `article` class (Elsevier "Your
-  Paper Your Way" convention, same as paper_a–d). Compiles cleanly: 11 pp,
-  exit 0, zero overfull. **Superseded by the v1/v2/v3 elsarticle line.**
-- [`PAPER_E_v1.tex`](PAPER_E_v1.tex) / [`PAPER_E_v1.pdf`](PAPER_E_v1.pdf) —  **reviewed + submission-ready version** (2026-09-09): converted to the
-  Elsevier `elsarticle` class (`\documentclass[preprint,12pt]{elsarticle}`,
-  `\journal{Neurocomputing}`), with 26 references, submission declarations
-  (competing interests / funding / generative-AI / acknowledgements), and
-  all P0/P1 review fixes (see
-  [`../review_workspace/`](../review_workspace/), suffix `_E_v1`). 23 pp,
-  compiles clean. The pre-conversion `article` version is backed up at
-  `../review_workspace/PAPER_E_v1_article_backup.tex`.
-- [`PAPER_E_v2.tex`](PAPER_E_v2.tex) / [`PAPER_E_v2.pdf`](PAPER_E_v2.pdf) —
-  **deep second-round review version** (2026-09-10):
-  a six-agent re-review (Agent A–F, including a full audit of all 37 chain
-  scripts) plus a meta-level pass, cross-validation and two-stage
-  adjudication produced **132 findings (28 P0 + 104 P1)**; all of them are
-  closed in this file, including the C-tier items that required editing and
-  re-running the scripts and back-filling the resulting numbers
-  (`../review_workspace/c_tier_rerun_report_E_v2.md`,
-  `../review_workspace/modification_log_E_v2.md`). 60 pp, compiles with
-  0 errors / 0 undefined references / 0 `Float too large`. Substantive
-  changes vs v1: the substrate is described as what it is (a *recurrent
-  relaxation reservoir*, a physics-inspired numerical model, not a spiking
-  device), a `Statistics and reporting conventions` paragraph fixes the
-  statistical contract (n=10, sample SD with the n−1 denominator, paired t
-  with df=9), s63/s64 were promoted from Discussion into Results as R7/R8,
-  the appendix theorem index became a classified *findings and empirical
-  claims index*, and the numbers that changed after the C-tier reruns were
-  back-filled (κ peak at 20 vs deployed 25, the 11-point D2 ratio sweep,
-  +15.0 pp for the adaptive τ₂, the s60 window comparison, and the s53
-  raw-feature capacity band). `PAPER_E_v1.tex` is kept unchanged as the
-  reviewed baseline.
-- [`PAPER_E_v3.tex`](PAPER_E_v3.tex) / [`PAPER_E_v3.pdf`](PAPER_E_v3.pdf) —
+- **Current manuscript:** `PAPER_E.tex` / `PAPER_E.pdf`
+- Submission forms: `COVER_LETTER.docx`, `Highlights.docx`,
+  `DECLARATION_OF_INTERESTS.docx`, `VITAE.docx`,
+  `Supplementary_Material_PaperE.zip`
+- Historical sources (pre-rename `PAPER_E`, `PAPER_E_v1.*`, `PAPER_E_v2.*`)
+  and internal notes were removed on 2026-09-17 (git history retains
+  the tracked ones)
+- `deps/` — frozen substrate used by s39–s65
+- [`PAPER_E.tex`](PAPER_E.tex) / [`PAPER_E.pdf`](PAPER_E.pdf) —
   **current manuscript** (2026-09-10 stats/positioning repair, then
   2026-09-13 meta / clean-P0 wording, then 2026-09-13 autonomy/self
   expansion). v3 starts from the v2 text and makes
@@ -99,7 +79,7 @@ snapshot-gated memory in a recurrent relaxation reservoir*.
   (vi) **2026-09-13 clean-P0** (`modification_log_EF_clean_p0.md`):
   title retargeted to the retracted-claim-safe vocabulary (**sign-flip
   correction**, **reconstructed-label capacity sensing**, **snapshot-gated
-  memory**); cover letter and new `Highlights.txt` aligned; abstract
+  memory**); cover letter and new Highlights aligned; abstract
   compressed further; Discussion no longer claims a measured "genuine
   trade-off" for the too-fast EMA path.
   (vii) **2026-09-13 autonomy/self expansion**
@@ -108,35 +88,34 @@ snapshot-gated memory in a recurrent relaxation reservoir*.
   (s42/s58c controlled vs s47 retracted, not a negative), host portability
   (E=reservoir, D/F=SSM, G out of scope), and Limitations conditions (single
   substrate, single ±1 feedback budget, no embodied closed loop).
-  68 pp after the expansion; 0 LaTeX errors; the new display equation was
+  70 pp in the current PDF; 0 LaTeX errors; the new display equation was
   compacted after an initial 298 pt overfull. Compile with
-  `pdflatex PAPER_E_v3.tex` ×3 (`latexmk` is unavailable on this machine —
+  `pdflatex PAPER_E.tex` ×3 (`latexmk` is unavailable on this machine —
   MiKTeX cannot find its `perl` script engine).
   `Supplementary_Material_PaperE.zip` was rebuilt for v3 (manuscript =
-  `PAPER_E_v3.tex`, scripts s39–s65, 179 entries).
-  Change logs: [`../review_workspace/modification_log_E_v3.md`](../review_workspace/modification_log_E_v3.md),
-  [`../review_workspace/modification_log_EF_meta_20260913.md`](../review_workspace/modification_log_EF_meta_20260913.md),
-  [`../review_workspace/modification_log_EF_clean_p0.md`](../review_workspace/modification_log_EF_clean_p0.md).
-- [`COVER_LETTER.txt`](COVER_LETTER.txt) / [`COVER_LETTER.docx`](COVER_LETTER.docx)
+  `PAPER_E.tex`, scripts s39–s65, 179 entries).
+  Change logs (local only): `../review_workspace/modification_log_E_v3.md`,
+  `../review_workspace/modification_log_EF_meta_20260913.md`,
+  `../review_workspace/modification_log_EF_clean_p0.md`.
+- `COVER_LETTER.docx` (submission artifact; single source of truth)
   — cover letter for Neurocomputing (plain-text source of truth + Word
   render; regenerate with `python ../scripts/gen_cover_letter_docx.py paper_e COVER_LETTER`).
-- [`Highlights.txt`](Highlights.txt) / [`Highlights.docx`](Highlights.docx) —
-  Elsevier Highlights (5 bullets, lengths **74/80/76/84/77**, all ≤85),
-  regenerated 2026-09-13 against the corrected title/abstract (the previous
-  docx still said “spiking substrate” / per-dimension correction). Regenerate
-  with `python ../scripts/gen_cover_letter_docx.py paper_e Highlights`.
-- [`DECLARATION_OF_INTERESTS.docx`](DECLARATION_OF_INTERESTS.docx) —  Elsevier declaration-of-interests form for Neurocomputing (no competing
+- `Highlights.docx` (submission artifact; single source of truth) —
+  Elsevier Highlights, **bullets only** (5 bullets, lengths
+  **75/77/67/82/78**, all ≤85). Regenerate the docx with
+  `node ../review_workspace/gen_highlights_docx.js paper_e`.
+- `DECLARATION_OF_INTERESTS.docx` (local only) —  Elsevier declaration-of-interests form for Neurocomputing (no competing
   interests; date 2026-09-09), same layout as paper_a/b/c.
-- [`Supplementary_Material_PaperE.zip`](Supplementary_Material_PaperE.zip) —  self-contained reproduction package (manuscript, scripts s39–s65, frozen
+- `Supplementary_Material_PaperE.zip` (local only) —  self-contained reproduction package (manuscript, scripts s39–s65, frozen
   `deps/`, committed data, figures, README) mirroring the paper_a–d
   supplementary zips; staging lives at `../review_workspace/_zip_build_E/`.
-  Rebuilt for v3 (manuscript = `PAPER_E_v3.tex`; scripts 34 incl. `s65`;
+  Rebuilt for v3 (manuscript = `PAPER_E.tex`; scripts 34 incl. `s65`;
   post-rerun committed full-run files plus the
   `s58b_trace_seed4.json` trace and refreshed s60 products).
-- [`VITAE.txt`](VITAE.txt) / [`VITAE.docx`](VITAE.docx) — author biography
+- `VITAE.docx` (submission artifact) — author biography
   (82 words ≤100), Times New Roman; regenerate with
   `node ../review_workspace/gen_vitae_E.js`.
-- [`../submission/Suggested_Reviewers_E.txt`](../submission/Suggested_Reviewers_E.txt)
+- `../submission/Suggested_Reviewers_E.txt` (local only)
   — five real, field-matched candidate reviewers (reservoir computing /
   reward-modulated plasticity / memory consolidation / continual learning),
   each a cited author in the manuscript, with affiliation + e-mail + match
@@ -175,9 +154,9 @@ snapshot-gated memory in a recurrent relaxation reservoir*.
   `s58a`/`s58d` (CORE constants imported instead of hard-coded), and
   `gen_fig_self_evolution.py` (per-file data map, error bars and sample
   sizes, f6 tick 0.24, f1 shading 0–120).
-- [`self_evolution_mainline.md`](self_evolution_mainline.md) — the
-  research-narrative / provenance companion (how the claims were derived);
-  the paper itself is `PAPER_E_v3.tex`.
+- Research-narrative companion `self_evolution_mainline.md` was removed
+  on 2026-09-17 (git history retains it); the paper itself is
+  `PAPER_E.tex`.
 - Figures (in `../figures/`, generated by `../scripts/gen_fig_self_evolution.py`):
   `self_evo_f1_reliability_cliff.pdf` (R4/s58b), `self_evo_f2_margin_kappa_N.pdf`
   (R2/s58d), `self_evo_f3_d2_threshold.pdf` (R6/s58e),
@@ -193,14 +172,19 @@ snapshot-gated memory in a recurrent relaxation reservoir*.
 
 ## Reproduction
 
-Every chain script lives in `../scripts/` (`s39_*` – `s64_*`) and imports
+Every chain script lives in `../scripts/` (`s39_*` – `s65_*`, plus the
+2026-09-18 follow-up `s64b_weak_source_reliability.py`) and imports
 the frozen `deps/` modules here (they shadow the shared core). Run from the
-repo root, e.g.:
+**repo root** with **repository-relative paths** (forward slashes). `python`
+may be `.venv/Scripts/python.exe` (Windows) or `.venv/bin/python` (POSIX):
 
-```powershell
-$env:PYTHONUNBUFFERED=1; python scripts\s58e_d2_timescale.py
-$env:PYTHONUNBUFFERED=1; python scripts\s63_content_rendering.py --quick
-$env:PYTHONUNBUFFERED=1; python scripts\s64_multi_source_validation.py --quick
+```bash
+# from repo root
+PYTHONUNBUFFERED=1 python scripts/s58e_d2_timescale.py
+PYTHONUNBUFFERED=1 python scripts/s63_content_rendering.py --quick
+PYTHONUNBUFFERED=1 python scripts/s64_multi_source_validation.py --quick
+# s64 follow-up: intermediate-reliability cells → data/s64b_weak_source_reliability_v1.{csv,json}
+PYTHONUNBUFFERED=1 python scripts/s64b_weak_source_reliability.py --quick
 ```
 
 The chain scripts accept `--quick` (a 2-seed screening run) and nothing else;
@@ -251,14 +235,14 @@ and appendix index cite it as s64.
   changes): `../review_workspace/modification_log_scripts.md`
 - Headline registry and reproduction commands: `../README_REDEM.md`
 
-## Retracted claims and honest negatives (must match PAPER_E_v3)
+## Retracted claims and honest negatives (must match PAPER_E)
 
 These are **not** headline results. Do not re-advertise them in series
 README tables or cover letters.
 
 | Item | Status in v3 | Evidence |
 |---|---|---|
-| **Structural (per-dimension) gain correction required** | **RETRACTED — not a negative result.** The only correction the stack demonstrates is a uniform sign flip $w\to-w$, which is *not* a per-dimension gain (`PAPER_E_v3.tex` ~L805–811, ~L171–173; Discussion names s47 a retracted design attempt). | `s47_self_correction_gain` script-level **P2 [REFUTED by own data]**, P3 **[NOT VERIFIABLE]**; **no number from s47 is cited in the manuscript**. Do not mix with controlled negatives s42/s58c. |
+| **Structural (per-dimension) gain correction required** | **RETRACTED — not a negative result.** The only correction the stack demonstrates is a uniform sign flip $w\to-w$, which is *not* a per-dimension gain (`PAPER_E.tex` ~L805–811, ~L171–173; Discussion names s47 a retracted design attempt). | `s47_self_correction_gain` script-level **P2 [REFUTED by own data]**, P3 **[NOT VERIFIABLE]**; **no number from s47 is cited in the manuscript**. Do not mix with controlled negatives s42/s58c. |
 | **s42 corrupt reward (D4)** | **Honest negative (controlled), reported.** Corrupted-window accuracy $0.106\pm0.014$ / $0.064\pm0.008$; 3.0 vs 1.0 flips. Self-deception: polluted reward is not self-detectable. | `s42_corrupt_signal`, Discussion + reproducibility index |
 | **s58c multi-level expansion** | **Scoped positive + honest negative.** L1 10/10, L2 5/10, ring/cubic rung **refused**; ladder capped at level 2. Memory *masks* divergence (does not prevent it): both arms measure weight norm; worker divergence identical; 0.801 vs 0.504. | `s58c_multi_level_expansion`, Discussion |
 | **Series README `README.md:112`** | Must not list per-dimension correction as a core result. | Fixed 2026-09-13 in the root table |
@@ -287,7 +271,7 @@ README tables or cover letters.
 - [x] Frozen self-contained deps/ (shared core reverted to A–D canonical)
 - [x] v1 review round closed (PAPER_E_v1.tex/.pdf, 23 pp; suffix `_E_v1` in `../review_workspace/`)
 - [x] **v2 deep review round closed** (PAPER_E_v2.tex/.pdf, 60 pp): six-agent + meta-level review, 132 findings (28 P0 + 104 P1) all closed, C-tier scripts edited and re-run, numbers back-filled, six figures re-audited
-- [x] **v3 closed** (PAPER_E_v3.tex/.pdf, 68 pp): significance repairs, EWC baseline, supplementary rebuilt for v3
+- [x] **v3 closed** (PAPER_E.tex/.pdf, 70 pp current): significance repairs, EWC baseline, supplementary rebuilt for v3
 - [x] **2026-09-13 meta + clean-P0**: title/abstract/cover letter/Highlights aligned to retracted-claim-safe vocabulary; abstract 283 words
       (LaTeX and math stripped) — Neurocomputing states no abstract word limit
 - [x] **2026-09-13 autonomy/self expansion**: Discussion gains operational-self formalization, graded negatives (s42/s58c controlled; s47 retracted), host scoping; cover letter/Highlights re-aligned (s47 no longer "honest negative"); supplementary zip manuscript entry refreshed
@@ -309,5 +293,96 @@ still points at a nonexistent `PAPER_E_v4.tex`; external comparison remains
 one method deep (EWC only — no reservoir-specific online learner, no
 matched-budget supervised baseline; that boundary is in Limitations).
 
-Author review: `Highlights.txt` was newly drafted on 2026-09-13 (no prior
+Author review: the Highlights were newly drafted on 2026-09-13 (no prior
 txt source); adjust the five bullets there, then regenerate the docx.
+
+## Data provenance
+
+<!-- BEGIN PROVENANCE (generated by scripts/provenance_map.py) -->
+
+Claims registered for Paper E (includes shared anchors where relevant). Every registered headline quantity maps to a committed artefact expression. Generated by `scripts/provenance_map.py` from `scripts/claims_registry.json` — do not hand-edit it.
+
+- claim call sites: **67**
+
+| paper | section | manuscript quantity | where | produced by |
+|---|---|---|---|---|
+| E | R5 | frozen-hypothesis memory mean acc | abstract / Paper E | `0.888019` |
+| E | R5 | re-adaptation / rls_single mean acc | Paper E | `0.837625` |
+| E | R5 | frozen-snapshot retention gain (pp) | abstract / Paper E / s65 | `8.7` |
+| E | EWC | EWC whole-run accuracy change (pp) | abstract / Paper E | `-0.851951` |
+| E | EWC | EWC whole-run paired t | Paper E | `-3.87059` |
+| E | EWC | s65 reference arm bit-matches s52 (max abs diff) | reproduction_check | `0` |
+| E | R5 | cross-family ring gain paired t (corrected) | Paper E / MAINTENANCE | `2.44949` |
+| E | R1 | post-inversion flip acc uncoupled | abstract / Paper E | `0.898` |
+| E | R1 | post-inversion flip acc coupled | abstract / Paper E | `0.93875` |
+| E | R1 | oracle post-inversion acc uncoupled | Paper E | `0.975` |
+| E | R1 | oracle post-inversion acc coupled | Paper E | `1` |
+| E | R1 | first-flip latency (blocks after inversion) | Paper E | `39` |
+| E | R1 | learned flip value v (post-flip contrast) | Paper E | `0.503762` |
+| E | R1 | stable-stream whole-run acc uncoupled (bit-identical no-meta) | Paper E | `0.897925` |
+| E | R1 | stable-stream whole-run acc coupled (bit-identical no-meta) | Paper E | `0.938241` |
+| E | R1 | R1 zoo coupled full-swap rmhl post | Paper E / Table tab:zoo | `0.058` |
+| E | R1 | R1 zoo coupled full-swap flip post | Paper E / Table tab:zoo | `0.942` |
+| E | R1 | R1 zoo coupled near-inversion rmhl post | Paper E / Table tab:zoo | `0.053` |
+| E | R1 | R1 zoo coupled near-inversion flip post | Paper E / Table tab:zoo | `0.947` |
+| E | R1 | R1 zoo partial-shift flip post-window | Paper E / Table tab:zoo | `0.48475` |
+| E | R1 | R1 zoo partial-shift flip steady | Paper E / Table tab:zoo | `0.508` |
+| E | R1 | R1 zoo partial-shift flip mean flips | Paper E / Table tab:zoo | `2.7` |
+| E | R1 | corrupt-window acc uncoupled (honest negative) | Paper E | `0.106` |
+| E | R1 | corrupt-window acc coupled (honest negative) | Paper E | `0.064` |
+| E | R1 | rule-adjudication delta pre-swap uncoupled | Paper E | `0.99` |
+| E | R1 | rule-adjudication delta steady uncoupled | Paper E | `0.989` |
+| E | R1 | rule-adjudication RMHL post-swap uncoupled | Paper E | `0.0965` |
+| E | R2 | raw capacity probe coupled (circle) | Paper E | `0.841441` |
+| E | R2 | raw capacity probe uncoupled (circle) | Paper E | `0.546843` |
+| E | R2 | RLS acc 4D shell2 (two-shell) | Paper E | `0.546798` |
+| E | R2 | RLS acc 4D shell3 (three-shell) | Paper E | `0.559027` |
+| E | R2 | 4D-shell margin at N=64 | Paper E | `0.034` |
+| E | R2 | 4D-shell margin at N=256 | Paper E | `0.0995` |
+| E | R2 | 4D-shell margin at N=512 | Paper E | `0.107` |
+| E | R2 | 4D-shell margin at kappa=20 (sampled peak) | Paper E | `0.1185` |
+| E | R2 | 4D-shell margin at deployed kappa=25 | Paper E | `0.0995` |
+| E | R2 | 2D-circle margin flat across N (N=64) | Paper E | `0.401` |
+| E | R3 | per-segment memory gain seg1_acc (pp) | Paper E | `4.15` |
+| E | R3 | per-segment memory gain paired t seg1_acc | Paper E | `2.72314` |
+| E | R3 | per-segment memory gain seg2_acc (pp) | Paper E | `3.6` |
+| E | R3 | per-segment memory gain paired t seg2_acc | Paper E | `2.7309` |
+| E | R3 | per-segment memory gain seg3_acc (pp) | Paper E | `2.55` |
+| E | R3 | per-segment memory gain paired t seg3_acc | Paper E | `2.0214` |
+| E | R3 | per-segment memory gain seg4_acc (pp) | Paper E | `14.85` |
+| E | R3 | per-segment memory gain paired t seg4_acc | Paper E | `11.4637` |
+| E | R3 | population control (no frozen snapshot) mean acc | Paper E | `0.838739` |
+| E | R4 | sense reliability ABAB SEG=500 | Paper E | `0.9` |
+| E | R4 | sense reliability ABAB SEG=250 | Paper E | `0.27` |
+| E | R4 | sense reliability ABAB SEG=125 (cliff floor) | Paper E | `0` |
+| E | R5 | learned snapshot gate v_snap final (dynamic) | Paper E | `0.252` |
+| E | R5 | memory selection fraction (dynamic) | Paper E | `0.22695` |
+| E | R6 | D2 post-swap at ratio 0.25 (fail band) | Paper E | `0.486161` |
+| E | R6 | D2 post-swap at ratio 1.0 (intermediate) | Paper E | `0.561438` |
+| E | R6 | D2 post-swap at ratio 1.25 (band interior) | Paper E | `0.791466` |
+| E | R6 | D2 post-swap at ratio 1.5 (band interior) | Paper E | `0.849878` |
+| E | R6 | D2 post-swap at ratio 1.75 (band interior) | Paper E | `0.909436` |
+| E | R6 | D2 post-swap at ratio 2.0 (complete recovery) | Paper E | `0.937509` |
+| E | R7 | single-speaker linear acc | Paper E | `0.937713` |
+| E | R7 | A-B-A-B linear acc (switch_every=200) | Paper E | `0.899586` |
+| E | R7 | A-B-A-B memory-recovered acc | Paper E | `0.912895` |
+| E | R7 | capacity probe single-speaker | Paper E | `0.9493` |
+| E | R7 | capacity probe A-B-A-B | Paper E | `0.9003` |
+| E | R8 | minority-good majority-rule acc | Paper E / Table tab:multisource | `0.683686` |
+| E | R8 | minority-good validation-selector acc | Paper E / Table tab:multisource | `1` |
+| E | R8 | drifting majority-rule acc | Paper E / Table tab:multisource | `0.680815` |
+| E | R8 | drifting validation-selector acc | Paper E / Table tab:multisource | `0.991307` |
+| E | R8 | all-bad majority-rule acc (no source to trust) | Paper E | `0.493634` |
+
+Register new numbers in `scripts/verify_claims.py`, re-run `run_all_audits.py`, then let this script rewrite the block.
+<!-- END PROVENANCE -->
+
+
+
+
+
+
+
+
+
+

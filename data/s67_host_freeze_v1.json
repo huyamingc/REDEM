@@ -58,7 +58,7 @@
     "worst_rel": 0.0,
     "mismatches": []
   },
-  "elapsed_s": 8457.125263929367,
+  "elapsed_s": 1287.7968573570251,
   "results": [
     {
       "arm": "F-B-softmax-sgd",
@@ -77,7 +77,7 @@
       "n_params_gate": 0,
       "n_params_host": 0,
       "pretrain_end_tokens": 0,
-      "runtime_s": 33.88247489929199
+      "runtime_s": 2.5013315677642822
     },
     {
       "arm": "F-B-softmax-sgd",
@@ -96,7 +96,7 @@
       "n_params_gate": 0,
       "n_params_host": 0,
       "pretrain_end_tokens": 0,
-      "runtime_s": 35.71440315246582
+      "runtime_s": 2.3857662677764893
     },
     {
       "arm": "F-B-softmax-sgd",
@@ -115,7 +115,7 @@
       "n_params_gate": 0,
       "n_params_host": 0,
       "pretrain_end_tokens": 0,
-      "runtime_s": 38.43169617652893
+      "runtime_s": 2.3702993392944336
     },
     {
       "arm": "F-B-softmax-sgd",
@@ -134,7 +134,7 @@
       "n_params_gate": 0,
       "n_params_host": 0,
       "pretrain_end_tokens": 0,
-      "runtime_s": 37.35564827919006
+      "runtime_s": 2.593287944793701
     },
     {
       "arm": "F-B-softmax-sgd",
@@ -153,7 +153,7 @@
       "n_params_gate": 0,
       "n_params_host": 0,
       "pretrain_end_tokens": 0,
-      "runtime_s": 38.85308790206909
+      "runtime_s": 2.378448724746704
     },
     {
       "arm": "F-B-softmax-sgd",
@@ -172,7 +172,7 @@
       "n_params_gate": 0,
       "n_params_host": 0,
       "pretrain_end_tokens": 0,
-      "runtime_s": 27.56376624107361
+      "runtime_s": 2.4086101055145264
     },
     {
       "arm": "F-B-softmax-sgd",
@@ -191,7 +191,7 @@
       "n_params_gate": 0,
       "n_params_host": 0,
       "pretrain_end_tokens": 0,
-      "runtime_s": 44.11938738822937
+      "runtime_s": 2.407111406326294
     },
     {
       "arm": "F-B-softmax-sgd",
@@ -210,7 +210,7 @@
       "n_params_gate": 0,
       "n_params_host": 0,
       "pretrain_end_tokens": 0,
-      "runtime_s": 40.626176834106445
+      "runtime_s": 2.4145355224609375
     },
     {
       "arm": "F-B-softmax-sgd",
@@ -229,7 +229,7 @@
       "n_params_gate": 0,
       "n_params_host": 0,
       "pretrain_end_tokens": 0,
-      "runtime_s": 38.214478969573975
+      "runtime_s": 2.4250130653381348
     },
     {
       "arm": "F-B-softmax-sgd",
@@ -248,7 +248,7 @@
       "n_params_gate": 0,
       "n_params_host": 0,
       "pretrain_end_tokens": 0,
-      "runtime_s": 39.7516725063324
+      "runtime_s": 2.291304111480713
     },
     {
       "arm": "F-Gate-C-topk-softmax",
@@ -267,7 +267,7 @@
       "n_params_gate": 16512,
       "n_params_host": 0,
       "pretrain_end_tokens": 0,
-      "runtime_s": 59.275800704956055
+      "runtime_s": 8.663874387741089
     },
     {
       "arm": "F-Gate-C-topk-softmax",
@@ -286,7 +286,7 @@
       "n_params_gate": 16512,
       "n_params_host": 0,
       "pretrain_end_tokens": 0,
-      "runtime_s": 89.7203414440155
+      "runtime_s": 8.526003360748291
     },
     {
       "arm": "F-Gate-C-topk-softmax",
@@ -305,7 +305,7 @@
       "n_params_gate": 16512,
       "n_params_host": 0,
       "pretrain_end_tokens": 0,
-      "runtime_s": 85.63682556152344
+      "runtime_s": 8.533431768417358
     },
     {
       "arm": "F-Gate-C-topk-softmax",
@@ -324,7 +324,7 @@
       "n_params_gate": 16512,
       "n_params_host": 0,
       "pretrain_end_tokens": 0,
-      "runtime_s": 85.82174563407898
+      "runtime_s": 9.328108549118042
     },
     {
       "arm": "F-Gate-C-topk-softmax",
@@ -343,7 +343,7 @@
       "n_params_gate": 16512,
       "n_params_host": 0,
       "pretrain_end_tokens": 0,
-      "runtime_s": 72.78788948059082
+      "runtime_s": 8.813148736953735
     },
     {
       "arm": "F-Gate-C-topk-softmax",
@@ -362,7 +362,7 @@
       "n_params_gate": 16512,
       "n_params_host": 0,
       "pretrain_end_tokens": 0,
-      "runtime_s": 65.80005812644958
+      "runtime_s": 9.429692506790161
     },
     {
       "arm": "F-Gate-C-topk-softmax",
@@ -381,7 +381,7 @@
       "n_params_gate": 16512,
       "n_params_host": 0,
       "pretrain_end_tokens": 0,
-      "runtime_s": 65.6170265674591
+      "runtime_s": 8.411758184432983
     },
     {
       "arm": "F-Gate-C-topk-softmax",
@@ -400,7 +400,7 @@
       "n_params_gate": 16512,
       "n_params_host": 0,
       "pretrain_end_tokens": 0,
-      "runtime_s": 65.59334087371826
+      "runtime_s": 10.516698122024536
     },
     {
       "arm": "F-Gate-C-topk-softmax",
@@ -419,7 +419,7 @@
       "n_params_gate": 16512,
       "n_params_host": 0,
       "pretrain_end_tokens": 0,
-      "runtime_s": 63.19497632980347
+      "runtime_s": 11.928909063339233
     },
     {
       "arm": "F-Gate-C-topk-softmax",
@@ -438,7 +438,7 @@
       "n_params_gate": 16512,
       "n_params_host": 0,
       "pretrain_end_tokens": 0,
-      "runtime_s": 63.78677248954773
+      "runtime_s": 8.000727653503418
     },
     {
       "arm": "X67-online",
@@ -457,7 +457,7 @@
       "n_params_gate": 0,
       "n_params_host": 24864,
       "pretrain_end_tokens": 0,
-      "runtime_s": 138.5235230922699
+      "runtime_s": 23.766857862472534
     },
     {
       "arm": "X67-online",
@@ -476,7 +476,7 @@
       "n_params_gate": 0,
       "n_params_host": 24864,
       "pretrain_end_tokens": 0,
-      "runtime_s": 157.8282814025879
+      "runtime_s": 25.007322549819946
     },
     {
       "arm": "X67-online",
@@ -495,7 +495,7 @@
       "n_params_gate": 0,
       "n_params_host": 24864,
       "pretrain_end_tokens": 0,
-      "runtime_s": 134.53059434890747
+      "runtime_s": 30.387065410614014
     },
     {
       "arm": "X67-online",
@@ -514,7 +514,7 @@
       "n_params_gate": 0,
       "n_params_host": 24864,
       "pretrain_end_tokens": 0,
-      "runtime_s": 182.3682599067688
+      "runtime_s": 24.982317209243774
     },
     {
       "arm": "X67-online",
@@ -533,7 +533,7 @@
       "n_params_gate": 0,
       "n_params_host": 24864,
       "pretrain_end_tokens": 0,
-      "runtime_s": 159.67460751533508
+      "runtime_s": 26.16415238380432
     },
     {
       "arm": "X67-online",
@@ -552,7 +552,7 @@
       "n_params_gate": 0,
       "n_params_host": 24864,
       "pretrain_end_tokens": 0,
-      "runtime_s": 139.76258969306946
+      "runtime_s": 28.019570112228394
     },
     {
       "arm": "X67-online",
@@ -571,7 +571,7 @@
       "n_params_gate": 0,
       "n_params_host": 24864,
       "pretrain_end_tokens": 0,
-      "runtime_s": 129.38945126533508
+      "runtime_s": 23.93711280822754
     },
     {
       "arm": "X67-online",
@@ -590,7 +590,7 @@
       "n_params_gate": 0,
       "n_params_host": 24864,
       "pretrain_end_tokens": 0,
-      "runtime_s": 154.8963017463684
+      "runtime_s": 23.1100172996521
     },
     {
       "arm": "X67-online",
@@ -609,7 +609,7 @@
       "n_params_gate": 0,
       "n_params_host": 24864,
       "pretrain_end_tokens": 0,
-      "runtime_s": 184.54234147071838
+      "runtime_s": 22.83269190788269
     },
     {
       "arm": "X67-online",
@@ -628,7 +628,7 @@
       "n_params_gate": 0,
       "n_params_host": 24864,
       "pretrain_end_tokens": 0,
-      "runtime_s": 171.54831433296204
+      "runtime_s": 22.97358512878418
     },
     {
       "arm": "X67-pretrained-frozen",
@@ -647,7 +647,7 @@
       "n_params_gate": 0,
       "n_params_host": 24864,
       "pretrain_end_tokens": 3000,
-      "runtime_s": 97.39360499382019
+      "runtime_s": 19.404542684555054
     },
     {
       "arm": "X67-pretrained-frozen",
@@ -666,7 +666,7 @@
       "n_params_gate": 0,
       "n_params_host": 24864,
       "pretrain_end_tokens": 3000,
-      "runtime_s": 121.26313328742981
+      "runtime_s": 19.891820907592773
     },
     {
       "arm": "X67-pretrained-frozen",
@@ -685,7 +685,7 @@
       "n_params_gate": 0,
       "n_params_host": 24864,
       "pretrain_end_tokens": 3000,
-      "runtime_s": 141.71398282051086
+      "runtime_s": 19.510918140411377
     },
     {
       "arm": "X67-pretrained-frozen",
@@ -704,7 +704,7 @@
       "n_params_gate": 0,
       "n_params_host": 24864,
       "pretrain_end_tokens": 3000,
-      "runtime_s": 132.4981393814087
+      "runtime_s": 19.462395906448364
     },
     {
       "arm": "X67-pretrained-frozen",
@@ -723,7 +723,7 @@
       "n_params_gate": 0,
       "n_params_host": 24864,
       "pretrain_end_tokens": 3000,
-      "runtime_s": 119.15026187896729
+      "runtime_s": 19.21206784248352
     },
     {
       "arm": "X67-pretrained-frozen",
@@ -742,7 +742,7 @@
       "n_params_gate": 0,
       "n_params_host": 24864,
       "pretrain_end_tokens": 3000,
-      "runtime_s": 127.14516353607178
+      "runtime_s": 19.16468620300293
     },
     {
       "arm": "X67-pretrained-frozen",
@@ -761,7 +761,7 @@
       "n_params_gate": 0,
       "n_params_host": 24864,
       "pretrain_end_tokens": 3000,
-      "runtime_s": 119.27333688735962
+      "runtime_s": 19.39365005493164
     },
     {
       "arm": "X67-pretrained-frozen",
@@ -780,7 +780,7 @@
       "n_params_gate": 0,
       "n_params_host": 24864,
       "pretrain_end_tokens": 3000,
-      "runtime_s": 108.02280163764954
+      "runtime_s": 19.47246265411377
     },
     {
       "arm": "X67-pretrained-frozen",
@@ -799,7 +799,7 @@
       "n_params_gate": 0,
       "n_params_host": 24864,
       "pretrain_end_tokens": 3000,
-      "runtime_s": 168.15757393836975
+      "runtime_s": 19.284311294555664
     },
     {
       "arm": "X67-pretrained-frozen",
@@ -818,7 +818,7 @@
       "n_params_gate": 0,
       "n_params_host": 24864,
       "pretrain_end_tokens": 3000,
-      "runtime_s": 136.52562737464905
+      "runtime_s": 19.58868646621704
     },
     {
       "arm": "X67-pretrained-frozen-topk",
@@ -837,7 +837,7 @@
       "n_params_gate": 16512,
       "n_params_host": 24864,
       "pretrain_end_tokens": 3000,
-      "runtime_s": 149.2415840625763
+      "runtime_s": 26.279571294784546
     },
     {
       "arm": "X67-pretrained-frozen-topk",
@@ -856,7 +856,7 @@
       "n_params_gate": 16512,
       "n_params_host": 24864,
       "pretrain_end_tokens": 3000,
-      "runtime_s": 145.38124251365662
+      "runtime_s": 26.480093002319336
     },
     {
       "arm": "X67-pretrained-frozen-topk",
@@ -875,7 +875,7 @@
       "n_params_gate": 16512,
       "n_params_host": 24864,
       "pretrain_end_tokens": 3000,
-      "runtime_s": 201.54048657417297
+      "runtime_s": 26.145820379257202
     },
     {
       "arm": "X67-pretrained-frozen-topk",
@@ -894,7 +894,7 @@
       "n_params_gate": 16512,
       "n_params_host": 24864,
       "pretrain_end_tokens": 3000,
-      "runtime_s": 185.98894691467285
+      "runtime_s": 26.456931829452515
     },
     {
       "arm": "X67-pretrained-frozen-topk",
@@ -913,7 +913,7 @@
       "n_params_gate": 16512,
       "n_params_host": 24864,
       "pretrain_end_tokens": 3000,
-      "runtime_s": 201.0695195198059
+      "runtime_s": 26.146642684936523
     },
     {
       "arm": "X67-pretrained-frozen-topk",
@@ -932,7 +932,7 @@
       "n_params_gate": 16512,
       "n_params_host": 24864,
       "pretrain_end_tokens": 3000,
-      "runtime_s": 196.87835907936096
+      "runtime_s": 34.85449743270874
     },
     {
       "arm": "X67-pretrained-frozen-topk",
@@ -951,7 +951,7 @@
       "n_params_gate": 16512,
       "n_params_host": 24864,
       "pretrain_end_tokens": 3000,
-      "runtime_s": 177.55277562141418
+      "runtime_s": 31.285969257354736
     },
     {
       "arm": "X67-pretrained-frozen-topk",
@@ -970,7 +970,7 @@
       "n_params_gate": 16512,
       "n_params_host": 24864,
       "pretrain_end_tokens": 3000,
-      "runtime_s": 211.0586314201355
+      "runtime_s": 28.749868154525757
     },
     {
       "arm": "X67-pretrained-frozen-topk",
@@ -989,7 +989,7 @@
       "n_params_gate": 16512,
       "n_params_host": 24864,
       "pretrain_end_tokens": 3000,
-      "runtime_s": 183.2601490020752
+      "runtime_s": 28.26063346862793
     },
     {
       "arm": "X67-pretrained-frozen-topk",
@@ -1008,7 +1008,7 @@
       "n_params_gate": 16512,
       "n_params_host": 24864,
       "pretrain_end_tokens": 3000,
-      "runtime_s": 192.3617548942566
+      "runtime_s": 29.909013509750366
     },
     {
       "arm": "X67-random-frozen",
@@ -1027,7 +1027,7 @@
       "n_params_gate": 0,
       "n_params_host": 24864,
       "pretrain_end_tokens": 0,
-      "runtime_s": 82.00542068481445
+      "runtime_s": 18.6159725189209
     },
     {
       "arm": "X67-random-frozen",
@@ -1046,7 +1046,7 @@
       "n_params_gate": 0,
       "n_params_host": 24864,
       "pretrain_end_tokens": 0,
-      "runtime_s": 120.2258288860321
+      "runtime_s": 19.042577981948853
     },
     {
       "arm": "X67-random-frozen",
@@ -1065,7 +1065,7 @@
       "n_params_gate": 0,
       "n_params_host": 24864,
       "pretrain_end_tokens": 0,
-      "runtime_s": 76.31595611572266
+      "runtime_s": 18.62663197517395
     },
     {
       "arm": "X67-random-frozen",
@@ -1084,7 +1084,7 @@
       "n_params_gate": 0,
       "n_params_host": 24864,
       "pretrain_end_tokens": 0,
-      "runtime_s": 80.1577787399292
+      "runtime_s": 18.297227382659912
     },
     {
       "arm": "X67-random-frozen",
@@ -1103,7 +1103,7 @@
       "n_params_gate": 0,
       "n_params_host": 24864,
       "pretrain_end_tokens": 0,
-      "runtime_s": 119.9764232635498
+      "runtime_s": 18.38968539237976
     },
     {
       "arm": "X67-random-frozen",
@@ -1122,7 +1122,7 @@
       "n_params_gate": 0,
       "n_params_host": 24864,
       "pretrain_end_tokens": 0,
-      "runtime_s": 80.934011220932
+      "runtime_s": 18.341083765029907
     },
     {
       "arm": "X67-random-frozen",
@@ -1141,7 +1141,7 @@
       "n_params_gate": 0,
       "n_params_host": 24864,
       "pretrain_end_tokens": 0,
-      "runtime_s": 101.96209645271301
+      "runtime_s": 18.331822156906128
     },
     {
       "arm": "X67-random-frozen",
@@ -1160,7 +1160,7 @@
       "n_params_gate": 0,
       "n_params_host": 24864,
       "pretrain_end_tokens": 0,
-      "runtime_s": 137.2068066596985
+      "runtime_s": 18.534876346588135
     },
     {
       "arm": "X67-random-frozen",
@@ -1179,7 +1179,7 @@
       "n_params_gate": 0,
       "n_params_host": 24864,
       "pretrain_end_tokens": 0,
-      "runtime_s": 86.36908268928528
+      "runtime_s": 18.519416332244873
     },
     {
       "arm": "X67-random-frozen",
@@ -1198,7 +1198,7 @@
       "n_params_gate": 0,
       "n_params_host": 24864,
       "pretrain_end_tokens": 0,
-      "runtime_s": 116.3057427406311
+      "runtime_s": 18.29996109008789
     },
     {
       "arm": "X67-random-frozen-topk",
@@ -1217,7 +1217,7 @@
       "n_params_gate": 16512,
       "n_params_host": 24864,
       "pretrain_end_tokens": 0,
-      "runtime_s": 175.5138976573944
+      "runtime_s": 25.453514575958252
     },
     {
       "arm": "X67-random-frozen-topk",
@@ -1236,7 +1236,7 @@
       "n_params_gate": 16512,
       "n_params_host": 24864,
       "pretrain_end_tokens": 0,
-      "runtime_s": 154.31296515464783
+      "runtime_s": 25.704031944274902
     },
     {
       "arm": "X67-random-frozen-topk",
@@ -1255,7 +1255,7 @@
       "n_params_gate": 16512,
       "n_params_host": 24864,
       "pretrain_end_tokens": 0,
-      "runtime_s": 141.97803735733032
+      "runtime_s": 25.391179084777832
     },
     {
       "arm": "X67-random-frozen-topk",
@@ -1274,7 +1274,7 @@
       "n_params_gate": 16512,
       "n_params_host": 24864,
       "pretrain_end_tokens": 0,
-      "runtime_s": 146.60641407966614
+      "runtime_s": 25.64592146873474
     },
     {
       "arm": "X67-random-frozen-topk",
@@ -1293,7 +1293,7 @@
       "n_params_gate": 16512,
       "n_params_host": 24864,
       "pretrain_end_tokens": 0,
-      "runtime_s": 190.12157702445984
+      "runtime_s": 25.82643747329712
     },
     {
       "arm": "X67-random-frozen-topk",
@@ -1312,7 +1312,7 @@
       "n_params_gate": 16512,
       "n_params_host": 24864,
       "pretrain_end_tokens": 0,
-      "runtime_s": 219.1337652206421
+      "runtime_s": 25.42873525619507
     },
     {
       "arm": "X67-random-frozen-topk",
@@ -1331,7 +1331,7 @@
       "n_params_gate": 16512,
       "n_params_host": 24864,
       "pretrain_end_tokens": 0,
-      "runtime_s": 153.37785005569458
+      "runtime_s": 26.24406909942627
     },
     {
       "arm": "X67-random-frozen-topk",
@@ -1350,7 +1350,7 @@
       "n_params_gate": 16512,
       "n_params_host": 24864,
       "pretrain_end_tokens": 0,
-      "runtime_s": 153.58072590827942
+      "runtime_s": 25.690749406814575
     },
     {
       "arm": "X67-random-frozen-topk",
@@ -1369,7 +1369,7 @@
       "n_params_gate": 16512,
       "n_params_host": 24864,
       "pretrain_end_tokens": 0,
-      "runtime_s": 180.08950757980347
+      "runtime_s": 25.521381378173828
     },
     {
       "arm": "X67-random-frozen-topk",
@@ -1388,7 +1388,7 @@
       "n_params_gate": 16512,
       "n_params_host": 24864,
       "pretrain_end_tokens": 0,
-      "runtime_s": 180.66246676445007
+      "runtime_s": 25.42824649810791
     }
   ]
 }

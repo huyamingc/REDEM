@@ -1,5 +1,0 @@
-A ±1-reward reservoir's only demonstrated correction is a uniform sign flip
-Credit assignment under ±1 reward is rule selection, not an information limit
-Decision-level autonomy is distinct from a minimal operational self
-Frozen hypothesis memory preserves solutions and learns its own snapshot threshold
-A measured timescale bound: the meta layer cannot act below the pipeline floor

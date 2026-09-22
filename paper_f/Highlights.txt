@@ -1,5 +1,0 @@
-Trained softmax readout removes the clip-floor metric artifact
-Post-hoc simplex projection does not repair a broken objective
-Hard top-k sparsity is required for selective gates to retain
-Expert routing cuts forgetting further at stream parity
-Gate beats a frozen selective-SSM baseline on stream, 10/10 seeds

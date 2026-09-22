@@ -17,6 +17,8 @@
       0.45,
       0.64
     ],
+    "sphere4d_radius": 0.57,
+    "circle2d_radius": 0.4,
     "configs": [
       {
         "env": "4Dshell",
@@ -234,12 +236,12 @@
       "n_runs": 10,
       "rls_mean_mean": 0.7262296173462979,
       "rls_mean_std": 0.02540374520635997,
-      "rls_steady_mean": 0.6984999999999999,
+      "rls_steady_mean": 0.6985,
       "rls_steady_std": 0.044500000000000005,
-      "probe_mean": 0.7568333333333334,
-      "probe_std": 0.0414892891131086,
-      "margin_rls": 0.1984999999999999,
-      "margin_probe": 0.25683333333333336
+      "probe_mean": 0.7568333333333332,
+      "probe_std": 0.04148928911310859,
+      "margin_rls": 0.1985,
+      "margin_probe": 0.25683333333333325
     },
     {
       "env": "2Dcircle",
@@ -288,7 +290,7 @@
       "kappa": 10.0,
       "n_units": 256,
       "n_runs": 10,
-      "rls_mean_mean": 0.502900315892973,
+      "rls_mean_mean": 0.5029003158929729,
       "rls_mean_std": 0.007867435162178506,
       "rls_steady_mean": 0.5207500000000002,
       "rls_steady_std": 0.03150495992697026,
@@ -305,7 +307,7 @@
       "rls_mean_mean": 0.5018359030145813,
       "rls_mean_std": 0.006100950017826749,
       "rls_steady_mean": 0.522,
-      "rls_steady_std": 0.033481338085566414,
+      "rls_steady_std": 0.03348133808556642,
       "probe_mean": 0.537,
       "probe_std": 0.022145980322497427,
       "margin_rls": 0.02200000000000002,
@@ -317,12 +319,12 @@
       "n_units": 256,
       "n_runs": 10,
       "rls_mean_mean": 0.5447737076630196,
-      "rls_mean_std": 0.013672988480600378,
-      "rls_steady_mean": 0.6184999999999998,
+      "rls_mean_std": 0.01367298848060038,
+      "rls_steady_mean": 0.6185,
       "rls_steady_std": 0.02898706608127149,
       "probe_mean": 0.5476666666666666,
       "probe_std": 0.02117650689902478,
-      "margin_rls": 0.11849999999999983,
+      "margin_rls": 0.11850000000000005,
       "margin_probe": 0.047666666666666635
     },
     {
@@ -344,13 +346,13 @@
       "kappa": 25.0,
       "n_units": 256,
       "n_runs": 10,
-      "rls_mean_mean": 0.5440408778059036,
+      "rls_mean_mean": 0.5440408778059037,
       "rls_mean_std": 0.009271728212175508,
-      "rls_steady_mean": 0.5995,
+      "rls_steady_mean": 0.5994999999999999,
       "rls_steady_std": 0.03423813663153999,
       "probe_mean": 0.5508333333333334,
-      "probe_std": 0.040188790587536834,
-      "margin_rls": 0.09950000000000003,
+      "probe_std": 0.04018879058753683,
+      "margin_rls": 0.09949999999999992,
       "margin_probe": 0.0508333333333334
     },
     {
@@ -359,7 +361,7 @@
       "n_units": 512,
       "n_runs": 10,
       "rls_mean_mean": 0.5571717746490659,
-      "rls_mean_std": 0.009451757917549534,
+      "rls_mean_std": 0.009451757917549533,
       "rls_steady_mean": 0.607,
       "rls_steady_std": 0.034655446902326914,
       "probe_mean": 0.5660000000000001,
@@ -372,14 +374,14 @@
       "kappa": 30.0,
       "n_units": 256,
       "n_runs": 10,
-      "rls_mean_mean": 0.5089560469446246,
+      "rls_mean_mean": 0.5089560469446245,
       "rls_mean_std": 0.012191157607606098,
       "rls_steady_mean": 0.49499999999999994,
       "rls_steady_std": 0.02664582518894847,
-      "probe_mean": 0.4995,
+      "probe_mean": 0.4995000000000001,
       "probe_std": 0.016667499979167718,
       "margin_rls": -0.00500000000000006,
-      "margin_probe": -0.0005000000000000004
+      "margin_probe": -0.0004999999999998894
     },
     {
       "env": "4Dshell",
@@ -387,11 +389,11 @@
       "n_units": 256,
       "n_runs": 10,
       "rls_mean_mean": 0.5015033576703416,
-      "rls_mean_std": 0.014420967613514088,
+      "rls_mean_std": 0.014420967613514087,
       "rls_steady_mean": 0.4995000000000001,
       "rls_steady_std": 0.019805302320338378,
       "probe_mean": 0.49116666666666664,
-      "probe_std": 0.025550059795537764,
+      "probe_std": 0.02555005979553776,
       "margin_rls": -0.0004999999999998894,
       "margin_probe": -0.00883333333333336
     },
@@ -418,10 +420,10 @@
       "rls_mean_std": 0.010278697989124331,
       "rls_steady_mean": 0.5095000000000001,
       "rls_steady_std": 0.0290215437218629,
-      "probe_mean": 0.5051666666666665,
+      "probe_mean": 0.5051666666666667,
       "probe_std": 0.013069259946743557,
       "margin_rls": 0.009500000000000064,
-      "margin_probe": 0.005166666666666542
+      "margin_probe": 0.005166666666666653
     }
   ]
 }
