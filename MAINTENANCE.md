@@ -185,6 +185,15 @@ availability and cites F; E v2 carries the concept-DOI companion wording. All
 three uploads byte-identical to the local PDFs. Concept DOIs unchanged; version
 DOIs (e.g. D v6 `10.5281/zenodo.22887905`) are recorded here only — never cite.
 
+Supplementary zips repack (2026-09-22): per-entry MD5 audit of
+`Supplementary_Material_Paper{D,E,F}.zip` found exactly one stale entry each —
+`manuscript/PAPER_*.tex` (zips carry no PDF). All scripts/data/figures entries
+were byte-identical to the repo. Repacked in place (old zips backed up under
+`review_workspace/zip_backup_20260922/`; zips are git-ignored). Post-repack
+audit: D 44/44, E 117/117, F 35/35 entries identical, 0 missing. Zip-root
+READMEs (E/F) carry no DOIs or dates — no update needed. These zips are for
+journal submission only; not uploaded to Zenodo by design.
+
 After filling a placeholder, recompile the PDF and re-run `run_all_audits.py`
 before the next deposit.
 
