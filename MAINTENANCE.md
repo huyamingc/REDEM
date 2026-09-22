@@ -216,6 +216,17 @@ clean temp dir and `pdflatex -interaction=nonstopmode` run from `manuscript/`
 E 71 pp, F 15 pp — page counts match the recorded package check (D 32 pp,
 E 71 pp). Zips are submission-ready.
 
+README path-claim verification (2026-09-22): every relative-path claim in the
+zips' READMEs was checked against the extracted layout, including dynamic
+import probes run from each extracted root (`sys.path.insert` + `import`):
+E deps chain (recurrent_substrate → shallow_trap_array_simulator +
+online_readout + streaming_tasks) OK; F s20→s19→per_token_io chain OK; D
+scripts imports OK. E tex `\graphicspath{{../figures/}}` matches its README's
+"figures resolve through ../figures/" (6 self_evo PDFs present). F's
+`s66_report.py` is a standalone reporter not called by `s66`, so its absence
+from the README command list is correct. All READMEs are UTF-8 (earlier
+mojibake was a console display artifact only). No path claim is stale.
+
 After filling a placeholder, recompile the PDF and re-run `run_all_audits.py`
 before the next deposit.
 
