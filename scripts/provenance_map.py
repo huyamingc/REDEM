@@ -68,6 +68,9 @@ def replace_block(path: Path, block: str) -> bool:
             text += "\n"
         new = text + "\n## Data provenance\n\n" + block
     if new != text:
+        # Normalize the file tail: the suffix after END accumulates blank
+        # lines on every rewrite (block already ends with a newline).
+        new = new.rstrip("\n") + "\n"
         path.write_text(new, encoding="utf-8")
         return True
     return False

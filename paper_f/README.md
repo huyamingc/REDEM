@@ -190,20 +190,3 @@ Claims registered for Paper F (includes shared anchors where relevant). Every re
 
 Register new numbers in `scripts/verify_claims.py`, re-run `run_all_audits.py`, then let this script rewrite the block.
 <!-- END PROVENANCE -->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
