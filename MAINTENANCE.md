@@ -241,6 +241,15 @@ nor data in the zip. Added `scripts/s38_ssm_p4_m3m4_ablation.py`,
 Post-fix: closure 19/19 py, consistency 51/0, 52 entries. The repo copy
 `paper_d/README.md` is unchanged.
 
+E zip copy incident (2026-09-22): `paper_e/README.md` (repo view, 25.9 kB)
+was pasted twice into the E zip — overwriting the package README at the root
+and adding a stray `manuscript/README.md`. Restored the original 1.9 kB
+package README from the morning backup (`review_workspace/zip_backup_20260922/`,
+verified byte-level: 1899 chars, em-dash intact) and removed the stray copy.
+Post-fix: 117 entries, CRC OK, md5 `3D3B79A2AEE375DCAC442AD989213CCB`.
+Note: zip roots carry package-specific READMEs only; the repo-view paper
+READMEs stay in the repository.
+
 After filling a placeholder, recompile the PDF and re-run `run_all_audits.py`
 before the next deposit.
 
