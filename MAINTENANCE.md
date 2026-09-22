@@ -194,6 +194,22 @@ audit: D 44/44, E 117/117, F 35/35 entries identical, 0 missing. Zip-root
 READMEs (E/F) carry no DOIs or dates — no update needed. These zips are for
 journal submission only; not uploaded to Zenodo by design.
 
+Supplementary zip dependency-closure audit (2026-09-22): parsed every `import`
+in each zip's scripts (AST), BFS-closed over repo-internal modules, and
+statically checked `data/`-path references and `\includegraphics` targets
+(`\graphicspath{{../figures/}}` + extensionless refs — LaTeX auto-resolves).
+Found and fixed two real gaps: D zip lacked
+`scripts/shallow_trap_array_simulator.py` (hard top-level import of
+`recurrent_substrate.py` line 67); F zip lacked `scripts/s19_ssm_rls_readout.py`
++ `scripts/s20_ssm_m3_routing.py` (imported by 8 / 2 F scripts; their own
+imports — `per_token_io` — were already present). F zip README Contents line
+updated accordingly. False alarms dismissed: s23 corpora via `CORPUS_DIR`
+(present), `square_array_results.csv` (optional in-function output path).
+Post-fix closure: D 17/17, E 39/39, F 13/13 py reachable, MISSING none.
+E zip unchanged (closed from the start; 34 scripts self-insert
+`paper_e/deps/` on sys.path). Old zips remain in
+`review_workspace/zip_backup_20260922/` (pre-repack state, before this patch).
+
 After filling a placeholder, recompile the PDF and re-run `run_all_audits.py`
 before the next deposit.
 
