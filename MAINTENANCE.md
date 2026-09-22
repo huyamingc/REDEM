@@ -227,6 +227,20 @@ scripts imports OK. E tex `\graphicspath{{../figures/}}` matches its README's
 from the README command list is correct. All READMEs are UTF-8 (earlier
 mojibake was a console display artifact only). No path claim is stale.
 
+D zip README fix + s38/s40 gap (2026-09-22): the repo `paper_d/README.md`
+was copied into the D zip root, but it is repository-view documentation —
+its links (`COVER_LETTER.docx`, `../README_REDEM.md`, `../paper_a/`,
+`scripts/verify_claims.py`), "from this directory" compile note, and
+provenance block do not resolve inside the archive. Replaced with a
+package-specific README aligned with E/F (2.2 kB: s19–s40 command list,
+corpora, shared host modules, compile note, GitHub pointer). Copying it in
+also exposed a real gap: s38 (P4 factor ablation) and s40 (ESN+RLS
+baseline) — whose numbers appear in the manuscript — had neither scripts
+nor data in the zip. Added `scripts/s38_ssm_p4_m3m4_ablation.py`,
+`scripts/s40_esn_rls_p4_baseline.py` and their four `data/` artefacts.
+Post-fix: closure 19/19 py, consistency 51/0, 52 entries. The repo copy
+`paper_d/README.md` is unchanged.
+
 After filling a placeholder, recompile the PDF and re-run `run_all_audits.py`
 before the next deposit.
 
