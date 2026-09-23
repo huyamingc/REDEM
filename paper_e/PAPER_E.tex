@@ -350,12 +350,14 @@ $\alpha_{\mathrm{eff}}$ at $\alpha_{\max}$ and $g_i\leq-0.038$ pinning it at
 $\alpha_{\min}$), so the deployed coupling is a saturating regime rather than a
 weakly perturbed one.
 
+\begin{sloppypar}
 The meta layer has its own, separate adaptation bounds
 (\texttt{META\_ALPHA\_MIN}\allowbreak$=0.02$,
 \texttt{META\_ALPHA\_MAX}\allowbreak$=0.20$) that
 govern the inner-loop step size of the adaptive observation scale only; they
 are not substrate physics and must not be conflated with
 $[\alpha_{\min},\alpha_{\max}]$.
+\end{sloppypar}
 
 The coupling graph is an Erd\H{o}s--R\'enyi
 random graph on the $N$ units with mean degree $8$
@@ -954,6 +956,7 @@ The $N$ trend is boundary-specific rather than a general monotone law: on the
 ``no capacity lost and some capacity gained on the hardest boundary'', not as
 monotone improvement everywhere.
 
+\begin{sloppypar}
 Unlike the $N$ axis, whose last step ($0.100\to0.107$) is within seed SD and
 therefore flat rather than rising, the coupling steps are large relative to
 the seed spread. On the densified eight-point grid
@@ -973,6 +976,7 @@ remains at $\kappa=25$ ($0.390$ vs $0.375$ at $\kappa=20$, both far above the
 weaker statement that substrate capacity falls on both sides of the
 deployed operating point; we make no claim that $\kappa=25$ is the optimal
 coupling.
+\end{sloppypar}
 
 \subsection{R3: the self-evolution loop}
 \label{sec:r3}
@@ -1493,18 +1497,18 @@ of the same sweep could bound. The fixed-policy controller (constant margin,
 same reward-rate sign) and the learned-value controller agree
 \emph{exactly} only at ratio $\geq2$, where their post-swap means coincide to
 within $0.001$ ($0.9383$, $0.9391$ and $0.9399$ identical for ratios $3$, $4$
-and $10$, and $0.9375$ versus $0.9384$ at ratio $2$).
+and $10$, and $0.9375$ learned versus $0.9384$ fixed at ratio $2$).
 
 Below that they differ, and the
 departures are not confined to the fast end: at ratio $0.25$ the learned-value
 arm is slightly the better of the two ($0.486$ vs $0.461$, $+2.5$\,pp), at
 ratio $1$ it is worse ($0.561$ vs $0.644$, $-8.3$\,pp), and the largest gaps
-lie in the middle of the band, where the fixed policy leads by $9$--$11$\,pp
+lie in the middle of the band, where the learned-value arm leads by
+$9$--$11$\,pp
 ($0.791$ vs $0.699$ at $1.25$; $0.850$ vs $0.736$ at $1.5$; $0.909$ vs $0.800$
 at $1.75$). The fixed policy is therefore not an approximation of the learned
-value that fails only at the extremes: inside the transition the learned value
-is the weaker of the two, and its only advantage is a slightly shallower
-failure below ratio $0.5$. What the comparison supports is the narrow claim
+value that fails only at the extremes: inside the transition it is the learned value
+that leads, and the fixed policy's only edge is at ratio $1$. What the comparison supports is the narrow claim
 that the two policies are equivalent where recovery is already complete and
 are not equivalent where it is partial; the binding constraint away from the
 transition is the detection timescale, not the flip value.
@@ -2066,6 +2070,7 @@ signal cannot vouch for itself. It is also why self-attribution's range,
 stated above, excludes ``corrupted reward'' as an output class.
 
 \paragraph{Why no per-dimension gain operator is claimed.}
+\begin{sloppypar}
 A per-dimension structural gain is \emph{not} claimed, and the boundary is
 worth stating precisely because it is easy to over-read. The dedicated
 isolation arm (\texttt{s47\_self\_correction\_gain}) was run at script level
@@ -2083,6 +2088,7 @@ noisy reward in the $\mathbb E[r]\approx0$ dead zone (a positive-feedback
 trap), not whether its gain is per-dimension. The correct reading of s47 is
 therefore ``its own pre-declared prediction failed; its numbers are not
 adopted''---not ``a negative result about structural correction.''
+\end{sloppypar}
 
 \paragraph{Hosts and portability.}
 The mechanism stack reported here is demonstrated on one host: the
@@ -2259,6 +2265,7 @@ This research did not receive any specific grant from funding agencies in
 the public, commercial, or not-for-profit sectors.
 
 \section*{Data availability}
+\begin{sloppypar}
 The simulation scripts for this paper (the \texttt{s39}--\texttt{s65}
 series listed in Appendix~\ref{app:index}), the frozen dependency set they
 import (\texttt{paper\_e/deps/}), the six figure PDFs, and the archived
@@ -2292,6 +2299,7 @@ layer, the multi-level chain and the meta-timescale bound), and the three
 companions are cited here as premises rather than restated, so the results
 reported here are not evidence for theirs and theirs are not evidence for
 these.
+\end{sloppypar}
 
 Finally, and in the same
 spirit, what this archive does and does not contain is stated literally, so
@@ -2705,7 +2713,6 @@ R3 & \fpath{s52\_dynamic\_memory.py}, \fpath{s53\_auto\_basis.py},
 R4 & \fpath{s58b\_relative\_sense\_stress.py},
 \fpath{s58f\_margin\_sensitivity.py}, \fpath{s60\_adaptive\_window.py} &
 \fpath{s58b\_relative\_sense\_stress\_v1},
-\fpath{s58b\_trace\_seed4.json} (refit trace),
 \fpath{s58f\_margin\_sensitivity\_v1}, \fpath{s60\_adaptive\_window\_v1} \\
 R5 & \fpath{s52\_dynamic\_memory.py}, \fpath{s54\_memory\_boundaries.py},
 \fpath{s58c\_multi\_level\_expansion.py}, \fpath{s59\_self\_tuned\_gate.py},
@@ -2818,13 +2825,13 @@ L3 (boundary complexity) probe correction & raw block-mean circle, top-50 PCA ri
 Dimension stress & ball 2-D$\to$3-D 0.800$\to$0.630; annulus 0.650$\to$0.600$\to$0.540 & \fpath{s57\_dimension\_stress} \\
 Memory wins revisits & memory (population) 0.888$\pm$0.014 vs 0.838$\pm$0.010; per-segment gains $+4.2$, $+3.6$, $+2.6$ (n.s.) and $+14.9\pm4.1$\,pp (circle revisit, 10/10) & \fpath{s52\_dynamic\_memory} \\
 External baseline (EWC) & EWC penalty on the same RLS readout: whole-run $-0.85\pm0.70$\,pp ($t=-3.87$, 0/10), revisit retention $-0.60\pm2.02$\,pp ($t=-0.94$, n.s.), retention redistributed (circle revisit $+4.95\pm4.28$, linear revisit $-6.15\pm3.72$\,pp). EWC by AdaGrad (as published): $-22.3$\,pp whole-run ($t=-12.03$, 0/10), optimiser-limited & \fpath{s65\_ewc\_baseline} \\
-Composition (R3) & joint 0.769 $\approx$ oracle 0.762; memory 0.758; expansion 0.737 & \fpath{s56\_joint\_self\_evo} \\
+Composition (R3) & joint 0.769 $\approx$ oracle 0.762; memory 0.758; expansion 0.737 & \fpath{s56\_joint\_self\_evolution} \\
 Complexity: no collapse, not saturation & 4-D shell$\to$triple (six quadratic surfaces) rls 0.544$\pm$0.010$\to$0.559$\pm$0.015 (paired $+0.015$, $t=2.98$, 7/10) & \fpath{s58a\_complexity} \\
 Sense reliability cliff & 0.90$\to$0.27$\to$0.00 (counts 18/20, 6/20, 0/20 correct; 0/20, 2/20, 0/20 false); SEG=250 2-regime vs 3-regime: 6/20 vs 10/20 correct & \fpath{s58b\_relative\_sense} \\
 Multi-level + divergence & stage-1 10/10 (always in a circle segment); stage-2 5/10 (circle revisit, blocks 2219--2379); no ring expansion, but ladder capped at level 2; ring unrepaired 0.565/0.584; 0.801 vs 0.504; weight norm $\sim$2800 & \fpath{s58c\_multi\_level} \\
 Rich-kernel margin & $\kappa$ peak 0.1185 ($\kappa{=}20$) vs 0.0995 (deployed $\kappa{=}25$); $\kappa{\ge}30$: $\sim$0; $N\uparrow$: 0.034$\to$0.107 & \fpath{s58d\_kernel\_cap} \\
 D2 transition band & post 0.486$\to$0.791$\to$0.850$\to$0.909$\to$0.938 at ratio 0.25/1.25/1.5/1.75/2 (coupled); success rate 1.0; five interior points bridge the band & \fpath{s58e\_d2\_timescale} \\
-Margin cannot fix cliff & reliability 0.900$\to$0.100 (SEG=500); noise 0.129 vs signal 0.188 & \fpath{s58f\_margin\_sens} \\
+Margin cannot fix cliff & reliability 0.900$\to$0.100 (SEG=500); noise 0.129 vs signal 0.188 & \fpath{s58f\_margin\_sensitivity} \\
 Self-tuned gate (R5) & $v_{\mathrm{snap}}$ $0.252\pm0.067$ dynamic vs $0.922\pm0.056$ static; accuracy learned/fixed $0.876/0.885$ dynamic, $0.955/0.954$ static & \fpath{s59\_self\_tuned\_gate} \\
 Window cannot fix cliff (R4) & SEG=250 reliability 0.270 unchanged; SEG=500 0.900$\to$0.475 with both arms pooled (memory arm alone 0.500); best-window delta (max single-refit probe change) 0.198$\pm$0.058 vs 0.174$\pm$0.050, window candidates \{100,240\} & \fpath{s60\_adaptive\_window} \\
 Cross-family (R5) & ring segment $+8.9\pm2.5$\,pp (parallel/uncoupled, 10/10 seeds) but $+1.4\pm1.8$\,pp (coupled, 5/10); frozen-hypothesis accuracy on the ring segment 0.576; selection share of the ring segment 63.9\% (9.4--92.2\% per seed) & \fpath{s61\_cross\_family} \\

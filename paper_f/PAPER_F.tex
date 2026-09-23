@@ -105,8 +105,8 @@ additive input path as required for calibration, and showed that
 several stream rankings reverse once clipped tokens are excluded.
 Paper~E~\cite{epaper}, on a different substrate, measured the complementary
 ceiling at the decision layer: under a $\pm1$ reward channel,
-autonomy reduces to selection among a human-supplied pair of
-correction laws.
+autonomy reduces to selection among a small human-supplied set of
+correction operators.
 
 This paper is written \emph{as the rule} extracted from those traps.
 We keep Paper~D's host, task, and seed rules so that every row pairs
@@ -288,8 +288,8 @@ relevant. We report means over seeds and sign counts; we do not merge
 \texttt{clip\_frac} with \texttt{floor\_frac}. Sign-count convention:
 a count $(k/10)$ attached to a comparison names the number of seeds on
 which the \emph{first-named} arm wins on the axis under discussion
-(the direction the sentence claims), so a cost such as "$+0.32$ ($9$
-of $10$ seeds worse)" counts seeds paying the cost; every such count is
+(the direction the sentence claims), so a cost such as ``$+0.32$ ($9$
+of $10$ seeds worse)'' counts seeds paying the cost; every such count is
 computable from the archived per-seed CSVs. These comparisons are
 exploratory in the multiplicity sense: per-claim paired tests and sign
 counts at $10$ seeds with no family-wise or false-discovery-rate
@@ -421,7 +421,7 @@ Hard-topk & 7.111 & 6.939 / 6.913 & $-2.26$ ($10/10$) \\
 \end{tabular}
 \end{table}
 
-Soft vs Single stream $\Delta$CE mean $+0.03$ ($t=0.68$) --- parity.
+Soft vs Single stream $\Delta$ppl mean $+0.03$ ($t=0.68$) --- parity.
 Hard pays a small stream tax for stronger retention (Paper~D's
 specialization--lag tradeoff survives under a calibrated readout).
 \textbf{Full stack vs B-softmax}: Soft-topk stream $7.065$ vs
@@ -461,7 +461,7 @@ poisons held-out retention (C3). Sparsity must be imposed as a
 constraint (top-$k$), not hoped for from the task loss.
 
 \paragraph{Hard vs soft routing.}
-Hard routing purer specialists (lower forget) at a lag cost on stream;
+Hard routing yields purer specialists (lower forget) at a lag cost on stream;
 soft routing mixes and keeps stream at parity while still buying
 $1.4$~forget. This mirrors Paper~D's soft-vs-abrupt finding under a
 different readout family.

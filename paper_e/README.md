@@ -111,9 +111,9 @@ snapshot-gated memory in a recurrent relaxation reservoir*.
 - `Supplementary_Material_PaperE.zip` (local only) —  self-contained reproduction package (manuscript, scripts s39–s65, frozen
   `deps/`, committed data, figures, README) mirroring the paper_a–d
   supplementary zips; staging lives at `../review_workspace/_zip_build_E/`.
-  Rebuilt for v3 (manuscript = `PAPER_E.tex`; scripts 34 incl. `s65`;
-  post-rerun committed full-run files plus the
-  `s58b_trace_seed4.json` trace and refreshed s60 products).
+  Rebuilt for v3.1 (manuscript = `PAPER_E.tex`, R6 direction fix;
+  scripts 34 incl. `s65`; post-rerun committed full-run files plus
+  refreshed s60 products; internal s58b trace excluded).
 - `VITAE.docx` (submission artifact) — author biography
   (82 words ≤100), Times New Roman; regenerate with
   `node ../review_workspace/gen_vitae_E.js`.

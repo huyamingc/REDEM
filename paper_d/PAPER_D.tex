@@ -518,7 +518,7 @@ the whitened channels to the previous-token identity) and evaluated
 out-of-sample on the second half by argmax agreement; chance is the
 uniform 32-symbol vocabulary level ($1/32 \simeq 3.1\%$), and the
 quoted ranges span per-channel, per-seed accuracies. The most recent
-input token ($e_{t-1}$; called "the current token" at prediction time)
+input token ($e_{t-1}$; called ``the current token'' at prediction time)
 is
 linearly decodable by argmax readout from the fast channels ($\tau_i \le 8$) of the
 whitened state at 88.9--99.7\% out-of-sample accuracy (chance 3.1\%;
@@ -1272,9 +1272,9 @@ $r\in\mathcal{R}$ such that
 $\Pr\bigl(S(r(\Phi),T)=c\bigr)>0$ --- an atom at a fixed penalty on a
 set of ``invalid'' or clamped outputs of positive probability. The
 clipped-linear family of this paper has $c=c_\varepsilon$ and
-empirically $\alpha\in[0.07\%,11.3\%]$ across the measured arms of this
+empirically $\alpha\in[0.07\%,11.35\%]$ across the measured arms of this
 paper (the extremes are the full stack at $0.07\%$ and the multiplicative
-gate controls at $11.3\%$); those
+gate controls at $11.35\%$); those
 tokens all pay the same $\simeq 27.63$ nats. A family is
 \emph{floor-free} when the output map lands in the proper domain of
 $S$ almost surely and $S$ is continuous in the scores without an

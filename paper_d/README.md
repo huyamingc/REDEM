@@ -90,7 +90,7 @@ Metric-sensitivity table: `PAPER_D.tex` §Metric sensitivity
 | `PAPER_D.tex` / `PAPER_D.pdf` | **Current submission version** — Neurocomputing, `elsarticle` |
 | `COVER_LETTER.docx` | Cover letter for the NC version (single source of truth) |
 | `Highlights.docx` | Elsevier Highlights (bullets only; single source of truth) |
-| `Supplementary_Material_PaperD.zip` | Supplementary package |
+| `Supplementary_Material_PaperD.zip` | Supplementary package (local-only; rebuild with `python scripts/rebuild_paperD_supp_zip.py`) |
 | `README.md` | This file |
 | (historical sources, AI-line files, change log, sketches and build logs removed 2026-09-17; git history retains the last committed state) |
 
