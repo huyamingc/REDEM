@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """
-Build Paper F supplementary zip (manuscript + scripts + data + figures).
+Build Paper F supplementary zip (compiled manuscript PDF + scripts + data + figures).
 =============================================================================
 Type:           IO
 Produces:       paper_f/Supplementary_Material_PaperF.zip
-Reads:          paper_f/PAPER_F.tex, scripts/s50..s54,s66,s67*, data/s50.., figures/paperF*
+Reads:          paper_f/PAPER_F.pdf, scripts/s50..s54,s66,s67*, data/s50.., figures/paperF*
 Role:           submission tooling (local-only artefact)
 =============================================================================
 """
@@ -46,7 +46,7 @@ README = """# Supplementary Code and Data — Paper F
 > Paper F — "Learning the Readout Form: Objective-Level Calibration,
 > Sparse Selectivity, and Expert Routing on a Diagonal State-Space Host"
 
-Contents: manuscript source, the Paper F experiment scripts (s50–s54, s66–s67),
+Contents: the compiled manuscript (PDF), the Paper F experiment scripts (s50–s54, s66–s67),
 committed result tables used by the manuscript, and figure generators.
 
 Reproduce from the repository root (CPU-only):
@@ -69,9 +69,12 @@ Every headline number in the manuscript maps to a committed `data/*` artefact
 def main() -> int:
     files: list[tuple[Path, str]] = []
 
-    tex = ROOT / "paper_f" / "PAPER_F.tex"
-    if tex.exists():
-        files.append((tex, "manuscript/PAPER_E.tex".replace("PAPER_E", "PAPER_F")))
+    # compiled manuscript, PDF only: Elsevier forbids LaTeX files as
+    # Supplementary items, so the .tex source goes through the journal's
+    # 'LaTeX source files' item type instead
+    pdf = ROOT / "paper_f" / "PAPER_F.pdf"
+    if pdf.exists():
+        files.append((pdf, "manuscript/PAPER_F.pdf"))
 
     for stem in SCRIPT_STEMS:
         p = ROOT / "scripts" / f"{stem}.py"
@@ -105,6 +108,12 @@ def main() -> int:
         for src, arc in files:
             z.write(src, arc)
     print(f"wrote {OUT} ({len(files) + 1} entries)")
+
+    # Elsevier forbids LaTeX sources in Supplementary material
+    with zipfile.ZipFile(OUT) as z:
+        bad = [n for n in z.namelist() if n.endswith((".tex", ".bib", ".bbl"))]
+    if bad:
+        raise SystemExit(f"ERROR: LaTeX source in supplementary zip: {bad}")
     return 0
 
 

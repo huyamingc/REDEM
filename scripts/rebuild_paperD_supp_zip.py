@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """
-Rebuild Paper D supplementary zip (manuscript + scripts + data + figures).
+Rebuild Paper D supplementary zip (compiled manuscript PDF + scripts + data + figures).
 =============================================================================
 Type:       CLI
-Reads:      paper_d/PAPER_D.tex, scripts/s18..s40 (+ shared host modules),
+Reads:      paper_d/PAPER_D.pdf, scripts/s18..s40 (+ shared host modules),
             data/s18..s40, data/corpora/, figures/paperD_*.pdf
 Produces:   paper_d/Supplementary_Material_PaperD.zip (local-only, gitignored)
 =============================================================================
@@ -26,7 +26,7 @@ README = """# Supplementary Code and Data — Paper D
 > Paper D — "REDEM-SSM: A State-Space Architecture with Native Online
 > Learning, Meta-Adaptation, and Structural Plasticity"
 
-Contents: manuscript source, the Paper D experiment scripts (s18–s35, plus
+Contents: the compiled manuscript (PDF), the Paper D experiment scripts (s18–s35, plus
 the P4 factor-ablation and ESN-baseline pair s38/s40), the shared host
 modules they import (`recurrent_substrate.py`, `streaming_tasks.py`,
 `per_token_io.py`, `shallow_trap_array_simulator.py`), committed result
@@ -55,9 +55,10 @@ Reproduce from the repository root (CPU-only; torch CPU):
 Experiment scripts accept `--quick` for a reduced smoke run. Each run
 regenerates the committed `data/` files.
 
-The manuscript (`manuscript/PAPER_D.tex`) compiles from inside
-`manuscript/` (`pdflatex PAPER_D.tex`, twice for cross-references);
-figures resolve through `../figures/`.
+The manuscript is included as a compiled PDF (`manuscript/PAPER_D.pdf`) for
+reference only. The LaTeX source is submitted separately through the
+journal's 'LaTeX source files' item type: Elsevier does not allow LaTeX
+files as Supplementary items.
 
 Every headline number in the manuscript maps to a committed `data/*`
 artefact (see `scripts/verify_claims.py` in the full repository
@@ -151,8 +152,10 @@ def main() -> None:
 
     items: list[tuple[Path, str]] = []
 
-    # manuscript
-    items.append((ROOT / "paper_d" / "PAPER_D.tex", "manuscript/PAPER_D.tex"))
+    # compiled manuscript, PDF only: Elsevier forbids LaTeX files as
+    # Supplementary items, so the .tex source goes through the journal's
+    # 'LaTeX source files' item type instead
+    items.append((ROOT / "paper_d" / "PAPER_D.pdf", "manuscript/PAPER_D.pdf"))
 
     # scripts
     for name in D_SCRIPTS:
@@ -202,7 +205,9 @@ def main() -> None:
         for name in zf.namelist():
             if should_skip(name):
                 bad.append(f"unexpected skip-list member: {name}")
-            if name.endswith((".md", ".py", ".tex", ".txt", ".json", ".csv")):
+            if name.endswith((".tex", ".bib", ".bbl")):
+                bad.append(f"LaTeX source in Supplementary (Elsevier forbids it): {name}")
+            if name.endswith((".md", ".py", ".txt", ".json", ".csv")):
                 try:
                     text = zf.read(name).decode("utf-8", "replace")
                 except Exception:
@@ -212,8 +217,8 @@ def main() -> None:
                     if key in text:
                         bad.append(f"{name}: contains '{key}'")
         print(f"entries: {len(zf.namelist())}")
-        print(f"manuscript sha: {hashlib.sha256(zf.read('manuscript/PAPER_D.tex')).hexdigest()[:16]}")
-    folder_sha = hashlib.sha256((ROOT / "paper_d" / "PAPER_D.tex").read_bytes()).hexdigest()[:16]
+        print(f"manuscript sha: {hashlib.sha256(zf.read('manuscript/PAPER_D.pdf')).hexdigest()[:16]}")
+    folder_sha = hashlib.sha256((ROOT / "paper_d" / "PAPER_D.pdf").read_bytes()).hexdigest()[:16]
     print(f"folder  sha: {folder_sha}")
 
     if bad:

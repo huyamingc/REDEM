@@ -21,7 +21,7 @@ Self-contained reproduction package for:
 > reconstructed-label capacity sensing, and snapshot-gated memory in a
 > recurrent relaxation reservoir" (target: *Neurocomputing*)
 
-This archive carries the manuscript source, the self-evolution experiment
+This archive carries the compiled manuscript (PDF), the self-evolution experiment
 chain (`s39`–`s65`), the frozen `deps/` modules the chain imports, the result
 files behind the numbers in the paper, and the six vector figures.
 
@@ -29,7 +29,7 @@ files behind the numbers in the paper, and the six vector figures.
 
 | Path | Contents |
 |---|---|
-| `manuscript/` | `PAPER_E.tex` — elsarticle source. Compile with `pdflatex` (three passes) from inside `manuscript/`; figures resolve through `../figures/`. |
+| `manuscript/` | `PAPER_E.pdf` — compiled manuscript for reference. The LaTeX source is submitted separately through the journal's 'LaTeX source files' item type (Elsevier does not allow LaTeX files as Supplementary items). |
 | `scripts/` | Chain `s39_*`–`s65_*` (incl. `s43b`, `s58a`–`s58f`, `s64b`) plus `gen_fig_self_evolution.py`. |
 | `data/` | Committed full-run CSV/JSON results cited by the manuscript. |
 | `figures/` | Six vector PDFs used in the paper. |
@@ -95,8 +95,10 @@ def main() -> None:
     # Collect files that belong in the package
     items: list[tuple[Path, str]] = []
 
-    # manuscript
-    items.append((ROOT / "paper_e" / "PAPER_E.tex", "manuscript/PAPER_E.tex"))
+    # compiled manuscript, PDF only: Elsevier forbids LaTeX files as
+    # Supplementary items, so the .tex source goes through the journal's
+    # 'LaTeX source files' item type instead
+    items.append((ROOT / "paper_e" / "PAPER_E.pdf", "manuscript/PAPER_E.pdf"))
 
     # scripts — Paper E chain only
     script_dir = ROOT / "scripts"
@@ -200,7 +202,9 @@ def main() -> None:
         for name in zf.namelist():
             if should_skip(name):
                 bad.append(f"unexpected skip-list member: {name}")
-            if name.endswith((".md", ".py", ".tex", ".txt", ".json", ".csv")):
+            if name.endswith((".tex", ".bib", ".bbl")):
+                bad.append(f"LaTeX source in Supplementary (Elsevier forbids it): {name}")
+            if name.endswith((".md", ".py", ".txt", ".json", ".csv")):
                 try:
                     text = zf.read(name).decode("utf-8", "replace")
                 except Exception:
@@ -210,8 +214,8 @@ def main() -> None:
                     if key in text:
                         bad.append(f"{name}: contains '{key}'")
         print(f"entries: {len(zf.namelist())}")
-        print(f"manuscript sha: {hashlib.sha256(zf.read('manuscript/PAPER_E.tex')).hexdigest()[:16]}")
-    folder_sha = hashlib.sha256((ROOT / "paper_e" / "PAPER_E.tex").read_bytes()).hexdigest()[:16]
+        print(f"manuscript sha: {hashlib.sha256(zf.read('manuscript/PAPER_E.pdf')).hexdigest()[:16]}")
+    folder_sha = hashlib.sha256((ROOT / "paper_e" / "PAPER_E.pdf").read_bytes()).hexdigest()[:16]
     print(f"folder  sha: {folder_sha}")
 
     if bad:
