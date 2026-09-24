@@ -319,6 +319,65 @@ interests here" area — leaving them blank is right when the first option is
 checked, and the whole form fits on one page, so there is no second page to
 clean up.
 
+## Paper E pre-submission review (2026-09-23)
+
+An external checklist for Paper E raised five items. Four do not hold against
+the files, and one of its operational instructions would have been harmful.
+Its quotations are mostly accurate — the Highlights text, the six keywords,
+the VITAE wording and both `\address` lines all check out — but three of its
+conclusions are wrong, and it appears to have read a pre-fix copy of the cover
+letters.
+
+**1. Cover letter approval sentence — already done.** The checklist reported it
+present in D and absent from E. It was absent from all three until the change
+recorded in the section above; no further action.
+
+**2. Declaration "page 2 blank box" — no such page; do not delete.** The
+checklist advised removing the unchecked option "as in Paper D". Paper D never
+had it removed, and the shape of all three declarations is documented in the
+section above. Deleting the U+2610 line would move the form away from the
+template rather than toward it. No change.
+
+**3. Abstract length — measured 285 words, not 250; left unchanged.** The
+checklist also called `(R1)`/`(R2, R3)`/`(R5)`/`(R6)` "script numbers"; they
+are the manuscript's own result labels R1-R8, defined in `PAPER_E.tex` lines
+83-87, and carrying them in the abstract is deliberate. Rewriting the abstract
+would mean editing three places in lockstep (the tex abstract, a rebuilt
+`PAPER_E.pdf`, and `Abstract.docx`) and would diverge from the published
+preprint (doi:10.5281/zenodo.22888172). No Neurocomputing word limit could be
+confirmed — Elsevier returns HTTP 403 to automated fetches of both the journal
+page and the Guide for Authors — so the checklist's 200-word target is
+uncorroborated. Left as is.
+
+**4. Highlights — verified, no change.** 5 bullets at 75/77/67/82/69 characters
+including spaces, all within the 85-character limit. The checklist's counts
+differ by one on three bullets, which is how the multi-byte `±` is counted,
+not a content mismatch.
+
+**5. Affiliation — quoted correctly, not a defect.** D uses
+`\address[a]{Independent Researcher, Guiyang, Guizhou, China}`; E uses
+`\address{Guiyang, Guizhou 550000, China}`. A single-author,
+single-affiliation paper correctly omits the `[a]` key. Nothing changed on
+file; only the portal's Institution field is set to "Independent Researcher".
+
+**Two instructions in the checklist must not be followed:**
+
+- *"Preprint: select NO."* The manuscript is posted as a preprint, so the
+  portal field must be answered truthfully — YES, with
+  doi:10.5281/zenodo.22888172. Answering NO would be a false declaration, and
+  Elsevier permits preprints.
+- *"Compile PAPER_E.pdf from .tex."* It is already built and current: 697391
+  bytes, 71 pages, compiled 2026-09-23.
+
+**Verified ready (Paper E).** `PAPER_E.pdf` 71 pp; `Abstract.docx` 285 words,
+identical to the tex abstract (digit sequences compared, italic emphasis
+preserved); `COVER_LETTER.docx`; `DECLARATION_OF_INTERESTS.docx`;
+`Highlights.docx`; `VITAE.docx` (carries "the present self-evolution
+manuscript"); `Supplementary_Material_PaperE.zip` (117 entries — 35 scripts
+s39-s65, 69 data files, 6 figures, 5 deps). Keywords in the tex:
+self-evolution; online learning; reward modulation; reservoir computing;
+credit assignment; memory.
+
 ## Backups
 
 Prefer `git stash` / branches over `.bak` copies. Temporary claim probes
