@@ -296,6 +296,29 @@ E 71 pp (3), F 15 pp (2); 0 errors, 0 unresolved figures, 0 nested members.
 Re-run with `review_workspace/verify_flat_zips.py`. These zips are
 git-ignored submission artefacts, like the supplementary ones.
 
+## Cover letter and declaration check (2026-09-23)
+
+Checked the D/E/F submission DOCX against the Elsevier template.
+
+**Cover letters** — each letter's "Statements." paragraph now carries the full
+set: originality, not under consideration elsewhere, absence of competing
+interests, the Zenodo preprint DOI, the code/data location, and (newly added)
+the single-author approval sentence plus the standard no-funding wording. The
+funding sentence is copied verbatim from the manuscripts' own `Funding`
+sections, so letter and paper agree. Added by
+`review_workspace/add_author_approval_funding.py`; backups in
+`review_workspace/cover_letter_backup_20260923/COVER_LETTER_{d,e,f}.before_approval.docx`.
+
+**Declarations of interest** — correct as they stand, deliberately left
+unchanged. Each is one section with no page break, no table, no text box and
+no content control: 13 paragraphs, 5 of them empty. The two-option template is
+filled correctly (U+2612 checked on "no known competing financial interests",
+U+2610 left empty on the itemised option), followed by signature and date. The
+empty paragraphs under the second option are the template's "describe the
+interests here" area — leaving them blank is right when the first option is
+checked, and the whole form fits on one page, so there is no second page to
+clean up.
+
 ## Backups
 
 Prefer `git stash` / branches over `.bak` copies. Temporary claim probes
