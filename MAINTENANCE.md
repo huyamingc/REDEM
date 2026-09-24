@@ -269,6 +269,33 @@ before the next deposit.
 - Still human-only: suggested reviewers (`../submission/Suggested_Reviewers_E.txt`
   referenced but not in repo), author final read, journal portal fields.
 
+## LaTeX source archives (2026-09-23)
+
+Elsevier wants the manuscript source as a **single archive** under item type
+'LaTeX source files' — explicitly *not* as a Supplemental item. Built
+`paper_{d,e,f}/LaTeX_source_Paper{D,E,F}.zip` with
+`review_workspace/make_latex_source_zips.py`: the `.tex` plus exactly the
+figures its `\includegraphics` cite (D 4 / E 7 / F 3 members). Nothing else
+belongs in it — every `\usepackage` is in TeX Live, the bibliography is an
+inline `thebibliography` (no `.bbl`/`.bib`), and `paper_e/deps/` is Python
+code, not a LaTeX package.
+
+**Layout is FLAT** — every file at the archive root, no subdirectories.
+Elsevier: "EM cannot process LaTeX submissions in folders with a directory
+structure, so it cannot find files referenced in a different directory from
+the root." The first build used `manuscript/PAPER_X.tex` + `figures/*`: it
+mirrored the repo and compiled locally, but EM's own compile would not have
+found the figures. Rebuilt flat. The manuscripts cite figures by bare
+basename, so flat files resolve against the current directory while the
+declared `\graphicspath{{../figures/}}` simply misses (LaTeX ignores a
+nonexistent `\graphicspath` entry — the class does not error).
+
+Verified the way EM compiles: extract each archive to a temp dir and run
+`pdflatex -interaction=nonstopmode` from that root — D 32 pp (2 passes),
+E 71 pp (3), F 15 pp (2); 0 errors, 0 unresolved figures, 0 nested members.
+Re-run with `review_workspace/verify_flat_zips.py`. These zips are
+git-ignored submission artefacts, like the supplementary ones.
+
 ## Backups
 
 Prefer `git stash` / branches over `.bak` copies. Temporary claim probes

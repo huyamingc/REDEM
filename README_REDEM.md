@@ -324,7 +324,8 @@ autonomous self-correction under ±1 reward — is a standalone extension
 carried in [`paper_e/`](paper_e/): it imports the frozen `paper_e/deps/`
 modules, so it is reproducible independently of the A–D pipeline. Its
 claim→script→data index, reproduction commands, and submission materials
-(cover letter, Vitae, Highlights, declaration, supplementary zip) are
+(cover letter, Vitae, Highlights, declaration, supplementary zip, LaTeX
+source archive) are
 documented in [`paper_e/README.md`](paper_e/README.md); the claim-driven
 manuscript is `paper_e/PAPER_E.tex` (elsarticle, target: *Neurocomputing*).
 This file (README_REDEM.md) covers the S1–s36 A–D registry only.
