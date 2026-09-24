@@ -17,9 +17,9 @@ self-evolution extension **E** and the readout-form companion **F**):
 
 | Paper | Target journal | Status |
 | :--- | :--- | :--- |
-| A | Chaos, Solitons & Fractals (transferred from *Nonlinear Science*) | **Submitted, under review** — manuscript frozen |
-| B | Neural Networks | **Submitted, under review** — manuscript frozen |
-| C | Neural Networks | **Submitted, under review** — manuscript frozen |
+| A | Nonlinear Science (transferred from *Chaos, Solitons & Fractals*, Ms. Ref. CHAOS-D-26-09036) | **Submitted, under review** (Ms. Ref. NLS-D-26-00781) — manuscript frozen |
+| B | Neural Networks | **Submitted, with editor** (not yet sent for peer review) — manuscript frozen |
+| C | Neural Networks | **Submitted, with editor** (not yet sent for peer review) — manuscript frozen |
 | D | Neurocomputing | Draft, submission-ready (2026-09-17 revision: companion-quote fix, M4/M5 host-instantiation naming, D/F contribution boundary) |
 | E | Neurocomputing | Submission materials prepared (2026-09-17 revision: Theorem 1 conditioned, pipeline-latency wording fixed, flip margin disclosed) |
 | F | Neurocomputing | Draft, submission-ready (2026-09-17 revision: abstract novelty boundary, sign-count convention, table references) |
@@ -51,7 +51,7 @@ still needs.
 - **Paper A — Physics**: *"Memory and chaos in a physics-constrained
   relaxation substrate: phase diagram, multi-timescale forgetting, and
   disturbance robustness"* — substrate characterization (target:
-  *Chaos, Solitons & Fractals*)
+  *Nonlinear Science*, transferred from *Chaos, Solitons & Fractals*)
   → [`paper_a/PAPER_A.pdf`](paper_a/PAPER_A.pdf) |
   [`paper_a/PAPER_A.tex`](paper_a/PAPER_A.tex) |
   [`paper_a/README.md`](paper_a/README.md) |
@@ -153,7 +153,7 @@ still needs.
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | **Question** | What can this substrate compute? | How do you learn on it? | Which mechanism does what? | What host makes it native? | How does it fix itself under ±1 reward? | Which readout form / selectivity pressure is still required under a clean metric? |
 | **Core result** | κ*∈(25,30); held-out MC +24–53% just before it; forgetting kernel r=0.97; λ-homeostat +7.9–18% | 0.996 vs 0.973 (p<0.0001; N=1024: 0.9970 vs 0.9753); tracks drift where frozen learners never recover | the +32% sequential-recovery gain is the homeostat's, not the metadata's; metadata robustness transfer falsified (0/10 seeds at every τ_m); routing transfers, gating-only falsified | calibrated input path (state-mixture ranking is a clip-floor/calibration property); routing retains specialists; pause-learning does **not** pass the retention rubric once the floor is accounted for; full stack beats bare host on forgetting (−4.47/−4.53, 10/10) and TF+LoRA on reported axes; P4 factor ablation: hard M3 carries forgetting, soft M4 recovers stream; classical ESN+RLS fails out of sample (~98 vs bare 15.4 / lin 12.4) | reward-rate sign hides the direction; credit assignment = rule selection; ~~structural (per-dimension) gain correction required~~ **retracted** (only a uniform sign flip is demonstrated; s47 is a retracted design attempt, **not** a negative result); capacity sense idles/triggers by reconstruction; frozen memory beats re-adaptation; D2 timescale bound verified; decision-level autonomy + minimal operational self (persistence / functional identity / causal use); memory, not expansion, separates content–rendering (s63); majority rule collapses under a wrong majority but validation-driven selection finds the correct source (s64); s42 corrupt-reward is an honest negative (self-deception, not self-detectable); s58c multi-level expansion refuses the cubic rung and memory masks (not prevents) divergence; EWC does not improve the run and only redistributes revisit retention; hosts: E on relaxation reservoir, D/F on SSM, G is a port design (not in E) | trained softmax removes the clip-floor artifact (simplex projection does not); hard top-k is required for selective gates to retain; expert routing cuts forgetting further at stream parity; external selective-SSM baseline loses on stream (0/10); its 24,864 host parameters are frozen at a random init, so it trains fewer parameters than Gate-C-topk (8,224 vs 24,736) — see `paper_f/README.md` |
-| **Target venue** | Chaos, Solitons & Fractals | Neural Networks | Neural Networks | Neurocomputing (NC retarget; PRX desk-reject) | Neurocomputing | Neurocomputing |
+| **Target venue** | Nonlinear Science (transferred from *Chaos, Solitons & Fractals*) | Neural Networks | Neural Networks | Neurocomputing (NC retarget; PRX desk-reject) | Neurocomputing | Neurocomputing |
 | **Preprint DOI** | [10.5281/zenodo.22109664](https://doi.org/10.5281/zenodo.22109664) | [10.5281/zenodo.22110606](https://doi.org/10.5281/zenodo.22110606) | [10.5281/zenodo.22110618](https://doi.org/10.5281/zenodo.22110618) | [10.5281/zenodo.22110623](https://doi.org/10.5281/zenodo.22110623) | [10.5281/zenodo.22888172](https://doi.org/10.5281/zenodo.22888172) | [10.5281/zenodo.22888049](https://doi.org/10.5281/zenodo.22888049) |
 
 ## Provenance: prior Si₃N₄ pulse-encoding paper
@@ -196,7 +196,7 @@ simulation code and data but ask different questions:
 | **Question** | What can this physical substrate compute? | How do you learn on top of it? |
 | **Content** | Dynamics theory: memory–chaos phase diagram, forgetting kernel, λ-homeostat robustness (full derivations in Appendix A) | Learning algorithm + benchmarks: online RLS readout, dual-timescale metadata, chaos homeostat, structure plasticity, ablations |
 | **Key results** | Order–chaos transition at κ*∈(25,30); held-out memory +24–53% just before it; forgetting kernel M(t)=∫p(τ)e^{−t/τ}dτ matches the measured memory curve (r=0.97); λ-homeostat restores 7.9–18% after disturbances; edge of chaos (λ_target=0) identified as the best-supported target (+25%; main results run at the conservative −0.02) | Tracks drift where frozen batch learners (GRU, transformer) fail permanently; integrated system beats the bare baseline (0.996 vs 0.973, p<0.0001) and matches every ablation (homeostat removal ties; N=1024, 10 seeds: 0.9970 vs 0.9753); metadata is substrate-agnostic — its statistical-memory benefit transfers to a matched ESN (robustness transfer falsified in Paper C); +32% memory after three sequential disturbances; causal audit confirms all mechanisms are causally clean at the operational leak magnitudes tested |
-| **Target journal** | Chaos, Solitons & Fractals | Neural Networks |
+| **Target journal** | Nonlinear Science (transferred from *Chaos, Solitons & Fractals*) | Neural Networks |
 | **Relationship** | Substrate theory; cites the prior Si₃N₄ pulse-encoding paper for device calibration | Builds on Paper A's substrate theory (cited as the companion in §2) |
 
 All experiments are CPU-only and fully reproducible via the scripts in

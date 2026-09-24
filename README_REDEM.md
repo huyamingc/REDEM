@@ -226,21 +226,20 @@ Per-paper scoped reproduction commands (paper-relative paths) are in each
 
 ## Compiling the papers
 
-All four `.tex` files compile standalone (MiKTeX verified): run `pdflatex`
+All `.tex` files compile standalone (MiKTeX verified): run `pdflatex`
 twice per paper (or `latexmk -pdf`). Papers A/B use the standard article
-class; Paper C uses elsarticle (preprint mode); Paper D uses REVTeX 4.2
-(aps, preprint) for PRX Intelligence. At submission, A/B/C keep the
-Elsevier "Your Paper Your Way" format (elsarticle final layout at
-acceptance); D submits the REVTeX source as-is (APS: a PDF alone is
-sufficient for peer review).
+class; Papers C–F use elsarticle (preprint mode). At submission, all
+papers keep the Elsevier "Your Paper Your Way" format (elsarticle final
+layout at acceptance).
 
 ## Papers (finalized, S10)
 
 - `PAPER_A.tex` — substrate characterization: phase
   diagram, forgetting kernel theory (full derivations in Appendix A),
   λ-homeostat robustness; task-level CV sweep in Supplementary Note 1 /
-  Fig. S1. Target: *Chaos, Solitons & Fractals* (Elsevier).
-  Compiles standalone (latexmk -pdf) with the article class (17 pp, zero
+  Fig. S1. Target: *Nonlinear Science* (Elsevier; transferred from
+  *Chaos, Solitons & Fractals*).
+  Compiles standalone (latexmk -pdf) with the article class (zero
   warnings); elsarticle final layout at acceptance.
 - `PAPER_B.tex` — REDEM architecture, mechanisms,
   ablations, baselines. Target: *Neural Networks* (Elsevier).
@@ -251,16 +250,15 @@ sufficient for peer review).
   Physics are Non-Substitutable in the Directions and Conditions Tested".
   The three-mechanism disentanglement thesis
   is locked on s14/s16/s16b/s15/s5b; `paper_c/PAPER_C.tex` is drafted in
-  elsarticle preprint format (18 pp, zero warnings) for *Neurocomputing*.
+  elsarticle preprint format for *Neural Networks*.
   Per-paper overview, data anchors, and
   scoped reproduction commands: `paper_c/README.md`.
 - `paper_d/` — Paper D "REDEM-SSM": the SSM instantiation
   of the three mechanisms (M1 per-token RLS readout, M3 fast-channel EMA
   routing, M4 soft routing, M5 state-norm homeostat). P1–P5 DONE;
-  `paper_d/PAPER_D.tex` drafted in REVTeX 4.2 (aps, preprint) format
-  (18 pp, zero errors) for *PRX Intelligence* (APS; APC waived for 2026
-  submissions; P1 theorem, reference fairness, M5 negative, oracle
-  integrated).
+  `paper_d/PAPER_D.tex` is an elsarticle submission version (32 pp) for
+  *Neurocomputing*; *PRX Intelligence* desk-rejected on scope in 2026-09
+  (P1 theorem, reference fairness, M5 negative, oracle integrated).
   Per-paper overview, data anchors, and scoped reproduction commands:
   `paper_d/README.md`.
 
@@ -278,7 +276,7 @@ sufficient for peer review).
 | S7 structure plasticity | done |
 | S8 integration + ablations + N=1024 | done |
 | S9 baseline showdown | done |
-| S10 papers | done (all four papers complete; all figures complete) |
+| S10 papers | done (all six papers complete; all figures complete) |
 | E3 disturbance chain | done (10 seeds, +32% MC after 3 sequential disturbances) |
 | E4 λ_target sweep | done (5 seeds × 4λ × 3CV, λ=0 optimal with +25% MC) |
 | O4 causal audit | done (10 seeds × 7 arms, all mechanisms causally clean; plasticity-correlation leak implemented and verified) |
@@ -313,13 +311,13 @@ sufficient for peer review).
 
 ## Submission status
 
-All four papers are finalized (each PDF compiles with zero errors and zero
-overfull/underfull warnings) and reserved as Zenodo preprints; see the DOI
-table in the root [`README.md`](README.md). Targets: A → *Chaos, Solitons
-& Fractals*, B → *Neural Networks*, C → *Neurocomputing* (Elsevier; all
-submit in the current "Your Paper Your Way" format), D → *PRX
-Intelligence* (APS; REVTeX source, APC waived for 2026 submissions).
-Journal-specific formatting happens at submission time.
+See the **Paper status** table in the root [`README.md`](README.md) for the
+current state of every submission; the DOI table there lists the Zenodo
+preprints. In brief: A is under review at *Nonlinear Science* (Elsevier
+transfer from *Chaos, Solitons & Fractals*); B and C are with the editor at
+*Neural Networks*, not yet sent for peer review; D, E and F are
+submission-ready for *Neurocomputing*, submitted in the current "Your Paper
+Your Way" format. Journal-specific formatting happens at submission time.
 
 **Paper E (self-evolution, s39–s63).** The fifth paper of the program —
 autonomous self-correction under ±1 reward — is a standalone extension
@@ -328,5 +326,5 @@ modules, so it is reproducible independently of the A–D pipeline. Its
 claim→script→data index, reproduction commands, and submission materials
 (cover letter, Vitae, Highlights, declaration, supplementary zip) are
 documented in [`paper_e/README.md`](paper_e/README.md); the claim-driven
-manuscript is `paper_e/PAPER_E_v1.tex` (elsarticle, target: *Neurocomputing*).
+manuscript is `paper_e/PAPER_E.tex` (elsarticle, target: *Neurocomputing*).
 This file (README_REDEM.md) covers the S1–s36 A–D registry only.
